@@ -50,11 +50,13 @@ export default function NavBar({ children }) {
                             Go Back
                         </a>
                     </li>
-                    <li className="nav-item-logout">
-                        <a className="nav-link  " href="#">
-                            Log Out
-                        </a>
-                    </li>
+                    <div className="logout">
+                        <li className="nav-item-logout">
+                            <button className="logout-btn" href="#">
+                                Log Out
+                            </button>
+                        </li>
+                    </div>
                 </ul>
             </nav>
             <main className="flex-fill p-3">{children}</main>
