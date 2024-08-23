@@ -1,10 +1,18 @@
 export default function NavBar({ children }) {
     return (
-        <div className="d-flex">
-            <nav className="sidebar bg-dark text-light">
+        <div className="d-flex" style={{ height: "100vh" }}>
+            <nav
+                className="sidebar rounded-right bg-dark text-light "
+                style={{
+                    width: "250px",
+                    minWidth: "250px",
+                    borderTopRightRadius: "15px",
+                    borderBottomRightRadius: "15px",
+                }}
+            >
                 <div className="sidebar-header">
                     <h4 className="text-light position-absolute top-0 start-50 translate-middle mt-5">
-                        LESO -ISC{" "}
+                        LESO - ISC
                     </h4>
                 </div>
                 <ul className="nav flex-column pt-5">
