@@ -1,16 +1,35 @@
-import Navbar from '../Layouts/Navbar'
+import Navbar from "../Layouts/Navbar";
 
 function Home() {
     return (
         <>
-            <div className="container">
-            <h1 className="title">Hello, Bootstrap with React!</h1>
-            <button className="btn btn-primary">Click Me!</button>
+            <div id="content" class="p-4 p-md-5 pt-5">
+                <h2 class="mb-4">Sidebar #02</h2>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.
+                </p>
             </div>
         </>
     );
 }
 
-Home.layout = page => <Navbar> {page} </Navbar>
+Home.layout = (page) => <Navbar> {page} </Navbar>;
 
 export default Home;

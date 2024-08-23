@@ -1,3 +1,19 @@
 .title {
     color: blue;
 }
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    border-radius: 30px;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+.container {
+}
