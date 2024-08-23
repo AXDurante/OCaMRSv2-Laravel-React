@@ -1,8 +1,8 @@
 export default function NavBar({ children }) {
     return (
-        <div className="d-flex" style={{ height: "100vh" }}>
+        <div className="wholepage  d-flex" style={{ height: "100vh" }}>
             <nav
-                className="sidebar rounded-right bg-dark text-light "
+                className="sidebar rounded-right text-light  "
                 style={{
                     width: "250px",
                     minWidth: "250px",
@@ -11,69 +11,53 @@ export default function NavBar({ children }) {
                 }}
             >
                 <div className="sidebar-header">
-                    <h4 className="text-light position-absolute top-0 start-50 translate-middle mt-5">
+                    <h4 className="text-black " id="textHeader">
                         LESO - ISC
                     </h4>
                 </div>
+                <div className="sidebar-user">
+                    <h3 className="user-interface">Client</h3>
+                    <h3 className="user-interface2">Interface</h3>
+                </div>
                 <ul className="nav flex-column pt-5">
                     <li className="nav-item active">
-                        <a className="nav-link text-light" href="#">
-                            Home
+                        <a className="nav-link " href="#">
+                            Open Request
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link text-light" href="#">
-                            Link
+                        <a className="nav-link " href="about">
+                            Manage Request
                         </a>
-                    </li>
-                    <li className="nav-item dropdown">
-                        <a
-                            className="nav-link dropdown-toggle text-light"
-                            href="#"
-                            id="sidebarDropdown"
-                            role="button"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                        >
-                            Dropdown
-                        </a>
-                        <div
-                            className="dropdown-menu"
-                            aria-labelledby="sidebarDropdown"
-                        >
-                            <a className="dropdown-item" href="#">
-                                Action
-                            </a>
-                            <a className="dropdown-item" href="#">
-                                Another action
-                            </a>
-                            <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" href="#">
-                                Something else here
-                            </a>
-                        </div>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link disabled text-light" href="#">
-                            Disabled
+                        <a className="nav-link  " href="#">
+                            Manage Profile
                         </a>
                     </li>
+                    <li className="nav-item">
+                        <a className="nav-link " href="#">
+                            Instrument List
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link  " href="#">
+                            Notification
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link  " href="#">
+                            Go Back
+                        </a>
+                    </li>
+                    <div className="logout">
+                        <li className="nav-item-logout">
+                            <button className="logout-btn" href="#">
+                                Log Out
+                            </button>
+                        </li>
+                    </div>
                 </ul>
-                <form className="form-inline mt-3">
-                    <input
-                        className="form-control mr-sm-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                    />
-                    <button
-                        className="btn btn-outline-success my-2 my-sm-0"
-                        type="submit"
-                    >
-                        Search
-                    </button>
-                </form>
             </nav>
             <main className="flex-fill p-3">{children}</main>
         </div>

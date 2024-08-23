@@ -1,5 +1,10 @@
-.title {
-    color: blue;
+
+
+* {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
 }
 
 .main-content {
@@ -8,3 +13,164 @@
 }
 .container {
 }
+/* sidebar */
+#textHeader {
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: auto;
+}
+.sidebar-header {
+    background-color: #ffd600;
+    padding-top: 70px;
+    padding-bottom: 150px;
+    border-top-right-radius: 15px;
+}
+.sidebar-user {
+    width: 50%;
+    margin: auto;
+    text-align: center; /* Center the text horizontally */
+}
+h3 {
+}
+.sidebar {
+    height: 100%; /* Ensure the sidebar takes up the full height of the viewport */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport height */
+    background-color: #202020;
+    position: fixed;
+    border-top-right-radius: 50%;
+}
+
+ul {
+}
+.user-interface,
+.user-interface2 {
+    color: #ffffff;
+    font-weight: 200;
+    display: inline-block; /* Ensures both elements stay on the same line */
+    margin: 0; /* Removes default margin */
+}
+.user-interface {
+    font-weight: 600;
+}
+
+.nav-link {
+    color: #ffffff; /* Default text color */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:active {
+    color: #ffd600; /* Hover, focus, and active color */
+    text-decoration: none; /* Remove underline */
+}
+
+.nav-item.active .nav-link,
+.nav-link.active {
+    color: #ffd600; /* Active link color */
+}
+@media (max-height: 600px) {
+    .sidebar-header {
+        padding-bottom: 50px; /* Adjust padding for smaller screens */
+    }
+    .sidebar-user {
+        margin-top: 10px;
+    }
+}
+.logout {
+    padding-top: 50px;
+}
+
+.nav-item-logout {
+    border-color: #fbc600;
+    border-radius: 15px;
+    width: 50%;
+    margin: auto;
+}
+
+.logout-btn {
+    color: #ffffff;
+    border: 2px solid #fbc600; /* Border stroke with specified color */
+    border-radius: 15px; /* Border radius */
+    padding: 10px 20px; /* Padding for the button */
+    background-color: transparent; /* Transparent background */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+.logout-btn:hover {
+    background-color: #202020; /* Hover background color */
+    color: #fbc600; /* Hover text color */
+}
+
+/* Main page */
+.forms-bg {
+    background-color: #f2f2f2;
+}
+input {
+    width: 600px;
+}
+/* Custom column widths /
+.custom-col-50 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.custom-col-25 {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+/ Optional: Ensure inputs take full width of the column */
+.w-100 {
+    width: 100%;
+}
+
+.jb-btn-submit {
+    background-color: #202020;
+    color: #fbc600;
+}
+
+/* Split the screen in half */
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+  /* Control the left side */
+  .left {
+    left: 0;
+    background-color: #111;
+  }
+  
+  /* Control the right side */
+  .right {
+    right: 0;
+    background-color: red;
+  }
+  
+  /* If you want the content centered horizontally and vertically */
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  /* Style the image inside the centered container, if needed */
+  .centered img {
+    width: 150px;
+    border-radius: 50%;
+  }
