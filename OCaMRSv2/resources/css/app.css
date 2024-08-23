@@ -1,5 +1,8 @@
-.title {
-    color: blue;
+* {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
 }
 
 .main-content {
@@ -7,4 +10,107 @@
     padding: 20px;
 }
 .container {
+}
+/* sidebar */
+#textHeader {
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: auto;
+}
+.sidebar-header {
+    background-color: #ffd600;
+    padding-top: 70px;
+    padding-bottom: 70px;
+    border-top-right-radius: 15px;
+}
+.sidebar-user {
+    width: 50%;
+    margin: auto;
+    text-align: center; /* Center the text horizontally */
+}
+h3 {
+}
+.sidebar {
+    height: 100%; /* Ensure the sidebar takes up the full height of the viewport */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport height */
+    background-color: #202020;
+    position: fixed;
+    border-top-right-radius: 50%;
+}
+
+ul {
+    justify-content: center;
+    align-items: center;
+}
+.user-interface,
+.user-interface2 {
+    color: #ffffff;
+    font-weight: 200;
+    display: inline-block; /* Ensures both elements stay on the same line */
+    margin: 0; /* Removes default margin */
+}
+.user-interface {
+    font-weight: 600;
+}
+
+.nav-link {
+    color: #ffffff; /* Default text color */
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:active {
+    color: #ffd600; /* Hover, focus, and active color */
+    text-decoration: none; /* Remove underline */
+}
+
+.nav-item.active .nav-link,
+.nav-link.active {
+    color: #ffd600; /* Active link color */
+}
+@media (max-height: 600px) {
+    .sidebar-header {
+        padding-bottom: 50px; /* Adjust padding for smaller screens */
+    }
+    .sidebar-user {
+        margin-top: 10px;
+    }
+}
+.nav-item-logout {
+    padding-top: 150px;
+
+    width: 200px;
+    margin: auto;
+}
+
+/* Main page */
+.forms-bg {
+    background-color: #f2f2f2;
+}
+input {
+    width: 600px;
+}
+/* Custom column widths /
+.custom-col-50 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.custom-col-25 {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+/ Optional: Ensure inputs take full width of the column */
+.w-100 {
+    width: 100%;
+}
+
+.jb-btn-submit {
+    background-color: #202020;
+    color: #fbc600;
 }
