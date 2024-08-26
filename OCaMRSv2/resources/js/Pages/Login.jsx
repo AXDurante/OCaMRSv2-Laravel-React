@@ -26,12 +26,12 @@ export default function Login({ status, canResetPassword }) {
             <div class="split left">
                 <div class="centered">
                 
-                    <h2 class="text-white">Welcome</h2>
-                    <p class="text-white"></p>
+                    
                 </div>
                 </div>
-
-                <div class="split right">
+                
+                <div class="split2 right2">  </div>
+                <div class="split3 right">
                 <div class="centered">
                 
                 <form onSubmit={submit}>

@@ -146,18 +146,58 @@ input {
     top: 0;
     overflow-x: hidden;
     padding-top: 20px;
+    
+  }
+  
+  .split2 {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 2!important;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 1px;
+    border-radius: 0.90vw;
+  }
+
+    
+  .split3 {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 3!important;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+   
   }
   
   /* Control the left side */
   .left {
     left: 0;
-    background-color: #111;
+    background: url("/storage/app/loginBG.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+  
+  }
+
+  .leftIMG {
+   
   }
   
   /* Control the right side */
+  .right2 {
+    right: 0.50vw;
+    background-color: rgb(255, 255, 255);
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.23);    
+  }
+
   .right {
     right: 0;
-    background-color: red;
+    z-index: 3!important;
+    
+    
   }
   
   /* If you want the content centered horizontally and vertically */
