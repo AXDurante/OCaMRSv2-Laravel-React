@@ -147,7 +147,7 @@ input {
 
 .split2 {
     height: 100%;
-    width: 52%;
+    width: 50.9%;
     position: fixed;
     z-index: 2 !important;
     top: 0;
@@ -193,12 +193,93 @@ input {
 }
 
 .right2 {
-    right: 0vw;
+    right: -0.3vw;
     background-color: rgb(255, 255, 255);
     box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.3),
         -6px 0 20px 0 rgba(0, 0, 0, 0.23);
 
     /*box-shadow: -5px 0px 5px rgb(134, 134, 134);*/
+}
+
+.theButton {
+    height: 4.2vw;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0.3vw;
+    background-color: #fbc600;
+    text-align: center;
+    font-size: 1.7vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.7px;
+    padding-top: 0.65vw;
+    padding-bottom: 0.65vw;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Ensure button takes full width of its container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.theButton::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 0, 0.7),
+        rgba(255, 165, 0, 0.7)
+    );
+    transform: rotate(30deg);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    z-index: 1;
+}
+
+.theButton:hover::before {
+    animation: shine 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Slower with realistic acceleration */
+}
+
+@keyframes shine {
+    0% {
+        top: -100%;
+        left: -100%;
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        left: 100%;
+        opacity: 0;
+    }
+}
+
+.theButton .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    transform: scale(0);
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.theButton span {
+    position: relative;
+    z-index: 3;
 }
 
 /* If you want the content centered horizontally and vertically */
@@ -210,10 +291,56 @@ input {
     text-align: center;
 }
 
+.checkbox-container {
+    display: flex;
+    justify-content: space-between; /* This will push the two divs to opposite sides */
+    align-items: center; /* This will vertically align the content */
+    width: 100%; /* Ensure it takes up the full width of the parent container */
+}
+
+.checkbox-container .remember-me-text {
+    margin-left: 8px; /* Add some space between the checkbox and text */
+    font-size: 14px;
+    color: #666; /* Adjust color as needed */
+}
+
+.centered2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+input[type="checkbox"] {
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
 /* Style the image inside the centered container, if needed */
 .centered img {
     width: 150px;
     border-radius: 50%;
+}
+
+.titleLogin {
+    font-weight: 600;
+}
+
+.titleLabel {
+    font-weight: 600;
+    font-size: 1.5vw;
+}
+
+.inputText3 {
+    background-color: #f2f2f2 !important;
+    border: 1px solid #fff !important;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+    height: 3vw !important;
+    padding: 1vw !important;
+    font-size: 1.5vw !important;
+    color: #7a7a7a !important;
 }
 
 /* trach req */
