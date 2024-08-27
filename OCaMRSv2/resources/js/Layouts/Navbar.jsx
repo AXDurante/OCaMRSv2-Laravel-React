@@ -1,17 +1,19 @@
+import { Link } from "@inertiajs/react";
+
 export default function NavBar({ children }) {
     return (
-        <div className="wholepage  d-flex" style={{ height: "100vh" }}>
+        <div className="wholepage d-flex" style={{ height: "100vh" }}>
             <nav
-                className="sidebar rounded-right text-light  "
+                className="sidebar rounded-right text-light"
                 style={{
                     width: "250px",
                     minWidth: "250px",
-                    borderTopRightRadius: "15px",
+                    borderTopRightRadius: "20px",
                     borderBottomRightRadius: "15px",
                 }}
             >
                 <div className="sidebar-header">
-                    <h4 className="text-black " id="textHeader">
+                    <h4 className="text-black" id="textHeader">
                         LESO - ISC
                     </h4>
                 </div>
@@ -20,41 +22,46 @@ export default function NavBar({ children }) {
                     <h3 className="user-interface2">Interface</h3>
                 </div>
                 <ul className="nav flex-column pt-5">
-                    <li className="nav-item active">
-                        <a className="nav-link " href="#">
+                    <li className="nav-item">
+                        <a className="nav-link" href="home">
                             Open Request
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link " href="about">
-                            Manage Request
+                        <a className="nav-link" href="trackreq">
+                            Track Request
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link  " href="#">
+                        <a className="nav-link" href="#">
                             Manage Profile
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link " href="#">
+                        <a className="nav-link" href="#">
                             Instrument List
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link  " href="#">
+                        <a className="nav-link" href="#">
                             Notification
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link  " href="#">
+                        <a className="nav-link" href="#">
                             Go Back
                         </a>
                     </li>
                     <div className="logout">
                         <li className="nav-item-logout">
-                            <button className="logout-btn" href="#">
+                            <Link
+                                href={route("logout")}
+                                method="post"
+                                as="button"
+                                className="logout-btn"
+                            >
                                 Log Out
-                            </button>
+                            </Link>
                         </li>
                     </div>
                 </ul>

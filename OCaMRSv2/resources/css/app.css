@@ -21,9 +21,10 @@
     margin: auto;
 }
 .sidebar-header {
-    background-color: #ffd600;
+    background-color: #ffd500;
     padding-top: 70px;
     padding-bottom: 150px;
+    width: 100%;
     border-top-right-radius: 15px;
 }
 .sidebar-user {
@@ -34,11 +35,10 @@
 h3 {
 }
 .sidebar {
-    height: 100%; /* Ensure the sidebar takes up the full height of the viewport */
+    height: 100vh; /* Ensure the sidebar takes up the full height of the viewport */
     overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport height */
     background-color: #202020;
     position: fixed;
-    border-top-right-radius: 50%;
 }
 
 ul {
@@ -143,34 +143,28 @@ input {
     z-index: 1;
     top: 0;
     overflow-x: hidden;
-    
-    
-  }
+}
 
-  .split2 {
+.split2 {
     height: 100%;
     width: 52%;
     position: fixed;
-    z-index: 2!important;
+    z-index: 2 !important;
     top: 0;
     overflow-x: hidden;
-   
-    border-radius: 0.60vw;
-  }
 
-  .split3 {
+    border-radius: 0.6vw;
+}
+
+.split3 {
     height: 100%;
     width: 50%;
     position: fixed;
-    z-index: 3!important;
+    z-index: 3 !important;
     top: 0;
     overflow-x: hidden;
     padding-top: 20px;
-   
-  }
-
-
-
+}
 
 /* Control the left side */
 .left {
@@ -195,23 +189,17 @@ input {
 /* Control the right side */
 .right {
     right: 0;
-    z-index: 3!important;
-    
-    
-  }
-
+    z-index: 3 !important;
+}
 
 .right2 {
     right: 0vw;
     background-color: rgb(255, 255, 255);
-    box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.3), -6px 0 20px 0 rgba(0, 0, 0, 0.23);
-    
-     /*box-shadow: -5px 0px 5px rgb(134, 134, 134);*/
-      
+    box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.3),
+        -6px 0 20px 0 rgba(0, 0, 0, 0.23);
 
-
-  }
-
+    /*box-shadow: -5px 0px 5px rgb(134, 134, 134);*/
+}
 
 /* If you want the content centered horizontally and vertically */
 .centered {
@@ -226,4 +214,27 @@ input {
 .centered img {
     width: 150px;
     border-radius: 50%;
+}
+
+/* trach req */
+#search-button {
+    background-color: #fbc600 !important;
+    border-color: #f2f2f2;
+    font-weight: 500;
+}
+#search-button:hover {
+    background-color: #ffd745 !important;
+}
+#cardTrackReq {
+    background-color: #f5f5f5 !important;
+}
+#btnFeed {
+    background-color: #202020;
+}
+#btnSee {
+    border-color: #f2f2f2;
+    background-color: #fbc600 !important;
+}
+#btnSee:hover {
+    background-color: #ffd745 !important;
 }

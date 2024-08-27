@@ -17,6 +17,9 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return Inertia::render('Home');
 });
+Route::get('/trackreq', function () {
+    return Inertia::render('TrackReq');
+});
 
 Route::get('/original', function () {
     return Inertia::render('Welcome', [
@@ -32,7 +35,7 @@ Route::get('/about', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
