@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+// Test
+Route::resource('post', PostController::class);
 
 Route::get('/', function () {
     return Inertia::render('Login', [
@@ -12,6 +16,10 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+});
+
+Route::get('/forms', function () {
+    return Inertia::render('Forms');
 });
 
 Route::get('/home', function () {
