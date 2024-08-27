@@ -153,9 +153,8 @@ input {
     top: 0;
     overflow-x: hidden;
 
-   
-    border-radius: 0.60vw;
-  }
+    border-radius: 0.6vw;
+}
 
 .split3 {
     height: 100%;
@@ -194,23 +193,21 @@ input {
 }
 
 .right2 {
-    right: -0.30vw;
+    right: -0.3vw;
     background-color: rgb(255, 255, 255);
-    box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.3), -6px 0 20px 0 rgba(0, 0, 0, 0.23);
-    
-     /*box-shadow: -5px 0px 5px rgb(134, 134, 134);*/
-      
+    box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.3),
+        -6px 0 20px 0 rgba(0, 0, 0, 0.23);
 
+    /*box-shadow: -5px 0px 5px rgb(134, 134, 134);*/
+}
 
-  }
-
-  .theButton {
+.theButton {
     height: 4.2vw;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 0.30vw;
-    background-color: #FBC600;
+    border-radius: 0.3vw;
+    background-color: #fbc600;
     text-align: center;
-    font-size: 1.70vw;
+    font-size: 1.7vw;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -230,13 +227,17 @@ input {
 }
 
 .theButton::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -100%;
     left: -100%;
     width: 300%;
     height: 300%;
-    background: linear-gradient(45deg, rgba(255, 255, 0, 0.7), rgba(255, 165, 0, 0.7));
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 0, 0.7),
+        rgba(255, 165, 0, 0.7)
+    );
     transform: rotate(30deg);
     transition: opacity 0.3s ease;
     opacity: 0;
@@ -280,11 +281,6 @@ input {
     position: relative;
     z-index: 3;
 }
-    box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.3),
-        -6px 0 20px 0 rgba(0, 0, 0, 0.23);
-
-    /*box-shadow: -5px 0px 5px rgb(134, 134, 134);*/
-}
 
 /* If you want the content centered horizontally and vertically */
 .centered {
@@ -294,7 +290,6 @@ input {
     transform: translate(-50%, -50%);
     text-align: center;
 }
-
 
 .checkbox-container {
     display: flex;
@@ -314,7 +309,6 @@ input {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-   
 }
 
 input[type="checkbox"] {
@@ -353,7 +347,6 @@ input[type="checkbox"] {
     background-color: #ffd745 !important;
 }
 
-
 .titleLogin {
     font-weight: 600;
 }
@@ -364,13 +357,11 @@ input[type="checkbox"] {
 }
 
 .inputText3 {
-    background-color: #F2F2F2!important;
-    border: 1px solid #FFF!important;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)!important;
-    height: 3vw!important;
-    padding: 1vw!important;
-    font-size: 1.5vw!important;
-    color: #7A7A7A!important;
-    
-
+    background-color: #f2f2f2 !important;
+    border: 1px solid #fff !important;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+    height: 3vw !important;
+    padding: 1vw !important;
+    font-size: 1.5vw !important;
+    color: #7a7a7a !important;
 }
