@@ -20,7 +20,9 @@ Route::get('/home', function () {
 Route::get('/trackreq', function () {
     return Inertia::render('TrackReq');
 });
-
+Route::get('/manage profile', function () {
+    return Inertia::render('Manage Profile');
+});
 Route::get('/original', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),

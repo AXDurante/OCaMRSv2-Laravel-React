@@ -107,6 +107,13 @@ ul {
     color: #fbc600; /* Hover text color */
 }
 
+.icon-bold {
+    font-size: 1.5rem; /* Increase icon size to make it appear bolder */
+    filter: drop-shadow(
+        0 0 2px black
+    ); /* Adds a subtle shadow for a bolder look */
+}
+
 /* Main page */
 .forms-bg {
     background-color: #f2f2f2;
@@ -126,6 +133,15 @@ input {
 }
 
 / Optional: Ensure inputs take full width of the column */
+.custom-col-50 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.custom-col-25 {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
 .w-100 {
     width: 100%;
 }
@@ -133,6 +149,16 @@ input {
 .jb-btn-submit {
     background-color: #202020;
     color: #fbc600;
+    padding: 0.7em;
+    border-radius: 5px;
+}
+.jb-btn-add {
+    background-color: #fbc600;
+    color: #202020;
+    padding: 0.5em;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
 }
 
 /* Split the screen in half */
@@ -364,4 +390,26 @@ input[type="checkbox"] {
 }
 #btnSee:hover {
     background-color: #ffd745 !important;
+}
+
+/* Manage Profile css */
+.profile-bg {
+    background-color: #202020;
+}
+.large-icon {
+    font-size: 9rem;
+}
+.pt-6-custom {
+    padding-top: 6rem; /* Adjust the value as needed */
+}
+
+.pb-6-custom {
+    padding-bottom: 6rem; /* Adjust the value as needed */
+}
+.pt-7 {
+    padding-top: 7rem; /* Adjust the value as needed */
+}
+
+.pb-7 {
+    padding-bottom: 7rem; /* Adjust the value as needed */
 }

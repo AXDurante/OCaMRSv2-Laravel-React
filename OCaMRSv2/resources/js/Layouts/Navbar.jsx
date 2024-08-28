@@ -24,31 +24,35 @@ export default function NavBar({ children }) {
                 <ul className="nav flex-column pt-5">
                     <li className="nav-item">
                         <a className="nav-link" href="home">
-                            Open Request
+                            <i className="bi bi-file-earmark-text me-2"></i>Open
+                            Request
                         </a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="trackreq">
-                            Track Request
+                            <i className="bi bi-search me-2"></i>Track Request
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="manage profile">
+                            <i className="bi bi-person-fill me-2"></i>Manage
+                            Profile
                         </a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">
-                            Manage Profile
+                            <i className="bi bi-list me-2"></i>Instrument List
                         </a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">
-                            Instrument List
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">
+                            <i className="bi bi-bell-fill me-2 "></i>
                             Notification
                         </a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">
+                            <i className="bi bi-arrow-left me-2 icon-bold"></i>
                             Go Back
                         </a>
                     </li>
