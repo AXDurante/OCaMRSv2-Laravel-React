@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\JobOrderController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+// Job Order Route
+Route::resource('/jobOrder', JobOrderController::class);
 
 Route::get('/', function () {
     return Inertia::render('Login', [
@@ -17,12 +21,11 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return Inertia::render('Home');
 });
-Route::get('/trackreq', function () {
-    return Inertia::render('TrackReq');
-});
+
 Route::get('/manage profile', function () {
     return Inertia::render('Manage Profile');
 });
+
 Route::get('/original', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
