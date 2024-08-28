@@ -23,14 +23,14 @@ export default function NavBar({ children }) {
                 </div>
                 <ul className="nav flex-column pt-5">
                     <li className="nav-item">
-                        <a className="nav-link" href="home">
-                            Open Request
-                        </a>
+                        <Link href="/jobOrder/create">
+                            Create Request
+                        </Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="trackreq">
+                        <Link href="/jobOrder">
                             Track Request
-                        </a>
+                        </Link>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">
