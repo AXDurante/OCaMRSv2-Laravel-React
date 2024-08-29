@@ -26,6 +26,10 @@ Route::get('/manage profile', function () {
     return Inertia::render('Manage Profile');
 });
 
+Route::get('/test', function () {
+    return Inertia::render('VerifyEmail2');
+});
+
 Route::get('/original', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
