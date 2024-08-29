@@ -1,18 +1,34 @@
 import Navbar from "../../Layouts/Navbar";
+import CreateInstrument from "./CreateInstrument";
+import { useState } from "react";
 
 function CreateOrder({ jobOrder }) {
-    console.log(jobOrder)
+    const [instruments, setInstruments] = useState([{ id: 0 }]);
+
+    const addInstrument = () => {
+        setInstruments([
+            ...instruments,
+            { id: instruments.length }
+        ]);
+    };
+
+    const deleteInstrument = (id) => {
+        setInstruments(instruments.filter(instrument => instrument.id !== id));
+    };
+
     return (
         <>
             <div className="d-flex">
                 <div id="content" className="main-content flex-fill p-3">
                     <div>
                         <div>
-                            <h1 class="d-inline">Job Request | </h1>
-                            <h1 class="d-inline fw-light">Open Request</h1>
+                            <h1 className="d-inline">Job Request | </h1>
+                            <h1 className="d-inline fw-light">Open Request</h1>
                             <hr />
                         </div>
-                        <div className="mt3">
+
+                        {/* Job Order */}
+                        <div className="mt-3">
                             <h4>Information</h4>
                             <div className="row forms-bg p-3">
                                 <div className="col d-flex flex-column align-items-center p-3">
@@ -63,90 +79,33 @@ function CreateOrder({ jobOrder }) {
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <div className="">
-                            <h4 className="mt-4">Item No.1</h4>
-                            <div className="row forms-bg p-3">
-                                <div className="row forms-bg p-3">
-                                    <div className="col-12 col-md-5 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Instrument
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                        />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Model
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                        />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Image Attachment
-                                        </h6>
-                                        <button className="btn btn-secondary w-50">
-                                            + Insert Image
-                                        </button>
-                                    </div>
-
-                                    <div className="col-12 col-md-3 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Quantity
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-50 mb-2 justify-content-start rounded"
-                                        />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Manufacturer
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                        />
-                                    </div>
-
-                                    <div className="col-12 col-md-4 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start ">
-                                            Instrument Serial No
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 fw-bold mb-2 rounded"
-                                        />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Property
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                        />
-                                    </div>
-
-                                    <div className="col-12 d-flex flex-row-reverse">
-                                        <button className="btn btn-danger">
-                                            delete
-                                        </button>
-                                    </div>
+                        {/* Instruments Section */}
+                        <div>
+                            {instruments.map((instrument) => (
+                                <div key={instrument.id} className="mb-3">
+                                    <CreateInstrument 
+                                        id={instrument.id}
+                                        deleteInstrument={deleteInstrument}
+                                    />
                                 </div>
-                            </div>
-                            <button className="jb-btn-add mt-3 mb-2">
+                            ))}
+                        </div>
+
+                        <div>
+                            <button className="jb-btn-submit w-100 mt-3">
+                                Submit Job Order
+                            </button>
+                            <button className="jb-btn-add mt-3 mb-2" onClick={addInstrument}>
                                 Add More Instrument
                             </button>
                         </div>
-                        <hr />
-                        <button className="jb-btn-submit w-100 mt-3">
-                            Submit Job Order
-                        </button>
+
                     </div>
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 CreateOrder.layout = (page) => <Navbar>{page}</Navbar>;
