@@ -3,8 +3,6 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import TextInput2 from "@/Components/TextInput2";
-import LoginButton from "@/Components/LoginButton";
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
@@ -24,22 +22,14 @@ export default function Register() {
     };
 
     return (
-        <div>
-        <div class="split left">
-            <div class="centered"></div>
-            <div class="half login-imageHolder"></div>
-        </div>
+        <GuestLayout>
+            <Head title="Register" />
 
-        <div class="split2 right2">  </div>
-        <div class="split3 right">
-
-            <div class="centered2">
-                <form onSubmit={submit}>
+            <form onSubmit={submit}>
                 <div>
-                <h1 className="text-center titleLogin mb-3">Register</h1>
                     <InputLabel htmlFor="name" value="Name" />
 
-                    <TextInput2
+                    <TextInput
                         id="name"
                         name="name"
                         value={data.name}
@@ -50,14 +40,13 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.name} className="mt-2 text-danger" />
+                    <InputError message={errors.name} className="mt-2" />
                 </div>
-
 
                 <div className="mt-4">
                     <InputLabel htmlFor="email" value="Email" />
 
-                    <TextInput2
+                    <TextInput
                         id="email"
                         type="email"
                         name="email"
@@ -68,13 +57,13 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2 text-danger" />
+                    <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
                     <InputLabel htmlFor="password" value="Password" />
 
-                    <TextInput2
+                    <TextInput
                         id="password"
                         type="password"
                         name="password"
@@ -85,13 +74,13 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.password} className="mt-2 text-danger" />
+                    <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
                     <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
 
-                    <TextInput2
+                    <TextInput
                         id="password_confirmation"
                         type="password"
                         name="password_confirmation"
@@ -102,50 +91,22 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.password_confirmation} className="mt-2 text-danger" />
+                    <InputError message={errors.password_confirmation} className="mt-2" />
                 </div>
 
-            
-                        
-                    <div className="checkbox-container mt-3 mb-4">
-                        <div className="">
-                            {/*
-                                <Checkbox
-                                name="remember"
-                                checked={data.remember}
-                                onChange={(e) => setData("remember", e.target.checked)}
-                            />
-                            <span className="remember-me-text">Remember me</span>
-                            */}
+                <div className="flex items-center justify-end mt-4">
+                    <Link
+                        href={route('login')}
+                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        Already registered?
+                    </Link>
 
-                           
-                            
-                        </div>
-
-                        <div className="">
-                       
-                      
-                        </div>
-                       
-                       
-                    </div>
-
-                    
-                        
-                           
-                     
-                            <LoginButton classname="w-100" disabled={processing}>
-                                Register
-                        </LoginButton>    
-                  
-                       
-                            
-                       
-                      
-                   
-                </form>
-            </div>
-        </div>
-    </div>
+                    <PrimaryButton className="ms-4" disabled={processing}>
+                        Register
+                    </PrimaryButton>
+                </div>
+            </form>
+        </GuestLayout>
     );
 }
