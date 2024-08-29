@@ -24,7 +24,7 @@ export default function NavBar({ children }) {
                 <ul className="nav flex-column pt-5">
                     <li className="nav-item">
                         <Link href="/jobOrder/create">
-                            <a className="nav-link" href="home">
+                            <a className="nav-link">
                                 <i className="bi bi-file-earmark-text me-2"></i>Open
                                 Request
                             </a>
@@ -38,12 +38,12 @@ export default function NavBar({ children }) {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        
-                        <a className="nav-link" href="manage profile">
-                            <i className="bi bi-person-fill me-2"></i>Manage
-                            Profile
-                        </a>
-
+                        <Link href="/manage profile">
+                            <a className="nav-link">
+                                <i className="bi bi-person-fill me-2"></i>Manage
+                                Profile
+                            </a>
+                        </Link>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">
