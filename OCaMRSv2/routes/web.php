@@ -17,6 +17,11 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return Inertia::render('Home');
 });
+
+Route::get('/test', function () {
+    return Inertia::render('VerifyEmail2');
+});
+
 Route::get('/trackreq', function () {
     return Inertia::render('TrackReq');
 });
