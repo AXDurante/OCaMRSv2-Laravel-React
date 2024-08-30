@@ -26,6 +26,18 @@ Route::get('/manage profile', function () {
     return Inertia::render('Manage Profile');
 });
 
+Route::get('/manage job request', function () {
+    return Inertia::render('Manage Job Request');
+});
+
+Route::get('/show job request', function () {
+    return Inertia::render('Show Job Request');
+});
+
+Route::get('/account handler', function () {
+    return Inertia::render('Account Handler');
+});
+
 Route::get('/test', function () {
     return Inertia::render('VerifyEmail2');
 });
