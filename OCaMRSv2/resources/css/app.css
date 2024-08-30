@@ -28,7 +28,7 @@
     border-top-right-radius: 15px;
 }
 .sidebar-user {
-    width: 50%;
+    padding-top: 1vw;
     margin: auto;
     text-align: center; /* Center the text horizontally */
 }
@@ -46,12 +46,11 @@ ul {
 .user-interface,
 .user-interface2 {
     color: #ffffff;
-    font-weight: 200;
+    font-weight: 100;
     display: inline-block; /* Ensures both elements stay on the same line */
-    margin: 0; /* Removes default margin */
 }
 .user-interface {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .nav-link {

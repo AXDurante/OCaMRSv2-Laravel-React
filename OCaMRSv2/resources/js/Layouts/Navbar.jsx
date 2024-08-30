@@ -17,23 +17,24 @@ export default function NavBar({ children }) {
                         LESO - ISC
                     </h4>
                 </div>
-                <div className="sidebar-user">
-                    <h3 className="user-interface">Client</h3>
-                    <h3 className="user-interface2">Interface</h3>
+                <div className="sidebar-user ">
+                    <h4 className="user-interface">Client&nbsp;</h4>
+                    <h4 className="user-interface2"> Interface</h4>
                 </div>
-                <ul className="nav flex-column pt-5">
+                <ul className="nav flex-column pt-4">
                     <li className="nav-item">
                         <Link href="/jobOrder/create">
                             <a className="nav-link">
-                                <i className="bi bi-file-earmark-text me-2"></i>Open
-                                Request
+                                <i className="bi bi-file-earmark-text me-2"></i>
+                                Open Request
                             </a>
                         </Link>
                     </li>
                     <li className="nav-item">
                         <Link href="/jobOrder">
                             <a className="nav-link">
-                                <i className="bi bi-search me-2"></i>Track Request
+                                <i className="bi bi-search me-2"></i>Track
+                                Request
                             </a>
                         </Link>
                     </li>

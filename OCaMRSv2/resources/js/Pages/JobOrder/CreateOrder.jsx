@@ -1,7 +1,7 @@
 import Navbar from "../../Layouts/Navbar";
 
 function CreateOrder({ jobOrder }) {
-    console.log(jobOrder)
+    console.log(jobOrder);
     return (
         <>
             <div className="d-flex">
@@ -146,7 +146,7 @@ function CreateOrder({ jobOrder }) {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 CreateOrder.layout = (page) => <Navbar>{page}</Navbar>;
