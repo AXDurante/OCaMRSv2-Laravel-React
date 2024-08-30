@@ -1,6 +1,7 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
+import LoginButton from '@/Components/LoginButton';
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm({});
@@ -12,8 +13,8 @@ export default function VerifyEmail({ status }) {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Email Verification" />
+        <div className='centered'>
+            <h1 className="mb-4">Email Verification</h1>
 
             <div className="mb-4 text-sm text-gray-600">
                 Thanks for signing up! Before getting started, could you verify your email address by clicking on the
@@ -27,19 +28,26 @@ export default function VerifyEmail({ status }) {
             )}
 
             <form onSubmit={submit}>
-                <div className="mt-4 flex items-center justify-between">
-                    <PrimaryButton disabled={processing}>Resend Verification Email</PrimaryButton>
+                <div className="mt-4 flex items-center justify-between mb-4">
+                    <LoginButton disabled={processing}>Resend Verification Email</LoginButton>
 
-                    <Link
-                        href={route('logout')}
-                        method="post"
-                        as="button"
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
+                  
+                </div>
+                <div>
+                    <button type="button" className="btn btn btn-outline-dark w-100 h-50"  href={route('logout') }
+                            method="post"
+                            as="button">
                         Log Out
-                    </Link>
+                    </button>
+                    {
+                        /*
+
+                        
+                        */
+                    }
+                   
                 </div>
             </form>
-        </GuestLayout>
+        </div>
     );
 }
