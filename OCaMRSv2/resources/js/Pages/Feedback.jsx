@@ -61,7 +61,7 @@ function Feedback() {
                                     <div className="row">
                                         <div className="form-group d-flex align-items-start mb-3">
                                             <label className="form-label fw-bold mb-0 me-3 w-25">
-                                                Job ID
+                                                Comment
                                             </label>
                                             <textarea
                                                 class="form-control"
