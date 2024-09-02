@@ -16,11 +16,9 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('loginHome');
 
-Route::get('/home', function () {
-    return Inertia::render('Home');
-});
+
 
 Route::get('/manage profile', function () {
     return Inertia::render('Manage Profile');
