@@ -55,7 +55,6 @@ function Home() {
                                 </div>
                             </div>
                         </div>
-
                         <h3 className="mt-10 mb-3 fw-bold">Clients Accounts</h3>
                         <div className="row forms-bg p-5">
                             <div className="col-12">
@@ -165,6 +164,75 @@ function Home() {
                                     <div className="col-6 col-md-2 account-wrapper">
                                         <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
                                             <i className="bi bi-person-fill text-primary"></i>
+                                        </div>
+                                        <h5 className="account-name">
+                                            John Doe
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-10 mb-3 ">
+                            <h3 className="d-inline fw-bold">
+                                Clients Accounts
+                            </h3>
+                            <h3 className="d-inline fw-light">
+                                (For Approval)
+                            </h3>
+                        </div>
+
+                        <div className="row forms-bg p-5">
+                            <div className="col-12">
+                                <div className="row">
+                                    <div className="col-6 col-md-2 account-wrapper">
+                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
+                                            <i className="bi bi-person-fill text-dark"></i>
+                                        </div>
+                                        <h5 className="account-name">
+                                            Nino Anasco
+                                        </h5>
+                                    </div>
+
+                                    <div className="col-6 col-md-2 account-wrapper">
+                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
+                                            <i className="bi bi-person-fill text-dark"></i>
+                                        </div>
+                                        <h5 className="account-name">
+                                            Add Account
+                                        </h5>
+                                    </div>
+
+                                    <div className="col-6 col-md-2 account-wrapper">
+                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
+                                            <i className="bi bi-person-fill text-dark"></i>
+                                        </div>
+                                        <h5 className="account-name">
+                                            John Doe
+                                        </h5>
+                                    </div>
+
+                                    <div className="col-6 col-md-2 account-wrapper">
+                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
+                                            <i className="bi bi-person-fill text-dark"></i>
+                                        </div>
+                                        <h5 className="account-name">
+                                            John Doe
+                                        </h5>
+                                    </div>
+
+                                    <div className="col-6 col-md-2 account-wrapper">
+                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
+                                            <i className="bi bi-person-fill text-dark"></i>
+                                        </div>
+                                        <h5 className="account-name">
+                                            John Doe
+                                        </h5>
+                                    </div>
+
+                                    <div className="col-6 col-md-2 account-wrapper">
+                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
+                                            <i className="bi bi-person-fill text-dark"></i>
                                         </div>
                                         <h5 className="account-name">
                                             John Doe
