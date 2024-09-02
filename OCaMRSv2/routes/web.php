@@ -34,8 +34,19 @@ Route::get('/show job request', function () {
     return Inertia::render('Show Job Request');
 });
 
-Route::get('/account handler', function () {
-    return Inertia::render('Account Handler');
+
+// ADMIN
+Route::get('/admin/account-handler', function () {
+    return Inertia::render('Admin/AccountHandler');
+});
+Route::get('/admin/approve-profile', function () {
+    return Inertia::render('Admin/ApproveProfile');
+});
+Route::get('/admin/remove-profile', function () {
+    return Inertia::render('Admin/RemoveProfile');
+});
+Route::get('/admin/manage-profile', function () {
+    return Inertia::render('Admin/ManageProfile');
 });
 
 Route::get('/test', function () {
