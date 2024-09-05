@@ -6,7 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// Job Order Route
+// Job Order Route - for MVC
 Route::resource('/jobOrder', JobOrderController::class);
 
 Route::get('/', function () {
@@ -27,7 +27,7 @@ Route::get('/manage profile', function () {
 });
 
 Route::get('/test', function () {
-    return Inertia::render('VerifyEmail2');
+    return Inertia::render('Test/VerifyEmail2');
 });
 
 Route::get('/original', function () {
