@@ -3,6 +3,8 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import TextInput2 from '@/Components/TextInput2';
+import LoginButton from '@/Components/LoginButton';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function ResetPassword({ token, email }) {
@@ -22,65 +24,102 @@ export default function ResetPassword({ token, email }) {
     };
 
     return (
-        <GuestLayout>
-            <Head title="Reset Password" />
+        <div>
+        <div class="split left">
+            <div class="centered"></div>
+            <div class="half login-imageHolder"></div>
+        </div>
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+        <div class="split2 right2">  </div>
+        <div class="split3 right">
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
+            <div class="centered2">
+                <form onSubmit={submit}>
+                    <div>
+                        <h1 className="text-center titleLogin mb-5">Reset Password</h1>
+                        <InputLabel htmlFor="email" value="Email" />
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                        <TextInput2
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            
+                            autoComplete="email"
+                            isFocused={true}
+                            disabled={true}
+                            onChange={(e) =>
+                                setData("email", e.target.value)
+                            }
+                        />
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                        <InputError
+                            message={errors.email}
+                            className="mt-2 text-danger"
+                        />
+                    </div>
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        isFocused={true}
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
+                    <div className="mt-4">
+                        <InputLabel htmlFor="password" value="Password" />
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                        <TextInput2
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            
+                            autoComplete="current-password"
+                            onChange={(e) =>
+                                setData("password", e.target.value)
+                            }
+                        />
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                        <InputError
+                            message={errors.password}
+                            className="mt-2 text-danger"
+                        />
+                    </div>
 
-                    <TextInput
-                        type="password"
-                        id="password_confirmation"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password_confirmation', e.target.value)}
-                    />
+                    <div className="mt-4">
+                        <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
 
-                    <InputError message={errors.password_confirmation} className="mt-2" />
-                </div>
+                        <TextInput2
+                            id="password_confirmation"
+                            type="password"
+                            name="password_confirmation"
+                            value={data.password_confirmation}
+                            
+                            autoComplete="new-password"
+                            onChange={(e) =>
+                                setData("password_confirmation", e.target.value)
+                            }
+                        />
 
-                <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+                        <InputError
+                            message={errors.password_confirmation}
+                            className="mt-2 text-danger"
+                        />
+                    </div>
+
+            
+                        
+
+
+        
+                           
+                        <div className="pt-3">
+                            <LoginButton classname="w-100">
+                                    Reset Password
+                            </LoginButton>    
+                        </div>
+                       
+                            
+                       
+                      
+                   
+                </form>
+            </div>
+        </div>
+    </div>
     );
 }

@@ -34,11 +34,11 @@ export default function VerifyEmail({ status }) {
                   
                 </div>
                 <div>
-                    <button type="button" className="btn btn btn-outline-dark w-100 h-50"  href={route('logout') }
+                    <Link type="button" className="btn btn btn-outline-dark w-100 h-50"  href={route('logout') }
                             method="post"
                             as="button">
                         Log Out
-                    </button>
+                    </Link>
                     {
                         /*
 

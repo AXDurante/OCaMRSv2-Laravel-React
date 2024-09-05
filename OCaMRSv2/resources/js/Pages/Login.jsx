@@ -10,7 +10,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: "",
+        employeeID: "",
         password: "",
         remember: false,
     });
@@ -32,28 +32,28 @@ export default function Login({ status, canResetPassword }) {
 
             <div class="split2 right2">  </div>
             <div class="split3 right">
-
+            {status && <div className="mb-4 font-medium text-green">{status}</div>}
                 <div class="centered2">
                     <form onSubmit={submit}>
                         <div>
                             <h1 className="text-center titleLogin mb-5">Login</h1>
-                            <InputLabel htmlFor="email" value="Employee ID" />
+                            <InputLabel htmlFor="employeeID" value="Employee ID" />
 
                             <TextInput2
-                                id="email"
-                                type="email"
-                                name="email"
-                                value={data.email}
+                                id="employeeID"
+                                type="employeeID"
+                                name="employeeID"
+                                value={data.employeeID}
                                 
                                 autoComplete="username"
                                 isFocused={true}
                                 onChange={(e) =>
-                                    setData("email", e.target.value)
+                                    setData("employeeID", e.target.value)
                                 }
                             />
 
                             <InputError
-                                message={errors.email}
+                                message={errors.employeeID}
                                 className="mt-2 text-danger"
                             />
                         </div>
