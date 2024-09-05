@@ -290,6 +290,12 @@ input {
     animation: shine 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Slower with realistic acceleration */
 }
 
+
+.goBack {
+    font-size: 1vw!important;
+    font-weight: 600;
+    border-width: 0.10vw;
+}
 @keyframes shine {
     0% {
         top: -100%;

@@ -32,7 +32,7 @@ export default function Login({ status, canResetPassword }) {
 
             <div class="split2 right2">  </div>
             <div class="split3 right">
-
+            {status && <div className="mb-4 font-medium text-green">{status}</div>}
                 <div class="centered2">
                     <form onSubmit={submit}>
                         <div>
