@@ -30,6 +30,11 @@ Route::get('/test', function () {
     return Inertia::render('VerifyEmail2');
 });
 
+Route::get('/feedback', function () {
+    return Inertia::render('Feedback');
+});
+
+
 Route::get('/original', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),

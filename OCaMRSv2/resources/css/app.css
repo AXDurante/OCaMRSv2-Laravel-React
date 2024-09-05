@@ -28,7 +28,7 @@
     border-top-right-radius: 15px;
 }
 .sidebar-user {
-    width: 50%;
+    padding-top: 1vw;
     margin: auto;
     text-align: center; /* Center the text horizontally */
 }
@@ -46,12 +46,11 @@ ul {
 .user-interface,
 .user-interface2 {
     color: #ffffff;
-    font-weight: 200;
+    font-weight: 100;
     display: inline-block; /* Ensures both elements stay on the same line */
-    margin: 0; /* Removes default margin */
 }
 .user-interface {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .nav-link {
@@ -412,4 +411,49 @@ input[type="checkbox"] {
 
 .pb-7 {
     padding-bottom: 7rem; /* Adjust the value as needed */
+}
+
+/* feedback  */
+.icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; /* Adjust the size as needed */
+    height: 60px; /* Adjust the size as needed */
+    background-color: #fccc00; /* Circle background color */
+    border-radius: 50%; /* Makes the background a circle */
+}
+
+.icon-wrapper .bi {
+    color: rgb(53, 53, 53); /* Icon color */
+}
+
+.text-yellow1 {
+    color: #fccc00;
+}
+.star-rating {
+    display: flex;
+    font-size: 2rem; /* Adjust size as needed */
+    cursor: pointer;
+}
+
+.star {
+    color: #ddd; /* Default color for empty stars */
+    transition: color 0.3s;
+    position: relative;
+}
+
+.star.filled {
+    color: #ffd700; /* Color for filled stars */
+}
+
+/* Adjust hover effect so only stars up to hovered one turn yellow */
+.star:hover,
+.star:hover ~ .star {
+    color: #ffd700;
+}
+
+/* Ensure stars to the right of the hovered star remain the default color */
+.star:hover ~ .star {
+    color: #ddd;
 }
