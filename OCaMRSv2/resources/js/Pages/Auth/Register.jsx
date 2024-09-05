@@ -151,7 +151,7 @@ export default function Register() {
                                         required
                                     >
                                         <option value="" disabled>Select your department/faculty</option>
-                                        <option value="Betlog Department">Betlog Department</option>
+                                        <option value="Example Department">Example Department</option>
                                         {/* Add more options here as needed */}
                                     </select>
                                     <InputError message={errors.college} className="mt-2 text-danger" />
@@ -183,7 +183,7 @@ export default function Register() {
                                         required
                                     >
                                         <option value="" disabled>Select your role</option>
-                                        <option value="Techinician">Techinician</option>
+                                        <option value="Technician">Technician</option>
                                         {/* Add more options here as needed */}
                                     </select>
                                     <InputError message={errors.role} className="mt-2 text-danger" />
