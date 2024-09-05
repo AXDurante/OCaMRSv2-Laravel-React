@@ -74,7 +74,7 @@ function TrackOrder({ jobOrder }) {
                                     <p> Status: </p>
                                     <div className="d-flex justify-content-end mt-4">
                                         <Link
-                                            href={`jobOrder/${jobOrder.job_id}`}
+                                            href={`feedback`}
                                         >
                                             <button
                                                 className="btn btn-secondary me-2"
