@@ -412,6 +412,170 @@ input[type="checkbox"] {
 .pb-7 {
     padding-bottom: 7rem; /* Adjust the value as needed */
 }
+/* Admin Manage Job request  css */
+.btn-yellow {
+    color: #202020;
+    background-color: #fbc600;
+    border-color: #fbc600;
+}
+
+.btn-yellow:hover {
+    color: #202020;
+    background-color: #e0b300; /* Slightly darker yellow for hover */
+    border-color: #d4a800; /* Adjust border color for hover */
+}
+
+.thead-custom {
+    background-color: #3c3c3c !important;
+    color: #fff !important;
+}
+
+.circle {
+    background-color: #fbc600;
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+}
+
+.btn-white {
+    color: #202020; /* Dark text color for contrast */
+    background-color: #ffffff; /* White background */
+    border-color: #dcdcdc; /* Light gray border for subtle distinction */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.btn-white:hover {
+    color: #202020; /* Keep text color dark for contrast */
+    background-color: #f0f0f0; /* Slightly darker background for hover effect */
+    border-color: #c0c0c0; /* Slightly darker border for hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slightly larger shadow on hover */
+}
+.btn-green {
+    color: #ffffff; /* White text for contrast */
+    background-color: #00be08; /* Green background */
+    border-color: #00be08; /* Matching green border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.btn-green:hover {
+    color: #ffffff; /* Keep text color white */
+    background-color: #009e05; /* Slightly darker green for hover */
+    border-color: #009e05; /* Slightly darker green border for hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slightly larger shadow on hover */
+}
+
+.mt-6 {
+    margin-top: 3rem !important; /* 48px if base font size is 16px */
+}
+
+.mt-7 {
+    margin-top: 3.5rem !important; /* 56px if base font size is 16px */
+}
+
+.mt-8 {
+    margin-top: 4rem !important; /* 64px if base font size is 16px */
+}
+
+.mt-9 {
+    margin-top: 4.5rem !important; /* 72px if base font size is 16px */
+}
+
+.mt-10 {
+    margin-top: 5rem !important; /* 80px if base font size is 16px */
+}
+.mt-11 {
+    margin-top: 5.5rem !important; /* 88px if base font size is 16px */
+}
+
+.mt-12 {
+    margin-top: 6rem !important; /* 96px if base font size is 16px */
+}
+
+.mt-13 {
+    margin-top: 6.5rem !important; /* 104px if base font size is 16px */
+}
+
+.mt-14 {
+    margin-top: 7rem !important; /* 112px if base font size is 16px */
+}
+
+.mt-15 {
+    margin-top: 7.5rem !important; /* 120px if base font size is 16px */
+}
+
+.mt-16 {
+    margin-top: 8rem !important; /* 128px if base font size is 16px */
+}
+
+.mt-17 {
+    margin-top: 8.5rem !important; /* 136px if base font size is 16px */
+}
+
+.mt-18 {
+    margin-top: 9rem !important; /* 144px if base font size is 16px */
+}
+
+.mt-19 {
+    margin-top: 9.5rem !important; /* 152px if base font size is 16px */
+}
+
+.mt-20 {
+    margin-top: 10rem !important; /* 160px if base font size is 16px */
+}
+
+/* ADMIN PAGES */
+.account-icon {
+    width: 160px; /* Increase width of the icon circle */
+    height: 160px; /* Increase height of the icon circle */
+    margin-bottom: 1.5rem; /* Adjust space below the icon */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.account-icon:hover {
+    transform: scale(1.1); /* Slightly enlarge the icon on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow on hover */
+}
+
+.account-icon i {
+    font-size: 7rem; /* Increase the icon size */
+    transition: color 0.3s ease; /* Smooth transition for icon color change */
+}
+
+.account-icon:hover i {
+    color: #fff; /* Change icon color on hover (adjust as needed) */
+}
+
+.account-wrapper {
+    text-align: center;
+    margin-bottom: 2rem; /* Adjust space between rows */
+}
+
+.account-name {
+    margin-top: 0.75rem; /* Space above the name */
+    font-size: 1.25rem; /* Increase text size for better readability */
+}
+
+@media (min-width: 768px) {
+    .account-wrapper {
+        margin-bottom: 2.5rem; /* Adjust space for medium screens and above */
+    }
+}
+
+@media (min-width: 992px) {
+    .account-wrapper {
+        margin-bottom: 3rem; /* Adjust space for large screens */
+    }
+}
+
+/* Specific styles for Instrumentation Accounts section */
+.instrumentation-accounts .account-icon {
+    width: 220px; /* Increase the circle size */
+    height: 220px; /* Increase the circle size */
+}
+
+.instrumentation-accounts .account-icon i {
+    font-size: 9rem; /* Increase the icon size */
+}
 
 /* feedback  */
 .icon-wrapper {
