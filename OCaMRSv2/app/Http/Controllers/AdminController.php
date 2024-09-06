@@ -37,4 +37,10 @@ class AdminController extends Controller
         $request->session()->regenerateToken();
         return redirect('/admin/login');
     }
+
+    // The index() method is missing. Let's add it:
+    public function index()
+    {
+        return Inertia::render('Admin/Manage Job Request');
+    }
 }

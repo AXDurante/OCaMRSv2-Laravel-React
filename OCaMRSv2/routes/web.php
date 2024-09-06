@@ -44,9 +44,11 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/approve-profile', [AdminController::class, 'approveProfile']);
     Route::get('/admin/remove-profile', [AdminController::class, 'removeProfile']);
     Route::get('/admin/manage-profile', [AdminController::class, 'manageProfile']);
+    
 });
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
 Route::get('/test', function () {
     return Inertia::render('VerifyEmail2');

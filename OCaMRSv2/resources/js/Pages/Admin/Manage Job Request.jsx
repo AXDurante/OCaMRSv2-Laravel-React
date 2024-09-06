@@ -1,4 +1,4 @@
-import Navbar from "../Layouts/Navbar";
+import Navbar from "../../Layouts/Navbar";
 
 function Home() {
     return (
