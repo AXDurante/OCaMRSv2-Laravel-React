@@ -27,6 +27,13 @@
     width: 100%;
     border-top-right-radius: 15px;
 }
+.sidebar-headeradmin {
+    background-color: #0789e7;
+    padding-top: 70px;
+    padding-bottom: 150px;
+    width: 100%;
+    border-top-right-radius: 15px;
+}
 .sidebar-user {
     width: 50%;
     margin: auto;
@@ -105,6 +112,32 @@ ul {
 .logout-btn:hover {
     background-color: #202020; /* Hover background color */
     color: #fbc600; /* Hover text color */
+}
+.logoutadmin {
+    padding-top: 50px;
+}
+
+.nav-item-logoutadmin {
+    border-radius: 15px;
+    width: 50%;
+    margin: auto;
+}
+.logout-btnadmin {
+    color: #ffffff;
+    border: 2px solid #0789e7; /* Border stroke with specified color */
+    border-radius: 15px; /* Border radius */
+    padding: 10px 20px; /* Padding for the button */
+    background-color: transparent; /* Transparent background */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+.logout-btnadmin:hover {
+    background-color: #202020; /* Hover background color */
+    color: #0789e7; /* Hover text color */
 }
 
 .icon-bold {

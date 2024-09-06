@@ -43,4 +43,13 @@ class AdminController extends Controller
     {
         return Inertia::render('Admin/Manage Job Request');
     }
+    
+    public function accountHandler()
+    {
+        return Inertia::render('Admin/AccountHandler');
+    }
+    public function manageProfile()
+    {
+        return Inertia::render('Admin/ManageProfile');
+    }
 }

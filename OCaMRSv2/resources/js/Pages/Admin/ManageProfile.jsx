@@ -1,5 +1,5 @@
 import Navbar from "../../Layouts/Navbar";
-
+import AdminNavBar from "@/Layouts/AdminNavBar";
 function Home() {
     return (
         <div className="d-flex">
@@ -81,6 +81,6 @@ function Home() {
     );
 }
 
-Home.layout = (page) => <Navbar>{page}</Navbar>;
+Home.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
 export default Home;

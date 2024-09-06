@@ -1,13 +1,13 @@
 import Navbar from "../../Layouts/Navbar";
-
+import AdminNavBar from "@/Layouts/AdminNavBar";
 function Home() {
     return (
         <div className="d-flex">
             <div id="content" className="main-content flex-fill p-3">
                 <div>
                     <div>
-                        <h1 class="d-inline">Analytical Balance | </h1>
-                        <h1 class="d-inline fw-light">2369420</h1>
+                        <h1 class="d-inline">Account Handler | </h1>
+                        <h1 class="d-inline fw-light">Lorem Ipsum</h1>
                         <hr />
                     </div>
                     <div className="mt-3">
@@ -248,6 +248,6 @@ function Home() {
     );
 }
 
-Home.layout = (page) => <Navbar>{page}</Navbar>;
+Home.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
 export default Home;

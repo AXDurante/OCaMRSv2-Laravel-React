@@ -12,7 +12,7 @@ export default function AdminNavBar({ children }) {
                     borderBottomRightRadius: "15px",
                 }}
             >
-                <div className="sidebar-header">
+                <div className="sidebar-headeradmin">
                     <h4 className="text-black" id="textHeader">
                         LESO - ISC
                     </h4>
@@ -23,23 +23,23 @@ export default function AdminNavBar({ children }) {
                 </div>
                 <ul className="nav flex-column pt-5">
                     <li className="nav-item">
-                        <Link href="/jobOrder/create">
+                        <Link href="/admin">
                             <a className="nav-link">
                                 <i className="bi bi-file-earmark-text me-2"></i>
-                                Open Request
+                                Job Request
                             </a>
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="/jobOrder">
+                        <Link href="/admin/account-handler">
                             <a className="nav-link">
-                                <i className="bi bi-search me-2"></i>Track
-                                Request
+                                <i class="bi bi-person-add me-2"></i>Account
+                                Handler
                             </a>
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="/manage profile">
+                        <Link href="/admin/manage-profile">
                             <a className="nav-link">
                                 <i className="bi bi-person-fill me-2"></i>Manage
                                 Profile
@@ -51,25 +51,20 @@ export default function AdminNavBar({ children }) {
                             <i className="bi bi-list me-2"></i>Instrument List
                         </a>
                     </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <i className="bi bi-bell-fill me-2 "></i>
-                            Notification
-                        </a>
-                    </li>
+
                     <li className="nav-item">
                         <a className="nav-link" href="#">
                             <i className="bi bi-arrow-left me-2 icon-bold"></i>
                             Go Back
                         </a>
                     </li>
-                    <div className="logout">
-                        <li className="nav-item-logout">
+                    <div className="logoutadmin">
+                        <li className="nav-item-logoutadmin">
                             <Link
                                 href={route("logout")}
                                 method="post"
                                 as="button"
-                                className="logout-btn"
+                                className="logout-btnadmin"
                             >
                                 Log Out
                             </Link>
