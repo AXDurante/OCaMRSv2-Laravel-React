@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobOrderController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController; 
+use App\Http\Controllers\AdminAuthController;
 use Inertia\Inertia;
 
 // Job Order Route
@@ -36,18 +38,15 @@ Route::get('/show job request', function () {
 
 
 // ADMIN
-Route::get('/admin/account-handler', function () {
-    return Inertia::render('Admin/AccountHandler');
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
+    Route::get('/admin/account-handler', [AdminController::class, 'accountHandler']);
+    Route::get('/admin/approve-profile', [AdminController::class, 'approveProfile']);
+    Route::get('/admin/remove-profile', [AdminController::class, 'removeProfile']);
+    Route::get('/admin/manage-profile', [AdminController::class, 'manageProfile']);
 });
-Route::get('/admin/approve-profile', function () {
-    return Inertia::render('Admin/ApproveProfile');
-});
-Route::get('/admin/remove-profile', function () {
-    return Inertia::render('Admin/RemoveProfile');
-});
-Route::get('/admin/manage-profile', function () {
-    return Inertia::render('Admin/ManageProfile');
-});
+
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 
 Route::get('/test', function () {
     return Inertia::render('VerifyEmail2');
