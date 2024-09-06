@@ -1,3 +1,4 @@
+import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
 
 function Home() {
@@ -129,6 +130,6 @@ function Home() {
     );
 }
 
-Home.layout = (page) => <Navbar>{page}</Navbar>;
+Home.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
 export default Home;

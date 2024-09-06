@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 
-export default function NavBar({ children }) {
+export default function AdminNavBar({ children }) {
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
             <nav
@@ -18,22 +18,23 @@ export default function NavBar({ children }) {
                     </h4>
                 </div>
                 <div className="sidebar-user">
-                    <h3 className="user-interface">Client</h3>
+                    <h3 className="user-interface">Admin</h3>
                     <h3 className="user-interface2">Interface</h3>
                 </div>
                 <ul className="nav flex-column pt-5">
                     <li className="nav-item">
                         <Link href="/jobOrder/create">
                             <a className="nav-link">
-                                <i className="bi bi-file-earmark-text me-2"></i>Open
-                                Request
+                                <i className="bi bi-file-earmark-text me-2"></i>
+                                Open Request
                             </a>
                         </Link>
                     </li>
                     <li className="nav-item">
                         <Link href="/jobOrder">
                             <a className="nav-link">
-                                <i className="bi bi-search me-2"></i>Track Request
+                                <i className="bi bi-search me-2"></i>Track
+                                Request
                             </a>
                         </Link>
                     </li>
