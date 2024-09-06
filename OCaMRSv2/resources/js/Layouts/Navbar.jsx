@@ -3,25 +3,38 @@ import { Link } from "@inertiajs/react";
 export default function NavBar({ children }) {
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
+
+
+            <div className="sidebar2"  style={{
+                    width: "250px",
+                    minWidth: "250px",
+                    borderTopRightRadius: "20px",
+                    borderBottomRightRadius: "15px",
+                }}>
+                    <div className="mt-4">
+                        <h4 className="text-black pt-4" id="textHeader">
+                            LESO - ISC
+                        </h4>
+                    </div>
+                     
+
+            </div>
+            
             <nav
                 className="sidebar rounded-right text-light"
                 style={{
                     width: "250px",
                     minWidth: "250px",
-                    borderTopRightRadius: "20px",
+                    
                     borderBottomRightRadius: "15px",
                 }}
             >
-                <div className="sidebar-header">
-                    <h4 className="text-black" id="textHeader">
-                        LESO - ISC
-                    </h4>
-                </div>
+                
                 <div className="sidebar-user ">
                     <h4 className="user-interface">Client&nbsp;</h4>
                     <h4 className="user-interface2"> Interface</h4>
                 </div>
-                <ul className="nav flex-column pt-4">
+                <ul className="nav flex-column pt-4 theNav">
                     <li className="nav-item">
                         <Link href="/jobOrder/create">
                             <a className="nav-link">
@@ -40,7 +53,7 @@ export default function NavBar({ children }) {
                     </li>
                     <li className="nav-item">
                         <Link href="/manage profile">
-                            <a className="nav-link">
+                            <a className="nav-link" >
                                 <i className="bi bi-person-fill me-2"></i>Manage
                                 Profile
                             </a>
@@ -75,7 +88,9 @@ export default function NavBar({ children }) {
                             </Link>
                         </li>
                     </div>
+                   
                 </ul>
+                
             </nav>
             <main className="flex-fill p-3">{children}</main>
         </div>
