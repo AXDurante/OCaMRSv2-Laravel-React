@@ -11,10 +11,10 @@ class InstrumentationAccount extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
+        'id_number',
+        'full_name',
         'email',
         'password',
-        'department',
         'is_active',
     ];
 

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController; 
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\InstrumentationAccountController;
-
+use App\Http\Controllers\InstrumentationAuthController;
 use Inertia\Inertia;
 
 // Job Order Route
@@ -83,10 +83,24 @@ Route::get('/dashboard', function () {
     return Inertia::render('Home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/instrumentation/login', [InstrumentationAuthController::class, 'showLoginForm'])->name('instrumentation.login');
+Route::post('/instrumentation/login', [InstrumentationAuthController::class, 'login'])->name('instrumentation.login.submit');
+
+Route::middleware('auth:instrumentation')->group(function () {
+    Route::get('/instrumentation/home', function () {
+        return Inertia::render('Instrumentation/InstrumentationHome');
+    })->name('instrumentation.home');
+
+    // Add a logout route
+    Route::post('/instrumentation/logout', [InstrumentationAuthController::class, 'logout'])->name('instrumentation.logout');
+});
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+  
 });
 
 require __DIR__.'/auth.php';

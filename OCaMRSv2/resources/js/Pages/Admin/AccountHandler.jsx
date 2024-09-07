@@ -4,11 +4,14 @@ import axios from "axios";
 
 function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [idNumber, setIdNumber] = useState("");
+    const [fullName, setFullName] = useState("");
     const [accountName, setAccountName] = useState("");
     const [accountEmail, setAccountEmail] = useState("");
     const [accountPassword, setAccountPassword] = useState("");
     const [accountDepartment, setAccountDepartment] = useState("");
     const [accounts, setAccounts] = useState([]);
+    const [editingAccountId, setEditingAccountId] = useState(null);
 
     useEffect(() => {
         fetchAccounts();
@@ -24,30 +27,65 @@ function Home() {
     };
 
     const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setEditingAccountId(null);
+        resetForm();
+    };
 
-    const handleSubmit = async (e) => {
+    const resetForm = () => {
+        setIdNumber("");
+        setFullName("");
+        setAccountName("");
+        setAccountEmail("");
+        setAccountPassword("");
+        setAccountDepartment("");
+    };
+
+    const openEditModal = (account) => {
+        setEditingAccountId(account.id);
+        setIdNumber(account.id_number);
+        setFullName(account.full_name);
+        setAccountEmail(account.email);
+    };
+
+    const handleSubmit = async (e, accountId = null) => {
         e.preventDefault();
         try {
-            const response = await axios.post(
-                "/admin/instrumentation-accounts",
-                {
+            let response;
+            if (accountId) {
+                response = await axios.put(
+                    `/admin/instrumentation-accounts/${accountId}`,
+                    {
+                        id_number: idNumber,
+                        full_name: fullName,
+                        email: accountEmail,
+                    }
+                );
+                console.log("Account updated:", response.data);
+
+                setAccounts(
+                    accounts.map((account) =>
+                        account.id === accountId ? response.data : account
+                    )
+                );
+            } else {
+                response = await axios.post("/admin/instrumentation-accounts", {
+                    id_number: idNumber,
+                    full_name: fullName,
                     name: accountName,
                     email: accountEmail,
                     password: accountPassword,
                     department: accountDepartment,
-                }
-            );
-            console.log("Account created:", response.data);
+                });
+                console.log("Account created:", response.data);
+
+                setAccounts([...accounts, response.data]);
+            }
             closeModal();
-            fetchAccounts(); // Refresh the list of accounts
-            // Reset form fields
-            setAccountName("");
-            setAccountEmail("");
-            setAccountPassword("");
-            setAccountDepartment("");
+            setEditingAccountId(null);
         } catch (error) {
-            console.error("Error creating account:", error);
+            console.error("Error submitting account:", error);
             // TODO: Handle error (e.g., show error message to user)
         }
     };
@@ -77,8 +115,125 @@ function Home() {
                                                 <i className="bi bi-person-fill text-primary"></i>
                                             </div>
                                             <h5 className="account-name">
-                                                {account.name}
+                                                {account.full_name}
                                             </h5>
+                                            <button
+                                                className="btn btn-sm btn-primary mt-2"
+                                                onClick={() =>
+                                                    openEditModal(account)
+                                                }
+                                            >
+                                                Edit
+                                            </button>
+                                            {editingAccountId ===
+                                                account.id && (
+                                                <div className="modal-overlay">
+                                                    <div className="modal-content">
+                                                        <h2>
+                                                            Edit Instrumentation
+                                                            Account
+                                                        </h2>
+                                                        <form
+                                                            onSubmit={(e) =>
+                                                                handleSubmit(
+                                                                    e,
+                                                                    account.id
+                                                                )
+                                                            }
+                                                        >
+                                                            <div className="form-group mb-3">
+                                                                <label htmlFor="idNumber">
+                                                                    ID Number
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    id="idNumber"
+                                                                    className="form-control"
+                                                                    value={
+                                                                        idNumber
+                                                                    }
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setIdNumber(
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                    required
+                                                                />
+                                                            </div>
+                                                            <div className="form-group mb-3">
+                                                                <label htmlFor="fullName">
+                                                                    Full Name
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    id="fullName"
+                                                                    className="form-control"
+                                                                    value={
+                                                                        fullName
+                                                                    }
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setFullName(
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                    required
+                                                                />
+                                                            </div>
+                                                            <div className="form-group mb-3">
+                                                                <label htmlFor="accountEmail">
+                                                                    Email
+                                                                </label>
+                                                                <input
+                                                                    type="email"
+                                                                    id="accountEmail"
+                                                                    className="form-control"
+                                                                    value={
+                                                                        accountEmail
+                                                                    }
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setAccountEmail(
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                    required
+                                                                />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <button
+                                                                    type="submit"
+                                                                    className="btn btn-primary me-2"
+                                                                >
+                                                                    Update
+                                                                    Account
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-secondary"
+                                                                    onClick={() =>
+                                                                        setEditingAccountId(
+                                                                            null
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Cancel
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     ))}
                                     <div
@@ -289,16 +444,29 @@ function Home() {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <h2>Create Instrumentation Account</h2>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={(e) => handleSubmit(e)}>
                             <div className="form-group mb-3">
-                                <label htmlFor="accountName">Name</label>
+                                <label htmlFor="idNumber">ID Number</label>
                                 <input
                                     type="text"
-                                    id="accountName"
+                                    id="idNumber"
                                     className="form-control"
-                                    value={accountName}
+                                    value={idNumber}
                                     onChange={(e) =>
-                                        setAccountName(e.target.value)
+                                        setIdNumber(e.target.value)
+                                    }
+                                    required
+                                />
+                            </div>
+                            <div className="form-group mb-3">
+                                <label htmlFor="fullName">Full Name</label>
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    className="form-control"
+                                    value={fullName}
+                                    onChange={(e) =>
+                                        setFullName(e.target.value)
                                     }
                                     required
                                 />

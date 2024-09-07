@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('instrumentation_accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('id_number')->unique();
+            $table->string('full_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('department')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->rememberToken();
             $table->timestamps();
         });
+
     }
 
     /**

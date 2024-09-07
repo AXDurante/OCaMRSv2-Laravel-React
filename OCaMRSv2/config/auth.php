@@ -44,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+        'instrumentation' => [
+            'driver' => 'session',
+            'provider' => 'instrumentation_accounts',
+        ],
     ],
 
     /*
@@ -71,6 +75,10 @@ return [
         'admins' => [  // Add this new provider
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+        'instrumentation_accounts' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\InstrumentationAccount::class,
         ],
     ],
 

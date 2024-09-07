@@ -23,10 +23,10 @@ class InstrumentationAccountController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'id_number' => 'required|string|max:255|unique:instrumentation_accounts',
+            'full_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:instrumentation_accounts',
             'password' => 'required|string|min:8',
-            'department' => 'nullable|string|max:255',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -56,9 +56,9 @@ class InstrumentationAccountController extends Controller
     public function update(Request $request, InstrumentationAccount $account)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'id_number' => 'required|string|max:255|unique:instrumentation_accounts,id_number,' . $account->id,
+            'full_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:instrumentation_accounts,email,' . $account->id,
-            'department' => 'nullable|string|max:255',
             'is_active' => 'boolean',
         ]);
 
