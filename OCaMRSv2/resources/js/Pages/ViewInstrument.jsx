@@ -114,6 +114,19 @@ function ViewInstrument() {
                         </select>
                     </div>
 
+                    {/* Result Counter */}
+                    <div className="mt-2 ms-2 me-2">
+                        {selectedCategory && (
+                            <h6>{`${
+                                selectedCategory.instruments.length
+                            } result${
+                                selectedCategory.instruments.length > 1
+                                    ? "s"
+                                    : ""
+                            } for ${selectedCategory.category}`}</h6>
+                        )}
+                    </div>
+
                     {/* Display Selected Instruments */}
                     <div className="mt-4">
                         {selectedCategory && (
@@ -138,23 +151,9 @@ function ViewInstrument() {
                                                     }}
                                                 />
                                                 <div className="flex-grow-1">
-                                                    <h5 className="card-title">
+                                                    <h4 className="card-title">
                                                         {instrument}
-                                                    </h5>
-                                                    <div className="d-flex justify-content-end mt-4">
-                                                        <button
-                                                            className="btn btn-secondary me-2"
-                                                            id="btnFeed"
-                                                        >
-                                                            Give Feedback
-                                                        </button>
-                                                        <button
-                                                            className="btn btn-primary"
-                                                            id="btnSee"
-                                                        >
-                                                            See Details
-                                                        </button>
-                                                    </div>
+                                                    </h4>
                                                 </div>
                                             </div>
                                         </div>
