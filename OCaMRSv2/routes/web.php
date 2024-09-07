@@ -32,6 +32,10 @@ Route::get('/show job request', function () {
     return Inertia::render('Show Job Request');
 });
 
+Route::get('/viewInstrument', function () {
+    return Inertia::render('ViewInstrument');
+});
+
 
 // ADMIN
 Route::get('/admin/account-handler', function () {
