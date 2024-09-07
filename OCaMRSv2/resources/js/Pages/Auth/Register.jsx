@@ -20,7 +20,6 @@ export default function Register() {
         employeeID: '',
         phoneNumber: '',
         college: '',
-        role: '',
         labLoc: '',
     });
 
@@ -152,7 +151,7 @@ export default function Register() {
                                     >
                                         <option value="" disabled>Select your department/faculty</option>
                                         <option value="Example Department">Example Department</option>
-                                        {/* Add more options here as needed */}
+                                      
                                     </select>
                                     <InputError message={errors.college} className="mt-2 text-danger" />
                                 </div>
@@ -172,22 +171,7 @@ export default function Register() {
                                     <InputError message={errors.labLoc} className="mt-2 text-danger" />
                                 </div>
 
-                                <div className="mt-4">
-                                    <InputLabel htmlFor="role" value="Role" />
-                                    <select
-                                        id="role"
-                                        name="role"
-                                        value={data.role}
-                                        className="optionBox w-100"
-                                        onChange={(e) => setData('role', e.target.value)}
-                                        required
-                                    >
-                                        <option value="" disabled>Select your role</option>
-                                        <option value="Technician">Technician</option>
-                                        {/* Add more options here as needed */}
-                                    </select>
-                                    <InputError message={errors.role} className="mt-2 text-danger" />
-                                </div>
+                                
 
                                 <div className='d-flex justify-content-end my-5 '>
                                     <button className="theButton2 buttonColor1 " onClick={() => previousForm()} >
@@ -218,7 +202,12 @@ export default function Register() {
                                 </div>
 
                                 <div className='mt-4'>
-                                    <InputLabel htmlFor="password" value="Password" />
+                                    <div className='d-flex align-items-center'>
+                                        <InputLabel htmlFor="password" value="Password" />
+                                        <small className='mb-0 ml-2 mx-2 text-danger'>  (1 uppercase letter, 1 number, and 1 special character required.)</small> 
+                                    </div>
+                                   
+                                    
                                     <TextInput2
                                         id="password"
                                         type="password"
@@ -247,11 +236,12 @@ export default function Register() {
                                     <InputError message={errors.password_confirmation} className="mt-2 text-danger" />
                                 </div>
 
-                                {submitted && (
+                                {submitted && Object.keys(errors).length > 0 && (
                                     <div className="mt-4">
-                                        <InputError message="Some input fields are incorrect, Kindly check the current or previous pages." className="text-danger" />
+                                        <InputError message="Some input fields are incorrect, kindly check the current or previous pages." className="text-danger" />
                                     </div>
                                 )}
+
 
                                 <div className='d-flex justify-content-center mt-5 '>
                                     <button className="theButton2 buttonColor1 w-100" onClick={() => previousForm()}>

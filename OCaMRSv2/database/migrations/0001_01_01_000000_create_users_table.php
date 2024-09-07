@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phoneNumber');
             $table->string('college');
-            $table->string('role');
             $table->string('labLoc');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

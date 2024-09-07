@@ -33,14 +33,24 @@ class RegisteredUserController extends Controller
         $request->validate([
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:users',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => [
+                'required',
+                'confirmed',
+                'min:8',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&]/',
+            ],
             'employeeID' => 'required|string|max:255|unique:users',
             'phoneNumber' => 'required|string|max:255|unique:users',
             'college' => 'required|string|max:255',
-            'role' => 'required|string|max:255',
             'labLoc' => 'required|string|max:255',
+        ], [
+            'password.min' => 'The password must be at least 8 characters.',
+            'password.regex' => 'The password must include at least one uppercase letter, one number, and one special character.',
         ]);
+        
 
         $user = User::create([
             'firstName' => $request->firstName,
@@ -50,7 +60,6 @@ class RegisteredUserController extends Controller
             'employeeID' => $request->employeeID,
             'phoneNumber' => $request->phoneNumber,
             'college' => $request->college,
-            'role' => $request->role,
             'labLoc' => $request->labLoc,
         ]);
 
