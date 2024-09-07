@@ -6,6 +6,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController; 
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\InstrumentationAccountController;
+
 use Inertia\Inertia;
 
 // Job Order Route
@@ -44,7 +46,17 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/approve-profile', [AdminController::class, 'approveProfile']);
     Route::get('/admin/remove-profile', [AdminController::class, 'removeProfile']);
     Route::get('/admin/manage-profile', [AdminController::class, 'manageProfile']);
-    
+
+    // Instrumentation Account routes
+    Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
+    Route::get('/admin/instrumentation-accounts/create', [InstrumentationAccountController::class, 'create'])->name('admin.instrumentation-accounts.create');
+    Route::post('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'store'])->name('admin.instrumentation-accounts.store');
+    Route::get('/admin/instrumentation-accounts/{account}', [InstrumentationAccountController::class, 'show'])->name('admin.instrumentation-accounts.show');
+    Route::get('/admin/instrumentation-accounts/{account}/edit', [InstrumentationAccountController::class, 'edit'])->name('admin.instrumentation-accounts.edit');
+    Route::put('/admin/instrumentation-accounts/{account}', [InstrumentationAccountController::class, 'update'])->name('admin.instrumentation-accounts.update');
+    Route::delete('/admin/instrumentation-accounts/{account}', [InstrumentationAccountController::class, 'destroy'])->name('admin.instrumentation-accounts.destroy');
+    Route::post('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'store'])->name('admin.instrumentation-accounts.store');
+    Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
 });
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
