@@ -630,3 +630,23 @@ input[type="checkbox"] {
     border-radius: 8px;
     width: 400px;
 }
+
+.bg-admin-login {
+    background-color: #202020;
+}
+.bg-instr-login {
+    background-color: #292929;
+}
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rotating-icon {
+    display: inline-block;
+    animation: rotate 2s linear infinite;
+}

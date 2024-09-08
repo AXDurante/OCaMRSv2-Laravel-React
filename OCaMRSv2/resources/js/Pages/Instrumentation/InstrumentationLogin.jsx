@@ -1,4 +1,7 @@
 import React from "react";
+import TextInput2 from "@/Components/TextInput2";
+import LoginButton from "@/Components/LoginButton";
+import InputLabel from "@/Components/InputLabel";
 import { useForm } from "@inertiajs/react";
 
 export default function InstrumentationLogin() {
@@ -13,66 +16,77 @@ export default function InstrumentationLogin() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded shadow-md w-96">
-                <h2 className="text-2xl font-bold mb-4">
-                    Instrumentation Login
-                </h2>
-                <form onSubmit={submit}>
-                    <div className="mb-4">
-                        <label
-                            htmlFor="id_number"
-                            className="block mb-2 text-sm font-medium text-gray-600"
-                        >
-                            ID Number
-                        </label>
-                        <input
-                            type="text"
-                            id="id_number"
-                            value={data.id_number}
-                            onChange={(e) =>
-                                setData("id_number", e.target.value)
-                            }
-                            className="w-full px-3 py-2 border rounded-md"
-                            required
-                        />
-                        {errors.id_number && (
-                            <div className="text-red-500 text-sm mt-1">
-                                {errors.id_number}
+        <div className="">
+            <div>
+                <div class="split left">
+                    <div class="centered"></div>
+                    <div class="half login-imageHolder"></div>
+                </div>
+
+                <div class="split2 right2 bg-instr-login"> </div>
+                <div class="split3 right">
+                    <div class="centered2">
+                        <h2 className="text-2xl text-center text-white titleLogin mb-5">
+                            <i class="bi bi-tools rotating-icon"></i>
+                            Instrumentation Login
+                        </h2>
+                        <form onSubmit={submit}>
+                            <div className="mb-4">
+                                <InputLabel
+                                    htmlFor="id_number"
+                                    className="block mb-2 text-sm font-medium text-white"
+                                >
+                                    ID Number
+                                </InputLabel>
+                                <TextInput2
+                                    type="text"
+                                    id="id_number"
+                                    value={data.id_number}
+                                    onChange={(e) =>
+                                        setData("id_number", e.target.value)
+                                    }
+                                    className="w-full px-3 py-2 border rounded-md"
+                                    required
+                                />
+                                {errors.id_number && (
+                                    <div className="text-red-500 text-sm mt-1">
+                                        {errors.id_number}
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
-                    <div className="mb-4">
-                        <label
-                            htmlFor="password"
-                            className="block mb-2 text-sm font-medium text-gray-600"
-                        >
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={data.password}
-                            onChange={(e) =>
-                                setData("password", e.target.value)
-                            }
-                            className="w-full px-3 py-2 border rounded-md"
-                            required
-                        />
-                        {errors.password && (
-                            <div className="text-red-500 text-sm mt-1">
-                                {errors.password}
+                            <div className="mb-4">
+                                <InputLabel
+                                    htmlFor="password"
+                                    className="block mb-2 text-sm font-medium text-white"
+                                >
+                                    Password
+                                </InputLabel>
+                                <TextInput2
+                                    type="password"
+                                    id="password"
+                                    value={data.password}
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                    className="w-full px-3 py-2 border rounded-md"
+                                    required
+                                />
+                                {errors.password && (
+                                    <div className="text-red-500 text-sm mt-1">
+                                        {errors.password}
+                                    </div>
+                                )}
                             </div>
-                        )}
+                            <LoginButton
+                                type="submit"
+                                className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                                disabled={processing}
+                            >
+                                {processing ? "Logging in..." : "Login"}
+                            </LoginButton>
+                        </form>
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-                        disabled={processing}
-                    >
-                        {processing ? "Logging in..." : "Login"}
-                    </button>
-                </form>
+                </div>
             </div>
         </div>
     );

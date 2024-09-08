@@ -44,7 +44,9 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/approve-profile', [AdminController::class, 'approveProfile']);
     Route::get('/admin/remove-profile', [AdminController::class, 'removeProfile']);
     Route::get('/admin/manage-profile', [AdminController::class, 'manageProfile']);
-    Route::get('/admin/show-job-request', [AdminController::class, 'showJobRequest'])->name('admin.show-job-request');
+    Route::get('/admin/show job request', function () {
+        return Inertia::render('Show Job Request');
+    });
 
     // Instrumentation Account routes
     Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');

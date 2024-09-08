@@ -30,13 +30,14 @@ export default function Login({ status, canResetPassword }) {
                 <div class="half login-imageHolder"></div>
             </div>
 
-            <div class="split2 right2">  </div>
+            <div class="split2 right2"> </div>
             <div class="split3 right">
-
                 <div class="centered2">
                     <form onSubmit={submit}>
                         <div>
-                            <h1 className="text-center titleLogin mb-5">Login</h1>
+                            <h1 className="text-center titleLogin mb-5">
+                                Login
+                            </h1>
                             <InputLabel htmlFor="email" value="Employee ID" />
 
                             <TextInput2
@@ -44,7 +45,6 @@ export default function Login({ status, canResetPassword }) {
                                 type="email"
                                 name="email"
                                 value={data.email}
-                                
                                 autoComplete="username"
                                 isFocused={true}
                                 onChange={(e) =>
@@ -66,7 +66,6 @@ export default function Login({ status, canResetPassword }) {
                                 type="password"
                                 name="password"
                                 value={data.password}
-                                
                                 autoComplete="current-password"
                                 onChange={(e) =>
                                     setData("password", e.target.value)
@@ -79,8 +78,6 @@ export default function Login({ status, canResetPassword }) {
                             />
                         </div>
 
-                
-                            
                         <div className="checkbox-container mt-3 mb-4">
                             <div className="">
                                 {/*
@@ -98,35 +95,21 @@ export default function Login({ status, canResetPassword }) {
                                 >
                                     Forgot your password?
                                 </Link>
-                                
                             </div>
 
                             <div className="">
-                            <Link
+                                <Link
                                     href={route("register")}
                                     className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                 >
                                     Don't have an account? Register
                                 </Link>
-                          
                             </div>
-                           
-                           
                         </div>
 
-                        
-                            
-                               
-                            <div className="pt-3">
-                                <LoginButton classname="w-100">
-                                    Log in
-                            </LoginButton>    
-                            </div>
-                           
-                                
-                           
-                          
-                       
+                        <div className="pt-3">
+                            <LoginButton classname="w-100">Log in</LoginButton>
+                        </div>
                     </form>
                 </div>
             </div>
