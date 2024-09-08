@@ -54,6 +54,7 @@ function Home() {
         try {
             let response;
             if (accountId) {
+                // Updating an existing account
                 response = await axios.put(
                     `/admin/instrumentation-accounts/${accountId}`,
                     {
@@ -64,12 +65,24 @@ function Home() {
                 );
                 console.log("Account updated:", response.data);
 
-                setAccounts(
-                    accounts.map((account) =>
-                        account.id === accountId ? response.data : account
+                // Update the local state immediately
+                setAccounts((prevAccounts) =>
+                    prevAccounts.map((account) =>
+                        account.id === accountId
+                            ? {
+                                  ...account,
+                                  id_number: idNumber,
+                                  full_name: fullName,
+                                  email: accountEmail,
+                              }
+                            : account
                     )
                 );
+
+                // Close the modal
+                setEditingAccountId(null);
             } else {
+                // Creating a new account
                 response = await axios.post("/admin/instrumentation-accounts", {
                     id_number: idNumber,
                     full_name: fullName,
@@ -80,10 +93,18 @@ function Home() {
                 });
                 console.log("Account created:", response.data);
 
-                setAccounts([...accounts, response.data]);
+                // Add the new account to the local state immediately
+                setAccounts((prevAccounts) => [...prevAccounts, response.data]);
+
+                // Close the modal
+                closeModal();
             }
-            closeModal();
-            setEditingAccountId(null);
+
+            // Reset form fields
+            resetForm();
+
+            // Force a re-render of the component
+            setAccounts((prevAccounts) => [...prevAccounts]);
         } catch (error) {
             console.error("Error submitting account:", error);
             // TODO: Handle error (e.g., show error message to user)
@@ -117,6 +138,9 @@ function Home() {
                                             <h5 className="account-name">
                                                 {account.full_name}
                                             </h5>
+                                            <p className="account-email">
+                                                {account.email}
+                                            </p>
                                             <button
                                                 className="btn btn-sm btn-primary mt-2"
                                                 onClick={() =>
@@ -128,7 +152,13 @@ function Home() {
                                             {editingAccountId ===
                                                 account.id && (
                                                 <div className="modal-overlay">
-                                                    <div className="modal-content">
+                                                    <div
+                                                        className="modal-content"
+                                                        style={{
+                                                            maxWidth: "800px",
+                                                            width: "90%",
+                                                        }}
+                                                    >
                                                         <h2>
                                                             Edit Instrumentation
                                                             Account
@@ -141,94 +171,119 @@ function Home() {
                                                                 )
                                                             }
                                                         >
-                                                            <div className="form-group mb-3">
-                                                                <label htmlFor="idNumber">
-                                                                    ID Number
-                                                                </label>
-                                                                <input
-                                                                    type="text"
-                                                                    id="idNumber"
-                                                                    className="form-control"
-                                                                    value={
-                                                                        idNumber
-                                                                    }
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        setIdNumber(
-                                                                            e
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
-                                                                    required
-                                                                />
-                                                            </div>
-                                                            <div className="form-group mb-3">
-                                                                <label htmlFor="fullName">
-                                                                    Full Name
-                                                                </label>
-                                                                <input
-                                                                    type="text"
-                                                                    id="fullName"
-                                                                    className="form-control"
-                                                                    value={
-                                                                        fullName
-                                                                    }
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        setFullName(
-                                                                            e
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
-                                                                    required
-                                                                />
-                                                            </div>
-                                                            <div className="form-group mb-3">
-                                                                <label htmlFor="accountEmail">
-                                                                    Email
-                                                                </label>
-                                                                <input
-                                                                    type="email"
-                                                                    id="accountEmail"
-                                                                    className="form-control"
-                                                                    value={
-                                                                        accountEmail
-                                                                    }
-                                                                    onChange={(
-                                                                        e
-                                                                    ) =>
-                                                                        setAccountEmail(
-                                                                            e
-                                                                                .target
-                                                                                .value
-                                                                        )
-                                                                    }
-                                                                    required
-                                                                />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <button
-                                                                    type="submit"
-                                                                    className="btn btn-primary me-2"
-                                                                >
-                                                                    Update
-                                                                    Account
-                                                                </button>
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn btn-secondary"
-                                                                    onClick={() =>
-                                                                        setEditingAccountId(
-                                                                            null
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    Cancel
-                                                                </button>
+                                                            <div className="row forms-bg">
+                                                                <div className="col-4 profile-bg d-flex flex-column align-items-center justify-content-center p-3 text-white">
+                                                                    <div>
+                                                                        <i className="bi bi-person-fill fs-1"></i>
+                                                                    </div>
+                                                                    <h5>
+                                                                        {fullName ||
+                                                                            account.full_name}
+                                                                    </h5>
+                                                                    <p>
+                                                                        {accountEmail ||
+                                                                            account.email}
+                                                                    </p>
+                                                                </div>
+
+                                                                <div className="col-8">
+                                                                    <div className="pt-3 pb-3 p-3">
+                                                                        <div className="row">
+                                                                            <div className="col-6 mb-3">
+                                                                                <label className="form-label fw-bold d-block text-truncate">
+                                                                                    ID
+                                                                                    Number
+                                                                                </label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    className="form-control rounded"
+                                                                                    value={
+                                                                                        idNumber
+                                                                                    }
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        setIdNumber(
+                                                                                            e
+                                                                                                .target
+                                                                                                .value
+                                                                                        )
+                                                                                    }
+                                                                                    required
+                                                                                />
+                                                                            </div>
+                                                                            <div className="col-6 mb-3">
+                                                                                <label className="form-label fw-bold d-block text-truncate">
+                                                                                    Full
+                                                                                    Name
+                                                                                </label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    className="form-control rounded"
+                                                                                    value={
+                                                                                        fullName
+                                                                                    }
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        setFullName(
+                                                                                            e
+                                                                                                .target
+                                                                                                .value
+                                                                                        )
+                                                                                    }
+                                                                                    required
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="row">
+                                                                            <div className="col-12 mb-3">
+                                                                                <label className="form-label fw-bold d-block text-truncate">
+                                                                                    Email
+                                                                                </label>
+                                                                                <input
+                                                                                    type="email"
+                                                                                    className="form-control rounded"
+                                                                                    value={
+                                                                                        accountEmail
+                                                                                    }
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        setAccountEmail(
+                                                                                            e
+                                                                                                .target
+                                                                                                .value
+                                                                                        )
+                                                                                    }
+                                                                                    required
+                                                                                />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="row mt-3">
+                                                                            <div className="col-12">
+                                                                                <button
+                                                                                    type="submit"
+                                                                                    className="btn btn-primary me-2"
+                                                                                >
+                                                                                    Update
+                                                                                    Account
+                                                                                </button>
+                                                                                <button
+                                                                                    type="button"
+                                                                                    className="btn btn-secondary"
+                                                                                    onClick={() =>
+                                                                                        setEditingAccountId(
+                                                                                            null
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    Cancel
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -442,91 +497,127 @@ function Home() {
 
             {isModalOpen && (
                 <div className="modal-overlay">
-                    <div className="modal-content">
+                    <div
+                        className="modal-content"
+                        style={{ maxWidth: "800px", width: "90%" }}
+                    >
                         <h2>Create Instrumentation Account</h2>
                         <form onSubmit={(e) => handleSubmit(e)}>
-                            <div className="form-group mb-3">
-                                <label htmlFor="idNumber">ID Number</label>
-                                <input
-                                    type="text"
-                                    id="idNumber"
-                                    className="form-control"
-                                    value={idNumber}
-                                    onChange={(e) =>
-                                        setIdNumber(e.target.value)
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div className="form-group mb-3">
-                                <label htmlFor="fullName">Full Name</label>
-                                <input
-                                    type="text"
-                                    id="fullName"
-                                    className="form-control"
-                                    value={fullName}
-                                    onChange={(e) =>
-                                        setFullName(e.target.value)
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div className="form-group mb-3">
-                                <label htmlFor="accountEmail">Email</label>
-                                <input
-                                    type="email"
-                                    id="accountEmail"
-                                    className="form-control"
-                                    value={accountEmail}
-                                    onChange={(e) =>
-                                        setAccountEmail(e.target.value)
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div className="form-group mb-3">
-                                <label htmlFor="accountPassword">
-                                    Password
-                                </label>
-                                <input
-                                    type="password"
-                                    id="accountPassword"
-                                    className="form-control"
-                                    value={accountPassword}
-                                    onChange={(e) =>
-                                        setAccountPassword(e.target.value)
-                                    }
-                                    required
-                                />
-                            </div>
-                            <div className="form-group mb-3">
-                                <label htmlFor="accountDepartment">
-                                    Department
-                                </label>
-                                <input
-                                    type="text"
-                                    id="accountDepartment"
-                                    className="form-control"
-                                    value={accountDepartment}
-                                    onChange={(e) =>
-                                        setAccountDepartment(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="form-group">
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary me-2"
-                                >
-                                    Create Account
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    onClick={closeModal}
-                                >
-                                    Cancel
-                                </button>
+                            <div className="row forms-bg">
+                                <div className="col-4 profile-bg d-flex flex-column align-items-center justify-content-center p-3 text-white">
+                                    <div>
+                                        <i className="bi bi-person-fill fs-1"></i>
+                                    </div>
+                                    <h5>{fullName || "New Account"}</h5>
+                                    <p>{accountEmail || "email@example.com"}</p>
+                                </div>
+
+                                <div className="col-8">
+                                    <div className="pt-3 pb-3 p-3">
+                                        <div className="row">
+                                            <div className="col-6 mb-3">
+                                                <label className="form-label fw-bold d-block text-truncate">
+                                                    ID Number
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control rounded"
+                                                    value={idNumber}
+                                                    onChange={(e) =>
+                                                        setIdNumber(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="col-6 mb-3">
+                                                <label className="form-label fw-bold d-block text-truncate">
+                                                    Full Name
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control rounded"
+                                                    value={fullName}
+                                                    onChange={(e) =>
+                                                        setFullName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6 mb-3">
+                                                <label className="form-label fw-bold d-block text-truncate">
+                                                    Email
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    className="form-control rounded"
+                                                    value={accountEmail}
+                                                    onChange={(e) =>
+                                                        setAccountEmail(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="col-6 mb-3">
+                                                <label className="form-label fw-bold d-block text-truncate">
+                                                    Password
+                                                </label>
+                                                <input
+                                                    type="password"
+                                                    className="form-control rounded"
+                                                    value={accountPassword}
+                                                    onChange={(e) =>
+                                                        setAccountPassword(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-12 mb-3">
+                                                <label className="form-label fw-bold d-block text-truncate">
+                                                    Department
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control rounded"
+                                                    value={accountDepartment}
+                                                    onChange={(e) =>
+                                                        setAccountDepartment(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-12">
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary me-2"
+                                                >
+                                                    Create Account
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-secondary"
+                                                    onClick={closeModal}
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
