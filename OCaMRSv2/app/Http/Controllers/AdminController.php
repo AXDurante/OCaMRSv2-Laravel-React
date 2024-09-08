@@ -52,4 +52,8 @@ class AdminController extends Controller
     {
         return Inertia::render('Admin/ManageProfile');
     }
+    public function viewInstrumentAdmin()
+    {
+        return Inertia::render('Admin/ViewInstrumentAdmin');
+    }
 }

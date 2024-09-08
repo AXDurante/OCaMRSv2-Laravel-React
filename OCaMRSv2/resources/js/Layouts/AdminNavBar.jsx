@@ -47,9 +47,12 @@ export default function AdminNavBar({ children }) {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <i className="bi bi-list me-2"></i>Instrument List
-                        </a>
+                        <Link href="/admin/viewinstrument-admin">
+                            <a className="nav-link">
+                                <i className="bi bi-list me-2"></i>Instrument
+                                List
+                            </a>
+                        </Link>
                     </li>
 
                     <li className="nav-item">

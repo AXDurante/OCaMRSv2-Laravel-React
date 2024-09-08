@@ -44,6 +44,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/approve-profile', [AdminController::class, 'approveProfile']);
     Route::get('/admin/remove-profile', [AdminController::class, 'removeProfile']);
     Route::get('/admin/manage-profile', [AdminController::class, 'manageProfile']);
+    Route::get('/admin/viewinstrument-admin', [AdminController::class, 'viewInstrumentAdmin']);
     
 });
 
