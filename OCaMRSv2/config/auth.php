@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'technicians' => [
+            'driver' => 'session',
+            'provider' => 'technicians',
+        ],
+
     ],
 
     /*
@@ -64,6 +69,13 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
+
+        'technicians' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', App\Models\Technician::class),
+        ],
+
+        
 
         // 'users' => [
         //     'driver' => 'database',
@@ -90,14 +102,21 @@ return [
     |
     */
 
-    'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
+   'passwords' => [
+    'users' => [
+        'provider' => 'users',
+        'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+        'expire' => 60,
+        'throttle' => 60,
     ],
+
+    'technicians' => [
+        'provider' => 'technicians',
+        'table' => 'password_resets', // or any table name you use for password resets
+        'expire' => 60,
+        'throttle' => 60,
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------

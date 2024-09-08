@@ -19,6 +19,16 @@ Route::get('/', function () {
 })->name('loginHome');
 
 
+Route::prefix('technician')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Tech/Login');
+    })->name('technician.home');
+   
+ 
+  
+    
+});
+
 
 Route::get('/manage profile', function () {
     return Inertia::render('Manage Profile');
@@ -79,4 +89,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
+
+
 require __DIR__.'/auth.php';
+
+
+require __DIR__.'/techAuth.php';
