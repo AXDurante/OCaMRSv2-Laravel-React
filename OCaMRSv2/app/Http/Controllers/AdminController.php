@@ -52,4 +52,9 @@ class AdminController extends Controller
     {
         return Inertia::render('Admin/ManageProfile');
     }
+
+    public function showJobRequest()
+    {
+        return Inertia::render('Admin/ShowJobRequest');
+    }
 }

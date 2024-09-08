@@ -1,6 +1,6 @@
-import Navbar from "../Layouts/Navbar";
+import AdminNavBar from "../../Layouts/AdminNavBar";
 
-function Home() {
+function ShowJobRequest() {
     return (
         <div className="d-flex">
             <div id="content" className="main-content flex-fill p-3">
@@ -177,6 +177,6 @@ function Home() {
     );
 }
 
-Home.layout = (page) => <Navbar>{page}</Navbar>;
+ShowJobRequest.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
-export default Home;
+export default ShowJobRequest;
