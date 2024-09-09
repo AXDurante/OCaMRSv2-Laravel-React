@@ -35,7 +35,7 @@
     border-top-right-radius: 15px;
 }
 .sidebar-user {
-    width: 50%;
+    padding-top: 1vw;
     margin: auto;
     text-align: center; /* Center the text horizontally */
 }
@@ -53,12 +53,11 @@ ul {
 .user-interface,
 .user-interface2 {
     color: #ffffff;
-    font-weight: 200;
+    font-weight: 100;
     display: inline-block; /* Ensures both elements stay on the same line */
-    margin: 0; /* Removes default margin */
 }
 .user-interface {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .nav-link {
@@ -260,6 +259,109 @@ input {
     /*box-shadow: -5px 0px 5px rgb(134, 134, 134);*/
 }
 
+.buttonColor1 {
+    color: #EDBB0E;
+    background-color: #202020;
+}
+
+.buttonColor2 {
+    color: #202020;
+    background-color: #EDBB0E;
+}
+
+.theButtonMG {
+    margin-left: 0.5vw;
+}
+.theButton2 {
+    text-decoration: none;
+    height: 3vw;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0.3vw;
+    width: 10vw;
+    text-align: center;
+    font-size: 1.7vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.7px;
+    padding-top: 0.65vw;
+    padding-bottom: 0.65vw;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+     /* Ensure button takes full width of its container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    
+    
+}
+
+.theButton2::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 0, 0.7),
+        rgba(255, 165, 0, 0.7)
+    );
+    transform: rotate(30deg);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    z-index: 1;
+}
+
+.theButton2:hover::before {
+    animation: shine 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Slower with realistic acceleration */
+}
+
+
+.goBack {
+    font-size: 1vw!important;
+    font-weight: 600;
+    border-width: 0.10vw;
+}
+@keyframes shine {
+    0% {
+        top: -100%;
+        left: -100%;
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        left: 100%;
+        opacity: 0;
+    }
+}
+
+.theButton2 .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    transform: scale(0);
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.theButton2 span {
+    position: relative;
+    z-index: 3;
+}
+
 .theButton {
     height: 4.2vw;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -402,6 +504,17 @@ input[type="checkbox"] {
     color: #7a7a7a !important;
 }
 
+.optionBox {
+    background-color: #f2f2f2 !important;
+    border: 1px solid #fff !important;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
+    height: 3vw !important;
+    padding: 1vw !important;
+    font-size: 1vw !important;
+    color: #7a7a7a !important;
+    height:  3.5vw;
+}
+
 /* trach req */
 #search-button {
     background-color: #fbc600 !important;
@@ -446,7 +559,6 @@ input[type="checkbox"] {
 .pb-7 {
     padding-bottom: 7rem; /* Adjust the value as needed */
 }
-
 /* Admin Manage Job request  css */
 .btn-yellow {
     color: #202020;
@@ -611,6 +723,50 @@ input[type="checkbox"] {
 .instrumentation-accounts .account-icon i {
     font-size: 9rem; /* Increase the icon size */
 }
+/* feedback  */
+.icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; /* Adjust the size as needed */
+    height: 60px; /* Adjust the size as needed */
+    background-color: #fccc00; /* Circle background color */
+    border-radius: 50%; /* Makes the background a circle */
+}
+
+.icon-wrapper .bi {
+    color: rgb(53, 53, 53); /* Icon color */
+}
+
+.text-yellow1 {
+    color: #fccc00;
+}
+.star-rating {
+    display: flex;
+    font-size: 2rem; /* Adjust size as needed */
+    cursor: pointer;
+}
+
+.star {
+    color: #ddd; /* Default color for empty stars */
+    transition: color 0.3s;
+    position: relative;
+}
+
+.star.filled {
+    color: #ffd700; /* Color for filled stars */
+}
+
+/* Adjust hover effect so only stars up to hovered one turn yellow */
+.star:hover,
+.star:hover ~ .star {
+    color: #ffd700;
+}
+
+/* Ensure stars to the right of the hovered star remain the default color */
+.star:hover ~ .star {
+    color: #ddd;
+}
 
 .modal-overlay {
     position: fixed;
@@ -650,3 +806,5 @@ input[type="checkbox"] {
     display: inline-block;
     animation: rotate 2s linear infinite;
 }
+
+

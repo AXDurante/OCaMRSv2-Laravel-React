@@ -42,7 +42,7 @@ export default function Register() {
         e.preventDefault();
         setSubmitted(true);
 
-        post(route('register'), {
+        post(route('technician.register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
@@ -58,7 +58,7 @@ export default function Register() {
             <div className="split3 right">
                 <div className="centered2">
                     <form onSubmit={submit}>
-                        <h1 className="text-center titleLogin mb-3">Register</h1>
+                        <h1 className="text-center titleLogin mb-3">Technician Register</h1>
 
                         {switchForm === 1 && (
                             <div>
@@ -127,7 +127,7 @@ export default function Register() {
                                 </div>
 
                                 <div className='d-flex justify-content-end my-5 '>
-                                    <Link className="theButton2 buttonColor1 theButtonMG" href={route('loginHome')}>
+                                    <Link className="theButton2 buttonColor1 theButtonMG" href={route('technician.home')}>
                                         Back
                                     </Link>
                                     <button onClick={() => nextForm()} className="theButton2 buttonColor2 theButtonMG">
@@ -137,54 +137,8 @@ export default function Register() {
                             </div>
                         )}
 
+
                         {switchForm === 2 && (
-                            <div>
-                                <div className="mt-4">
-                                    <InputLabel htmlFor="college" value="College" />
-                                    <select
-                                        id="college"
-                                        name="college"
-                                        value={data.college}
-                                        className="optionBox w-100"
-                                        onChange={(e) => setData('college', e.target.value)}
-                                        required
-                                    >
-                                        <option value="" disabled>Select your department/faculty</option>
-                                        <option value="Example Department">Example Department</option>
-                                      
-                                    </select>
-                                    <InputError message={errors.college} className="mt-2 text-danger" />
-                                </div>
-
-                                <div className='mt-4'>
-                                    <InputLabel htmlFor="labLoc" value="Lab Location" />
-                                    <TextInput2
-                                        id="labLoc"
-                                        name="labLoc"
-                                        value={data.labLoc}
-                                        className="mt-1 block w-full"
-                                        autoComplete="labLoc"
-                                        isFocused={true}
-                                        onChange={(e) => setData('labLoc', e.target.value)}
-                                        required
-                                    />
-                                    <InputError message={errors.labLoc} className="mt-2 text-danger" />
-                                </div>
-
-                                
-
-                                <div className='d-flex justify-content-end my-5 '>
-                                    <button className="theButton2 buttonColor1 " onClick={() => previousForm()} >
-                                        Back
-                                    </button>
-                                    <button onClick={() => nextForm()} className="theButton2 buttonColor2 theButtonMG">
-                                        Next
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-
-                        {switchForm === 3 && (
                             <div>
                                 <div className="mt-4">
                                     <InputLabel htmlFor="employeeID" value="ID Number" />

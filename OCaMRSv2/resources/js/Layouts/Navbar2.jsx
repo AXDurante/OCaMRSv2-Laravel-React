@@ -65,14 +65,16 @@ export default function NavBar({ children }) {
                     </li>
                     <div className="logout">
                         <li className="nav-item-logout">
-                            <Link
-                                href={route("logout")}
-                                method="post"
-                                as="button"
-                                className="logout-btn"
-                            >
-                                Log Out
-                            </Link>
+                        <Link
+                            href={route("technician.logout")}
+                            method="post"
+                            as="button"
+                           
+                            className="logout-btn"
+                        >
+                            Log Out
+                        </Link>
+
                         </li>
                     </div>
                 </ul>

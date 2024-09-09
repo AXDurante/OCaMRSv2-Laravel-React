@@ -15,7 +15,7 @@ export default function ForgotPassword({ status }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('password.email'));
+        post(route('technician.password.email'));
     };
 
     return (
@@ -28,7 +28,7 @@ export default function ForgotPassword({ status }) {
             <div class="split2 right2"></div>
             <div class="split3 right">
                 <div class="centered2">
-                    <h1 className="text-center titleLogin mb-5">Forgot Password</h1>
+                    <h1 className="text-center titleLogin mb-5">Technician Forgot Password</h1>
                     <div className="mb-4 text-sm text-gray-600">
                         Forgot your password? No problem. Just let us know your email address or employee ID, and we will email you a password reset link.
                     </div>
@@ -58,7 +58,7 @@ export default function ForgotPassword({ status }) {
                                 Email Password Reset Link
                             </LoginButton>
 
-                             <Link type="button" className="btn btn mt-4 btn-outline-dark w-100 h-50 goBack"  href={route('loginHome') } as="button">
+                             <Link type="button" className="btn btn mt-4 btn-outline-dark w-100 h-50 goBack"  href={route('technician.home') } as="button">
                                 Go Back
                             </Link>
                         </div>

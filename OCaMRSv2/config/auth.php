@@ -40,7 +40,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'admin' => [  // Add this new guard
+    
+
+    'admin' => [  // Add this new guard
             'driver' => 'session',
             'provider' => 'admins',
         ],
@@ -48,8 +50,12 @@ return [
             'driver' => 'session',
             'provider' => 'instrumentation_accounts',
         ],
-    ],
 
+    'technicians' => [
+            'driver' => 'session',
+            'provider' => 'technicians',
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -72,13 +78,24 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
         'admins' => [  // Add this new provider
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
+        
         'instrumentation_accounts' => [
             'driver' => 'eloquent',
             'model' => App\Models\InstrumentationAccount::class,
+        ],
+
+        'technicians' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', App\Models\Technician::class),
         ],
     ],
 
@@ -101,14 +118,21 @@ return [
     |
     */
 
-    'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
+   'passwords' => [
+    'users' => [
+        'provider' => 'users',
+        'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+        'expire' => 60,
+        'throttle' => 60,
     ],
+
+    'technicians' => [
+        'provider' => 'technicians',
+        'table' => 'password_resets', // or any table name you use for password resets
+        'expire' => 60,
+        'throttle' => 60,
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------

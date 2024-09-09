@@ -3,16 +3,17 @@ import Navbar from "../../Layouts/Navbar";
 import JobOrder from "./CreateOrder";
 
 function TrackOrder({ jobOrder }) {
-    console.log(jobOrder)
+    console.log(jobOrder);
     return (
-
         <div className="d-flex">
             {/* Search Button */}
             <div id="content" className="main-content flex-fill p-3">
                 <div>
                     <div>
                         <h1 className="d-inline">Track Request | </h1>
-                        <h1 className="d-inline fw-light">Open Request</h1>
+                        <h1 className="d-inline fw-light">
+                            Track Job Order Request
+                        </h1>
                         <hr />
                     </div>
 
@@ -35,10 +36,13 @@ function TrackOrder({ jobOrder }) {
                         </div>
                     </div>
 
-                    
                     {/* Card */}
-                    {jobOrder.map(jobOrder => (
-                        <div className="card mt-4 shadow-sm" id="cardTrackReq" key={jobOrder.job_id}>
+                    {jobOrder.map((jobOrder) => (
+                        <div
+                            className="card mt-4 shadow-sm"
+                            id="cardTrackReq"
+                            key={jobOrder.job_id}
+                        >
                             <div className="card-body d-flex">
                                 <img
                                     src="https://via.placeholder.com/100"
@@ -51,28 +55,44 @@ function TrackOrder({ jobOrder }) {
                                         borderRadius: "8px",
                                     }}
                                 />
-                        
+
                                 <div className="flex-grow-1">
-                                    <p className="text-muted"> ID: {jobOrder.job_id} </p>
-                                    <h5 className="card-title"> Instrument Title: </h5>
-                                    <p> Date Created: {jobOrder.date_request} </p>
+                                    <p className="text-muted">
+                                        {" "}
+                                        ID: {jobOrder.job_id}{" "}
+                                    </p>
+                                    <h5 className="card-title">
+                                        {" "}
+                                        Instrument Title:{" "}
+                                    </h5>
+                                    <p>
+                                        {" "}
+                                        Date Created: {
+                                            jobOrder.date_request
+                                        }{" "}
+                                    </p>
                                     <p> Status: </p>
                                     <div className="d-flex justify-content-end mt-4">
-                                        <button
-                                            className="btn btn-secondary me-2"
-                                            id="btnFeed"
+                                        <Link
+                                            href={`feedback`}
                                         >
-                                            Give Feedback
-                                        </button>
-                                        <Link href={`jobOrder/${jobOrder.job_id}`}>
-                                        <button
-                                            className="btn btn-primary"
-                                            id="btnSee"
-                                        >
-                                            See Details
-                                        </button>
+                                            <button
+                                                className="btn btn-secondary me-2"
+                                                id="btnFeed"
+                                            >
+                                                Give Feedback
+                                            </button>
                                         </Link>
-                                        
+                                        <Link
+                                            href={`jobOrder/${jobOrder.job_id}`}
+                                        >
+                                            <button
+                                                className="btn btn-primary"
+                                                id="btnSee"
+                                            >
+                                                See Details
+                                            </button>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\TechAuth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Technician;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Tech/Register');
     }
 
     /**
@@ -44,15 +44,12 @@ class RegisteredUserController extends Controller
             ],
             'employeeID' => 'required|string|max:255|unique:users',
             'phoneNumber' => 'required|string|max:255|unique:users',
-            'college' => 'required|string|max:255',
-            'labLoc' => 'required|string|max:255',
         ], [
             'password.min' => 'The password must be at least 8 characters.',
             'password.regex' => 'The password must include at least one uppercase letter, one number, and one special character.',
         ]);
-        
 
-        $user = User::create([
+        $technician = Technician::create([
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
             'email' => $request->email,
@@ -63,10 +60,13 @@ class RegisteredUserController extends Controller
             'labLoc' => $request->labLoc,
         ]);
 
-        event(new Registered($user));
+        // Fire the Registered event (optional, if you still need it)
+        event(new Registered($technician));
 
-        Auth::login($user);
+        // Log in the technician
+        Auth::login($technician);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect to the technician dashboard
+        return redirect()->route('technician.home');
     }
 }

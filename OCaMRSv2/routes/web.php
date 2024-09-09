@@ -20,11 +20,19 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+})->name('loginHome');
+
+
+Route::prefix('technician')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Tech/Login');
+    })->name('technician.home');
+   
+ 
+  
+    
 });
 
-Route::get('/home', function () {
-    return Inertia::render('Home');
-});
 
 Route::get('/manage profile', function () {
     return Inertia::render('Manage Profile');
@@ -67,6 +75,11 @@ Route::get('/test', function () {
     return Inertia::render('VerifyEmail2');
 });
 
+Route::get('/feedback', function () {
+    return Inertia::render('Feedback');
+});
+
+
 Route::get('/original', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -104,4 +117,11 @@ Route::middleware('auth')->group(function () {
   
 });
 
+
+
+
+
 require __DIR__.'/auth.php';
+
+
+require __DIR__.'/techAuth.php';
