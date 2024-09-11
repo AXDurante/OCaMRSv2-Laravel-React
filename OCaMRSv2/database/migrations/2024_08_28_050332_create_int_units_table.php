@@ -11,14 +11,16 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('int_units', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->instrument();
-            $table->qty();
-            $table->model();
-            $table->manufacturer();
-            $table->property_num();
-            $table->jobOrderID();
+            $table->id('intUnit_id');
+            $table->text('instrument');
+            $table->text('qty');
+            $table->text('model');
+            $table->text('serial_num');
+            $table->text('manufacturer');
+            $table->text('property_num');
+            $table->text('jobOrderID');
+            // $table->timestamp('date_request')->nullable();
+            // $table->timestamp('date_due')->nullable();
         });
     }
 

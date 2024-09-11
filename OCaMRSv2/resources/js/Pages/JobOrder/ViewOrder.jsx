@@ -1,6 +1,7 @@
 import Navbar from "../../Layouts/Navbar";
 
-function ViewOrder({ jobOrder }) {
+function ViewOrder({ jobOrder, intUnit }) {
+    console.log(intUnit)
     return (
         <div className="d-flex">
             <div id="content" className="main-content flex-fill p-3">
