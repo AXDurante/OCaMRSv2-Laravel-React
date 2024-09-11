@@ -37,7 +37,7 @@ class IntUnitController extends Controller
      */
     public function show(IntUnit $intUnit)
     {
-        
+
     }
 
     /**

@@ -1,11 +1,92 @@
+import { useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
+import { useState } from "react";
 
 function CreateOrder({ jobOrder }) {
+
+    const { data, setData, post, errors, processing } = useForm({
+        service_type: "",
+        trans_type: "",
+        dept_name: "",
+        lab: "",
+        lab_loc: "",
+        pos: "",
+    })
+
+    const [instruments, setInstruments] = useState([
+        {
+            instrument: "",
+            modek: "",
+            qty: "",
+            manufacturer: "",
+            serial_num: "",
+            property: "",
+        },
+    ]);
+
+    const addInstrument = () => {
+        setInstruments([
+            ...instruments,
+            {
+                instrument: "",
+                model: "",
+                qty: "",
+                manufacturer: "",
+                serial_num: "",
+                property: "",
+            },
+        ]);
+    };
+
+    const removeInstrument = (index) => {
+        const updatedInstruments = instruments.filter((_, i) => i !== index);
+        setInstruments(updatedInstruments);
+    }
+
+    const handleInputChange = (index, event) => {
+        const { name, value } = event.target;
+        const updatedInstruments = instruments.map((inst, i) =>
+        i === index ? { ...inst, [name]: value } : inst 
+        );
+        setInstruments(updatedInstruments);
+    }
+
+    function onSubmit(e) {
+        e.preventDefault();
+        post('/jobOrder');
+    }
+
     console.log(jobOrder);
     return (
         <>
             <div className="d-flex">
                 <div id="content" className="main-content flex-fill p-3">
+                    <div>
+                        TEST:
+                        <div>
+                            Department: {data.dept_name}
+                        </div>
+
+                        <div>
+                            Laboratory: {data.lab}
+                        </div>
+
+                        <div>
+                            Lab Location: {data.lab_loc}
+                        </div>
+
+                        <div>
+                            Position: {data.pos}
+                        </div>
+
+                        <div>
+                            Service Type: {data.service_type}
+                        </div>
+                        
+                        <div>
+                            Transportation Type: {data.trans_type}
+                        </div>
+                    </div>
                     <div>
                         <div>
                             <h1 class="d-inline">Job Request | </h1>
@@ -15,133 +96,136 @@ function CreateOrder({ jobOrder }) {
                         <div className="mt3">
                             <h4>Information</h4>
                             <div className="row forms-bg p-3">
-                                <div className="col d-flex flex-column align-items-center p-3">
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Service Requested
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Laboratory
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        College/ Faculty / Office
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                    />
-                                </div>
-                                <div className="col d-flex flex-column align-items-center  p-3">
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Instrumentation Transportation
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Laboratory Location
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start  fw-bold mt-2 w-100">
-                                        Position
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                    />
-                                </div>
+                                <form onSubmit={onSubmit}>
+                                    <div className="col d-flex flex-column align-items-center p-3"> 
+                                        <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                                            Service Requested
+                                        </h6>
+                                        <input
+                                            type="text"
+                                            className="d-flex flex-column align-items-center w-100 rounded"
+                                            data={data.service_type}
+                                            onChange={(e) => setData('service_type', e.target.value)}
+                                        />
+                                        <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                                            Laboratory
+                                        </h6>
+                                        <input
+                                            type="text"
+                                            className="d-flex flex-column align-items-center w-100 rounded"
+                                            data={data.lab}
+                                            onChange={(e) => setData('lab', e.target.value)}
+                                        />
+                                        <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                                            College/ Faculty / Office
+                                        </h6>
+                                        <input
+                                            type="text"
+                                            className="d-flex flex-column align-items-center w-100 rounded"
+                                            data={data.dept_name}
+                                            onChange={(e) => setData('dept_name', e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="col d-flex flex-column align-items-center  p-3">
+                                        <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                                            Instrumentation Transportation
+                                        </h6>
+                                        <input
+                                            type="text"
+                                            className="d-flex flex-column align-items-center w-100 rounded"
+                                            data={data.trans_type}
+                                            onChange={(e) => setData('trans_type', e.target.value)}
+                                        />
+                                        <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                                            Laboratory Location
+                                        </h6>
+                                        <input
+                                            type="text"
+                                            className="d-flex flex-column align-items-center w-100 rounded"
+                                            data={data.lab_loc}
+                                            onChange={(e) => setData('lab_loc', e.target.value)}
+                                        />
+                                        <h6 className="d-flex flex-column align-items-start  fw-bold mt-2 w-100">
+                                            Position
+                                        </h6>
+                                        <input
+                                            type="text"
+                                            className="d-flex flex-column align-items-center w-100 rounded"
+                                            data={data.pos}
+                                            onChange={(e) => setData('pos', e.target.value)}
+                                        />
+                                        <button> Submit </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
 
                     <div>
-                        <div className="">
-                            <h4 className="mt-4">Item No.1</h4>
-                            <div className="row forms-bg p-3">
+                        {instruments.map((instrument, index) => (
+                            <div key={index} className="">
+                                <h4 className="mt-4">Item No. {index + 1}</h4>
                                 <div className="row forms-bg p-3">
                                     <div className="col-12 col-md-5 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Instrument
-                                        </h6>
+                                        <h6 className="w-100 fw-bold text-start">Instrument</h6>
                                         <input
                                             type="text"
                                             className="w-100 mb-2 rounded"
+                                            name="instrument"
                                         />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Model
-                                        </h6>
+                                        <h6 className="w-100 fw-bold text-start">Model</h6>
                                         <input
                                             type="text"
                                             className="w-100 mb-2 rounded"
+                                            name="model"
                                         />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Image Attachment
-                                        </h6>
-                                        <button className="btn btn-secondary w-50">
-                                            + Insert Image
-                                        </button>
+                                        <h6 className="w-100 fw-bold text-start">Image Attachment</h6>
+                                        <button className="btn btn-secondary w-50">+ Insert Image</button>
                                     </div>
 
                                     <div className="col-12 col-md-3 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Quantity
-                                        </h6>
+                                        <h6 className="w-100 fw-bold text-start">Quantity</h6>
                                         <input
                                             type="text"
                                             className="w-50 mb-2 justify-content-start rounded"
+                                            name="qty"
                                         />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Manufacturer
-                                        </h6>
+                                        <h6 className="w-100 fw-bold text-start">Manufacturer</h6>
                                         <input
                                             type="text"
                                             className="w-100 mb-2 rounded"
+                                            name="manufacturer"
                                         />
                                     </div>
 
                                     <div className="col-12 col-md-4 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start ">
-                                            Instrument Serial No
-                                        </h6>
+                                        <h6 className="w-100 fw-bold text-start">Instrument Serial No</h6>
                                         <input
                                             type="text"
                                             className="w-100 fw-bold mb-2 rounded"
+                                            name="serial_num"
                                         />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Property
-                                        </h6>
+                                        <h6 className="w-100 fw-bold text-start">Property</h6>
                                         <input
                                             type="text"
                                             className="w-100 mb-2 rounded"
+                                            name="property"
                                         />
                                     </div>
 
                                     <div className="col-12 d-flex flex-row-reverse">
-                                        <button className="btn btn-danger">
-                                            delete
+                                        <button className="btn btn-danger" onClick={() => removeInstrument(index)}>
+                                            Delete
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <button className="jb-btn-add mt-3 mb-2">
-                                Add More Instrument
-                            </button>
-                        </div>
-                        <hr />
-                        <button className="jb-btn-submit w-100 mt-3">
-                            Submit Job Order
+                        ))}
+                        <button className="jb-btn-add mt-3 mb-2" onClick={addInstrument}>
+                            Add More Instrument
                         </button>
+                        <hr />
+                        <button className="jb-btn-submit w-100 mt-3">Submit Job Order</button>
                     </div>
                 </div>
             </div>

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobOrder;
-use App\Http\Requests\StoreJobOrderRequest;
-use App\Http\Requests\UpdateJobOrderRequest;
+use Illuminate\Http\Request;
 
 class JobOrderController extends Controller
 {
@@ -28,9 +27,19 @@ class JobOrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreJobOrderRequest $request)
+    public function store(Request $request)
     {
-        //
+        $fields = $request->validate([
+            'service_type' => ['required'],
+            'trans_type' => ['required'],
+            'dept_name' => ['required'],
+            'lab' => ['required'],
+            'lab_loc' => ['required'],
+            'pos' => ['required'],
+        ]);
+
+        JobOrder::create($fields);
+        return redirect('/jobOrder');
     }
 
     /**
@@ -52,7 +61,7 @@ class JobOrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateJobOrderRequest $request, JobOrder $jobOrder)
+    public function update(Request $request, JobOrder $jobOrder)
     {
         //
     }

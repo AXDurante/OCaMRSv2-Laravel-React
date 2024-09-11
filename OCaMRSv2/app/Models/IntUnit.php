@@ -18,4 +18,9 @@ class IntUnit extends Model
         'property_num',
         'jobOrderID',
     ];
+
+    public function jobOrder()
+    {
+        return $this->belongsTo(JobOrder::class, 'jobOrderID');
+    }
 }
