@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class IntUnit extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+    protected $primaryKey = 'intUnit_ID';
 
     protected $fillable = [
         'instrument',

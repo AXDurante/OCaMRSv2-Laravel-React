@@ -7,6 +7,7 @@ use App\Http\Requests\StoreJobOrderRequest;
 use App\Http\Requests\UpdateJobOrderRequest;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Models\IntUnit;
 use Illuminate\Http\Request;
 
 class JobOrderController extends Controller
@@ -19,6 +20,7 @@ class JobOrderController extends Controller
 
 
         $jobOrder = JobOrder::all();
+        $intUnit = IntUnit::all();
         $user = Auth::user();
         return Inertia::render('JobOrder/TrackOrder', [
             'absolute' => false,
@@ -26,6 +28,7 @@ class JobOrderController extends Controller
             'lastName' => $user->lastName,
             'email' => $user->email,
             'jobOrder' => $jobOrder,
+            'intUnit' => $intUnit
         ]);
     }
 
@@ -35,15 +38,15 @@ class JobOrderController extends Controller
     public function create()
     {
 
-
-
+        $lastRecord = JobOrder::latest('date_request')->first();
+        $lastID = $lastRecord->job_id += 1;
         $user = Auth::user();
         return Inertia::render('JobOrder/CreateOrder', [
             'absolute' => false,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'email' => $user->email,
-
+            'lastID' => $lastID
         ]);
     }
 
@@ -52,7 +55,7 @@ class JobOrderController extends Controller
      */
     public function store(Request $request)
     {
-        $fields = $request->validate([
+        $jobOrderFields = $request->validate([
             'service_type' => ['required'],
             'trans_type' => ['required'],
             'dept_name' => ['required'],
@@ -61,7 +64,19 @@ class JobOrderController extends Controller
             'pos' => ['required'],
         ]);
 
-        JobOrder::create($fields);
+        JobOrder::create($jobOrderFields);
+
+        $intUnitFields = $request->validate([
+            'instrument' => ['required'],
+            'qty' => ['required'],
+            'model' => ['required'],
+            'serial_num' => ['required'],
+            'manufacturer' => ['required'],
+            'property_num' => ['required'],
+            'jobOrderID' => ['required'],
+        ]);
+
+        IntUnit::create($intUnitFields);
         return redirect('/jobOrder');
     }
 
