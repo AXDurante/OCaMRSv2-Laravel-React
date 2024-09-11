@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobOrderController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController; 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\InstrumentationAccountController;
 use App\Http\Controllers\InstrumentationAuthController;
@@ -23,18 +23,15 @@ Route::get('/', function () {
     ]);
 })->name('loginHome');
 
-
 Route::prefix('technician')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Tech/Login');
     })->name('technician.home');
-   
- 
-  
-    
 });
 
-
+// Route::get('/manage profile', function () {
+//     return Inertia::render('Manage Profile');
+// });
 
 Route::get('/manage job request', function () {
     return Inertia::render('Manage Job Request');
@@ -95,8 +92,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
     Route::get('/manage-profile', [DashboardController::class, 'manageProfile'])
-         ->name('manageProfile');
-  
+        ->name('manageProfile');
+
 
 
 });
@@ -118,14 +115,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-  
+
 });
 
 
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
-require __DIR__.'/techAuth.php';
+require __DIR__ . '/techAuth.php';
