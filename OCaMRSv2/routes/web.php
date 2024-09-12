@@ -72,6 +72,10 @@ Route::get('/dashboard', function () {
     return Inertia::render('Home');
 });
 
+Route::get('/landingpage', function () {
+    return Inertia::render('LandingPage');
+});
+
 // ->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route::middleware('auth')->group(function () {
