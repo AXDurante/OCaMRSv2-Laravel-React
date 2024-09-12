@@ -1,4 +1,6 @@
 import Navbar from "../Layouts/Navbar";
+import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa"; // Import social media icons
+import logo from "/public/images/lesog2.png"; // Import logo image
 
 function LandingPage() {
     return (
@@ -16,8 +18,43 @@ function LandingPage() {
                         </p>
                         <button className="landing-button">Get Started</button>
                     </div>
+
                     {/* Background Image */}
-                    <div className="landing-image"></div>
+                    <div className="landing-image">
+                        <div className="landpage-logo"></div>
+                    </div>
+                    <div className="gradient-overlay1">
+                        <div className="landing-image2"></div>
+                    </div>
+                </div>
+
+                <div className="footer-container">
+                    <div className="footer-social-media">
+                        <a
+                            href="https://www.facebook.com/USTLESO"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <FaFacebook />
+                        </a>
+                        <a
+                            href="https://www.twitter.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <FaTwitter />
+                        </a>
+                        <a
+                            href="https://www.instagram.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <FaInstagram />
+                        </a>
+                    </div>
+                    <div className="footer-text">
+                        <p>© 2024 LESO - ISC. All rights reserved.</p>
+                    </div>
                 </div>
             </div>
         </div>

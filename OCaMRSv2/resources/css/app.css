@@ -741,17 +741,26 @@ input[type="checkbox"] {
 }
 
 .landing-image {
-    background: url("/public/images/landingbg.png") center/cover no-repeat; /* Replace with the correct path to your image */
-    background-size: cover;
+    background: url("/public/images/landingbg.png") center/cover no-repeat;
     height: 700px;
     width: 100%;
+    position: relative; /* Ensure child elements can use absolute positioning */
+}
+
+.landing-image2 {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgb(0, 0, 0)),
+        /* Gradient overlay */ url("/public/images/landbg3.png") center/cover
+            no-repeat; /* Background image */
+    background-size: cover;
+    height: 500px;
+    width: 100%;
+    background-color: #202020ca;
 }
 
 .text-overlay {
+    width: 50%;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-80%, -50%);
+    transform: translate(20%, 90%);
     z-index: 2;
     text-align: start;
 }
@@ -787,4 +796,52 @@ input[type="checkbox"] {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* Dark overlay on the image */
     z-index: 1;
+}
+.landpage-logo {
+    background: url("/public/images/logoleso3.png") center/cover no-repeat;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background-size: 60%; /* Keep image size within the container */
+    background-position: calc(100% + 40px) center; /* Moves the image 20px to the right */
+}
+/* footer */
+.footer-container {
+    background-color: #f8f9fa; /* Light background color */
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #dee2e6; /* Subtle border at the top */
+}
+
+.footer-logo img {
+    max-width: 150px; /* Adjust based on your logo size */
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.footer-social-media {
+    margin: 10px 0;
+}
+
+.footer-social-media a {
+    color: #495057; /* Icon color */
+    font-size: 24px; /* Adjust icon size */
+    margin: 0 10px; /* Space between icons */
+    text-decoration: none;
+}
+
+.footer-social-media a:hover {
+    color: #007bff; /* Change color on hover */
+}
+
+.footer-text {
+    margin-top: 10px;
+    color: #6c757d; /* Text color */
+}
+
+.footer-text p {
+    margin: 0;
 }
