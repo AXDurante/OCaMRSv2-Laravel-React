@@ -1,7 +1,7 @@
 import Navbar from "../../Layouts/Navbar";
 
-function CreateOrder({ jobOrder }) {
-    console.log(jobOrder);
+function CreateOrder({ jobOrder, absolute, firstName, lastName, email }) {
+    console.log("Creat Order props:", { jobOrder, absolute, firstName, lastName, email });
     return (
         <>
             <div className="d-flex">
@@ -149,6 +149,18 @@ function CreateOrder({ jobOrder }) {
     );
 }
 
-CreateOrder.layout = (page) => <Navbar>{page}</Navbar>;
+CreateOrder.layout = (page) => {
+    const props = page.props;
+    return (
+        <Navbar 
+            absolute={props.absolute}
+            firstName={props.firstName}
+            lastName={props.lastName}
+            email={props.email}
+        >
+            {page}
+        </Navbar>
+    );
+};
 
 export default CreateOrder;

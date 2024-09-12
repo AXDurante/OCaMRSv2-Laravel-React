@@ -2,8 +2,9 @@ import { Link } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 import JobOrder from "./CreateOrder";
 
-function TrackOrder({ jobOrder }) {
-    console.log(jobOrder);
+function TrackOrder({ jobOrder , firstName, lastName, email }) {
+    console.log("Job Order props:", { jobOrder, firstName, lastName, email });
+
     return (
         <div className="d-flex">
             {/* Search Button */}
@@ -104,6 +105,17 @@ function TrackOrder({ jobOrder }) {
     );
 }
 
-TrackOrder.layout = (page) => <Navbar>{page}</Navbar>;
-
+TrackOrder.layout = (page) => {
+    const props = page.props;
+    return (
+        <Navbar 
+            absolute={props.absolute}
+            firstName={props.firstName}
+            lastName={props.lastName}
+            email={props.email}
+        >
+            {page}
+        </Navbar>
+    );
+};
 export default TrackOrder;

@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\InstrumentationAccountController;
 use App\Http\Controllers\InstrumentationAuthController;
 use Inertia\Inertia;
+use App\Http\Controllers\DashboardController;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
@@ -34,9 +35,6 @@ Route::prefix('technician')->group(function () {
 });
 
 
-Route::get('/manage profile', function () {
-    return Inertia::render('Manage Profile');
-});
 
 Route::get('/manage job request', function () {
     return Inertia::render('Manage Job Request');
@@ -93,9 +91,15 @@ Route::get('/about', function () {
     return Inertia::render('About');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard');
+    Route::get('/manage-profile', [DashboardController::class, 'manageProfile'])
+         ->name('manageProfile');
+  
+
+
+});
 
 Route::get('/instrumentation/login', [InstrumentationAuthController::class, 'showLoginForm'])->name('instrumentation.login');
 Route::post('/instrumentation/login', [InstrumentationAuthController::class, 'login'])->name('instrumentation.login.submit');

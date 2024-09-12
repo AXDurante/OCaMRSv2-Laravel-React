@@ -1,6 +1,7 @@
 import Navbar from "../Layouts/Navbar";
 
-function Home() {
+function Home({ absolute, firstName, lastName, email }) {
+    console.log("Home props:", { absolute, firstName, lastName, email });
     return (
         <div className="d-flex">
             <div id="content" className="main-content flex-fill p-3">
@@ -146,6 +147,18 @@ function Home() {
     );
 }
 
-Home.layout = (page) => <Navbar>{page}</Navbar>;
+Home.layout = (page) => {
+    const props = page.props;
+    return (
+        <Navbar 
+            absolute={props.absolute}
+            firstName={props.firstName}
+            lastName={props.lastName}
+            email={props.email}
+        >
+            {page}
+        </Navbar>
+    );
+};
 
 export default Home;

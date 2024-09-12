@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\JobOrder;
 use App\Http\Requests\StoreJobOrderRequest;
 use App\Http\Requests\UpdateJobOrderRequest;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class JobOrderController extends Controller
 {
@@ -13,8 +15,17 @@ class JobOrderController extends Controller
      */
     public function index()
     {
+
+       
         $jobOrder = JobOrder::all();
-        return inertia('JobOrder/TrackOrder', ['jobOrder' => $jobOrder]);
+        $user = Auth::user();
+        return Inertia::render('JobOrder/TrackOrder', [
+            'absolute' => false,
+            'firstName' => $user->firstName,
+            'lastName' => $user->lastName,
+            'email' => $user->email,
+            'jobOrder' => $jobOrder,
+        ]);
     }
 
     /**
@@ -22,7 +33,17 @@ class JobOrderController extends Controller
      */
     public function create()
     {
-        return inertia('JobOrder/CreateOrder');
+       
+
+     
+        $user = Auth::user();
+        return Inertia::render('JobOrder/CreateOrder', [
+            'absolute' => false,
+            'firstName' => $user->firstName,
+            'lastName' => $user->lastName,
+            'email' => $user->email,
+           
+        ]);
     }
 
     /**

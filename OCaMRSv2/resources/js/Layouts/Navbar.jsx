@@ -1,6 +1,7 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
-export default function NavBar({ children }) {
+export default function NavBar({ children, absolute, firstName, lastName, email }) {
+    console.log("Navbar props:", { absolute, firstName, lastName, email });
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
             <nav
@@ -16,6 +17,7 @@ export default function NavBar({ children }) {
                     <h4 className="text-black" id="textHeader">
                         LESO - ISC
                     </h4>
+                    <p>Welcome, {firstName} {lastName}</p> 
                 </div>
                 <div className="sidebar-user ">
                     <h4 className="user-interface">Client&nbsp;</h4>
@@ -39,11 +41,8 @@ export default function NavBar({ children }) {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="/manage profile">
-                            <a className="nav-link">
-                                <i className="bi bi-person-fill me-2"></i>Manage
-                                Profile
-                            </a>
+                        <Link href={route('manageProfile')} className="nav-link">
+                            <i className="bi bi-person-fill me-2"></i>Manage Profile
                         </Link>
                     </li>
                     <li className="nav-item">
