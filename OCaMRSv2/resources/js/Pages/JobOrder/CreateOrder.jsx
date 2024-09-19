@@ -26,7 +26,7 @@ function CreateOrder({ jobOrder, lastID }) {
     const [instruments, setInstruments] = useState([
         {
             instrument: "",
-            modek: "",
+            model: "",
             qty: "",
             manufacturer: "",
             serial_num: "",
