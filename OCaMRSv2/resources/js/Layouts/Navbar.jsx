@@ -16,6 +16,7 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                         <h4 className="text-black pt-4" id="textHeader">
                             LESO - ISC
                         </h4>
+                        <p className="ms-4">Welcome, {firstName} {lastName}</p>
                     </div>
                      
 
@@ -30,12 +31,6 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                     borderBottomRightRadius: "15px",
                 }}
             >
-                <div className="sidebar-header">
-                    <h4 className="text-black" id="textHeader">
-                        LESO - ISC
-                    </h4>
-                    <p>Welcome, {firstName} {lastName}</p> 
-                </div>
                 <div className="sidebar-user ">
                     <h4 className="user-interface">Client&nbsp;</h4>
                     <h4 className="user-interface2"> Interface</h4>
