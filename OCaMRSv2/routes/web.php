@@ -39,6 +39,10 @@ Route::get('/manage job request', function () {
 
 
 
+Route::get('/viewInstrument', function () {
+    return Inertia::render('ViewInstrument');
+});
+
 
 // ADMIN
 Route::middleware(['auth:admin'])->group(function () {

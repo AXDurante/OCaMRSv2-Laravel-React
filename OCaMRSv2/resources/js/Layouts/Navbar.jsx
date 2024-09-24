@@ -46,9 +46,12 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <i className="bi bi-list me-2"></i>Instrument List
-                        </a>
+                        <Link href="/viewInstrument">
+                            <a className="nav-link">
+                                <i className="bi bi-list me-2"></i>Instrument
+                                List
+                            </a>
+                        </Link>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">
