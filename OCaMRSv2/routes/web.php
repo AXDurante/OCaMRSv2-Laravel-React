@@ -125,7 +125,9 @@ Route::middleware('auth')->group(function () {
 
 
 
-
+Route::get('/landingpage', function () {
+    return Inertia::render('LandingPage');
+});
 require __DIR__ . '/auth.php';
 
 

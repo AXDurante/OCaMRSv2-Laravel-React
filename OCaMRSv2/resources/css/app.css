@@ -260,13 +260,13 @@ input {
 }
 
 .buttonColor1 {
-    color: #EDBB0E;
+    color: #edbb0e;
     background-color: #202020;
 }
 
 .buttonColor2 {
     color: #202020;
-    background-color: #EDBB0E;
+    background-color: #edbb0e;
 }
 
 .theButtonMG {
@@ -294,10 +294,8 @@ input {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-     /* Ensure button takes full width of its container */
+    /* Ensure button takes full width of its container */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    
-    
 }
 
 .theButton2::before {
@@ -322,11 +320,10 @@ input {
     animation: shine 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Slower with realistic acceleration */
 }
 
-
 .goBack {
-    font-size: 1vw!important;
+    font-size: 1vw !important;
     font-weight: 600;
-    border-width: 0.10vw;
+    border-width: 0.1vw;
 }
 @keyframes shine {
     0% {
@@ -512,7 +509,7 @@ input[type="checkbox"] {
     padding: 1vw !important;
     font-size: 1vw !important;
     color: #7a7a7a !important;
-    height:  3.5vw;
+    height: 3.5vw;
 }
 
 /* trach req */
@@ -808,3 +805,116 @@ input[type="checkbox"] {
 }
 
 
+
+/* homepage */
+.landing-section {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.landing-image {
+    background: url("/public/images/landingbg.png") center/cover no-repeat;
+    height: 700px;
+    width: 100%;
+    position: relative; /* Ensure child elements can use absolute positioning */
+}
+
+.landing-image2 {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgb(0, 0, 0)),
+        /* Gradient overlay */ url("/public/images/landbg3.png") center/cover
+            no-repeat; /* Background image */
+    background-size: cover;
+    height: 500px;
+    width: 100%;
+    background-color: #202020ca;
+}
+
+.text-overlay {
+    width: 50%;
+    position: absolute;
+    transform: translate(20%, 90%);
+    z-index: 2;
+    text-align: start;
+}
+
+.landing-description {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+.landing-button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #fbc600;
+    color: #202020;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.landing-button:hover {
+    background-color: #ffd600;
+}
+
+.landing-image::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay on the image */
+    z-index: 1;
+}
+.landpage-logo {
+    background: url("/public/images/logoleso3.png") center/cover no-repeat;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background-size: 60%; /* Keep image size within the container */
+    background-position: calc(100% + 40px) center; /* Moves the image 20px to the right */
+}
+/* footer */
+.footer-container {
+    background-color: #f8f9fa; /* Light background color */
+    padding: 20px;
+    text-align: center;
+    border-top: 1px solid #dee2e6; /* Subtle border at the top */
+}
+
+.footer-logo img {
+    max-width: 150px; /* Adjust based on your logo size */
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.footer-social-media {
+    margin: 10px 0;
+}
+
+.footer-social-media a {
+    color: #495057; /* Icon color */
+    font-size: 24px; /* Adjust icon size */
+    margin: 0 10px; /* Space between icons */
+    text-decoration: none;
+}
+
+.footer-social-media a:hover {
+    color: #007bff; /* Change color on hover */
+}
+
+.footer-text {
+    margin-top: 10px;
+    color: #6c757d; /* Text color */
+}
+
+.footer-text p {
+    margin: 0;
+}
