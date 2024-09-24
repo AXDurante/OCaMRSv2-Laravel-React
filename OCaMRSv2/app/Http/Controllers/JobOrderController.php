@@ -78,31 +78,6 @@ class JobOrderController extends Controller
 
         IntUnit::create($intUnitFields);
         return redirect('/jobOrder');
-    public function store(Request $request)
-    {
-        $jobOrderFields = $request->validate([
-            'service_type' => ['required'],
-            'trans_type' => ['required'],
-            'dept_name' => ['required'],
-            'lab' => ['required'],
-            'lab_loc' => ['required'],
-            'pos' => ['required'],
-        ]);
-
-        JobOrder::create($jobOrderFields);
-
-        $intUnitFields = $request->validate([
-            'instrument' => ['required'],
-            'qty' => ['required'],
-            'model' => ['required'],
-            'serial_num' => ['required'],
-            'manufacturer' => ['required'],
-            'property_num' => ['required'],
-            'jobOrderID' => ['required'],
-        ]);
-
-        IntUnit::create($intUnitFields);
-        return redirect('/jobOrder');
     }
 
     /**
