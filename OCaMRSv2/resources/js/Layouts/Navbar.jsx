@@ -4,12 +4,29 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
     console.log("Navbar props:", { absolute, firstName, lastName, email });
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
+
+
+            <div className="sidebar2"  style={{
+                    width: "250px",
+                    minWidth: "250px",
+                    borderTopRightRadius: "20px",
+                    borderBottomRightRadius: "15px",
+                }}>
+                    <div className="mt-4">
+                        <h4 className="text-black pt-4" id="textHeader">
+                            LESO - ISC
+                        </h4>
+                    </div>
+                     
+
+            </div>
+            
             <nav
                 className="sidebar rounded-right text-light"
                 style={{
                     width: "250px",
                     minWidth: "250px",
-                    borderTopRightRadius: "20px",
+                    
                     borderBottomRightRadius: "15px",
                 }}
             >
@@ -23,7 +40,7 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                     <h4 className="user-interface">Client&nbsp;</h4>
                     <h4 className="user-interface2"> Interface</h4>
                 </div>
-                <ul className="nav flex-column pt-4">
+                <ul className="nav flex-column pt-4 theNav">
                     <li className="nav-item">
                         <Link href="/jobOrder/create">
                             <a className="nav-link">
@@ -77,7 +94,9 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                             </Link>
                         </li>
                     </div>
+                   
                 </ul>
+                
             </nav>
             <main className="flex-fill p-3">{children}</main>
         </div>

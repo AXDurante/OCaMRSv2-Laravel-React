@@ -26,6 +26,7 @@
     padding-bottom: 150px;
     width: 100%;
     border-top-right-radius: 15px;
+   
 }
 .sidebar-headeradmin {
     background-color: #0789e7;
@@ -42,10 +43,28 @@
 h3 {
 }
 .sidebar {
-    height: 100vh; /* Ensure the sidebar takes up the full height of the viewport */
+
+    height: 68vh; /* Ensure the sidebar takes up the full height of the viewport */
     overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport height */
+    bottom: 0;
     background-color: #202020;
     position: fixed;
+    
+}
+
+.sidebar2 {
+    height: 37vh;
+    top: 0;
+    background-color: #ffd500;
+    overflow-y: auto;
+    position: fixed;
+}
+
+.theNav {
+    margin-left: 1.5vw;
+    
+    text-decoration: none!important;
+    
 }
 
 ul {
@@ -63,6 +82,7 @@ ul {
 .nav-link {
     color: #ffffff; /* Default text color */
     transition: color 0.3s ease; /* Smooth transition for hover effect */
+    text-decoration: none!important;
 }
 
 .nav-link:hover,
@@ -75,6 +95,7 @@ ul {
 .nav-item.active .nav-link,
 .nav-link.active {
     color: #ffd600; /* Active link color */
+    text-decoration: none; /* Remove underline */
 }
 @media (max-height: 600px) {
     .sidebar-header {
