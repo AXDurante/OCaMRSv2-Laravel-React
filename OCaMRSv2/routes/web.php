@@ -70,6 +70,7 @@ Route::middleware(['auth:admin'])->group(function () {
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
+// TO REMOVE
 Route::get('/test', function () {
     return Inertia::render('VerifyEmail2');
 });

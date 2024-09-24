@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -19,6 +18,7 @@ return new class extends Migration
             $table->text('lab');
             $table->text('lab_loc');
             $table->text('pos');
+            $table->text('employeeID');
             $table->timestamp('date_request')->nullable();
             $table->timestamp('date_due')->nullable();
         });

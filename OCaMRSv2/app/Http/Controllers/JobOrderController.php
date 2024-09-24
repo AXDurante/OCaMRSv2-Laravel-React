@@ -17,11 +17,10 @@ class JobOrderController extends Controller
      */
     public function index()
     {
-
-
-        $jobOrder = JobOrder::all();
-        $intUnit = IntUnit::all();
         $user = Auth::user();
+        $jobOrder = JobOrder::where('employeeID', $user->employeeID)->get();
+        $intUnit = IntUnit::all();
+
         return Inertia::render('JobOrder/TrackOrder', [
             'absolute' => false,
             'firstName' => $user->firstName,
@@ -37,16 +36,20 @@ class JobOrderController extends Controller
      */
     public function create()
     {
-
         $lastRecord = JobOrder::latest('date_request')->first();
-        $lastID = $lastRecord->job_id += 1;
+        if ($lastRecord === null) {
+            $lastID = 1;
+        } else {
+            $lastID = $lastRecord->job_id + 1;
+        }
         $user = Auth::user();
         return Inertia::render('JobOrder/CreateOrder', [
             'absolute' => false,
+            'employeeID' => $user->employeeID,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'email' => $user->email,
-            'lastID' => $lastID
+            'lastID' => $lastID,
         ]);
     }
 
@@ -64,19 +67,26 @@ class JobOrderController extends Controller
             'pos' => ['required'],
         ]);
 
-        JobOrder::create($jobOrderFields);
+        // Set employeeID from authenticated user
+        $jobOrderFields['employeeID'] = Auth::user()->employeeID;
+
+        $jobOrder = JobOrder::create($jobOrderFields);
 
         $intUnitFields = $request->validate([
-            'instrument' => ['required'],
-            'qty' => ['required'],
-            'model' => ['required'],
-            'serial_num' => ['required'],
-            'manufacturer' => ['required'],
-            'property_num' => ['required'],
-            'jobOrderID' => ['required'],
+            'instruments' => ['required', 'array'],
+            'instruments.*.instrument' => ['required'],
+            'instruments.*.qty' => ['required'],
+            'instruments.*.model' => ['required'],
+            'instruments.*.serial_num' => ['required'],
+            'instruments.*.manufacturer' => ['required'],
+            'instruments.*.property_num' => ['required'],
         ]);
 
-        IntUnit::create($intUnitFields);
+        foreach ($intUnitFields['instruments'] as $instrument) {
+            $instrument['jobOrderID'] = $jobOrder->job_id;
+            IntUnit::create($instrument);
+        }
+
         return redirect('/jobOrder');
     }
 
