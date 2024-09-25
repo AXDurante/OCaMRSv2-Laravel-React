@@ -43,8 +43,8 @@ class JobOrder extends Model
 
     protected $dates = ['date_request', 'date_due'];
 
-    public function intUnits()
+    public function int_units()
     {
-        return $this->hasMany(IntUnit::class, 'jobOrderID');
+        return $this->hasMany(IntUnit::class, 'jobOrderID', 'job_id');
     }
 }
