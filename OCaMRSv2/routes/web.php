@@ -15,6 +15,9 @@ use App\Http\Controllers\EquipmentController;
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
 
+// Resource Route
+Route::resource('/viewInstrument', EquipmentController::class);
+
 Route::get('/', function () {
     return Inertia::render('Login', [
         'canLogin' => Route::has('login'),
@@ -46,13 +49,6 @@ Route::prefix('technician')->group(function () {
 Route::get('/manage job request', function () {
     return Inertia::render('Manage Job Request');
 });
-
-
-
-Route::get('/viewInstrument', function () {
-    return Inertia::render('ViewInstrument');
-});
-
 
 // ADMIN
 Route::middleware(['auth:admin'])->group(function () {
@@ -109,7 +105,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return redirect('/landingpage');
     })->name('dashboard');
-    
+
     Route::get('/manage-profile', [DashboardController::class, 'manageProfile'])
         ->name('manageProfile');
 });

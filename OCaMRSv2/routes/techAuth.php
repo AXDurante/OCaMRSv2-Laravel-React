@@ -36,7 +36,7 @@ Route::middleware('auth:technicians')->group(function () {
         ->name('technician.verification.send');
     Route::get('technician/confirm-password', [ConfirmablePasswordController::class, 'show'])->name('technician.password.confirm');
     Route::post('technician/confirm-password', [ConfirmablePasswordController::class, 'store']);
-    Route::put('technician/password', [PasswordControllerTech::class, 'update'])->name('technician.password.update');
+    Route::put('technician/password', [PasswordController::class, 'update'])->name('technician.password.update');
     Route::post('technician/logout', [AuthenticatedSessionController::class, 'destroy'])->name('technician.logout');
 
     Route::get('technician/dashboard', function () {

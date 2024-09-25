@@ -150,7 +150,22 @@ export default function Register() {
                                         required
                                     >
                                         <option value="" disabled>Select your department/faculty</option>
-                                        <option value="Example Department">Example Department</option>
+                                        <option value="Engineering"> Faculty of Engineering </option>
+                                        <option value="Education"> College of Education </option>
+                                        <option value="Pharmacy"> Faculty of Pharmacy </option>
+                                        <option value="Biochemistry"> Faculty of Biochemistry </option>
+                                        <option value="Medicine Technology"> Faculty of Medicine Technology </option>
+                                        <option value="Nursing"> College of Nursing </option>
+                                        <option value="Rehabilitation Science"> College of Rehabilitation Science </option>
+                                        <option value="Biology"> College of Biology </option>
+                                        <option value="Physics"> College of Physics </option>
+                                        <option value="Physiology"> Faculty of Physiology </option>
+                                        <option value="Pharmacology"> Faculty of Pharmacology </option>
+                                        <option value="Graduate School"> UST Graduate School </option>
+                                        <option value="Junior HS"> Junior High School </option>
+                                        <option value="Senior HS"> Senior High School </option>
+                                        <option value="RCNAS"> RCNAS </option>
+                                        <option value="LESO"> LESO </option>
                                       
                                     </select>
                                     <InputError message={errors.college} className="mt-2 text-danger" />

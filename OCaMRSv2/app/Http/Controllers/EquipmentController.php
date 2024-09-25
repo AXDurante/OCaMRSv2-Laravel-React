@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipment;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
 {
     public function index()
     {
-        return Equipment::all(); // Fetch all equipment data
+        $equipment = Equipment::all();
+        return Inertia::render("ViewInstrument", [
+            "equipment" => $equipment,
+        ]);
     }
+
     public function store(Request $request)
     {
         $request->validate([

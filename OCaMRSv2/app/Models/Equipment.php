@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Equipment extends Model
 {
     use HasFactory;
-
-    protected $table = 'equipment'; // Ensure this matches your SQL table name
-    protected $fillable = ['equip_category', 'equip_name'];
+    protected $fillable = [
+        'equip_category',
+        'equip_name'
+    ];
 }
