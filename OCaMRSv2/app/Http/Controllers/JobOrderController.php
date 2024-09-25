@@ -91,7 +91,7 @@ class JobOrderController extends Controller
             $instrument['jobOrderID'] = $jobOrder->job_id;
             IntUnit::create($instrument);
         }
-
+      
         return redirect('/jobOrder');
     }
 
