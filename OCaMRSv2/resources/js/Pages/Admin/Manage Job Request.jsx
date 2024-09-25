@@ -1,7 +1,8 @@
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
 
-function Home() {
+function Home({ jobOrder }) {
+    console.log(jobOrder);
     return (
         <div className="d-flex">
             <div id="content" className="main-content flex-fill p-3">
@@ -42,85 +43,42 @@ function Home() {
                                         Date Received
                                     </th>
                                     <th class="thead-custom" scope="col">
-                                        Requested ID
+                                        Job ID
                                     </th>
                                     <th class="thead-custom" scope="col">
-                                        Client Name
+                                        Client ID
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    {/* <th class="thead-custom" scope="col">
                                         Instrument
-                                    </th>
+                                    </th> */}
                                     <th class="thead-custom" scope="col">
                                         Service Requested
                                     </th>
                                     <th class="thead-custom" scope="col">
                                         Status
                                     </th>
+                                    {/* To Ask 
                                     <th class="thead-custom" scope="col">
                                         Priority
-                                    </th>
+                                    </th> */}
                                     <th class="thead-custom" scope="col">
                                         Action
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="btn btn-yellow">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="btn btn-yellow">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="btn btn-yellow">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="btn btn-yellow">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
+                            {jobOrder.map((order, index) => (
+                                    <tr key={index} className="text-center align-middle">
+                                        <td scope="row">{new Date(order.date_request).toLocaleDateString()}</td> {/* Date Received */}
+                                        <td>{order.job_id}</td> {/* Job ID */}
+                                        <td>{order.employeeID} </td>
+                                        <td>{order.service_type}</td> {/* Service Request */}
+                                        <td>{order.status}</td> {/* Status */}
+                                        <td>
+                                            <button className="btn btn-yellow">See Details</button>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>

@@ -13,12 +13,12 @@ return new class extends Migration {
         Schema::create('int_units', function (Blueprint $table) {
             $table->id('intUnit_id');
             $table->text('instrument');
-            $table->text('qty');
+            $table->unsignedBigInteger('qty');
             $table->text('model');
-            $table->text('serial_num');
+            $table->string('serial_num');
             $table->text('manufacturer');
-            $table->text('property_num');
-            $table->text('jobOrderID');
+            $table->string('property_num');
+            $table->unsignedBigInteger('jobOrderID');
             // $table->timestamp('date_request')->nullable();
             // $table->timestamp('date_due')->nullable();
         });

@@ -70,6 +70,7 @@ class JobOrderController extends Controller
             'lab' => ['required'],
             'lab_loc' => ['required'],
             'pos' => ['required'],
+            'status' => ['required'],
         ]);
 
         // Set employeeID from authenticated user

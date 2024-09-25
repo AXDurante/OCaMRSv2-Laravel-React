@@ -15,6 +15,7 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
         lab_loc: labLoc,
         pos: "Laboratory Technician",
         employeeID: employeeID,
+        status: "Pending",
 
         // For Instrument Units
         instruments: [

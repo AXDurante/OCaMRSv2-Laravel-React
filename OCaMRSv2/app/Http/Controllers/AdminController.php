@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JobOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -38,12 +39,14 @@ class AdminController extends Controller
         return redirect('/admin/login');
     }
 
-    // The index() method is missing. Let's add it:
     public function index()
     {
-        return Inertia::render('Admin/Manage Job Request');
+        $jobOrder = JobOrder::all();
+        return Inertia::render('Admin/Manage Job Request', [
+            'jobOrder' => $jobOrder,
+        ]);
     }
-    
+
     public function accountHandler()
     {
         return Inertia::render('Admin/AccountHandler');
