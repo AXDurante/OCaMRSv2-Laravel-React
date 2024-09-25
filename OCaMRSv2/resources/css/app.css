@@ -57,6 +57,14 @@ h3 {
     position: fixed;
 }
 
+.sidebar3 {
+    height: 37vh;
+    top: 0;
+    background-color: #0789e7;
+    overflow-y: auto;
+    position: fixed;
+}
+
 .theNav {
     margin-left: 1.5vw;
 

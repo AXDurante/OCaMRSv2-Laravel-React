@@ -1,42 +1,28 @@
-import { Link, usePage } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 
 export default function AdminNavBar({ children }) {
-   
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
-
-
-            <div className="sidebar3"  style={{
-                    width: "250px",
-                    minWidth: "250px",
-                    borderTopRightRadius: "20px",
-                    borderBottomRightRadius: "15px",
-                }}>
-                    <div className="mt-4">
-                        <h4 className="text-black pt-4" id="textHeader">
-                            LESO - ISC
-                        </h4>
-                        <p className="ms-4"></p>
-                    </div>
-                     
-
-            </div>
-            
             <nav
                 className="sidebar rounded-right text-light"
                 style={{
                     width: "250px",
                     minWidth: "250px",
-                    
+                    borderTopRightRadius: "20px",
                     borderBottomRightRadius: "15px",
                 }}
             >
-                <div className="sidebar-user ">
-                    <h4 className="user-interface">Admin&nbsp;</h4>
-                    <h4 className="user-interface2"> Interface</h4>
+                <div className="sidebar-headeradmin">
+                    <h4 className="text-black" id="textHeader">
+                        LESO - ISC
+                    </h4>
                 </div>
-                <ul className="nav flex-column pt-4 theNav">
-                <li className="nav-item">
+                <div className="sidebar-user">
+                    <h3 className="user-interface">Admin</h3>
+                    <h3 className="user-interface2">Interface</h3>
+                </div>
+                <ul className="nav flex-column pt-5">
+                    <li className="nav-item">
                         <Link href="/admin">
                             <a className="nav-link">
                                 <i className="bi bi-file-earmark-text me-2"></i>
@@ -84,9 +70,7 @@ export default function AdminNavBar({ children }) {
                             </Link>
                         </li>
                     </div>
-                   
                 </ul>
-                
             </nav>
             <main className="flex-fill p-3">{children}</main>
         </div>
