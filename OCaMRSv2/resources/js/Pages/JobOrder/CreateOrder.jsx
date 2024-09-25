@@ -2,7 +2,10 @@ import { useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 import { useState } from "react";
 
-function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc }) {
+function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment }) {
+
+    const equipmentName = equipment?.map(item => item.equip_name) || [];
+    
     const { data, setData, post, errors, processing } = useForm({
         // For Job Order
         service_type: "",
@@ -10,8 +13,8 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc }) {
         dept_name: college,
         lab: labLoc,
         lab_loc: labLoc,
-        pos: "",
-        employeeID: employeeID, // Add employeeID here
+        pos: "Laboratory Technician",
+        employeeID: employeeID,
 
         // For Instrument Units
         instruments: [
@@ -150,13 +153,19 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc }) {
                                 <div className="row forms-bg p-3">
                                     <div className="col-12 col-md-5 d-flex flex-column p-3">
                                         <h6 className="w-100 fw-bold text-start">Instrument</h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
+                                        <select
+                                            className="w-100 mb-2 rounded form-control"
                                             name="instrument"
                                             value={instrument.instrument}
                                             onChange={(e) => handleInputChange(index, e)}
-                                        />
+                                        >
+                                            <option value="">Select an equipment</option>
+                                            {equipmentName.map((name, i) => (
+                                                <option key={i} value={name}>
+                                                    {name}
+                                                </option>
+                                            ))}
+                                        </select>
                                         <h6 className="w-100 fw-bold text-start">Model</h6>
                                         <input
                                             type="text"
@@ -170,7 +179,7 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc }) {
                                     <div className="col-12 col-md-3 d-flex flex-column p-3">
                                         <h6 className="w-100 fw-bold text-start">Quantity</h6>
                                         <input
-                                            type="text"
+                                            type="number"
                                             className="w-50 mb-2 justify-content-start rounded"
                                             name="qty"
                                             value={instrument.qty}
@@ -189,8 +198,8 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc }) {
                                     <div className="col-12 col-md-4 d-flex flex-column p-3">
                                         <h6 className="w-100 fw-bold text-start">Instrument Serial No</h6>
                                         <input
-                                            type="text"
-                                            className="w-100 fw-bold mb-2 rounded"
+                                            type="number"
+                                            className="w-100 mb-2 rounded"
                                             name="serial_num"
                                             value={instrument.serial_num}
                                             onChange={(e) => handleInputChange(index, e)}
