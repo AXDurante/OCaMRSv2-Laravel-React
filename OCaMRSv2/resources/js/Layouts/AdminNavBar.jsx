@@ -61,7 +61,7 @@ export default function AdminNavBar({ children }) {
                     <div className="logoutadmin">
                         <li className="nav-item-logoutadmin">
                             <Link
-                                href={route("logout")}
+                                href={route("admin.logout")}
                                 method="post"
                                 as="button"
                                 className="logout-btnadmin"
