@@ -1,6 +1,5 @@
 import Navbar2 from "@/Layouts/Navbar2";
 
-
 function Home() {
     return (
         <div className="d-flex">
