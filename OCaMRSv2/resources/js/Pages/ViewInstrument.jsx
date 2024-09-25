@@ -78,6 +78,7 @@ const instrumentList = [
 
 function ViewInstrument() {
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [showForm, setShowForm] = useState(false); // State to control form visibility
 
     const handleDropdownChange = (e) => {
         const selectedCategoryId = parseInt(e.target.value);
@@ -85,6 +86,11 @@ function ViewInstrument() {
             (item) => item.id === selectedCategoryId
         );
         setSelectedCategory(category);
+    };
+
+    // Function to toggle the form visibility
+    const toggleForm = () => {
+        setShowForm(!showForm);
     };
 
     return (
@@ -97,6 +103,16 @@ function ViewInstrument() {
                             Supported Equipments
                         </h1>
                         <hr />
+                    </div>
+
+                    {/* Add Instrument Button */}
+                    <div className="mt-3">
+                        <button
+                            className="btn btn-primary"
+                            onClick={toggleForm}
+                        >
+                            + Instrument
+                        </button>
                     </div>
 
                     {/* Dropdown */}
@@ -113,6 +129,56 @@ function ViewInstrument() {
                             ))}
                         </select>
                     </div>
+
+                    {/* Overlay Form */}
+                    {showForm && (
+                        <div className="overlay">
+                            <div className="form-container">
+                                <h3>Add New Instrument</h3>
+                                <form>
+                                    <div className="mb-3">
+                                        <label
+                                            htmlFor="instrumentName"
+                                            className="form-label"
+                                        >
+                                            Category Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="instrumentName"
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label
+                                            htmlFor="instrumentName"
+                                            className="form-label"
+                                        >
+                                            Instrument Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="instrumentName"
+                                        />
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        className="btn btn-success"
+                                    >
+                                        Submit
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                        onClick={toggleForm}
+                                    >
+                                        Cancel
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Result Counter */}
                     <div className="mt-2 ms-2 me-2">
