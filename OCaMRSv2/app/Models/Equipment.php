@@ -9,6 +9,6 @@ class Equipment extends Model
 {
     use HasFactory;
 
-    protected $table = 'equipments'; // Ensure this matches your SQL table name
+    protected $table = 'equipment'; // Ensure this matches your SQL table name
     protected $fillable = ['equip_category', 'equip_name'];
 }
