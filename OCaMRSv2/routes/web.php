@@ -10,6 +10,7 @@ use App\Http\Controllers\InstrumentationAccountController;
 use App\Http\Controllers\InstrumentationAuthController;
 use Inertia\Inertia;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EquipmentController;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
@@ -128,6 +129,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/landingpage', function () {
     return Inertia::render('LandingPage');
 });
+Route::get('/equipments', [EquipmentController::class, 'index']);
+Route::post('/equipments', [EquipmentController::class, 'store']);
 require __DIR__ . '/auth.php';
 
 
