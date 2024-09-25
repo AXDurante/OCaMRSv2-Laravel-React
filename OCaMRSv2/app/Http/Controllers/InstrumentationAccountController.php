@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\InstrumentationAccount;
+use App\Models\Technician;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +11,7 @@ class InstrumentationAccountController extends Controller
 {
     public function index()
     {
-        $accounts = InstrumentationAccount::all();
+        $accounts = Technician::all();
         return response()->json($accounts);
     }
 
@@ -22,54 +22,75 @@ class InstrumentationAccountController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'id_number' => 'required|string|max:255|unique:instrumentation_accounts',
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:instrumentation_accounts',
-            'password' => 'required|string|min:8',
+        $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:technicians,email',
+            'password' => [
+                'required',
+                'confirmed',
+                'min:8',
+                'regex:/[A-Z]/',
+                'regex:/[0-9]/',
+                'regex:/[@$!%*?&]/',
+            ],
+            'employeeID' => 'required|string|max:255|unique:technicians,employeeID',
+            'phoneNumber' => 'required|string|max:255|unique:technicians,phoneNumber',
+        ], [
+            'password.min' => 'The password must be at least 8 characters.',
+            'password.regex' => 'The password must include at least one uppercase letter, one number, and one special character.',
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+        try {
+            $technician = Technician::create([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'employeeID' => $request->employeeID,
+                'phoneNumber' => $request->phoneNumber,
+            ]);
 
-        $account = InstrumentationAccount::create($validated);
+            // If you're using the Registered event, make sure it's imported and applicable to Technician
+            // event(new Registered($technician));
 
-        if ($request->wantsJson()) {
-            return response()->json([
-                'message' => 'Account created successfully.',
-                'account' => $account
-            ], 201);
+            return response()->json($technician, 201);
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Error creating technician: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while creating the account.'], 500);
         }
-
-        return redirect()->route('admin.instrumentation-accounts.index')->with('success', 'Account created successfully.');
     }
 
-    public function show(InstrumentationAccount $account)
+    public function show(Technician $technician)
     {
-        return Inertia::render('Admin/InstrumentationAccounts/Show', ['account' => $account]);
+        return Inertia::render('Admin/InstrumentationAccounts/Show', ['account' => $technician]);
     }
 
-    public function edit(InstrumentationAccount $account)
+    public function edit(Technician $technician)
     {
-        return Inertia::render('Admin/InstrumentationAccounts/Edit', ['account' => $account]);
+        return Inertia::render('Admin/InstrumentationAccounts/Edit', ['account' => $technician]);
     }
 
-    public function update(Request $request, InstrumentationAccount $account)
+    public function update(Request $request, Technician $technician)
     {
         $validated = $request->validate([
-            'id_number' => 'required|string|max:255|unique:instrumentation_accounts,id_number,' . $account->id,
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:instrumentation_accounts,email,' . $account->id,
-            'is_active' => 'boolean',
+            'employeeID' => 'required|string|max:255|unique:technicians,employeeID,' . $technician->id,
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:technicians,email,' . $technician->id,
+            'phoneNumber' => 'required|string|max:255|unique:technicians,phoneNumber,' . $technician->id,
+            // Add other fields as necessary
         ]);
 
-        $account->update($validated);
+        $technician->update($validated);
 
         return redirect()->route('admin.instrumentation-accounts.index')->with('success', 'Account updated successfully.');
     }
 
-    public function destroy(InstrumentationAccount $account)
+    public function destroy(Technician $technician)
     {
-        $account->delete();
+        $technician->delete();
         return redirect()->route('admin.instrumentation-accounts.index')->with('success', 'Account deleted successfully.');
     }
 }

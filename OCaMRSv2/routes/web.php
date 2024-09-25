@@ -65,6 +65,8 @@ Route::middleware(['auth:admin'])->group(function () {
         return Inertia::render('Show Job Request');
     });
 
+    Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
     // Instrumentation Account routes
     Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
     Route::get('/admin/instrumentation-accounts/create', [InstrumentationAccountController::class, 'create'])->name('admin.instrumentation-accounts.create');

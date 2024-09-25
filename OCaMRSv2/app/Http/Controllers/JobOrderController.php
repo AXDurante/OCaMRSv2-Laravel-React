@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobOrder;
+use App\Models\Equipment;
 use App\Http\Requests\StoreJobOrderRequest;
 use App\Http\Requests\UpdateJobOrderRequest;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +37,7 @@ class JobOrderController extends Controller
      */
     public function create()
     {
+        $equipment = Equipment::all();
         $lastRecord = JobOrder::latest('date_request')->first();
         if ($lastRecord === null) {
             $lastID = 1;
@@ -49,9 +51,10 @@ class JobOrderController extends Controller
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'email' => $user->email,
-            'college'=> $user->college,
+            'college' => $user->college,
             'labLoc' => $user->labLoc,
             'lastID' => $lastID,
+            'equipment' => $equipment,
         ]);
     }
 

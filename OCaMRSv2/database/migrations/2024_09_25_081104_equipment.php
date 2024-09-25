@@ -8,8 +8,11 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
+    
     public function up(): void
     {
+
+        Schema::dropIfExists('equipment');
         Schema::create('equipment', function (Blueprint $table) {
             $table->id();
             $table->string('equip_category');
@@ -22,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        //
+       
     }
 };

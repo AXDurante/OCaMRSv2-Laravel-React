@@ -1,27 +1,41 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
-export default function NavBar({ children }) {
+export default function NavBar({ children, absolute, firstName, lastName, email }) {
+    console.log("Navbar props:", { absolute, firstName, lastName, email });
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
+
+
+            <div className="sidebar2"  style={{
+                    width: "250px",
+                    minWidth: "250px",
+                    borderTopRightRadius: "20px",
+                    borderBottomRightRadius: "15px",
+                }}>
+                    <div className="mt-4">
+                        <h4 className="text-black pt-4" id="textHeader">
+                            LESO - ISC
+                        </h4>
+                        <p className="ms-4">Welcome, {firstName} {lastName}</p>
+                    </div>
+                     
+
+            </div>
+            
             <nav
                 className="sidebar rounded-right text-light"
                 style={{
                     width: "250px",
                     minWidth: "250px",
-                    borderTopRightRadius: "20px",
+                    
                     borderBottomRightRadius: "15px",
                 }}
             >
-                <div className="sidebar-header">
-                    <h4 className="text-black" id="textHeader">
-                        LESO - ISC
-                    </h4>
-                </div>
                 <div className="sidebar-user ">
-                    <h4 className="user-interface">Client&nbsp;</h4>
+                    <h4 className="user-interface">Technician&nbsp;</h4>
                     <h4 className="user-interface2"> Interface</h4>
                 </div>
-                <ul className="nav flex-column pt-4">
+                <ul className="nav flex-column pt-4 theNav">
                     <li className="nav-item">
                         <Link href="/jobOrder/create">
                             <a className="nav-link">
@@ -39,17 +53,17 @@ export default function NavBar({ children }) {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="/manage profile">
-                            <a className="nav-link">
-                                <i className="bi bi-person-fill me-2"></i>Manage
-                                Profile
-                            </a>
+                        <Link href={route('manageProfile')} className="nav-link">
+                            <i className="bi bi-person-fill me-2"></i>Manage Profile
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <i className="bi bi-list me-2"></i>Instrument List
-                        </a>
+                        <Link href="/viewInstrument">
+                            <a className="nav-link">
+                                <i className="bi bi-list me-2"></i>Instrument
+                                List
+                            </a>
+                        </Link>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">
@@ -77,7 +91,9 @@ export default function NavBar({ children }) {
 
                         </li>
                     </div>
+                   
                 </ul>
+                
             </nav>
             <main className="flex-fill p-3">{children}</main>
         </div>

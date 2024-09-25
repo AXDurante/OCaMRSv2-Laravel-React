@@ -5,11 +5,13 @@ import axios from "axios";
 function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [idNumber, setIdNumber] = useState("");
-    const [fullName, setFullName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [accountName, setAccountName] = useState("");
     const [accountEmail, setAccountEmail] = useState("");
     const [accountPassword, setAccountPassword] = useState("");
-    const [accountDepartment, setAccountDepartment] = useState("");
+    const [passwordConfirmation, setPasswordConfirmation] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
     const [accounts, setAccounts] = useState([]);
     const [editingAccountId, setEditingAccountId] = useState(null);
 
@@ -35,22 +37,26 @@ function Home() {
 
     const resetForm = () => {
         setIdNumber("");
-        setFullName("");
+        setFirstName("");
+        setLastName("");
         setAccountName("");
         setAccountEmail("");
         setAccountPassword("");
-        setAccountDepartment("");
+        setPasswordConfirmation("");
+        setPhoneNumber("");
     };
 
     const openEditModal = (account) => {
         setEditingAccountId(account.id);
         setIdNumber(account.id_number);
-        setFullName(account.full_name);
+        setFirstName(account.first_name);
+        setLastName(account.last_name);
         setAccountEmail(account.email);
     };
 
     const handleSubmit = async (e, accountId = null) => {
         e.preventDefault();
+        console.log("Form submitted"); // Add this line
         try {
             let response;
             if (accountId) {
@@ -58,9 +64,13 @@ function Home() {
                 response = await axios.put(
                     `/admin/instrumentation-accounts/${accountId}`,
                     {
-                        id_number: idNumber,
-                        full_name: fullName,
+                        firstName: firstName,
+                        lastName: lastName,
                         email: accountEmail,
+                        employeeID: idNumber,
+                        phoneNumber: phoneNumber,
+                        // Only include password if it's been changed
+                        ...(accountPassword && { password: accountPassword }),
                     }
                 );
                 console.log("Account updated:", response.data);
@@ -71,9 +81,11 @@ function Home() {
                         account.id === accountId
                             ? {
                                   ...account,
-                                  id_number: idNumber,
-                                  full_name: fullName,
+                                  firstName: firstName,
+                                  lastName: lastName,
                                   email: accountEmail,
+                                  employeeID: idNumber,
+                                  phoneNumber: phoneNumber,
                               }
                             : account
                     )
@@ -82,14 +94,19 @@ function Home() {
                 // Close the modal
                 setEditingAccountId(null);
             } else {
-                // Creating a new account
+                console.log("Creating new account"); // Add this line
+                if (accountPassword !== passwordConfirmation) {
+                    alert("Passwords do not match. Please try again.");
+                    return;
+                }
                 response = await axios.post("/admin/instrumentation-accounts", {
-                    id_number: idNumber,
-                    full_name: fullName,
-                    name: accountName,
+                    firstName: firstName,
+                    lastName: lastName,
                     email: accountEmail,
                     password: accountPassword,
-                    department: accountDepartment,
+                    password_confirmation: passwordConfirmation,  // Add this line
+                    employeeID: idNumber,
+                    phoneNumber: phoneNumber,
                 });
                 console.log("Account created:", response.data);
 
@@ -107,7 +124,32 @@ function Home() {
             setAccounts((prevAccounts) => [...prevAccounts]);
         } catch (error) {
             console.error("Error submitting account:", error);
-            // TODO: Handle error (e.g., show error message to user)
+            // Add more detailed error logging
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.error("Error data:", error.response.data);
+                console.error("Error status:", error.response.status);
+                console.error("Error headers:", error.response.headers);
+                
+                // Display validation errors to the user
+                if (error.response.status === 422) {
+                    const validationErrors = error.response.data.errors;
+                    let errorMessage = "Validation errors:\n";
+                    for (const field in validationErrors) {
+                        errorMessage += `${field}: ${validationErrors[field].join(', ')}\n`;
+                    }
+                    alert(errorMessage);
+                }
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error("No response received:", error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.error("Error message:", error.message);
+            }
+            // TODO: Show error message to user
+            alert("An error occurred while submitting the form. Please check the console for more details.");
         }
     };
 
@@ -177,8 +219,8 @@ function Home() {
                                                                         <i className="bi bi-person-fill fs-1"></i>
                                                                     </div>
                                                                     <h5>
-                                                                        {fullName ||
-                                                                            account.full_name}
+                                                                        {`${firstName} ${lastName}` ||
+                                                                            `${account.first_name} ${account.last_name}`}
                                                                     </h5>
                                                                     <p>
                                                                         {accountEmail ||
@@ -214,19 +256,19 @@ function Home() {
                                                                             </div>
                                                                             <div className="col-6 mb-3">
                                                                                 <label className="form-label fw-bold d-block text-truncate">
-                                                                                    Full
+                                                                                    First
                                                                                     Name
                                                                                 </label>
                                                                                 <input
                                                                                     type="text"
                                                                                     className="form-control rounded"
                                                                                     value={
-                                                                                        fullName
+                                                                                        firstName
                                                                                     }
                                                                                     onChange={(
                                                                                         e
                                                                                     ) =>
-                                                                                        setFullName(
+                                                                                        setFirstName(
                                                                                             e
                                                                                                 .target
                                                                                                 .value
@@ -237,7 +279,30 @@ function Home() {
                                                                             </div>
                                                                         </div>
                                                                         <div className="row">
-                                                                            <div className="col-12 mb-3">
+                                                                            <div className="col-6 mb-3">
+                                                                                <label className="form-label fw-bold d-block text-truncate">
+                                                                                    Last
+                                                                                    Name
+                                                                                </label>
+                                                                                <input
+                                                                                    type="text"
+                                                                                    className="form-control rounded"
+                                                                                    value={
+                                                                                        lastName
+                                                                                    }
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        setLastName(
+                                                                                            e
+                                                                                                .target
+                                                                                                .value
+                                                                                        )
+                                                                                    }
+                                                                                    required
+                                                                                />
+                                                                            </div>
+                                                                            <div className="col-6 mb-3">
                                                                                 <label className="form-label fw-bold d-block text-truncate">
                                                                                     Email
                                                                                 </label>
@@ -508,7 +573,7 @@ function Home() {
                                     <div>
                                         <i className="bi bi-person-fill fs-1"></i>
                                     </div>
-                                    <h5>{fullName || "New Account"}</h5>
+                                    <h5>{`${firstName} ${lastName}` || "New Account"}</h5>
                                     <p>{accountEmail || "email@example.com"}</p>
                                 </div>
 
@@ -533,14 +598,14 @@ function Home() {
                                             </div>
                                             <div className="col-6 mb-3">
                                                 <label className="form-label fw-bold d-block text-truncate">
-                                                    Full Name
+                                                    First Name
                                                 </label>
                                                 <input
                                                     type="text"
                                                     className="form-control rounded"
-                                                    value={fullName}
+                                                    value={firstName}
                                                     onChange={(e) =>
-                                                        setFullName(
+                                                        setFirstName(
                                                             e.target.value
                                                         )
                                                     }
@@ -549,6 +614,22 @@ function Home() {
                                             </div>
                                         </div>
                                         <div className="row">
+                                            <div className="col-6 mb-3">
+                                                <label className="form-label fw-bold d-block text-truncate">
+                                                    Last Name
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control rounded"
+                                                    value={lastName}
+                                                    onChange={(e) =>
+                                                        setLastName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    required
+                                                />
+                                            </div>
                                             <div className="col-6 mb-3">
                                                 <label className="form-label fw-bold d-block text-truncate">
                                                     Email
@@ -565,6 +646,8 @@ function Home() {
                                                     required
                                                 />
                                             </div>
+                                        </div>
+                                        <div className="row">
                                             <div className="col-6 mb-3">
                                                 <label className="form-label fw-bold d-block text-truncate">
                                                     Password
@@ -581,21 +664,38 @@ function Home() {
                                                     required
                                                 />
                                             </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-12 mb-3">
+                                            <div className="col-6 mb-3">
                                                 <label className="form-label fw-bold d-block text-truncate">
-                                                    Department
+                                                    Confirm Password
                                                 </label>
                                                 <input
-                                                    type="text"
+                                                    type="password"
                                                     className="form-control rounded"
-                                                    value={accountDepartment}
+                                                    value={passwordConfirmation}
                                                     onChange={(e) =>
-                                                        setAccountDepartment(
+                                                        setPasswordConfirmation(
                                                             e.target.value
                                                         )
                                                     }
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6 mb-3">
+                                                <label className="form-label fw-bold d-block text-truncate">
+                                                    Phone Number
+                                                </label>
+                                                <input
+                                                    type="tel"
+                                                    className="form-control rounded"
+                                                    value={phoneNumber}
+                                                    onChange={(e) =>
+                                                        setPhoneNumber(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    required
                                                 />
                                             </div>
                                         </div>
