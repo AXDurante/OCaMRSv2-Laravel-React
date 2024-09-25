@@ -18,8 +18,8 @@ export default function Login({ status, canResetPassword }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('technician.login'), {
-            onFinish: () => reset('password'),
+        post(route("technician.login"), {
+            onFinish: () => reset("password"),
         });
     };
 
@@ -30,21 +30,28 @@ export default function Login({ status, canResetPassword }) {
                 <div class="half login-imageHolder"></div>
             </div>
 
-            <div class="split2 right2">  </div>
+            <div class="split2 right2 bg-instr-login"> </div>
             <div class="split3 right">
-            {status && <div className="mb-4 font-medium text-green">{status}</div>}
+                {status && (
+                    <div className="mb-4 font-medium text-green">{status}</div>
+                )}
                 <div class="centered2">
                     <form onSubmit={submit}>
                         <div>
-                            <h1 className="text-center titleLogin mb-5">Technician Login</h1>
-                            <InputLabel htmlFor="employeeID" value="Employee ID" />
+                            <h1 className="text-center titleLogin mb-5 text-white">
+                                Technician Login
+                            </h1>
+                            <InputLabel
+                                htmlFor="employeeID"
+                                value="Employee ID"
+                                className="block mb-2 text-sm font-medium text-white"
+                            />
 
                             <TextInput2
                                 id="employeeID"
                                 type="employeeID"
                                 name="employeeID"
                                 value={data.employeeID}
-                                
                                 autoComplete="username"
                                 isFocused={true}
                                 onChange={(e) =>
@@ -59,14 +66,17 @@ export default function Login({ status, canResetPassword }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="password" value="Password" />
+                            <InputLabel
+                                htmlFor="password"
+                                value="Password"
+                                className="block mb-2 text-sm font-medium text-white"
+                            />
 
                             <TextInput2
                                 id="password"
                                 type="password"
                                 name="password"
                                 value={data.password}
-                                
                                 autoComplete="current-password"
                                 onChange={(e) =>
                                     setData("password", e.target.value)
@@ -79,8 +89,6 @@ export default function Login({ status, canResetPassword }) {
                             />
                         </div>
 
-                
-                            
                         <div className="checkbox-container mt-3 mb-4">
                             <div className="">
                                 {/*
@@ -94,39 +102,25 @@ export default function Login({ status, canResetPassword }) {
 
                                 <Link
                                     href={route("technician.password.request")}
-                                    className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    className="bg-gray-800 text-white "
                                 >
                                     Forgot your password?
                                 </Link>
-                                
                             </div>
 
                             <div className="">
-                            <Link
+                                <Link
                                     href={route("technician.register")}
-                                    className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                    className=" bg-gray-800 text-white "
                                 >
                                     Don't have an account? Register
                                 </Link>
-                          
                             </div>
-                           
-                           
                         </div>
 
-                        
-                            
-                               
-                            <div className="pt-3">
-                                <LoginButton classname="w-100">
-                                    Log in
-                            </LoginButton>    
-                            </div>
-                           
-                                
-                           
-                          
-                       
+                        <div className="pt-3">
+                            <LoginButton classname="w-100">Log in</LoginButton>
+                        </div>
                     </form>
                 </div>
             </div>
