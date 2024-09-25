@@ -49,6 +49,8 @@ class JobOrderController extends Controller
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'email' => $user->email,
+            'college'=> $user->college,
+            'labLoc' => $user->labLoc,
             'lastID' => $lastID,
         ]);
     }

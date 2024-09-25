@@ -2,14 +2,14 @@ import { useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 import { useState } from "react";
 
-function CreateOrder({ jobOrder, lastID, employeeID }) {
+function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc }) {
     const { data, setData, post, errors, processing } = useForm({
         // For Job Order
         service_type: "",
         trans_type: "",
-        dept_name: "",
-        lab: "",
-        lab_loc: "",
+        dept_name: college,
+        lab: labLoc,
+        lab_loc: labLoc,
         pos: "",
         employeeID: employeeID, // Add employeeID here
 
@@ -75,12 +75,15 @@ function CreateOrder({ jobOrder, lastID, employeeID }) {
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Service Requested
                                     </h6>
-                                    <input
-                                        type="text"
+                                    <select
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.service_type}
-                                        onChange={(e) => setData('service_type', e.target.value)}
-                                    />
+                                        onChange={(e) => setData('service_type', e.target.value)}>
+                                            <option value="" disabled> Select an Option </option>
+                                            <option value="service1"> Service Type 1 </option>
+                                            <option value="service2"> Service Type 2 </option>
+                                            <option value="service3"> Service Type 3 </option>
+                                    </select>
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Laboratory
                                     </h6>
@@ -89,6 +92,7 @@ function CreateOrder({ jobOrder, lastID, employeeID }) {
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.lab}
                                         onChange={(e) => setData('lab', e.target.value)}
+                                        readOnly    
                                     />
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         College/ Faculty / Office
@@ -98,18 +102,22 @@ function CreateOrder({ jobOrder, lastID, employeeID }) {
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.dept_name}
                                         onChange={(e) => setData('dept_name', e.target.value)}
+                                        readOnly
                                     />
                                 </div>
                                 <div className="col d-flex flex-column align-items-center  p-3">
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Instrumentation Transportation
                                     </h6>
-                                    <input
-                                        type="text"
+                                     <select
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.trans_type}
-                                        onChange={(e) => setData('trans_type', e.target.value)}
-                                    />
+                                        onChange={(e) => setData('trans_type', e.target.value)}>
+                                            <option value=""> Select an Option </option>
+                                            <option value="transpo1"> Transportation Type 1 </option>
+                                            <option value="transpo2"> Transportation Type 2 </option>
+                                            <option value="transpo3"> Transportation Type 3 </option>
+                                    </select>
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Laboratory Location
                                     </h6>
@@ -118,6 +126,7 @@ function CreateOrder({ jobOrder, lastID, employeeID }) {
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.lab_loc}
                                         onChange={(e) => setData('lab_loc', e.target.value)}
+                                        readOnly
                                     />
                                     <h6 className="d-flex flex-column align-items-start  fw-bold mt-2 w-100">
                                         Position
@@ -127,6 +136,7 @@ function CreateOrder({ jobOrder, lastID, employeeID }) {
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.pos}
                                         onChange={(e) => setData('pos', e.target.value)}
+                                        readOnly
                                     />
                                 </div>
                             </div>
@@ -155,8 +165,6 @@ function CreateOrder({ jobOrder, lastID, employeeID }) {
                                             value={instrument.model}
                                             onChange={(e) => handleInputChange(index, e)}
                                         />
-                                        <h6 className="w-100 fw-bold text-start">Image Attachment</h6>
-                                        <button className="btn btn-secondary w-50">+ Insert Image</button>
                                     </div>
 
                                     <div className="col-12 col-md-3 d-flex flex-column p-3">
@@ -210,10 +218,8 @@ function CreateOrder({ jobOrder, lastID, employeeID }) {
                             Add More Instrument
                         </button>
                         <hr />
-                        <button onClick={onSubmit}>
-                            Submit
-                        </button>
-                        <button className="jb-btn-submit w-100 mt-3">Submit Job Order</button>
+                        <button className="jb-btn-submit w-100 mt-3"
+                                onClick={onSubmit}> Submit Job Order</button>
                     </div>
                 </div>
             </div>
