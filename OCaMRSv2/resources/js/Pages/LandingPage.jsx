@@ -1,5 +1,6 @@
 import Navbar from "../Layouts/Navbar";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa"; // Import social media icons
+import { Link } from "@inertiajs/react"; // Import Link for navigation
 import logo from "/public/images/lesog2.png"; // Import logo image
 
 function LandingPage() {
@@ -9,18 +10,80 @@ function LandingPage() {
                 <div className="landing-section">
                     {/* Title and Description */}
                     <div className="text-overlay">
-                        <h1 className="d-inline">Welcome, | </h1>
-                        <h1 className="d-inline fw-light">LESO - ISC</h1>
-                        <p className="landing-description">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Phasellus imperdiet, nulla et dictum interdum,
-                            nisi lorem egestas odio.
-                        </p>
-                        <button className="landing-button">Get Started</button>
+                        <div className="row">
+                            <div className="col-8 text-overlayhead">
+                                <h1 className="d-inline">Welcome, | </h1>
+                                <h1 className="d-inline fw-light">
+                                    LESO - ISC
+                                </h1>
+                                <p className="landing-description">
+                                    The Laboratory Equipment and Supplies Office
+                                    (LESO) is a service-oriented program of the
+                                    University of Santo Tomas which oversees the
+                                    needs and management of all laboratories and
+                                    laboratory personnel in the University.
+                                </p>
+
+                                {/* Updated button to use Link for navigation */}
+                                <Link href="/jobOrder/create">
+                                    <button className="landing-button">
+                                        Get Started
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="col"></div>
+                        <div className="row mt-9">
+                            <div className="col-4"></div>
+                            <div className="col text-overlayhead2">
+                                <div className="vision-section mt-4">
+                                    <h2>Vision</h2>
+                                    <p>
+                                        The Laboratory Equipment and Supplies
+                                        Office envisions itself as a department
+                                        of competent, compassionate
+                                        professionals committed to quality
+                                        services for the Thomasian community.
+                                    </p>
+                                </div>
+                                <div className="mission-section mt-4">
+                                    <h2>Mission</h2>
+                                    <p>
+                                        To commit itself to unselfish support
+                                        services to students, faculty, and
+                                        researchers with high standards of
+                                        honesty and integrity in managing
+                                        laboratory resources.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    {/* <div className="text-overlay2">
+                        <div className="vision-section mt-4">
+                            <h2>Vision</h2>
+                            <p>
+                                The Laboratory Equipment and Supplies Office
+                                envisions itself as a department of competent,
+                                compassionate professionals committed to quality
+                                services for the Thomasian community.
+                            </p>
+                        </div>
+                        <div className="mission-section mt-4">
+                            <h2>Mission</h2>
+                            <p>
+                                To commit itself to unselfish support services
+                                to students, faculty, and researchers with high
+                                standards of honesty and integrity in managing
+                                laboratory resources.
+                            </p>
+                        </div>
+                    </div> */}
 
                     {/* Background Image */}
                     <div className="landing-image">
+                        {" "}
                         <div className="landpage-logo"></div>
                     </div>
                     <div className="gradient-overlay1">

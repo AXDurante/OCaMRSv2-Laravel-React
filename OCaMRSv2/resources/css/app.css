@@ -26,7 +26,6 @@
     padding-bottom: 150px;
     width: 100%;
     border-top-right-radius: 15px;
-   
 }
 .sidebar-headeradmin {
     background-color: #0789e7;
@@ -43,13 +42,11 @@
 h3 {
 }
 .sidebar {
-
     height: 68vh; /* Ensure the sidebar takes up the full height of the viewport */
     overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport height */
     bottom: 0;
     background-color: #202020;
     position: fixed;
-    
 }
 
 .sidebar2 {
@@ -62,9 +59,8 @@ h3 {
 
 .theNav {
     margin-left: 1.5vw;
-    
-    text-decoration: none!important;
-    
+
+    text-decoration: none !important;
 }
 
 ul {
@@ -82,7 +78,7 @@ ul {
 .nav-link {
     color: #ffffff; /* Default text color */
     transition: color 0.3s ease; /* Smooth transition for hover effect */
-    text-decoration: none!important;
+    text-decoration: none !important;
 }
 
 .nav-link:hover,
@@ -825,8 +821,6 @@ input[type="checkbox"] {
     animation: rotate 2s linear infinite;
 }
 
-
-
 /* homepage */
 .landing-section {
     position: relative;
@@ -852,11 +846,15 @@ input[type="checkbox"] {
 }
 
 .text-overlay {
-    width: 50%;
+    width: 100%;
     position: absolute;
-    transform: translate(20%, 90%);
     z-index: 2;
     text-align: start;
+    padding: 10%;
+    top: 10%;
+}
+
+.text-overlayhead {
 }
 
 .landing-description {
