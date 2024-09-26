@@ -17,6 +17,7 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                         <h4 className="text-black pt-4" id="textHeader">
                             LESO - ISC
                         </h4>
+                        <p className="ms-4">Welcome, {auth.user.firstName} {auth.user.lastName}</p>
                     </div>
                      
 
