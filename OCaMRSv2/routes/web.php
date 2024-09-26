@@ -108,6 +108,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/manage-profile', [DashboardController::class, 'manageProfile'])
         ->name('manageProfile');
+
+     Route::get('/landingpage', function () {
+        return Inertia::render('LandingPage');
+    });
 });
 
 Route::get('/instrumentation/login', [InstrumentationAuthController::class, 'showLoginForm'])->name('instrumentation.login');
@@ -134,9 +138,7 @@ Route::middleware('auth')->group(function () {
 //needs routings
 
 
-Route::get('/landingpage', function () {
-    return Inertia::render('LandingPage');
-});
+
 Route::get('/equipments', [EquipmentController::class, 'index']);
 Route::post('/equipments', [EquipmentController::class, 'store']);
 require __DIR__ . '/auth.php';
