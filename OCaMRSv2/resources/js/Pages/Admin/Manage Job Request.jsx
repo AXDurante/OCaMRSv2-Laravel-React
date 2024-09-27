@@ -3,8 +3,8 @@ import Navbar from "../../Layouts/Navbar";
 
 function Home() {
     return (
-        <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+        <div className="">
+            <div id="content" className="">
                 <div>
                     <div>
                         <h1 class="d-inline">Job Requests | </h1>
