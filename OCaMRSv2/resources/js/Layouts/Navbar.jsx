@@ -20,11 +20,26 @@ export default function NavBar({
                     borderBottomRightRadius: "15px",
                 }}
             >
-                <div className="mt-4">
+                <div className="mt-4 d-flex flex-column align-items-center">
                     <h4 className="text-black pt-4" id="textHeader">
                         LESO - ISC
                     </h4>
-                    <p className="ms-4">
+                    <div
+                        className="rounded-circle bg-dark d-flex justify-content-center align-items-center mt-4 shadow"
+                        style={{
+                            width: "100px",
+                            height: "100px",
+                            color: "white",
+                        }}
+                    >
+                        <i
+                            className="bi bi-person-fill"
+                            style={{
+                                fontSize: "50px",
+                            }}
+                        ></i>
+                    </div>
+                    <p className="mt-2">
                         Welcome, {auth.user.firstName} {auth.user.lastName}
                     </p>
                 </div>
