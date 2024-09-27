@@ -967,3 +967,6 @@ input[type="checkbox"] {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 400px; /* Set a fixed width for the form */
 }
+.bg-yellow {
+    background-color: #ffd600;
+}

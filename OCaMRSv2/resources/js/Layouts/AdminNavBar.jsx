@@ -30,7 +30,7 @@ export default function AdminNavBar({ children }) {
         <div className="d-flex ">
             {/* Sidebar */}
             <nav
-                className={`bg-dark rounded-right ${
+                className={`bg-yellow rounded-right ${
                     isCollapsed ? "collapsed" : ""
                 }`} // {{ edit_3 }}
                 style={{
@@ -42,15 +42,32 @@ export default function AdminNavBar({ children }) {
                 }} // {{ edit_4 }}
                 onClick={() => setIsCollapsed(!isCollapsed)} // {{ edit_5 }}
             >
-                <div className="p-4 ">
-                    <h5
-                        className={`sidebar-heading text-light ${
-                            isCollapsed ? "d-none" : ""
-                        }`}
+                <div className="mt-4 d-flex flex-column align-items-center text-center">
+                    <h4 className="text-black pt-4" id="textHeader">
+                        LESO - ISC
+                    </h4>
+                    <div
+                        className="rounded-circle bg-dark d-flex justify-content-center align-items-center"
+                        style={{
+                            width: "100px",
+                            height: "100px",
+                            color: "white",
+                        }}
                     >
-                        {/* {{ edit_6 }} */}
-                        Admin Dashboard
-                    </h5>
+                        hi
+                    </div>
+                    <p className="mt-2">Welcome,</p>
+                </div>
+
+                <h5
+                    className={`bg-dark sidebar-heading text-light mt-4 mb-4 ${
+                        isCollapsed ? "d-none" : ""
+                    }`}
+                    style={{ width: "100%" }} // {{ edit_6 }}
+                >
+                    Admin Dashboard
+                </h5>
+                <div className="p-4 ">
                     <ul className="nav flex-column">
                         <li className="nav-item mb-2">
                             <Link href="/admin" className="nav-link">
