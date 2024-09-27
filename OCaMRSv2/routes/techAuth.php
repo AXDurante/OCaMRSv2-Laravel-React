@@ -9,6 +9,7 @@ use App\Http\Controllers\TechAuth\PasswordController;
 use App\Http\Controllers\TechAuth\PasswordResetLinkController;
 use App\Http\Controllers\TechAuth\RegisteredUserController;
 use App\Http\Controllers\TechAuth\VerifyEmailController;
+use App\Http\Controllers\TechnicianController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -42,6 +43,9 @@ Route::middleware('auth:technicians')->group(function () {
     Route::get('technician/dashboard', function () {
         return Inertia::render('Tech/Home');
     })->name('technician.dashboard');
+
+    Route::get('technician/ManageProfile', [TechnicianController::class, 'manageProfile'])->name('technician.manageProfile');
+    Route::post('technician/update-profile', [TechnicianController::class, 'updateProfile'])->name('technician.updateProfile');
 
     // Add this route for checking email verification status for technicians
     Route::get('technician/email/verification/check', function (Request $request) {

@@ -1,4 +1,4 @@
-import Navbar from "../Layouts/Navbar";
+import Navbar2 from "@/Layouts/Navbar2";
 import { usePage, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react"; // Add useEffect
 
@@ -29,7 +29,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
     const submit = (e) => {
         e.preventDefault();
         if (hasChanges()) {
-            post(route('updateProfile'), {
+            post(route('technician.updateProfile'), {
                 preserveState: true,
                 preserveScroll: true,
                 onSuccess: () => {
@@ -164,14 +164,14 @@ function Home({ absolute, firstName, lastName, email, theID }) {
 Home.layout = (page) => {
     const props = page.props;
     return (
-        <Navbar 
+        <Navbar2 
             absolute={props.absolute}
             firstName={props.firstName}
             lastName={props.lastName}
             email={props.email}
         >
             {page}
-        </Navbar>
+        </Navbar2>
     );
 };
 

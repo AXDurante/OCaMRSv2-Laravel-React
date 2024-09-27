@@ -108,6 +108,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/manage-profile', [DashboardController::class, 'manageProfile'])
         ->name('manageProfile');
+        
+    Route::post('/manage-profile', [DashboardController::class, 'update'])
+        ->name('updateProfile');
 
      Route::get('/landingpage', function () {
         return Inertia::render('LandingPage');

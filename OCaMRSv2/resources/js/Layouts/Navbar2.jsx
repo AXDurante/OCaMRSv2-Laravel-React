@@ -54,7 +54,7 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href={route('manageProfile')} className="nav-link">
+                        <Link href={route('technician.manageProfile')} className="nav-link">
                             <i className="bi bi-person-fill me-2"></i>Manage Profile
                         </Link>
                     </li>

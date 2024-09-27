@@ -7,11 +7,12 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
 
 
-            <div className="sidebar2"  style={{
+            <div className="sidebar2" style={{
                     width: "250px",
                     minWidth: "250px",
                     borderTopRightRadius: "20px",
                     borderBottomRightRadius: "15px",
+                    boxShadow: "4px 0 10px -2px rgba(0, 0, 0, 0.2)" // Add shadow here
                 }}>
                     <div className="mt-4">
                         <h4 className="text-black pt-4" id="textHeader">
@@ -28,8 +29,8 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                 style={{
                     width: "250px",
                     minWidth: "250px",
-                    
                     borderBottomRightRadius: "15px",
+                    boxShadow: "4px 0 10px -2px rgba(0, 0, 0, 0.2)" // Add shadow here
                 }}
             >
                 <div className="sidebar-user ">

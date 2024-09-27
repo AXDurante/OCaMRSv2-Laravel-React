@@ -5,40 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use App\Models\Technician;
 
-class DashboardController extends Controller
+
+class TechnicianController extends Controller
 {
-    public function index(Request $request)
-    {
-        $user = Auth::user();
 
-       
-        return Inertia::render('Home', [
-            'absolute' => false,
-            'firstName' => $user->firstName,
-            'lastName' => $user->lastName,
-            'email' => $user->email,
-        ]);
-    }
-    
     public function manageProfile() {
         $user = Auth::user();
 
        
-        return Inertia::render('ManageProfile', [
-            'absolute' => false,
-            'firstName' => $user->firstName,
-            'lastName' => $user->lastName,
-            'email' => $user->email,
-            'theID' => session('theID'), // Retrieve the flashed value
-        ]);
+        return Inertia::render('Tech/ManageProfile');
+           
     }
-
-    public function update(Request $request) {
+    public function updateProfile(Request $request) {
         $theID = $request->input('userID');
         
-        $user = User::findOrFail($theID);
+        $user = Technician::findOrFail($theID);
 
         // Validate the request data
         $validatedData = $request->validate([
@@ -60,6 +43,6 @@ class DashboardController extends Controller
         // Update the user with validated data
         $user->update($validatedData);
 
-        return redirect()->route('manageProfile')->with('theID', $theID);
+        return redirect()->route('technician.manageProfile')->with('theID', $theID);
     }
 }

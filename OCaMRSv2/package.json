@@ -34,6 +34,7 @@
         "@popperjs/core": "^2.11.8",
         "bootstrap": "^5.3.3",
         "bootstrap-icons": "^1.11.3",
+        "framer-motion": "^11.8.0",
         "npm-watch": "^0.13.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
