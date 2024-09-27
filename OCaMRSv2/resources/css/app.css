@@ -982,11 +982,11 @@ input[type="checkbox"] {
     border-bottom-right-radius: 30px;
 }
 .shadow {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adjust values as needed */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adjust values as needed */
 }
 .a-nav-link {
     color: #202020; /* Static color */
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none; /* Remove underline */
 }
 

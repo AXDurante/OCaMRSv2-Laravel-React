@@ -72,14 +72,15 @@ export default function AdminNavBar({ children }) {
                     </div>
                 </div>
                 <div className="bg-yellow h-70 rounded-right">
-                    <h6
+                    <div
                         className={`bg-dark sidebar-heading text-light p-1 text-center ${
                             isCollapsed ? "d-none" : ""
                         }`}
                         style={{ width: "100%" }} // {{ edit_6 }}
                     >
-                        Admin Dashboard
-                    </h6>
+                        <h4 className="user-interface">Client&nbsp;</h4>
+                        <h4 className="user-interface2"> Interface</h4>
+                    </div>
                     <div className="p-4 mt-4">
                         <ul className="nav flex-column">
                             <li className="mb-2">
@@ -144,7 +145,7 @@ export default function AdminNavBar({ children }) {
                             href={route("admin.logout")}
                             method="post"
                             as="button"
-                            className="btn btn-danger w-100 "
+                            className="btn btn-dark w-100 "
                             onClick={(e) => e.stopPropagation()}
                         >
                             <i className="bi bi-box-arrow-right me-2"></i>
