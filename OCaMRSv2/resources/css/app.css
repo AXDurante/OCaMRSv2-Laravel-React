@@ -34,6 +34,13 @@
     width: 100%;
     border-top-right-radius: 15px;
 }
+.sidebar-headertech {
+    background-color: #a1a1a1;
+    padding-top: 70px;
+    padding-bottom: 150px;
+    width: 100%;
+    border-top-right-radius: 15px;
+}
 .sidebar-user {
     padding-top: 1vw;
     margin: auto;
@@ -61,6 +68,13 @@ h3 {
     height: 37vh;
     top: 0;
     background-color: #0789e7;
+    overflow-y: auto;
+    position: fixed;
+}
+.sidebar4 {
+    height: 37vh;
+    top: 0;
+    background-color: #c3c3c3;
     overflow-y: auto;
     position: fixed;
 }
