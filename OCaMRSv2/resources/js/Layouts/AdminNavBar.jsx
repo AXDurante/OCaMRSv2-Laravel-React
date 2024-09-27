@@ -41,14 +41,14 @@ export default function AdminNavBar({ children }) {
                 }}
                 onClick={() => setIsCollapsed(!isCollapsed)}
             >
-                <div className="bg-white h-30">
+                <div className="thead-custom h-30">
                     {" "}
                     <div className="d-flex flex-column align-items-center text-center">
-                        <h4 className="text-black mt-7" id="textHeader">
+                        <h4 className="text-warning mt-7" id="textHeader">
                             LESO - ISC
                         </h4>
                         <div
-                            className="rounded-circle bg-dark d-flex justify-content-center align-items-center mt-4 shadow"
+                            className="rounded-circle bg-light d-flex justify-content-center align-items-center mt-4 shadow"
                             style={{
                                 width: "100px",
                                 height: "100px",
@@ -56,7 +56,7 @@ export default function AdminNavBar({ children }) {
                             }}
                         >
                             <i
-                                class="bi bi-person-fill"
+                                class="bi bi-person-fill text-dark "
                                 style={{
                                     fontSize: "50px",
                                 }}
@@ -64,9 +64,11 @@ export default function AdminNavBar({ children }) {
                         </div>
 
                         <div className="d-flex flex-column">
-                            <p className="mt-2 mb-0">Welcome Back</p>{" "}
+                            <p className="mt-2 mb-0 text-white">Welcome Back</p>{" "}
                             {/* No bottom margin */}
-                            <p className="fw-bold mb-0">Sir Alferos!</p>{" "}
+                            <p className="fw-bold mb-0 text-warning">
+                                Sir Alferos!
+                            </p>{" "}
                             {/* No bottom margin */}
                         </div>
                     </div>

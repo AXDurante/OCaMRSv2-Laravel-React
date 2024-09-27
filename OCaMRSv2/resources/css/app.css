@@ -973,6 +973,9 @@ input[type="checkbox"] {
 .bg-yellow {
     background-color: #ffd600;
 }
+.bg-charcoal {
+    background-color: #353839;
+}
 .h-30 {
     height: 35%;
     border-top-right-radius: 30px;

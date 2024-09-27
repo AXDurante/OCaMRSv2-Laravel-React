@@ -12,7 +12,7 @@ function Home() {
                         <hr />
                     </div>
 
-                    <div className="bg-dark row rounded text-center d-flex justify-content-between">
+                    <div className="bg-black row rounded text-center d-flex justify-content-between">
                         <div className="col bg-light m-4 p-3">
                             <h5>Total Request</h5>
                             <h1>1</h1>
