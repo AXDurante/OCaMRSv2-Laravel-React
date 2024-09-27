@@ -1,33 +1,31 @@
 import { Link, usePage } from "@inertiajs/react";
 
 export default function AdminNavBar({ children }) {
-   
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
-
-
-            <div className="sidebar3"  style={{
+            <div
+                className="sidebar3"
+                style={{
                     width: "250px",
                     minWidth: "250px",
                     borderTopRightRadius: "20px",
                     borderBottomRightRadius: "15px",
-                }}>
-                    <div className="mt-4">
-                        <h4 className="text-black pt-4" id="textHeader">
-                            LESO - ISC
-                        </h4>
-                        <p className="ms-4"></p>
-                    </div>
-                     
-
+                }}
+            >
+                <div className="mt-4">
+                    <h4 className="text-black pt-4" id="textHeader">
+                        LESO - ISC
+                    </h4>
+                    <p className="ms-4"></p>
+                </div>
             </div>
-            
+
             <nav
                 className="sidebar rounded-right text-light"
                 style={{
                     width: "250px",
                     minWidth: "250px",
-                    
+
                     borderBottomRightRadius: "15px",
                 }}
             >
@@ -36,7 +34,7 @@ export default function AdminNavBar({ children }) {
                     <h4 className="user-interface2"> Interface</h4>
                 </div>
                 <ul className="nav flex-column pt-4 theNav">
-                <li className="nav-item">
+                    <li className="nav-item">
                         <Link href="/admin">
                             <a className="nav-link">
                                 <i className="bi bi-file-earmark-text me-2"></i>
@@ -61,9 +59,12 @@ export default function AdminNavBar({ children }) {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <i className="bi bi-list me-2"></i>Instrument List
-                        </a>
+                        <Link href="/admin/view-instrument">
+                            <a className="nav-link" href="#">
+                                <i className="bi bi-list me-2"></i>Instrument
+                                List
+                            </a>
+                        </Link>
                     </li>
 
                     <li className="nav-item">
@@ -84,9 +85,7 @@ export default function AdminNavBar({ children }) {
                             </Link>
                         </li>
                     </div>
-                   
                 </ul>
-                
             </nav>
             <main className="flex-fill p-3">{children}</main>
         </div>

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Equipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -56,5 +56,13 @@ class AdminController extends Controller
     public function showJobRequest()
     {
         return Inertia::render('Admin/ShowJobRequest');
+    }
+    public function showviewInstrument()
+    {
+        $equipment = Equipment::all();
+        return Inertia::render("Admin/ViewInstrument", [
+            "equipment" => $equipment,
+        ]);
+   
     }
 }

@@ -57,6 +57,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/approve-profile', [AdminController::class, 'approveProfile']);
     Route::get('/admin/remove-profile', [AdminController::class, 'removeProfile']);
     Route::get('/admin/manage-profile', [AdminController::class, 'manageProfile']);
+    Route::get('/admin/view-instrument', [AdminController::class, 'showViewInstrument']);
     Route::get('/admin/show job request', function () {
         return Inertia::render('Show Job Request');
     });
