@@ -1,34 +1,41 @@
 import { Link, usePage } from "@inertiajs/react";
 
-export default function NavBar({ children, absolute, firstName, lastName, email }) {
+export default function NavBar({
+    children,
+    absolute,
+    firstName,
+    lastName,
+    email,
+}) {
     console.log("Navbar props:", { absolute, firstName, lastName, email });
     const { auth } = usePage().props;
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
-
-
-            <div className="sidebar2"  style={{
+            <div
+                className="sidebar2"
+                style={{
                     width: "250px",
                     minWidth: "250px",
                     borderTopRightRadius: "20px",
                     borderBottomRightRadius: "15px",
-                }}>
-                    <div className="mt-4">
-                        <h4 className="text-black pt-4" id="textHeader">
-                            LESO - ISC
-                        </h4>
-                        <p className="ms-4">Welcome, {auth.user.firstName} {auth.user.lastName}</p>
-                    </div>
-                     
-
+                }}
+            >
+                <div className="mt-4">
+                    <h4 className="text-black pt-4" id="textHeader">
+                        LESO - ISC
+                    </h4>
+                    <p className="ms-4">
+                        Welcome, {auth.user.firstName} {auth.user.lastName}
+                    </p>
+                </div>
             </div>
-            
+
             <nav
                 className="sidebar rounded-right text-light"
                 style={{
                     width: "250px",
                     minWidth: "250px",
-                    
+
                     borderBottomRightRadius: "15px",
                 }}
             >
@@ -54,8 +61,12 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href={route('manageProfile')} className="nav-link">
-                            <i className="bi bi-person-fill me-2"></i>Manage Profile
+                        <Link
+                            href={route("manageProfile")}
+                            className="nav-link"
+                        >
+                            <i className="bi bi-person-fill me-2"></i>Manage
+                            Profile
                         </Link>
                     </li>
                     <li className="nav-item">
@@ -90,9 +101,7 @@ export default function NavBar({ children, absolute, firstName, lastName, email 
                             </Link>
                         </li>
                     </div>
-                   
                 </ul>
-                
             </nav>
             <main className="flex-fill p-3">{children}</main>
         </div>

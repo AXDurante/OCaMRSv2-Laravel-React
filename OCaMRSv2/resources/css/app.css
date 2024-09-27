@@ -101,6 +101,7 @@ ul {
     color: #ffd600; /* Active link color */
     text-decoration: none; /* Remove underline */
 }
+
 @media (max-height: 600px) {
     .sidebar-header {
         padding-bottom: 50px; /* Adjust padding for smaller screens */
@@ -967,6 +968,33 @@ input[type="checkbox"] {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 400px; /* Set a fixed width for the form */
 }
+
+/* admin navbar*/
 .bg-yellow {
     background-color: #ffd600;
+}
+.h-30 {
+    height: 35%;
+    border-top-right-radius: 30px;
+}
+.h-70 {
+    height: 65%;
+    border-bottom-right-radius: 30px;
+}
+.shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adjust values as needed */
+}
+.a-nav-link {
+    color: #202020; /* Static color */
+    font-weight: 500;
+    text-decoration: none; /* Remove underline */
+}
+
+.a-nav-link:hover,
+.a-nav-link:focus {
+    color: white; /* Color when hovered or focused */
+}
+
+.a-nav-link.active {
+    color: white; /* Color when the link is active */
 }
