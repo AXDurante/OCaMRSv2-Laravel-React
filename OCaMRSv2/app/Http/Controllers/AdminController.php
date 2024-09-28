@@ -41,7 +41,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        $jobOrder = JobOrder::all();
+        $jobOrder = JobOrder::paginate(10);
         return Inertia::render('Admin/Manage Job Request', [
             'jobOrder' => $jobOrder,
         ]);

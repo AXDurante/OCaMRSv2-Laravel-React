@@ -1,5 +1,6 @@
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
+import { Link } from "@inertiajs/react";
 
 function Home({ jobOrder }) {
     console.log(jobOrder);
@@ -67,7 +68,7 @@ function Home({ jobOrder }) {
                                 </tr>
                             </thead>
                             <tbody>
-                            {jobOrder.map((order, index) => (
+                            {jobOrder.data.map((order, index) => (
                                     <tr key={index} className="text-center align-middle">
                                         <td scope="row">{new Date(order.date_request).toLocaleDateString()}</td> {/* Date Received */}
                                         <td>{order.job_id}</td> {/* Job ID */}
@@ -81,6 +82,16 @@ function Home({ jobOrder }) {
                                 ))}
                             </tbody>
                         </table>
+                        <div className="text-center">
+                            {jobOrder.links.map((link) => (
+                                <Link 
+                                    className={`px-3 ${ link.active ? "text-secondary" : " text-dark "}`}
+                                    key={link.label}
+                                    href={link.url}
+                                    dangerouslySetInnerHTML={{ __html: link.label }}    
+                                />
+                                ))}
+                        </div>
                     </div>
                 </div>
             </div>
