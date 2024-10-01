@@ -5,6 +5,7 @@ import { useState } from "react"; // Import useState for managing state
 
 function Home() {
     const [pdfData, setPdfData] = useState(null); // State to hold PDF data
+    const [showModal, setShowModal] = useState(false); // State to control modal visibility
 
     const handlePreviewPDF = () => {
         const doc = new jsPDF();
@@ -75,23 +76,10 @@ function Home() {
         // Save the PDF data to state for preview
         const pdfOutput = doc.output("datauristring");
         setPdfData(pdfOutput);
-
-        // Open the PDF in a new window
-        const pdfWindow = window.open();
-        pdfWindow.document.write(
-            '<iframe width="100%" height="100%" src="' +
-                pdfOutput +
-                '"></iframe>'
-        );
+        setShowModal(true); // Show the modal
     };
 
-    const handleDownloadPDF = () => {
-        const doc = new jsPDF();
-        // Repeat the PDF generation code here to save the PDF
-        // (You can also refactor this into a separate function)
-        // Save the PDF
-        doc.save("Technical_Service_Report.pdf");
-    };
+    const handleCloseModal = () => setShowModal(false); // Function to close the modal
 
     return (
         <div className="d-flex">
@@ -282,6 +270,42 @@ function Home() {
                     </div>
                 </div>
             </div>
+            {showModal && (
+                <div
+                    className="modal"
+                    style={{
+                        display: "block",
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                    }}
+                >
+                    <div
+                        className="modal-content"
+                        style={{
+                            width: "80%",
+                            height: "80%",
+                            margin: "auto",
+                        }}
+                    >
+                        <span
+                            onClick={handleCloseModal}
+                            style={{ cursor: "pointer" }}
+                        >
+                            &times;
+                        </span>
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src={pdfData}
+                        ></iframe>
+                        <button onClick={handleCloseModal}>Close</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
