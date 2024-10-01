@@ -1,14 +1,107 @@
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
+import jsPDF from "jspdf"; // Import jsPDF
+import { useState } from "react"; // Import useState for managing state
 
 function Home() {
+    const [pdfData, setPdfData] = useState(null); // State to hold PDF data
+
+    const handlePreviewPDF = () => {
+        const doc = new jsPDF();
+
+        // Title
+        doc.setFontSize(16);
+        doc.text("UNIVERSITY OF SANTO TOMAS", 14, 20);
+        doc.text("LABORATORY EQUIPMENT AND SUPPLIES OFFICE", 14, 25);
+        doc.text("INSTRUMENTATION SERVICE CENTER", 14, 30);
+        doc.text("TECHNICAL SERVICE REPORT", 14, 35);
+        doc.text("TSR No. (To be filled by LESO)", 14, 40);
+        doc.text("Date: __________", 14, 45);
+        doc.text("Tel No.: __________", 14, 50);
+        doc.text("MODEL: __________", 14, 55);
+
+        // Fields
+        doc.text("LABORATORY: __________________________", 14, 65);
+        doc.text("LAB LOCATION: ________________________", 14, 70);
+        doc.text("INSTRUMENT: __________________________", 14, 75);
+        doc.text("SERIAL NO.: ___________________________", 14, 80);
+
+        // Problem Reported
+        doc.text("PROBLEM REPORTED", 14, 90);
+        doc.line(14, 92, 190, 92); // Line for input
+
+        // Diagnosis/Observation
+        doc.text("DIAGNOSIS/OBSERVATION", 14, 110);
+        doc.line(14, 112, 190, 112); // Line for input
+
+        // Action Taken
+        doc.text("ACTION TAKEN", 14, 130);
+        doc.line(14, 132, 190, 132); // Line for input
+
+        // Recommendation
+        doc.text("RECOMMENDATION", 14, 150);
+        doc.text("For Pull-out", 14, 155);
+        doc.text("Forward to Supplier (External Calibration)", 14, 160);
+        doc.text("For Repair", 14, 165);
+        doc.text("Beyond Repair", 14, 170);
+
+        // Remarks
+        doc.text("REMARKS:", 14, 190);
+        doc.line(14, 192, 190, 192); // Line for input
+
+        // Service Performed By
+        doc.text("SERVICE PERFORMED BY:", 14, 210);
+        doc.line(14, 212, 190, 212); // Line for input
+        doc.text("Noted by:", 14, 220);
+        doc.line(14, 222, 190, 222); // Line for input
+
+        // Service Acknowledgement
+        doc.text("SERVICE ACKNOWLEDGEMENT:", 14, 240);
+        doc.text(
+            "This is to acknowledge that the above service has been performed and completed in our laboratory/office.",
+            14,
+            245
+        );
+
+        // Requested By
+        doc.text("REQUESTED BY:", 14, 270);
+        doc.line(14, 272, 190, 272); // Line for input
+        doc.text("POSITION:", 14, 280);
+        doc.line(14, 282, 190, 282); // Line for input
+
+        // Footer
+        doc.text("UST-S022-00-FO34 rev01 05/02/23", 14, 300);
+
+        // Save the PDF data to state for preview
+        const pdfOutput = doc.output("datauristring");
+        setPdfData(pdfOutput);
+
+        // Open the PDF in a new window
+        const pdfWindow = window.open();
+        pdfWindow.document.write(
+            '<iframe width="100%" height="100%" src="' +
+                pdfOutput +
+                '"></iframe>'
+        );
+    };
+
+    const handleDownloadPDF = () => {
+        const doc = new jsPDF();
+        // Repeat the PDF generation code here to save the PDF
+        // (You can also refactor this into a separate function)
+        // Save the PDF
+        doc.save("Technical_Service_Report.pdf");
+    };
+
     return (
         <div className="d-flex">
             <div id="content" className="main-content flex-fill p-3">
                 <div>
                     <div>
-                        <h1 class="d-inline">Technical Service Report | </h1>
-                        <h1 class="d-inline fw-light">Create</h1>
+                        <h1 className="d-inline">
+                            Technical Service Report |{" "}
+                        </h1>
+                        <h1 className="d-inline fw-light">Create</h1>
                         <hr />
                     </div>
                     <div className="mt-3">
@@ -177,8 +270,11 @@ function Home() {
                                     </div>
 
                                     <div className="row"></div>
-                                    <button className="btn btn-dark w-100 text-warning mt-2 mb-4">
-                                        Update Profile
+                                    <button
+                                        className="btn btn-dark w-100 text-warning mt-2 mb-4"
+                                        onClick={handlePreviewPDF} // Button to preview PDF
+                                    >
+                                        Preview PDF
                                     </button>
                                 </div>
                             </div>
