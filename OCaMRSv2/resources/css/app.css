@@ -970,11 +970,11 @@ input[type="checkbox"] {
 }
 
 /* admin navbar*/
-.bg-yellow {
-    background-color: #ffd600;
+.bg-blue {
+    background-color: #0789e7;
 }
 .bg-charcoal {
-    background-color: #353839;
+    background-color: #1e1e1e;
 }
 .h-30 {
     height: 35%;
@@ -988,16 +988,67 @@ input[type="checkbox"] {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adjust values as needed */
 }
 .a-nav-link {
-    color: #202020; /* Static color */
+    color: white; /* Static color */
     font-weight: 600;
     text-decoration: none; /* Remove underline */
 }
 
 .a-nav-link:hover,
 .a-nav-link:focus {
-    color: white; /* Color when hovered or focused */
+    color: #0789e7; /* Color when hovered or focused */
 }
 
 .a-nav-link.active {
-    color: white; /* Color when the link is active */
+    color: #0789e7; /* Color when the link is active */
+}
+
+.gradient-blue-button {
+    background: linear-gradient(
+        to right,
+        #4facfe,
+        #00f2fe
+    ); /* Gradient from left to right */
+    border: none;
+    color: white;
+    padding: 8px 16px; /* Reduced padding */
+    font-size: 14px; /* Reduced font size */
+    border-radius: 6px; /* Smaller border-radius */
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Hover effect */
+.gradient-blue-button:hover {
+    background: linear-gradient(
+        to right,
+        #4facfe,
+        #00c2fe
+    ); /* Darken on hover */
+    transform: translateY(-3px); /* Slight raise on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Bigger shadow on hover */
+}
+
+/* Active effect */
+.gradient-blue-button:active {
+    transform: translateY(1px); /* Slight push down on active */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduce shadow on active */
+    background: linear-gradient(
+        to right,
+        #4facfe,
+        #00b2fe
+    ); /* Darker on active press */
+}
+.collapsed-content {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.expanded-content {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }

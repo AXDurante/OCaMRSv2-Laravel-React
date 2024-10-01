@@ -74,7 +74,7 @@ function Home() {
                                     <td>Pending</td>
                                     <td>Main</td>
                                     <td>
-                                        <button className="btn btn-yellow">
+                                        <button className="gradient-blue-button">
                                             See Details
                                         </button>
                                     </td>
@@ -88,7 +88,7 @@ function Home() {
                                     <td>Pending</td>
                                     <td>Main</td>
                                     <td>
-                                        <button className="btn btn-yellow">
+                                        <button className="gradient-blue-button">
                                             See Details
                                         </button>
                                     </td>
@@ -102,7 +102,7 @@ function Home() {
                                     <td>Pending</td>
                                     <td>Main</td>
                                     <td>
-                                        <button className="btn btn-yellow">
+                                        <button className="gradient-blue-button">
                                             See Details
                                         </button>
                                     </td>
@@ -116,7 +116,7 @@ function Home() {
                                     <td>Pending</td>
                                     <td>Main</td>
                                     <td>
-                                        <button className="btn btn-yellow">
+                                        <button className="gradient-blue-button">
                                             See Details
                                         </button>
                                     </td>
