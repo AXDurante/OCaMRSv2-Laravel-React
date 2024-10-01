@@ -1,50 +1,38 @@
+import React, { useState } from "react"; // Import useState
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
-import jsPDF from "jspdf"; // Import jsPDF
-import { useState } from "react"; // Import useState for managing state
+import TSRpdf from "./TSRpdf";
+import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
+import Modal from "react-modal"; // Import Modal
 
-function Home() {
-    const [pdfData, setPdfData] = useState(null); // State to hold PDF data
-    const [showModal, setShowModal] = useState(false); // State to control modal visibility
+function TSR() {
+    const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
 
-    const handlePreviewPDF = () => {
-        const doc = new jsPDF();
-
-        // Center Title
-        const pageWidth = doc.internal.pageSize.getWidth();
-        doc.setFont("Georgia", "normal"); // Set font to Times New Roman for the title
-        const title1 = "U N I V E R S I T Y  O F  S A N T O  T O M A S";
-        doc.text(title1, pageWidth / 2, 15, { align: "center" });
-
-        // Reset to default font for the next title
-        doc.setFont("Cambria Math", "normal");
-        const title2 = "LABORATORY EQUIPMENT AND SUPPLIES OFFICE";
-        doc.setFontSize(10); // Change font size for this title
-        doc.text(title2, pageWidth / 2, 19, { align: "center" });
-
-        doc.setFont("Sans", "normal");
-        const title3 = "LABORATORY EQUIPMENT AND SUPPLIES OFFICE";
-        doc.setFontSize(10); // Change font size for this title
-        doc.text(title3, pageWidth / 2, 30, { align: "center" });
-
-        doc.setFont("Arial", "normal");
-        const title4 = " TECHNICAL SERVICE REPORT";
-        doc.setFontSize(10); // Change font size for this title
-        doc.text(title4, pageWidth / 2, 40, { align: "center" });
-
-        // Footer
-        doc.text("UST-S022-00-FO34 rev01 05/02/23", 14, 300);
-
-        // Save the PDF data to state for preview
-        const pdfOutput = doc.output("datauristring");
-        setPdfData(pdfOutput);
-        setShowModal(true); // Show the modal
+    const handlePreviewClick = () => {
+        setShowPreview(true); // Show the preview when the button is clicked
     };
 
-    const handleCloseModal = () => setShowModal(false); // Function to close the modal
+    const closeModal = () => {
+        setShowPreview(false); // Close the modal
+    };
 
     return (
         <div className="d-flex">
+            {/* Modal for PDF Preview */}
+            <Modal isOpen={showPreview} onRequestClose={closeModal}>
+                <h5>Print Preview:</h5>
+                <PDFViewer
+                    style={{
+                        width: "100%",
+                        height: "80%",
+                        border: "none", // Optional: remove border for a cleaner look
+                    }}
+                >
+                    <TSRpdf />
+                </PDFViewer>
+                <button onClick={closeModal}>Close</button> {/* Close button */}
+            </Modal>
+
             <div id="content" className="main-content flex-fill p-3">
                 <div>
                     <div>
@@ -220,58 +208,29 @@ function Home() {
                                     </div>
 
                                     <div className="row"></div>
-                                    <button
-                                        className="btn btn-dark w-100 text-warning mt-2 mb-4"
-                                        onClick={handlePreviewPDF} // Button to preview PDF
-                                    >
-                                        Preview PDF
-                                    </button>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <button
+                                                className="btn btn-primary mb-3"
+                                                onClick={handlePreviewClick} // Add click handler
+                                            >
+                                                Preview PDF
+                                            </button>
+                                            {/* Removed PDFViewer from here */}
+                                        </div>
+                                    </div>
+                                    {/* Removed PDFDownloadLink for download option */}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {showModal && (
-                <div
-                    className="modal"
-                    style={{
-                        display: "block",
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                    }}
-                >
-                    <div
-                        className="modal-content"
-                        style={{
-                            width: "80%",
-                            height: "80%",
-                            margin: "auto",
-                        }}
-                    >
-                        <span
-                            onClick={handleCloseModal}
-                            style={{ cursor: "pointer" }}
-                        >
-                            &times;
-                        </span>
-                        <iframe
-                            width="100%"
-                            height="100%"
-                            src={pdfData}
-                        ></iframe>
-                        <button onClick={handleCloseModal}>Close</button>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
 
-Home.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
+// Change Home to TSR
+TSR.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
-export default Home;
+export default TSR;
