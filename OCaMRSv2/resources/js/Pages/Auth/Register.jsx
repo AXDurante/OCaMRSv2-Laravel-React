@@ -8,7 +8,7 @@ import LoginButton from "@/Components/LoginButton";
 import PhoneNumberInput from '@/Components/PhoneNumberInput';
 
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -25,6 +25,7 @@ export default function Register() {
 
     const [switchForm, setSwitchForm] = useState(1);
     const [submitted, setSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const nextForm = () => {
         if (switchForm === 3) {
@@ -40,12 +41,26 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
+        if (isSubmitting) return; // Prevent double submission
+        setIsSubmitting(true);
         setSubmitted(true);
 
         post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+            preserveState: true,
+            preserveScroll: true,
+            onFinish: () => {
+                reset('password', 'password_confirmation');
+                setIsSubmitting(false);
+            },
         });
     };
+
+    useEffect(() => {
+        // Reset isSubmitting when errors occur
+        if (Object.keys(errors).length > 0) {
+            setIsSubmitting(false);
+        }
+    }, [errors]);
 
     return (
         <div>
@@ -266,8 +281,12 @@ export default function Register() {
                                 </div>
 
                                 <div className='d-flex justify-content-center my-4 '>
-                                    <LoginButton className="theButton2 buttonColor2  w-100" processing={processing}>
-                                        Register
+                                    <LoginButton 
+                                        className="theButton2 buttonColor2 w-100" 
+                                        processing={processing || isSubmitting}
+                                        disabled={processing || isSubmitting}
+                                    >
+                                        {isSubmitting ? 'Registering...' : 'Register'}
                                     </LoginButton>
                                   
                                 </div>
