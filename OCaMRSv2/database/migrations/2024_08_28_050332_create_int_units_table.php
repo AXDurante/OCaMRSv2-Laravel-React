@@ -15,9 +15,8 @@ return new class extends Migration {
             $table->text('instrument');
             $table->text('qty');
             $table->text('model');
-            $table->text('serial_num');
+            $table->text('instrument_num');
             $table->text('manufacturer');
-            $table->text('property_num');
             $table->text('jobOrderID');
             // $table->timestamp('date_request')->nullable();
             // $table->timestamp('date_due')->nullable();

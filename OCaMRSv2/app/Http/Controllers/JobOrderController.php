@@ -65,11 +65,12 @@ class JobOrderController extends Controller
     {
         $jobOrderFields = $request->validate([
             'service_type' => ['required'],
-            'trans_type' => ['required'],
+            'trans_type' => ['nullable', 'string'],
             'dept_name' => ['required'],
             'lab' => ['required'],
             'lab_loc' => ['required'],
             'pos' => ['required'],
+            'remarks' => ['nullable', 'string'],
         ]);
 
         // Set employeeID from authenticated user
@@ -80,11 +81,10 @@ class JobOrderController extends Controller
         $intUnitFields = $request->validate([
             'instruments' => ['required', 'array'],
             'instruments.*.instrument' => ['required'],
-            'instruments.*.qty' => ['required'],
+            'instruments.*.qty' => ['required', 'integer', 'min:1'],
             'instruments.*.model' => ['required'],
-            'instruments.*.serial_num' => ['required'],
+            'instruments.*.instrument_num' => ['required'],
             'instruments.*.manufacturer' => ['required'],
-            'instruments.*.property_num' => ['required'],
         ]);
 
         foreach ($intUnitFields['instruments'] as $instrument) {

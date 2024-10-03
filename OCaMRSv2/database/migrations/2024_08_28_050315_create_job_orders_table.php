@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->text('lab_loc');
             $table->text('pos');
             $table->text('employeeID');
+            $table->text('remarks');
             $table->timestamp('date_request')->nullable();
             $table->timestamp('date_due')->nullable();
         });
