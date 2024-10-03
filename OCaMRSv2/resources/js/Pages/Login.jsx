@@ -7,6 +7,7 @@ import LoginButton from "@/Components/LoginButton";
 import TextInput from "@/Components/TextInput";
 import TextInput2 from "@/Components/TextInput2";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -15,11 +16,27 @@ export default function Login({ status, canResetPassword }) {
         remember: false,
     });
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const submit = (e) => {
         e.preventDefault();
 
+        if (isSubmitting) return; // Prevent double submission
+
+        setIsSubmitting(true);
+
         post(route("login"), {
-            onFinish: () => reset("password"),
+            preserveState: true,
+            onSuccess: () => {
+                reset("password");
+                setIsSubmitting(false);
+            },
+            onError: () => {
+                setIsSubmitting(false);
+            },
+            onFinish: () => {
+                setIsSubmitting(false);
+            },
         });
     };
 
