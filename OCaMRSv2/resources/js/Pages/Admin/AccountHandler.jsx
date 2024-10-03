@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import axios from "axios";
+import { Link } from '@inertiajs/react';
 
 function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,14 +45,6 @@ function Home() {
         setAccountPassword("");
         setPasswordConfirmation("");
         setPhoneNumber("");
-    };
-
-    const openEditModal = (account) => {
-        setEditingAccountId(account.id);
-        setIdNumber(account.id_number);
-        setFirstName(account.first_name);
-        setLastName(account.last_name);
-        setAccountEmail(account.email);
     };
 
     const handleSubmit = async (e, accountId = null) => {
@@ -183,177 +176,12 @@ function Home() {
                                             <p className="account-email">
                                                 {account.email}
                                             </p>
-                                            <button
+                                            <Link
+                                                href={route('admin.edit.tech', { id: account.id })}
                                                 className="btn btn-sm btn-primary mt-2"
-                                                onClick={() =>
-                                                    openEditModal(account)
-                                                }
                                             >
                                                 Edit
-                                            </button>
-                                            {editingAccountId ===
-                                                account.id && (
-                                                <div className="modal-overlay">
-                                                    <div
-                                                        className="modal-content"
-                                                        style={{
-                                                            maxWidth: "800px",
-                                                            width: "90%",
-                                                        }}
-                                                    >
-                                                        <h2>
-                                                            Edit Instrumentation
-                                                            Account
-                                                        </h2>
-                                                        <form
-                                                            onSubmit={(e) =>
-                                                                handleSubmit(
-                                                                    e,
-                                                                    account.id
-                                                                )
-                                                            }
-                                                        >
-                                                            <div className="row forms-bg">
-                                                                <div className="col-4 profile-bg d-flex flex-column align-items-center justify-content-center p-3 text-white">
-                                                                    <div>
-                                                                        <i className="bi bi-person-fill fs-1"></i>
-                                                                    </div>
-                                                                    <h5>
-                                                                        {`${firstName} ${lastName}` ||
-                                                                            `${account.first_name} ${account.last_name}`}
-                                                                    </h5>
-                                                                    <p>
-                                                                        {accountEmail ||
-                                                                            account.email}
-                                                                    </p>
-                                                                </div>
-
-                                                                <div className="col-8">
-                                                                    <div className="pt-3 pb-3 p-3">
-                                                                        <div className="row">
-                                                                            <div className="col-6 mb-3">
-                                                                                <label className="form-label fw-bold d-block text-truncate">
-                                                                                    ID
-                                                                                    Number
-                                                                                </label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control rounded"
-                                                                                    value={
-                                                                                        idNumber
-                                                                                    }
-                                                                                    onChange={(
-                                                                                        e
-                                                                                    ) =>
-                                                                                        setIdNumber(
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                    required
-                                                                                />
-                                                                            </div>
-                                                                            <div className="col-6 mb-3">
-                                                                                <label className="form-label fw-bold d-block text-truncate">
-                                                                                    First
-                                                                                    Name
-                                                                                </label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control rounded"
-                                                                                    value={
-                                                                                        firstName
-                                                                                    }
-                                                                                    onChange={(
-                                                                                        e
-                                                                                    ) =>
-                                                                                        setFirstName(
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                    required
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="row">
-                                                                            <div className="col-6 mb-3">
-                                                                                <label className="form-label fw-bold d-block text-truncate">
-                                                                                    Last
-                                                                                    Name
-                                                                                </label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control rounded"
-                                                                                    value={
-                                                                                        lastName
-                                                                                    }
-                                                                                    onChange={(
-                                                                                        e
-                                                                                    ) =>
-                                                                                        setLastName(
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                    required
-                                                                                />
-                                                                            </div>
-                                                                            <div className="col-6 mb-3">
-                                                                                <label className="form-label fw-bold d-block text-truncate">
-                                                                                    Email
-                                                                                </label>
-                                                                                <input
-                                                                                    type="email"
-                                                                                    className="form-control rounded"
-                                                                                    value={
-                                                                                        accountEmail
-                                                                                    }
-                                                                                    onChange={(
-                                                                                        e
-                                                                                    ) =>
-                                                                                        setAccountEmail(
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                    required
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="row mt-3">
-                                                                            <div className="col-12">
-                                                                                <button
-                                                                                    type="submit"
-                                                                                    className="btn btn-primary me-2"
-                                                                                >
-                                                                                    Update
-                                                                                    Account
-                                                                                </button>
-                                                                                <button
-                                                                                    type="button"
-                                                                                    className="btn btn-secondary"
-                                                                                    onClick={() =>
-                                                                                        setEditingAccountId(
-                                                                                            null
-                                                                                        )
-                                                                                    }
-                                                                                >
-                                                                                    Cancel
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            )}
+                                            </Link>
                                         </div>
                                     ))}
                                     <div

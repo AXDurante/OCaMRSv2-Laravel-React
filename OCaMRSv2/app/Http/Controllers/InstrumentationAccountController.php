@@ -74,16 +74,7 @@ class InstrumentationAccountController extends Controller
 
     public function update(Request $request, Technician $technician)
     {
-        $validated = $request->validate([
-            'employeeID' => 'required|string|max:255|unique:technicians,employeeID,' . $technician->id,
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:technicians,email,' . $technician->id,
-            'phoneNumber' => 'required|string|max:255|unique:technicians,phoneNumber,' . $technician->id,
-            // Add other fields as necessary
-        ]);
-
-        $technician->update($validated);
+      
 
         return redirect()->route('admin.instrumentation-accounts.index')->with('success', 'Account updated successfully.');
     }
@@ -92,5 +83,41 @@ class InstrumentationAccountController extends Controller
     {
         $technician->delete();
         return redirect()->route('admin.instrumentation-accounts.index')->with('success', 'Account deleted successfully.');
+    }
+
+    public function editTech($id)
+    {
+        $technician = Technician::findOrFail($id);
+        return Inertia::render('Admin/TechManageProfile', [
+            'theUser' => $technician
+        ]);
+    }
+
+    public function editTechPOST(Request $request) {
+        $theID = $request->input('userID');
+        
+        $user = Technician::findOrFail($theID);
+
+        // Validate the request data
+        $validatedData = $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $theID,
+            'phoneNumber' => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/',
+        ]);
+        
+        // Remove password field if it's empty
+        if (empty($validatedData['password'])) {
+            unset($validatedData['password']);
+        } else {
+            // Hash the new password
+            $validatedData['password'] = bcrypt($validatedData['password']);
+        }
+
+        // Update the user with validated data
+        $user->update($validatedData);
+
+        return redirect()->route('admin.edit.tech', ['id' => $theID])->with('success', 'Profile updated successfully');
     }
 }

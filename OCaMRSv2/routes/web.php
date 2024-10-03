@@ -64,6 +64,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
     // Instrumentation Account routes
+
+    Route::get('/admin/edit/technician/{id}', [InstrumentationAccountController::class, 'editTech'])->name('admin.edit.tech');
+    Route::post('/admin/edit/technician/{id}', [InstrumentationAccountController::class, 'editTechPOST'])->name('admin.update.tech');
+
     Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
     Route::get('/admin/instrumentation-accounts/create', [InstrumentationAccountController::class, 'create'])->name('admin.instrumentation-accounts.create');
     Route::post('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'store'])->name('admin.instrumentation-accounts.store');
