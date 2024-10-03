@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Technician;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +13,12 @@ class InstrumentationAccountController extends Controller
     public function index()
     {
         $accounts = Technician::all();
-        return response()->json($accounts);
+        $users = User::all();
+        
+        return response()->json([
+            'accounts' => $accounts,
+            'users' => $users
+        ]);
     }
 
     public function create()

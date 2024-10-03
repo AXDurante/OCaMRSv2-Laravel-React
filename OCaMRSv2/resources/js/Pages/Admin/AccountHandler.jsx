@@ -13,7 +13,8 @@ function Home() {
     const [accountPassword, setAccountPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [accounts, setAccounts] = useState([]);
+    const [technicians, setTechnicians] = useState([]);
+    const [users, setUsers] = useState([]);
     const [editingAccountId, setEditingAccountId] = useState(null);
 
     useEffect(() => {
@@ -23,7 +24,8 @@ function Home() {
     const fetchAccounts = async () => {
         try {
             const response = await axios.get("/admin/instrumentation-accounts");
-            setAccounts(response.data);
+            setTechnicians(response.data.accounts);
+            setUsers(response.data.users);
         } catch (error) {
             console.error("Error fetching accounts:", error);
         }
@@ -69,7 +71,7 @@ function Home() {
                 console.log("Account updated:", response.data);
 
                 // Update the local state immediately
-                setAccounts((prevAccounts) =>
+                setTechnicians((prevAccounts) =>
                     prevAccounts.map((account) =>
                         account.id === accountId
                             ? {
@@ -104,7 +106,7 @@ function Home() {
                 console.log("Account created:", response.data);
 
                 // Add the new account to the local state immediately
-                setAccounts((prevAccounts) => [...prevAccounts, response.data]);
+                setTechnicians((prevAccounts) => [...prevAccounts, response.data]);
 
                 // Close the modal
                 closeModal();
@@ -114,7 +116,7 @@ function Home() {
             resetForm();
 
             // Force a re-render of the component
-            setAccounts((prevAccounts) => [...prevAccounts]);
+            setTechnicians((prevAccounts) => [...prevAccounts]);
         } catch (error) {
             console.error("Error submitting account:", error);
             // Add more detailed error logging
@@ -162,7 +164,7 @@ function Home() {
                         <div className="row forms-bg p-5 instrumentation-accounts">
                             <div className="col-12">
                                 <div className="row">
-                                    {accounts.map((account) => (
+                                    {technicians.map((account) => (
                                         <div
                                             key={account.id}
                                             className="col-6 col-md-3 account-wrapper"
@@ -171,7 +173,7 @@ function Home() {
                                                 <i className="bi bi-person-fill text-primary"></i>
                                             </div>
                                             <h5 className="account-name">
-                                                {account.full_name}
+                                                {account.firstName} {account.lastName}
                                             </h5>
                                             <p className="account-email">
                                                 {account.email}
@@ -198,124 +200,33 @@ function Home() {
                                 </div>
                             </div>
                         </div>
+                        
                         <h3 className="mt-10 mb-3 fw-bold">Clients Accounts</h3>
                         <div className="row forms-bg p-5">
                             <div className="col-12">
                                 <div className="row">
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
+                                    {users.map((user) => (
+                                        <div
+                                            key={user.id}
+                                            className="col-6 col-md-2 account-wrapper"
+                                        >
+                                            <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
+                                                <i className="bi bi-person-fill text-primary"></i>
+                                            </div>
+                                            <h5 className="account-name">
+                                                {user.name}
+                                            </h5>
+                                            <p className="account-email">
+                                                {user.email}
+                                            </p>
                                         </div>
-                                        <h5 className="account-name">
-                                            Nino Anasco
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            Add Account
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12">
-                                <div className="row">
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            Nino Anasco
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            Add Account
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
+                                    ))}
+                                    {/* Add user account button */}
+                                    
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div className="mt-10 mb-3 ">
                             <h3 className="d-inline fw-bold">
                                 Clients Accounts
