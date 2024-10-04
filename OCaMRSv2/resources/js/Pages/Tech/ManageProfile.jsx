@@ -1,11 +1,13 @@
 import Navbar2 from "@/Layouts/Navbar2";
 import { usePage, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react"; // Add useEffect
+import { Modal, Button } from 'react-bootstrap'; // Make sure to install react-bootstrap if not already installed
 
 function Home({ absolute, firstName, lastName, email, theID }) {
     const { auth } = usePage().props;
     const [showSuccess, setShowSuccess] = useState(false);
     const [showNoChanges, setShowNoChanges] = useState(false); // Add this line
+    const [showPhotoModal, setShowPhotoModal] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
         firstName: auth.user.firstName,
         lastName: auth.user.lastName,
@@ -14,6 +16,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         userID: auth.user.id,
         password: '',
         password_confirmation: '',
+        photo: null, // Add this line
     });
 
     // Modify the hasChanges function
@@ -22,7 +25,8 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                data.lastName !== auth.user.lastName ||
                data.email !== auth.user.email ||
                data.phoneNumber !== auth.user.phoneNumber ||
-               (data.password !== '' && data.password_confirmation !== '');
+               (data.password !== '' && data.password_confirmation !== '') ||
+               data.photo !== null; // Add this line
     };
 
     // Modify the submit function
@@ -49,6 +53,14 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         setShowNoChanges(false);
     }, [data]);
 
+    const handleShowPhoto = () => {
+        setShowPhotoModal(true);
+    };
+
+    const handleClosePhoto = () => {
+        setShowPhotoModal(false);
+    };
+
     return (
         <div className="d-flex">
             <div id="content" className="main-content flex-fill p-3">
@@ -59,7 +71,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="p-5">
-                                        <form onSubmit={submit}>
+                                        <form onSubmit={submit} encType="multipart/form-data">
                                             <div className="message-container mb-4">
                                                 {showSuccess && (
                                                     <div className="alert alert-success shadow-lg animate-message" role="alert">
@@ -143,6 +155,28 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                     <small className="text-muted">Leave password fields empty to keep your current password.</small>
                                                 </div>
                                             </div>
+                                            <div className="row">
+                                                <div className="col-12 mb-4">
+                                                    <label className="form-label fw-bold">Profile Photo</label>
+                                                    <div className="d-flex align-items-center">
+                                                        <input
+                                                            type="file"
+                                                            name="photo"
+                                                            className="form-control shadow-sm animate-field me-2"
+                                                            onChange={e => setData('photo', e.target.files[0])}
+                                                        />
+                                                        {auth.user.photo && (
+                                                            <Button 
+                                                                variant="outline-primary" 
+                                                                onClick={handleShowPhoto}
+                                                            >
+                                                                View Current Signature Photo
+                                                            </Button>
+                                                        )}
+                                                    </div>
+                                                    {errors.photo && <small className="text-danger mt-1">{errors.photo}</small>}
+                                                </div>
+                                            </div>
                                             <button 
                                                 type="submit" 
                                                 className="btn btn-dark shadow-lg w-100 animate-button custom-button"
@@ -157,6 +191,27 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                     </div>
                 </div>
             </div>
+
+            {/* Photo Modal */}
+            <Modal show={showPhotoModal} onHide={handleClosePhoto}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Current Signature</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {auth.user.photo && (
+                        <img 
+                            src={`/storage/photos/${auth.user.photo}`} 
+                            alt="Profile Photo" 
+                            className="img-fluid"
+                        />
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClosePhoto}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

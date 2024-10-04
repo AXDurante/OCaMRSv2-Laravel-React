@@ -68,12 +68,12 @@ function Home({ theUser }) {
                                             <div className="message-container mb-4">
                                                 {showSuccess && (
                                                     <div className="alert alert-success shadow-lg animate-message" role="alert">
-                                                        Your profile has been successfully updated!
+                                                        Profile has been successfully updated!
                                                     </div>
                                                 )}
                                                 {showNoChanges && (
                                                     <div className="alert alert-warning shadow-lg animate-message" role="alert">
-                                                        No changes were made to your profile.
+                                                        No changes were made to the profile.
                                                     </div>
                                                 )}
                                             </div>
@@ -145,7 +145,7 @@ function Home({ theUser }) {
                                                         value={data.password_confirmation}
                                                         onChange={e => setData('password_confirmation', e.target.value)}
                                                     />
-                                                    <small className="text-muted">Leave password fields empty to keep your current password.</small>
+                                                    <small className="text-muted">Leave password fields empty to keep the current password.</small>
                                                 </div>
                                             </div>
                                             <button 
@@ -163,7 +163,6 @@ function Home({ theUser }) {
                     
                     {/* Back button outside the form */}
                     <Link
-                    
                         href="/admin/account-handler"
                         className="btn btn-outline-secondary w-100 animate-button"
                     >

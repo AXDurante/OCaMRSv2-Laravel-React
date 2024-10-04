@@ -55,14 +55,11 @@ class InstrumentationAccountController extends Controller
                 'password' => Hash::make($request->password),
                 'employeeID' => $request->employeeID,
                 'phoneNumber' => $request->phoneNumber,
+                // 'photo' is not included here, so it will remain null
             ]);
-
-            // If you're using the Registered event, make sure it's imported and applicable to Technician
-            // event(new Registered($technician));
 
             return response()->json($technician, 201);
         } catch (\Exception $e) {
-            // Log the error for debugging
             \Log::error('Error creating technician: ' . $e->getMessage());
             return response()->json(['error' => 'An error occurred while creating the account.'], 500);
         }
@@ -108,7 +105,7 @@ class InstrumentationAccountController extends Controller
         $validatedData = $request->validate([
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $theID,
+            'email' => 'required|string|email|max:255|unique:technicians,email,' . $theID,
             'phoneNumber' => 'nullable|string|max:20',
             'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/',
         ]);

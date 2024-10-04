@@ -25,6 +25,7 @@ class Technician extends Authenticatable {
         'password',
         'employeeID',
         'phoneNumber',
+        'photo', // Add this line
     ];
 
     /**
