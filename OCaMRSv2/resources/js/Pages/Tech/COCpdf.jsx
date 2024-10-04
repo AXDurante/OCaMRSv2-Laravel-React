@@ -80,15 +80,82 @@ const styles = StyleSheet.create({
         flex: 1,
         marginLeft: 5,
     },
-    leftSection: {
-        width: "65%",
-        flexDirection: "row",
-        alignItems: "center",
-    },
     rightSection: {
         width: "25%",
         flexDirection: "row",
         alignItems: "center",
+    },
+    tableContainer: {
+        marginTop: 20,
+    },
+    tableHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        height: 28,
+        backgroundColor: "#d9d9d9", // Background color for the header
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: 12,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: "#000", // Unified border color
+        // Ensure no gaps
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+    },
+    tableRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        height: 28,
+        textAlign: "center",
+        fontSize: 11,
+        borderBottomWidth: 1,
+        borderColor: "#000", // Border for rows
+        // Ensure no gaps
+        borderLeftWidth: 1, // Ensure left border is present
+        borderRightWidth: 1, // Ensure right border is present
+        backgroundColor: "#FFF2CC",
+    },
+    tableColHeader1: {
+        width: "50%",
+        height: "100%",
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: 12,
+        paddingVertical: 4,
+        borderRightWidth: 1,
+        borderRightColor: "#000",
+    },
+    tableCol1: {
+        width: "50%",
+        height: "100%",
+        textAlign: "center",
+        fontSize: 11,
+        paddingVertical: 4,
+        borderRightWidth: 1, // Ensure right border is present
+        borderColor: "#000", // Ensure border color is consistent
+    },
+    tableColHeader2: {
+        width: "25%",
+        height: "100%",
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: 12,
+        paddingVertical: 4,
+        borderRightWidth: 1,
+        borderRightColor: "#000",
+    },
+    tableCol2: {
+        width: "25%",
+        height: "100%",
+        textAlign: "center",
+        fontSize: 11,
+        paddingVertical: 4,
+        borderRightWidth: 1, // Ensure right border is present
+        borderColor: "#000", // Ensure border color is consistent
+    },
+    lastCol: {
+        borderRightWidth: 0, // No border for the last column
     },
 });
 
@@ -137,405 +204,140 @@ const COCpdf = () => {
                         fontWeight: "bold",
                     }}
                 >
-                    TECHNICAL SERVICE REPORT
+                    CERTIFICATE OF CALIBRATION
                 </Text>
-                {/* TSR No. */}
+
                 <Text
-                    style={{
-                        textAlign: "right",
-                        fontSize: 12,
-                        marginTop: 10,
-                        marginRight: 150,
-                        fontFamily: "Arial",
-                        fontWeight: "bold",
-                    }}
+                    style={[
+                        styles.alignLeft,
+                        styles.textStyle,
+                        { marginLeft: 90, marginTop: 2 },
+                    ]}
                 >
-                    TSR No.
+                    Signature over printed name / Date
                 </Text>
-                <Text
-                    style={{
-                        textAlign: "right",
-                        fontSize: 9,
-                        marginRight: 130,
-                        fontFamily: "Arial",
-                        fontStyle: "italic",
-                    }}
-                >
-                    (To be filled by LESO)
-                </Text>
-                {/* Form Fields */}
-                <View style={{ margin: "0px 60px 0px 60px", marginTop: 20 }}>
-                    {/* Row 1 */}
-                    <View style={styles.container}>
-                        <View style={styles.leftSection}>
-                            <Text style={styles.textStyle}>LABORATORY:</Text>
-                            <Text style={styles.underlineFull} />
+                <View style={{ marginLeft: 60, marginRight: 60 }}>
+                    <View style={styles.tableContainer}>
+                        {/* Table Header */}
+                        <View style={styles.tableHeader}>
+                            {" "}
+                            {/* Use tableRow for the header as well */}
+                            <Text style={styles.tableColHeader1}>
+                                Calibration Certificate No.
+                            </Text>
+                            <Text
+                                style={[styles.tableColHeader1, styles.lastCol]} // Ensure this is consistent with styles
+                            >
+                                Row 1, Col 2
+                            </Text>
                         </View>
-                        <View style={styles.rightSection}>
-                            <Text style={styles.textStyle}>Date:</Text>
-                            <Text style={styles.underlineFull} />
+                        {/* Table Rows */}
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableCol1}>
+                                Laboratory (College / Department)
+                            </Text>
+                            <Text style={[styles.tableCol1, styles.lastCol]}>
+                                Row 2, Col 2
+                            </Text>
                         </View>
-                    </View>
-
-                    {/* Row 2 */}
-                    <View style={styles.container}>
-                        <View style={styles.leftSection}>
-                            <Text style={styles.textStyle}>LAB LOCATION:</Text>
-                            <Text style={styles.underlineFull} />
-                        </View>
-                        <View style={styles.rightSection}>
-                            <Text style={styles.textStyle}>Tel No:</Text>
-                            <Text style={styles.underlineFull} />
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableCol1}>
+                                Laboratory Location
+                            </Text>
+                            <Text style={[styles.tableCol1, styles.lastCol]}>
+                                Row 3, Col 2
+                            </Text>
                         </View>
                     </View>
 
-                    {/* Row 3 */}
-                    <View style={styles.container}>
-                        <View style={styles.leftSection}>
-                            <Text style={styles.textStyle}>INSTRUMENT:</Text>
-                            <Text style={styles.underlineFull} />
+                    {/* Second Table (4 columns, 5 rows) */}
+                    <View style={styles.tableContainer}>
+                        {/* Table Header */}
+                        <View style={styles.tableHeader}>
+                            <Text style={styles.tableColHeader2}>
+                                Equipment
+                            </Text>
+                            <Text style={styles.tableColHeader2}>Column 2</Text>
+                            <Text style={styles.tableColHeader2}>
+                                Date Received
+                            </Text>
+                            <Text
+                                style={[styles.tableColHeader2, styles.lastCol]}
+                            >
+                                Column 4
+                            </Text>
                         </View>
-                        <View style={styles.rightSection}>
-                            <Text style={styles.textStyle}>MODEL:</Text>
-                            <Text style={styles.underlineFull} />
+
+                        {/* Table Rows */}
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableCol2}>Manufacturer</Text>
+                            <Text style={styles.tableCol2}>Row 1, Col 2</Text>
+                            <Text style={styles.tableCol2}>
+                                Date Calibrated
+                            </Text>
+                            <Text style={[styles.tableCol2, styles.lastCol]}>
+                                Row 1, Col 4
+                            </Text>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableCol2}>Model No.</Text>
+                            <Text style={styles.tableCol2}>Row 2, Col 2</Text>
+                            <Text style={styles.tableCol2}>
+                                Recommended Due Date
+                            </Text>
+                            <Text style={[styles.tableCol2, styles.lastCol]}>
+                                Row 2, Col 4
+                            </Text>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableCol2}>Serial No.</Text>
+                            <Text style={styles.tableCol2}>Row 3, Col 2</Text>
+                            <Text style={styles.tableCol2}>
+                                Place of Calibration
+                            </Text>
+                            <Text style={[styles.tableCol2, styles.lastCol]}>
+                                Row 3, Col 4
+                            </Text>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableCol2}>Property No.</Text>
+                            <Text style={styles.tableCol2}>Row 4, Col 2</Text>
+                            <Text style={styles.tableCol2}>Job Order No.</Text>
+                            <Text style={[styles.tableCol2, styles.lastCol]}>
+                                Row 4, Col 4
+                            </Text>
                         </View>
                     </View>
-
-                    {/* Row 4 */}
-                    <View style={styles.container}>
-                        <View style={styles.leftSection}>
-                            <Text style={styles.textStyle}>SERIAL NO:</Text>
-                            <Text style={styles.underlineFull} />
-                        </View>
-                        <View style={styles.rightSection}>
-                            <Text style={styles.textStyle}></Text>
-                        </View>
-                    </View>
-
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            {
-                                fontFamily: "Arial",
-                                fontWeight: "bold",
-                                marginTop: 15,
-                                marginBottom: 3,
-                                marginLeft: 3,
-                            },
-                        ]}
-                    >
-                        PROBLEM REPORTED
-                    </Text>
-                    <View style={styles.boxPR}></View>
-
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            {
-                                fontFamily: "Arial",
-                                fontWeight: "bold",
-                                marginTop: 10,
-                                marginBottom: 3,
-                                marginLeft: 3,
-                            },
-                        ]}
-                    >
-                        DIAGNOSIS/OBSERVATION
-                    </Text>
-                    <View style={styles.boxDO}></View>
-
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            {
-                                fontFamily: "Arial",
-                                fontWeight: "bold",
-                                marginTop: 10,
-                                marginBottom: 3,
-                                marginLeft: 3,
-                            },
-                        ]}
-                    >
-                        ACTION TAKEN
-                    </Text>
-                    <View style={styles.boxAT}></View>
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            {
-                                fontFamily: "Arial",
-                                fontWeight: "bold",
-                                marginTop: 10,
-                                marginBottom: 3,
-                                marginLeft: 3,
-                            },
-                        ]}
-                    >
-                        RECOMMENDATION
-                    </Text>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            marginTop: 5,
-                        }}
-                    >
-                        <View
-                            style={{
-                                width: 10,
-                                height: 10,
-                                borderWidth: 1,
-                                borderColor: "#000",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginRight: 10,
-                                marginLeft: 5,
-                            }}
-                        >
-                            {/* Checkbox for "For Pull-out" */}
-                        </View>
-                        <Text style={styles.textStyle}>For Pull-out</Text>
-
-                        <View
-                            style={{
-                                width: 10,
-                                height: 10,
-                                borderWidth: 1,
-                                borderColor: "#000",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginLeft: 20,
-                                marginRight: 5,
-                            }}
-                        >
-                            {/* Checkbox for "Forward to Supplier" */}
-                        </View>
-                        <Text style={styles.textStyle}>
-                            Forward to Supplier (External Calibration)
-                        </Text>
-
-                        <View
-                            style={{
-                                width: 10,
-                                height: 10,
-                                borderWidth: 1,
-                                borderColor: "#000",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginLeft: 20,
-                                marginRight: 5,
-                            }}
-                        >
-                            {/* Checkbox for "For Repair" */}
-                        </View>
-                        <Text style={styles.textStyle}>For Repair</Text>
-
-                        <View
-                            style={{
-                                width: 10,
-                                height: 10,
-                                borderWidth: 1,
-                                borderColor: "#000",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginLeft: 20,
-                                marginRight: 5,
-                            }}
-                        >
-                            {/* Checkbox for "For Repair" */}
-                        </View>
-                        <Text style={styles.textStyle}>Beyond Repair</Text>
-                    </View>
-
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            {
-                                fontFamily: "Arial",
-                                fontWeight: "bold",
-                                marginTop: 15,
-                                marginLeft: 9,
-                            },
-                        ]}
-                    >
-                        REMARKS
-                    </Text>
-                    <View
-                        style={{
-                            borderBottomWidth: 2,
-                            borderBottomColor: "black",
-                            marginTop: 15,
-                            marginLeft: 9,
-                        }}
-                    />
-                    <View
-                        style={{
-                            borderBottomWidth: 2,
-                            borderBottomColor: "black",
-                            marginTop: 15,
-                            marginLeft: 9,
-                        }}
-                    />
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            marginTop: 15,
-                            marginLeft: 9,
-                        }}
-                    >
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                {
-                                    fontFamily: "Arial",
-                                    fontWeight: "bold",
-                                },
-                            ]}
-                        >
-                            SERVICE PERFORMED BY:
-                            ___________________________________
-                        </Text>
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                {
-                                    fontFamily: "Arial",
-                                    fontWeight: "bold",
-                                    marginLeft: 20, // Adjust the marginLeft to provide spacing between the two elements
-                                },
-                            ]}
-                        >
-                            Noted by: ________________________
-                        </Text>
-                    </View>
-
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            marginTop: 2,
-                            marginLeft: 9,
-                        }}
-                    >
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                { marginLeft: 138 },
-                            ]}
-                        >
-                            Instrumentation Technician / Date
-                        </Text>
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                { marginLeft: 90 },
-                            ]}
-                        >
-                            LESO Administrator / Date
-                        </Text>
-                    </View>
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            {
-                                fontFamily: "Arial",
-                                fontWeight: "bold",
-                                marginTop: 15,
-                                marginLeft: 9,
-                            },
-                        ]}
-                    >
-                        SERVICE ACKNOWLEDGEMENT:
-                    </Text>
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            {
-                                marginLeft: 9,
-                                marginBottom: 9,
-                                marginTop: 2,
-                            },
-                        ]}
-                    >
-                        This is to acknowledge that the above service has been
-                        performed and completed in our laboratory/office.
-                    </Text>
-
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            marginTop: 2,
-                        }}
-                    >
-                        <Text
-                            style={[
-                                styles.textStyle,
-                                { fontFamily: "Arial", fontWeight: "bold" },
-                            ]}
-                        >
-                            REQUESTED BY:
-                            ___________________________________________
-                        </Text>
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                { marginLeft: 70 },
-                            ]}
-                        >
-                            E-mail: __________________
-                        </Text>
-                    </View>
-
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            { marginLeft: 90, marginTop: 2 },
-                        ]}
-                    >
-                        Signature over printed name / Date
-                    </Text>
-
-                    <Text
-                        style={[
-                            styles.textStyle,
-                            {
-                                fontFamily: "Arial",
-                                fontWeight: "bold",
-                                marginTop: 4,
-                            },
-                        ]}
-                    >
-                        POSITION:
-                        _______________________________________________
-                    </Text>
-
-                    <Text
-                        style={[
-                            styles.alignRight,
-                            styles.textStyle,
-                            {
-                                marginbt: 30,
-                                marginTop: 30,
-                                fontFamily: "Arial",
-                                fontStyle: "italic",
-                            },
-                        ]}
-                    >
-                        UST:S022-00-FO34 rev01 05/02/23
-                    </Text>
                 </View>
+
+                <Text
+                    style={[
+                        styles.textStyle,
+                        {
+                            fontFamily: "Arial",
+                            fontWeight: "bold",
+                            marginTop: 4,
+                        },
+                    ]}
+                >
+                    POSITION: _______________________________________________
+                </Text>
+
+                <Text
+                    style={[
+                        styles.alignRight,
+                        styles.textStyle,
+                        {
+                            marginBottom: 30, // Corrected typo here
+                            marginTop: 30,
+                            fontFamily: "Arial",
+                            fontStyle: "italic",
+                        },
+                    ]}
+                >
+                    UST:S022-00-FO34 rev01 05/02/23
+                </Text>
+
                 <Image
                     src="/images/TSRFooter.png"
                     style={[
