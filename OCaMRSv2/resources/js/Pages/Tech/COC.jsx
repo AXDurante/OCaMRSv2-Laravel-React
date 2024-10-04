@@ -1,7 +1,21 @@
+import React, { useState } from "react"; // Ensure useState is imported
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
+import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
+import Modal from "react-modal";
+import COCpdf from "./COCpdf";
 
-function Home() {
+function COC() {
+    const [showPreview, setShowPreview] = useState(false); // Define showPreview state
+
+    const handlePreviewClick = () => {
+        setShowPreview(true); // Show the preview when the button is clicked
+    };
+
+    const closeModal = () => {
+        setShowPreview(false); // Close the modal
+    };
+
     return (
         <div className="d-flex">
             <div id="content" className="main-content flex-fill p-3">
@@ -196,6 +210,40 @@ function Home() {
                                     <button className="btn btn-dark w-100 text-warning mt-2 mb-4">
                                         Update Profile
                                     </button>
+                                    <Modal
+                                        isOpen={showPreview}
+                                        onRequestClose={closeModal}
+                                    >
+                                        <h5>Print Preview:</h5>
+                                        <PDFViewer
+                                            style={{
+                                                width: "100%",
+                                                height: "80%",
+                                                border: "none", // Optional: remove border for a cleaner look
+                                            }}
+                                        >
+                                            <COCpdf />
+                                        </PDFViewer>
+                                        <button onClick={closeModal}>
+                                            Close
+                                        </button>{" "}
+                                        {/* Close button */}
+                                    </Modal>
+
+                                    <div
+                                        id="content"
+                                        className="main-content flex-fill p-3"
+                                    >
+                                        <div className="mt-3">
+                                            {/* Form fields for COC */}
+                                            <button
+                                                className="btn btn-primary mb-3"
+                                                onClick={handlePreviewClick} // Add click handler
+                                            >
+                                                Preview PDF
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -206,6 +254,6 @@ function Home() {
     );
 }
 
-Home.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
+COC.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
-export default Home;
+export default COC;
