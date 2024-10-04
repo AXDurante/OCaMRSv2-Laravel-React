@@ -2,7 +2,7 @@ import { Link } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 import JobOrder from "./CreateOrder";
 
-function TrackOrder({ jobOrder , firstName, lastName, email }) {
+function TrackOrder({ jobOrder, firstName, lastName, email }) {
     console.log("Job Order props:", { jobOrder, firstName, lastName, email });
 
     return (
@@ -35,6 +35,8 @@ function TrackOrder({ jobOrder , firstName, lastName, email }) {
                                 Search
                             </button>
                         </div>
+
+                        <div className="container"></div>
                     </div>
 
                     {/* Card */}
@@ -44,56 +46,70 @@ function TrackOrder({ jobOrder , firstName, lastName, email }) {
                             id="cardTrackReq"
                             key={jobOrder.job_id}
                         >
-                            <div className="card-body d-flex">
-                                <img
-                                    src="https://via.placeholder.com/100"
-                                    alt="Placeholder"
-                                    className="me-3"
-                                    style={{
-                                        width: "100px",
-                                        height: "100px",
-                                        objectFit: "cover",
-                                        borderRadius: "8px",
-                                    }}
-                                />
+                            <div className="card-body">
+                                <div className="row align-items-center">
+                                    {/* Image */}
+                                    <div className="col-auto">
+                                        <img
+                                            src="https://via.placeholder.com/100"
+                                            alt="Placeholder"
+                                            className="me-3"
+                                            style={{
+                                                width: "100px",
+                                                height: "100px",
+                                                objectFit: "cover",
+                                                borderRadius: "8px",
+                                            }}
+                                        />
+                                    </div>
 
-                                <div className="flex-grow-1">
-                                    <p className="text-muted">
-                                        {" "}
-                                        ID: {jobOrder.job_id}{" "}
-                                    </p>
-                                    <h5 className="card-title">
-                                        {" "}
-                                        Instrument Title:{" "}
-                                    </h5>
-                                    <p>
-                                        {" "}
-                                        Date Created: {
-                                            jobOrder.date_request
-                                        }{" "}
-                                    </p>
-                                    <p> Status: </p>
-                                    <div className="d-flex justify-content-end mt-4">
-                                        <Link
-                                            href={`feedback`}
-                                        >
-                                            <button
-                                                className="btn btn-secondary me-2"
-                                                id="btnFeed"
-                                            >
-                                                Give Feedback
-                                            </button>
-                                        </Link>
-                                        <Link
-                                            href={`jobOrder/${jobOrder.job_id}`}
-                                        >
-                                            <button
-                                                className="btn btn-primary"
-                                                id="btnSee"
-                                            >
-                                                See Details
-                                            </button>
-                                        </Link>
+                                    {/* Text content */}
+                                    <div className="col">
+                                        <div className="row">
+                                            <div className="col-8">
+                                                <div className="flex-grow-1">
+                                                    <p className="text-muted">
+                                                        ID: {jobOrder.job_id}
+                                                    </p>
+                                                    <h5 className="card-title">
+                                                        Instrument Title:
+                                                    </h5>
+
+                                                    <h6 className="card-subtitle mt-3">
+                                                        Status
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div className="col-4">
+                                                <div className="align-self-center ">
+                                                    <p>
+                                                        Date Created:{" "}
+                                                        {jobOrder.date_request}
+                                                    </p>
+                                                    <p>Due Date: </p>
+                                                </div>
+                                                <div className="d-flex justify-content-end">
+                                                    <Link href={`feedback`}>
+                                                        <button
+                                                            className="btn btn-secondary me-2"
+                                                            id="btnFeed"
+                                                        >
+                                                            Give Feedback
+                                                        </button>
+                                                    </Link>
+                                                    <Link
+                                                        href={`jobOrder/${jobOrder.job_id}`}
+                                                    >
+                                                        <button
+                                                            className="btn btn-primary"
+                                                            id="btnSee"
+                                                        >
+                                                            See Details
+                                                        </button>
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +124,7 @@ function TrackOrder({ jobOrder , firstName, lastName, email }) {
 TrackOrder.layout = (page) => {
     const props = page.props;
     return (
-        <Navbar 
+        <Navbar
             absolute={props.absolute}
             firstName={props.firstName}
             lastName={props.lastName}
