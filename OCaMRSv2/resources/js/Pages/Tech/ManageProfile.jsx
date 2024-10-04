@@ -157,7 +157,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                             </div>
                                             <div className="row">
                                                 <div className="col-12 mb-4">
-                                                    <label className="form-label fw-bold">Profile Photo</label>
+                                                    <label className="form-label fw-bold">Signature Photo</label>
                                                     <div className="d-flex align-items-center">
                                                         <input
                                                             type="file"

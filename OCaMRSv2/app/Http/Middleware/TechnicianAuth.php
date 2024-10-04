@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TechnicianAuth
 {
@@ -17,10 +18,15 @@ class TechnicianAuth
     public function handle(Request $request, Closure $next)
     {
         // Check if the user is authenticated as a technician
-        if (!auth()->guard('technician')->check()) {
-            return redirect()->route('technician.login'); // Redirect to the login page if not authenticated
+        if (Auth::guard('technicians')->check()) {
+            return redirect()->route('technician.dashboard'); // Redirect technicians to their dashboard
+        } elseif (Auth::guard('web')->check()) {
+            return redirect()->route('dashboard');
+        } elseif (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.home');
         }
 
+        // If not authenticated, allow the request to proceed
         return $next($request);
     }
 }

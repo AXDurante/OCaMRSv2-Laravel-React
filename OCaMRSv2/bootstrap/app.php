@@ -21,6 +21,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             HandleInertiaRequests::class,
         ]);
+
+        // Correct way to add middleware aliases
+        $middleware->alias([
+            'technician.auth' => TechnicianAuth::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

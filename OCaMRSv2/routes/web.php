@@ -25,12 +25,12 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-})->name('loginHome');
+})->name('loginHome')->middleware('technician.auth');
 
 Route::prefix('technician')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Tech/Login');
-    })->name('technician.home');
+    })->name('technician.home')->middleware('technician.auth');
     Route::get('/home2', function () {
         return Inertia::render('Tech/Home2');
     })->name('technician.home2');
@@ -79,7 +79,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
 });
 
-Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login')->middleware('technician.auth');;
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
 // TO REMOVE
