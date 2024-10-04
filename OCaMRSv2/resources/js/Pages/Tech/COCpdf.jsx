@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
     },
     tableRow: {
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "center", // Ensure vertical alignment
+        justifyContent: "center", // Ensure horizontal alignment
         height: 28,
         textAlign: "center",
         fontSize: 11,
@@ -115,6 +116,8 @@ const styles = StyleSheet.create({
         borderLeftWidth: 1, // Ensure left border is present
         borderRightWidth: 1, // Ensure right border is present
         backgroundColor: "#FFF2CC",
+        justifyContent: "center", // Ensure content is centered
+        display: "flex", // Use flex for the column to apply centering
     },
     tableColHeader1: {
         width: "50%",
@@ -125,6 +128,7 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         borderRightWidth: 1,
         borderRightColor: "#000",
+        backgroundColor: "#FFF2CC",
     },
     tableCol1: {
         width: "50%",
@@ -134,6 +138,8 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         borderRightWidth: 1, // Ensure right border is present
         borderColor: "#000", // Ensure border color is consistent
+        justifyContent: "center", // Ensure horizontal alignment
+        alignItems: "center", // Ensure vertical alignment
     },
     tableColHeader2: {
         width: "25%",
@@ -144,6 +150,7 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         borderRightWidth: 1,
         borderRightColor: "#000",
+        backgroundColor: "#FFF2CC",
     },
     tableCol2: {
         width: "25%",
@@ -153,6 +160,8 @@ const styles = StyleSheet.create({
         paddingVertical: 4,
         borderRightWidth: 1, // Ensure right border is present
         borderColor: "#000", // Ensure border color is consistent
+        justifyContent: "center", // Ensure horizontal alignment
+        alignItems: "center", // Ensure vertical alignment
     },
     lastCol: {
         borderRightWidth: 0, // No border for the last column
