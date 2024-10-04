@@ -99,9 +99,13 @@ class JobOrderController extends Controller
      * Display the specified resource.
      */
     public function show(JobOrder $jobOrder)
-    {
-        return inertia('JobOrder/ViewOrder', ['jobOrder' => $jobOrder]);
-    }
+{
+    // Eager load the int_units relationship
+    $jobOrder->load('int_units');
+    return inertia('JobOrder/ViewOrder', [
+        'jobOrder' => $jobOrder
+    ]);
+}
 
     /**
      * Show the form for editing the specified resource.
