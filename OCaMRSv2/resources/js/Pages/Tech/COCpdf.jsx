@@ -75,6 +75,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
     },
+    alignRight: {
+        textAlign: "right",
+    },
     underlineFull: {
         borderBottomWidth: 1,
         flex: 1,
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     tableHeader: {
         flexDirection: "row",
         alignItems: "center",
-        height: 28,
+        height: 20, // Adjust height for the header as needed
         backgroundColor: "#d9d9d9", // Background color for the header
         textAlign: "center",
         fontWeight: "bold",
@@ -99,7 +102,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: "#000", // Unified border color
-        // Ensure no gaps
         borderLeftWidth: 1,
         borderRightWidth: 1,
     },
@@ -107,12 +109,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center", // Ensure vertical alignment
         justifyContent: "center", // Ensure horizontal alignment
-        height: 28,
+        height: 20, // Adjust height as needed
         textAlign: "center",
         fontSize: 11,
         borderBottomWidth: 1,
         borderColor: "#000", // Border for rows
-        // Ensure no gaps
         borderLeftWidth: 1, // Ensure left border is present
         borderRightWidth: 1, // Ensure right border is present
         backgroundColor: "#FFF2CC",
@@ -124,7 +125,8 @@ const styles = StyleSheet.create({
         height: "100%",
         textAlign: "center",
         fontWeight: "bold",
-        fontSize: 12,
+
+        fontSize: 9,
         paddingVertical: 4,
         borderRightWidth: 1,
         borderRightColor: "#000",
@@ -134,7 +136,8 @@ const styles = StyleSheet.create({
         width: "50%",
         height: "100%",
         textAlign: "center",
-        fontSize: 11,
+        fontWeight: "bold",
+        fontSize: 9,
         paddingVertical: 4,
         borderRightWidth: 1, // Ensure right border is present
         borderColor: "#000", // Ensure border color is consistent
@@ -146,7 +149,8 @@ const styles = StyleSheet.create({
         height: "100%",
         textAlign: "center",
         fontWeight: "bold",
-        fontSize: 12,
+        fontWeight: "bold",
+        fontSize: 9,
         paddingVertical: 4,
         borderRightWidth: 1,
         borderRightColor: "#000",
@@ -156,7 +160,8 @@ const styles = StyleSheet.create({
         width: "33.33%", // Adjust width for three columns
         height: "100%",
         textAlign: "center",
-        fontSize: 11,
+        fontWeight: "bold",
+        fontSize: 9,
         paddingVertical: 4,
         borderRightWidth: 1, // Ensure right border is present
         borderColor: "#000", // Ensure border color is consistent
