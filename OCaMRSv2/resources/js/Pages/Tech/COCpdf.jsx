@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
     },
     tableCol1right: {
-        width: "50%",
+        width: "80%",
         height: "100%",
         textAlign: "center",
         fontFamily: "ArialBold",
@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
         height: "100%",
         textAlign: "center",
         fontWeight: "bold",
-        fontWeight: "bold",
         fontSize: 9,
         paddingVertical: 4,
         borderRightWidth: 1,
@@ -175,7 +174,7 @@ const styles = StyleSheet.create({
         width: "33.33%", // Adjust width for three columns
         height: "100%",
         textAlign: "center",
-        fontWeight: "bold",
+        fontFamily: "ArialBold",
         fontSize: 9,
         paddingVertical: 4,
         borderRightWidth: 1, // Ensure right border is present
@@ -211,10 +210,27 @@ const styles = StyleSheet.create({
     },
     calibrationContainer: {
         border: "1px solid black", // Border around the container
-        padding: 10, // Padding inside the container
+        width: "100%",
+        height: "60",
+        padding: 8,
+    },
+    remarksContainer: {
+        border: "1px solid black", // Border around the container
+        width: "100%",
+        height: "80",
+    },
+    remarksText: {
+        textAlign: "left",
+        padding: 8,
+        fontSize: 11,
+    },
+    resultsContainer: {
+        border: "1px solid black", // Border around the container
+        width: "100%",
+        height: "80",
     },
     calibrationHeader: {
-        fontWeight: "bold", // Bold header
+        fontFamily: "ArialBold",
         fontSize: 12, // Font size for the header
         marginBottom: 5, // Space below the header
         marginTop: 10,
@@ -287,9 +303,7 @@ const COCpdf = () => {
                                         styles.tableCol1right,
                                         styles.lastCol,
                                     ]} // Ensure this is consistent with styles
-                                >
-                                    Row 1, Col 2
-                                </Text>
+                                ></Text>
                             </View>
                         </View>
                         {/* Table Rows */}
@@ -299,9 +313,7 @@ const COCpdf = () => {
                             </Text>
                             <Text
                                 style={[styles.tableCol1right, styles.lastCol]}
-                            >
-                                Row 2, Col 2
-                            </Text>
+                            ></Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol1}>
@@ -309,9 +321,7 @@ const COCpdf = () => {
                             </Text>
                             <Text
                                 style={[styles.tableCol1right, styles.lastCol]}
-                            >
-                                Row 3, Col 2
-                            </Text>
+                            ></Text>
                         </View>
                     </View>
                     {/* Second Table (4 columns, 5 rows) */}
@@ -321,55 +331,45 @@ const COCpdf = () => {
                             <Text style={styles.tableColHeader2}>
                                 Equipment
                             </Text>
-                            <Text style={styles.tableColHeader2}>Column 2</Text>
+                            <Text style={styles.tableColHeader2}></Text>
                             <Text style={styles.tableColHeader2}>
                                 Date Received
                             </Text>
                             <Text
                                 style={[styles.tableColHeader2, styles.lastCol]}
-                            >
-                                Column 4
-                            </Text>
+                            ></Text>
                         </View>
 
                         {/* Table Rows */}
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol2}>Manufacturer</Text>
-                            <Text style={styles.tableCol2}>Row 1, Col 2</Text>
+                            <Text style={styles.tableCol2}></Text>
                             <Text style={styles.tableCol2}>
                                 Date Calibrated
                             </Text>
-                            <Text style={[styles.tableCol2, styles.lastCol]}>
-                                Row 1, Col 4
-                            </Text>
+                            <Text
+                                style={[styles.tableCol2, styles.lastCol]}
+                            ></Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol2}>Model No.</Text>
-                            <Text style={styles.tableCol2}>Row 2, Col 2</Text>
+                            <Text style={styles.tableCol2}></Text>
                             <Text style={styles.tableCol2}>
                                 Recommended Due Date
                             </Text>
-                            <Text style={[styles.tableCol2, styles.lastCol]}>
-                                Row 2, Col 4
-                            </Text>
+                            <Text
+                                style={[styles.tableCol2, styles.lastCol]}
+                            ></Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol2}>Serial No.</Text>
-                            <Text style={styles.tableCol2}>Row 3, Col 2</Text>
+                            <Text style={styles.tableCol2}></Text>
                             <Text style={styles.tableCol2}>
                                 Place of Calibration
                             </Text>
-                            <Text style={[styles.tableCol2, styles.lastCol]}>
-                                Row 3, Col 4
-                            </Text>
-                        </View>
-                        <View style={styles.tableRow}>
-                            <Text style={styles.tableCol2}>dsada</Text>
-                            <Text style={styles.tableCol2}>Row 4, Col 2</Text>
-                            <Text style={styles.tableCol2}>Job Order No.</Text>
-                            <Text style={[styles.tableCol2, styles.lastCol]}>
-                                Row 4, Col 4
-                            </Text>
+                            <Text
+                                style={[styles.tableCol2, styles.lastCol]}
+                            ></Text>
                         </View>
                     </View>
 
@@ -382,7 +382,12 @@ const COCpdf = () => {
                         Calibration Procedure and Traceability:
                     </Text>
                     <View style={styles.calibrationContainer}>
-                        <Text style={styles.calibrationText}>
+                        <Text
+                            style={[
+                                styles.calibrationText,
+                                { textAlign: "left" },
+                            ]}
+                        >
                             Above equipment has been calibrated using STANDARD
                             CALIBRATION WEIGHTS designed for highly precise
                             calibration and adjustment of electronics balances.
@@ -422,7 +427,7 @@ const COCpdf = () => {
                     >
                         Calibration Results:
                     </Text>
-                    <View style={styles.calibrationContainer}>
+                    <View style={styles.resultsContainer}>
                         <Text style={styles.calibrationText}></Text>
                     </View>
 
@@ -434,10 +439,49 @@ const COCpdf = () => {
                     >
                         Remarks:
                     </Text>
-                    <View style={styles.calibrationContainer}>
-                        <Text style={styles.calibrationText}>
+                    <View style={styles.remarksContainer}>
+                        <Text style={styles.remarksText}>
                             EQUIPMENT CALIBRATION / ROUTINE MAINTENANC
                         </Text>
+                    </View>
+
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginTop: 40,
+                        }}
+                    >
+                        <View style={{ width: "45%" }}>
+                            <Text style={{ fontSize: 11, fontWeight: "bold" }}>
+                                CALIBRATED BY:
+                            </Text>
+                            <View
+                                style={{
+                                    borderBottomWidth: 1,
+                                    marginVertical: 5,
+                                    marginTop: 25,
+                                }}
+                            />
+                            <Text style={{ fontSize: 11 }}>
+                                Instrumentation Technician / Date
+                            </Text>
+                        </View>
+                        <View style={{ width: "45%" }}>
+                            <Text style={{ fontSize: 11, fontWeight: "bold" }}>
+                                NOTED BY:
+                            </Text>
+                            <View
+                                style={{
+                                    borderBottomWidth: 1,
+                                    marginVertical: 5,
+                                    marginTop: 25,
+                                }}
+                            />
+                            <Text style={{ fontSize: 11 }}>
+                                LESO Administrator / Date
+                            </Text>
+                        </View>
                     </View>
                 </View>
 
@@ -446,10 +490,11 @@ const COCpdf = () => {
                         styles.alignRight,
                         styles.textStyle,
                         {
-                            marginBottom: 30, // Corrected typo here
                             marginTop: 30,
                             fontFamily: "Arial",
                             fontStyle: "italic",
+                            fontSize: 12,
+                            marginRight: 50,
                         },
                     ]}
                 >
@@ -458,10 +503,7 @@ const COCpdf = () => {
 
                 <Image
                     src="/images/COCFooter.png"
-                    style={[
-                        styles.logo,
-                        { width: "100%", height: "auto", marginTop: 30 },
-                    ]} // Updated to full width
+                    style={[styles.logo, { width: "100%", height: "auto" }]} // Updated to full width
                 />
             </Page>
         </Document>
