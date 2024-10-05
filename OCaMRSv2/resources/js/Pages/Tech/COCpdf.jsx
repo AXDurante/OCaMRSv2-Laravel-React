@@ -23,7 +23,7 @@ Font.register({
     src: "/fonts/ARIAL.ttf",
 });
 Font.register({
-    family: "Arial",
+    family: "ArialBold",
     src: "/fonts/ARIALBD 1.ttf",
     fontWeight: "bold",
 });
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
         height: 20, // Adjust height for the header as needed
         backgroundColor: "#d9d9d9", // Background color for the header
         textAlign: "center",
-        fontWeight: "bold",
         fontSize: 12,
         borderTopWidth: 1,
         borderBottomWidth: 1,
@@ -123,26 +122,42 @@ const styles = StyleSheet.create({
     tableColHeader1: {
         width: "50%",
         height: "100%",
-        textAlign: "center",
-        fontWeight: "bold",
 
-        fontSize: 9,
         paddingVertical: 4,
         borderRightWidth: 1,
         borderRightColor: "#000",
         backgroundColor: "#FFF2CC",
     },
-    tableCol1: {
+    tableTopBorder: {
+        borderTopWidth: 1,
+    },
+    tableCol1right: {
         width: "50%",
         height: "100%",
         textAlign: "center",
-        fontWeight: "bold",
+        fontFamily: "ArialBold",
         fontSize: 9,
+
         paddingVertical: 4,
         borderRightWidth: 1, // Ensure right border is present
         borderColor: "#000", // Ensure border color is consistent
         justifyContent: "center", // Ensure horizontal alignment
         alignItems: "center", // Ensure vertical alignment
+        textAlign: "center",
+    },
+    tableCol1: {
+        width: "50%",
+        height: "100%",
+        textAlign: "center",
+        fontFamily: "ArialBold",
+        fontSize: 9,
+
+        paddingVertical: 4,
+        borderRightWidth: 1, // Ensure right border is present
+        borderColor: "#000", // Ensure border color is consistent
+        justifyContent: "center", // Ensure horizontal alignment
+        alignItems: "center", // Ensure vertical alignment
+        textAlign: "left",
     },
     tableColHeader2: {
         width: "25%",
@@ -246,34 +261,45 @@ const COCpdf = () => {
                         textAlign: "center",
                         fontSize: 12,
                         marginTop: 15,
-                        fontFamily: "Arial",
-                        fontWeight: "bold",
+                        fontFamily: "ArialBold",
                     }}
                 >
                     CERTIFICATE OF CALIBRATION
                 </Text>
 
-                <View style={{ marginLeft: 60, marginRight: 60 }}>
+                <View
+                    style={{
+                        marginLeft: 60,
+                        marginRight: 60,
+                    }}
+                >
                     <View style={styles.tableContainer}>
                         {/* Table Header */}
-                        <View style={styles.tableHeader}>
-                            {" "}
-                            {/* Use tableRow for the header as well */}
-                            <Text style={styles.tableColHeader1}>
-                                Calibration Certificate No.
-                            </Text>
-                            <Text
-                                style={[styles.tableColHeader1, styles.lastCol]} // Ensure this is consistent with styles
-                            >
-                                Row 1, Col 2
-                            </Text>
+                        <View style={styles.tableTopBorder}>
+                            <View style={[styles.tableRow]}>
+                                {" "}
+                                {/* Use tableRow for the header as well */}
+                                <Text style={styles.tableCol1}>
+                                    Calibration Certificate No.
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.tableCol1right,
+                                        styles.lastCol,
+                                    ]} // Ensure this is consistent with styles
+                                >
+                                    Row 1, Col 2
+                                </Text>
+                            </View>
                         </View>
                         {/* Table Rows */}
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol1}>
                                 Laboratory (College / Department)
                             </Text>
-                            <Text style={[styles.tableCol1, styles.lastCol]}>
+                            <Text
+                                style={[styles.tableCol1right, styles.lastCol]}
+                            >
                                 Row 2, Col 2
                             </Text>
                         </View>
@@ -281,7 +307,9 @@ const COCpdf = () => {
                             <Text style={styles.tableCol1}>
                                 Laboratory Location
                             </Text>
-                            <Text style={[styles.tableCol1, styles.lastCol]}>
+                            <Text
+                                style={[styles.tableCol1right, styles.lastCol]}
+                            >
                                 Row 3, Col 2
                             </Text>
                         </View>
