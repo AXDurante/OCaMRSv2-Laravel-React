@@ -181,12 +181,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                                 >
                                                                     View Current Signature Photo
                                                                 </Button>
-                                                                <Button 
-                                                                    variant="outline-danger" 
-                                                                    onClick={() => setData('removePhoto', true)}
-                                                                >
-                                                                    Remove Photo
-                                                                </Button>
+                                                               
                                                             </>
                                                         )}
                                                     </div>

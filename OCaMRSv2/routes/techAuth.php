@@ -18,7 +18,7 @@ use Inertia\Inertia;
 Route::middleware('guest')->group(function () {
     Route::get('technician/register', [RegisteredUserController::class, 'create'])->name('technician.register');
     Route::post('technician/register', [RegisteredUserController::class, 'store']);
-    Route::get('technician/login', [AuthenticatedSessionController::class, 'create'])->name('technician.login');
+    Route::get('technician/login', [AuthenticatedSessionController::class, 'create'])->name('technician.login')->middleware('technician.auth');
     Route::post('technician/login', [AuthenticatedSessionController::class, 'store']);
     Route::get('technician/forgot-password', [PasswordResetLinkController::class, 'create'])->name('technician.password.request');
     Route::post('technician/forgot-password', [PasswordResetLinkController::class, 'store'])->name('technician.password.email');
