@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginTop: 10,
+        marginTop: 20,
     },
     headerText: {
         textAlign: "center",
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF2CC",
     },
     tableCol2: {
-        width: "25%",
+        width: "33.33%", // Adjust width for three columns
         height: "100%",
         textAlign: "center",
         fontSize: 11,
@@ -163,8 +163,45 @@ const styles = StyleSheet.create({
         justifyContent: "center", // Ensure horizontal alignment
         alignItems: "center", // Ensure vertical alignment
     },
+    tableColHeader3: {
+        width: "33.33%",
+        height: "100%",
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: 12,
+        paddingVertical: 4,
+        borderRightWidth: 1,
+        borderRightColor: "#000",
+        backgroundColor: "#ffffff",
+    },
+    tableCol3: {
+        width: "33.33%",
+        height: "100%",
+        textAlign: "center",
+        fontSize: 11,
+        paddingVertical: 4,
+        borderRightWidth: 1, // Ensure right border is present
+        borderColor: "#000", // Ensure border color is consistent
+        justifyContent: "center", // Ensure horizontal alignment
+        alignItems: "center", // Ensure vertical alignment
+        backgroundColor: "#ffffff",
+    },
     lastCol: {
         borderRightWidth: 0, // No border for the last column
+    },
+    calibrationContainer: {
+        border: "1px solid black", // Border around the container
+        padding: 10, // Padding inside the container
+    },
+    calibrationHeader: {
+        fontWeight: "bold", // Bold header
+        fontSize: 12, // Font size for the header
+        marginBottom: 5, // Space below the header
+        marginTop: 10,
+    },
+    calibrationText: {
+        fontSize: 11, // Font size for the text
+        lineHeight: 1.5, // Line height for better readability
     },
 });
 
@@ -200,11 +237,6 @@ const COCpdf = () => {
                 </View>
 
                 <Text
-                    style={{ textAlign: "center", fontSize: 12, marginTop: 10 }}
-                >
-                    INSTRUMENTATION SERVICE CENTER
-                </Text>
-                <Text
                     style={{
                         textAlign: "center",
                         fontSize: 12,
@@ -216,15 +248,6 @@ const COCpdf = () => {
                     CERTIFICATE OF CALIBRATION
                 </Text>
 
-                <Text
-                    style={[
-                        styles.alignLeft,
-                        styles.textStyle,
-                        { marginLeft: 90, marginTop: 2 },
-                    ]}
-                >
-                    Signature over printed name / Date
-                </Text>
                 <View style={{ marginLeft: 60, marginRight: 60 }}>
                     <View style={styles.tableContainer}>
                         {/* Table Header */}
@@ -258,7 +281,6 @@ const COCpdf = () => {
                             </Text>
                         </View>
                     </View>
-
                     {/* Second Table (4 columns, 5 rows) */}
                     <View style={styles.tableContainer}>
                         {/* Table Header */}
@@ -309,7 +331,7 @@ const COCpdf = () => {
                             </Text>
                         </View>
                         <View style={styles.tableRow}>
-                            <Text style={styles.tableCol2}>Property No.</Text>
+                            <Text style={styles.tableCol2}>dsada</Text>
                             <Text style={styles.tableCol2}>Row 4, Col 2</Text>
                             <Text style={styles.tableCol2}>Job Order No.</Text>
                             <Text style={[styles.tableCol2, styles.lastCol]}>
@@ -317,20 +339,74 @@ const COCpdf = () => {
                             </Text>
                         </View>
                     </View>
-                </View>
 
-                <Text
-                    style={[
-                        styles.textStyle,
-                        {
-                            fontFamily: "Arial",
-                            fontWeight: "bold",
-                            marginTop: 4,
-                        },
-                    ]}
-                >
-                    POSITION: _______________________________________________
-                </Text>
+                    <Text
+                        style={[
+                            styles.calibrationHeader,
+                            { textDecoration: "underline" },
+                        ]}
+                    >
+                        Calibration Procedure and Traceability:
+                    </Text>
+                    <View style={styles.calibrationContainer}>
+                        <Text style={styles.calibrationText}>
+                            Above equipment has been calibrated using STANDARD
+                            CALIBRATION WEIGHTS designed for highly precise
+                            calibration and adjustment of electronics balances.
+                        </Text>
+                    </View>
+                    <View style={styles.tableContainer}>
+                        {/* Table Header */}
+                        <View style={styles.tableHeader}>
+                            <Text style={styles.tableColHeader3}>
+                                Standard Used
+                            </Text>
+                            <Text style={styles.tableColHeader3}>
+                                Calibration Certificate No.
+                            </Text>
+                            <Text
+                                style={[styles.tableColHeader3, styles.lastCol]}
+                            >
+                                Issuing Laboratory
+                            </Text>
+                        </View>
+
+                        {/* Row 1 */}
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableCol3}></Text>
+                            <Text style={styles.tableCol3}></Text>
+                            <Text
+                                style={[styles.tableCol3, styles.lastCol]}
+                            ></Text>
+                        </View>
+                    </View>
+
+                    <Text
+                        style={[
+                            styles.calibrationHeader,
+                            { textDecoration: "underline" },
+                        ]}
+                    >
+                        Calibration Results:
+                    </Text>
+                    <View style={styles.calibrationContainer}>
+                        <Text style={styles.calibrationText}></Text>
+                    </View>
+
+                    <Text
+                        style={[
+                            styles.calibrationHeader,
+                            { textDecoration: "underline" },
+                        ]}
+                    >
+                        Remarks:
+                    </Text>
+                    <View style={styles.calibrationContainer}>
+                        <Text style={styles.calibrationText}>
+                            EQUIPMENT CALIBRATION / ROUTINE MAINTENANC
+                        </Text>
+                    </View>
+                </View>
 
                 <Text
                     style={[
@@ -348,7 +424,7 @@ const COCpdf = () => {
                 </Text>
 
                 <Image
-                    src="/images/TSRFooter.png"
+                    src="/images/COCFooter.png"
                     style={[
                         styles.logo,
                         { width: "100%", height: "auto", marginTop: 30 },
