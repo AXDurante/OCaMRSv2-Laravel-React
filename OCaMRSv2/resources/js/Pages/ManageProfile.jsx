@@ -14,7 +14,6 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         userID: auth.user.id,
         password: '',
         password_confirmation: '',
-        photo: null, // Add this line
     });
 
     // Modify the hasChanges function
@@ -60,7 +59,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                             <div className="row">
                                 <div className="col-12">
                                     <div className="p-5">
-                                        <form onSubmit={submit} encType="multipart/form-data">
+                                        <form onSubmit={submit}>
                                             <div className="message-container mb-4">
                                                 {showSuccess && (
                                                     <div className="alert alert-success shadow-lg animate-message" role="alert">
@@ -142,18 +141,6 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                         onChange={e => setData('password_confirmation', e.target.value)}
                                                     />
                                                     <small className="text-muted">Leave password fields empty to keep your current password.</small>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-12 mb-4">
-                                                    <label className="form-label fw-bold">Profile Photo</label>
-                                                    <input
-                                                        type="file"
-                                                        name="photo"
-                                                        className="form-control shadow-sm animate-field"
-                                                        onChange={e => setData('photo', e.target.files[0])}
-                                                    />
-                                                    {errors.photo && <small className="text-danger mt-1">{errors.photo}</small>}
                                                 </div>
                                             </div>
                                             <button 

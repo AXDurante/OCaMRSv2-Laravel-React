@@ -16,7 +16,8 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         userID: auth.user.id,
         password: '',
         password_confirmation: '',
-        photo: null, // Add this line
+        photo: null,
+        removePhoto: false, // Add this line
     });
 
     // Modify the hasChanges function
@@ -33,7 +34,13 @@ function Home({ absolute, firstName, lastName, email, theID }) {
     const submit = (e) => {
         e.preventDefault();
         if (hasChanges()) {
-            post(route('technician.updateProfile'), {
+            const formData = new FormData();
+            for (let key in data) {
+                if (key === 'photo' && data[key] === null) continue;
+                formData.append(key, data[key]);
+            }
+            
+            post(route('technician.updateProfile'), formData, {
                 preserveState: true,
                 preserveScroll: true,
                 onSuccess: () => {
@@ -166,12 +173,21 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                             onChange={e => setData('photo', e.target.files[0])}
                                                         />
                                                         {auth.user.photo && (
-                                                            <Button 
-                                                                variant="outline-primary" 
-                                                                onClick={handleShowPhoto}
-                                                            >
-                                                                View Current Signature Photo
-                                                            </Button>
+                                                            <>
+                                                                <Button 
+                                                                    variant="outline-primary" 
+                                                                    onClick={handleShowPhoto}
+                                                                    className="me-2"
+                                                                >
+                                                                    View Current Signature Photo
+                                                                </Button>
+                                                                <Button 
+                                                                    variant="outline-danger" 
+                                                                    onClick={() => setData('removePhoto', true)}
+                                                                >
+                                                                    Remove Photo
+                                                                </Button>
+                                                            </>
                                                         )}
                                                     </div>
                                                     {errors.photo && <small className="text-danger mt-1">{errors.photo}</small>}

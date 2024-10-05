@@ -28,7 +28,8 @@ class TechnicianController extends Controller
             'email' => 'required|string|email|max:255|unique:technicians,email,' . $theID,
             'phoneNumber' => 'nullable|string|max:20',
             'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/',
-            'photo' => 'nullable|image|max:2048', // Add this line
+            'photo' => 'nullable|image|max:2048',
+            'removePhoto' => 'boolean',
         ]);
 
         if (empty($validatedData['password'])) {
@@ -46,6 +47,15 @@ class TechnicianController extends Controller
             // Store new photo
             $photoPath = $request->file('photo')->store('public/photos');
             $validatedData['photo'] = basename($photoPath);
+        } elseif ($request->boolean('removePhoto')) {
+            // Remove existing photo
+            if ($user->photo) {
+                Storage::delete('public/photos/' . $user->photo);
+            }
+            $validatedData['photo'] = null;
+        } else {
+            // Keep existing photo
+            unset($validatedData['photo']);
         }
 
         $user->update($validatedData);
