@@ -259,7 +259,7 @@ const COCpdf = () => {
                         <View style={styles.tableHeader}>
                             {" "}
                             {/* Use tableRow for the header as well */}
-                            <Text style={styles.tableColHeader1}>
+                            <Text style={[styles.tableColHeader1]}>
                                 Calibration Certificate No.
                             </Text>
                             <Text
