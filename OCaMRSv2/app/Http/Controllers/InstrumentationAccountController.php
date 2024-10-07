@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Technician;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +13,12 @@ class InstrumentationAccountController extends Controller
     public function index()
     {
         $accounts = Technician::all();
-        return response()->json($accounts);
+        $users = User::all();
+        
+        return response()->json([
+            'accounts' => $accounts,
+            'users' => $users
+        ]);
     }
 
     public function create()
@@ -49,14 +55,11 @@ class InstrumentationAccountController extends Controller
                 'password' => Hash::make($request->password),
                 'employeeID' => $request->employeeID,
                 'phoneNumber' => $request->phoneNumber,
+                // 'photo' is not included here, so it will remain null
             ]);
-
-            // If you're using the Registered event, make sure it's imported and applicable to Technician
-            // event(new Registered($technician));
 
             return response()->json($technician, 201);
         } catch (\Exception $e) {
-            // Log the error for debugging
             \Log::error('Error creating technician: ' . $e->getMessage());
             return response()->json(['error' => 'An error occurred while creating the account.'], 500);
         }
@@ -74,16 +77,7 @@ class InstrumentationAccountController extends Controller
 
     public function update(Request $request, Technician $technician)
     {
-        $validated = $request->validate([
-            'employeeID' => 'required|string|max:255|unique:technicians,employeeID,' . $technician->id,
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:technicians,email,' . $technician->id,
-            'phoneNumber' => 'required|string|max:255|unique:technicians,phoneNumber,' . $technician->id,
-            // Add other fields as necessary
-        ]);
-
-        $technician->update($validated);
+      
 
         return redirect()->route('admin.instrumentation-accounts.index')->with('success', 'Account updated successfully.');
     }
@@ -92,5 +86,41 @@ class InstrumentationAccountController extends Controller
     {
         $technician->delete();
         return redirect()->route('admin.instrumentation-accounts.index')->with('success', 'Account deleted successfully.');
+    }
+
+    public function editTech($id)
+    {
+        $technician = Technician::findOrFail($id);
+        return Inertia::render('Admin/TechManageProfile', [
+            'theUser' => $technician
+        ]);
+    }
+
+    public function editTechPOST(Request $request) {
+        $theID = $request->input('userID');
+        
+        $user = Technician::findOrFail($theID);
+
+        // Validate the request data
+        $validatedData = $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:technicians,email,' . $theID,
+            'phoneNumber' => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/',
+        ]);
+        
+        // Remove password field if it's empty
+        if (empty($validatedData['password'])) {
+            unset($validatedData['password']);
+        } else {
+            // Hash the new password
+            $validatedData['password'] = bcrypt($validatedData['password']);
+        }
+
+        // Update the user with validated data
+        $user->update($validatedData);
+
+        return redirect()->route('admin.edit.tech', ['id' => $theID])->with('success', 'Profile updated successfully');
     }
 }

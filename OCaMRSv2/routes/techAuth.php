@@ -9,6 +9,7 @@ use App\Http\Controllers\TechAuth\PasswordController;
 use App\Http\Controllers\TechAuth\PasswordResetLinkController;
 use App\Http\Controllers\TechAuth\RegisteredUserController;
 use App\Http\Controllers\TechAuth\VerifyEmailController;
+use App\Http\Controllers\TechnicianController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ use Inertia\Inertia;
 Route::middleware('guest')->group(function () {
     Route::get('technician/register', [RegisteredUserController::class, 'create'])->name('technician.register');
     Route::post('technician/register', [RegisteredUserController::class, 'store']);
-    Route::get('technician/login', [AuthenticatedSessionController::class, 'create'])->name('technician.login');
+    Route::get('technician/login', [AuthenticatedSessionController::class, 'create'])->name('technician.login')->middleware('technician.auth');
     Route::post('technician/login', [AuthenticatedSessionController::class, 'store']);
     Route::get('technician/forgot-password', [PasswordResetLinkController::class, 'create'])->name('technician.password.request');
     Route::post('technician/forgot-password', [PasswordResetLinkController::class, 'store'])->name('technician.password.email');
@@ -42,6 +43,9 @@ Route::middleware('auth:technicians')->group(function () {
     Route::get('technician/dashboard', function () {
         return Inertia::render('Tech/Home');
     })->name('technician.dashboard');
+
+    Route::get('technician/ManageProfile', [TechnicianController::class, 'manageProfile'])->name('technician.manageProfile');
+    Route::post('technician/update-profile', [TechnicianController::class, 'updateProfile'])->name('technician.updateProfile');
 
     // Add this route for checking email verification status for technicians
     Route::get('technician/email/verification/check', function (Request $request) {

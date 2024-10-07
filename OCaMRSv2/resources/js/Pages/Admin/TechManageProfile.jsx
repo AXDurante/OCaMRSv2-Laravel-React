@@ -1,35 +1,32 @@
-import Navbar from "../Layouts/Navbar";
-import { usePage, useForm } from "@inertiajs/react";
-import { useState, useEffect } from "react"; // Add useEffect
+import AdminNavBar from "@/Layouts/AdminNavBar";
+import { useForm, Link } from "@inertiajs/react";
+import { useState, useEffect } from "react";
 
-function Home({ absolute, firstName, lastName, email, theID }) {
-    const { auth } = usePage().props;
+function Home({ theUser }) {
     const [showSuccess, setShowSuccess] = useState(false);
-    const [showNoChanges, setShowNoChanges] = useState(false); // Add this line
+    const [showNoChanges, setShowNoChanges] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
-        firstName: auth.user.firstName,
-        lastName: auth.user.lastName,
-        email: auth.user.email,
-        phoneNumber: auth.user.phoneNumber,
-        userID: auth.user.id,
+        firstName: theUser.firstName,
+        lastName: theUser.lastName,
+        email: theUser.email,
+        phoneNumber: theUser.phoneNumber,
+        userID: theUser.id,
         password: '',
         password_confirmation: '',
     });
 
-    // Modify the hasChanges function
     const hasChanges = () => {
-        return data.firstName !== auth.user.firstName ||
-               data.lastName !== auth.user.lastName ||
-               data.email !== auth.user.email ||
-               data.phoneNumber !== auth.user.phoneNumber ||
+        return data.firstName !== theUser.firstName ||
+               data.lastName !== theUser.lastName ||
+               data.email !== theUser.email ||
+               data.phoneNumber !== theUser.phoneNumber ||
                (data.password !== '' && data.password_confirmation !== '');
     };
 
-    // Modify the submit function
     const submit = (e) => {
         e.preventDefault();
         if (hasChanges()) {
-            post(route('updateProfile'), {
+            post(route('admin.update.tech', { id: data.userID }), {
                 preserveState: true,
                 preserveScroll: true,
                 onSuccess: () => {
@@ -43,7 +40,6 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         }
     };
 
-    // Add this effect to hide notifications when data changes
     useEffect(() => {
         setShowSuccess(false);
         setShowNoChanges(false);
@@ -53,8 +49,17 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         <div className="d-flex">
             <div id="content" className="main-content flex-fill p-3">
                 <div className="container">
-                    <h1 className="mb-4">Manage Profile</h1>
-                    <div className="card shadow-lg rounded-lg overflow-hidden">
+                    {/* Aesthetic header */}
+                    <div className="card shadow-lg rounded-lg overflow-hidden mb-4 bg-primary text-white">
+                        <div className="card-body p-4">
+                            <h1 className="display-4 mb-0">
+                                Updating Profile: {theUser.firstName} {theUser.lastName}
+                            </h1>
+                            <p className="lead mt-2 mb-0">Technician ID: {theUser.id}</p>
+                        </div>
+                    </div>
+
+                    <div className="card shadow-lg rounded-lg overflow-hidden mb-4">
                         <div className="card-body p-0">
                             <div className="row">
                                 <div className="col-12">
@@ -63,12 +68,12 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                             <div className="message-container mb-4">
                                                 {showSuccess && (
                                                     <div className="alert alert-success shadow-lg animate-message" role="alert">
-                                                        Your profile has been successfully updated!
+                                                        Profile has been successfully updated!
                                                     </div>
                                                 )}
                                                 {showNoChanges && (
                                                     <div className="alert alert-warning shadow-lg animate-message" role="alert">
-                                                        No changes were made to your profile.
+                                                        No changes were made to the profile.
                                                     </div>
                                                 )}
                                             </div>
@@ -140,12 +145,12 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                         value={data.password_confirmation}
                                                         onChange={e => setData('password_confirmation', e.target.value)}
                                                     />
-                                                    <small className="text-muted">Leave password fields empty to keep your current password.</small>
+                                                    <small className="text-muted">Leave password fields empty to keep the current password.</small>
                                                 </div>
                                             </div>
                                             <button 
                                                 type="submit" 
-                                                className="btn btn-dark shadow-lg w-100 animate-button custom-button"
+                                                className="btn btn-dark shadow-lg w-100 animate-button custom-button mb-3"
                                             >
                                                 Update Profile
                                             </button>
@@ -155,24 +160,21 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                             </div>
                         </div>
                     </div>
+                    
+                    {/* Back button outside the form */}
+                    <Link
+                        href="/admin/account-handler"
+                        className="btn btn-outline-secondary w-100 animate-button"
+                    >
+                        <i className="bi bi-arrow-left me-2"></i>
+                        Back to Account Handler
+                    </Link>
                 </div>
             </div>
         </div>
     );
 }
 
-Home.layout = (page) => {
-    const props = page.props;
-    return (
-        <Navbar 
-            absolute={props.absolute}
-            firstName={props.firstName}
-            lastName={props.lastName}
-            email={props.email}
-        >
-            {page}
-        </Navbar>
-    );
-};
+Home.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
 export default Home;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import axios from "axios";
+import { Link } from '@inertiajs/react';
 
 function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,7 +13,8 @@ function Home() {
     const [accountPassword, setAccountPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [accounts, setAccounts] = useState([]);
+    const [technicians, setTechnicians] = useState([]);
+    const [users, setUsers] = useState([]);
     const [editingAccountId, setEditingAccountId] = useState(null);
 
     useEffect(() => {
@@ -22,7 +24,8 @@ function Home() {
     const fetchAccounts = async () => {
         try {
             const response = await axios.get("/admin/instrumentation-accounts");
-            setAccounts(response.data);
+            setTechnicians(response.data.accounts);
+            setUsers(response.data.users);
         } catch (error) {
             console.error("Error fetching accounts:", error);
         }
@@ -44,14 +47,6 @@ function Home() {
         setAccountPassword("");
         setPasswordConfirmation("");
         setPhoneNumber("");
-    };
-
-    const openEditModal = (account) => {
-        setEditingAccountId(account.id);
-        setIdNumber(account.id_number);
-        setFirstName(account.first_name);
-        setLastName(account.last_name);
-        setAccountEmail(account.email);
     };
 
     const handleSubmit = async (e, accountId = null) => {
@@ -76,7 +71,7 @@ function Home() {
                 console.log("Account updated:", response.data);
 
                 // Update the local state immediately
-                setAccounts((prevAccounts) =>
+                setTechnicians((prevAccounts) =>
                     prevAccounts.map((account) =>
                         account.id === accountId
                             ? {
@@ -111,7 +106,7 @@ function Home() {
                 console.log("Account created:", response.data);
 
                 // Add the new account to the local state immediately
-                setAccounts((prevAccounts) => [...prevAccounts, response.data]);
+                setTechnicians((prevAccounts) => [...prevAccounts, response.data]);
 
                 // Close the modal
                 closeModal();
@@ -121,7 +116,7 @@ function Home() {
             resetForm();
 
             // Force a re-render of the component
-            setAccounts((prevAccounts) => [...prevAccounts]);
+            setTechnicians((prevAccounts) => [...prevAccounts]);
         } catch (error) {
             console.error("Error submitting account:", error);
             // Add more detailed error logging
@@ -169,7 +164,7 @@ function Home() {
                         <div className="row forms-bg p-5 instrumentation-accounts">
                             <div className="col-12">
                                 <div className="row">
-                                    {accounts.map((account) => (
+                                    {technicians.map((account) => (
                                         <div
                                             key={account.id}
                                             className="col-6 col-md-3 account-wrapper"
@@ -178,182 +173,17 @@ function Home() {
                                                 <i className="bi bi-person-fill text-primary"></i>
                                             </div>
                                             <h5 className="account-name">
-                                                {account.full_name}
+                                                {account.firstName} {account.lastName}
                                             </h5>
                                             <p className="account-email">
                                                 {account.email}
                                             </p>
-                                            <button
+                                            <Link
+                                                href={route('admin.edit.tech', { id: account.id })}
                                                 className="btn btn-sm btn-primary mt-2"
-                                                onClick={() =>
-                                                    openEditModal(account)
-                                                }
                                             >
                                                 Edit
-                                            </button>
-                                            {editingAccountId ===
-                                                account.id && (
-                                                <div className="modal-overlay">
-                                                    <div
-                                                        className="modal-content"
-                                                        style={{
-                                                            maxWidth: "800px",
-                                                            width: "90%",
-                                                        }}
-                                                    >
-                                                        <h2>
-                                                            Edit Instrumentation
-                                                            Account
-                                                        </h2>
-                                                        <form
-                                                            onSubmit={(e) =>
-                                                                handleSubmit(
-                                                                    e,
-                                                                    account.id
-                                                                )
-                                                            }
-                                                        >
-                                                            <div className="row forms-bg">
-                                                                <div className="col-4 profile-bg d-flex flex-column align-items-center justify-content-center p-3 text-white">
-                                                                    <div>
-                                                                        <i className="bi bi-person-fill fs-1"></i>
-                                                                    </div>
-                                                                    <h5>
-                                                                        {`${firstName} ${lastName}` ||
-                                                                            `${account.first_name} ${account.last_name}`}
-                                                                    </h5>
-                                                                    <p>
-                                                                        {accountEmail ||
-                                                                            account.email}
-                                                                    </p>
-                                                                </div>
-
-                                                                <div className="col-8">
-                                                                    <div className="pt-3 pb-3 p-3">
-                                                                        <div className="row">
-                                                                            <div className="col-6 mb-3">
-                                                                                <label className="form-label fw-bold d-block text-truncate">
-                                                                                    ID
-                                                                                    Number
-                                                                                </label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control rounded"
-                                                                                    value={
-                                                                                        idNumber
-                                                                                    }
-                                                                                    onChange={(
-                                                                                        e
-                                                                                    ) =>
-                                                                                        setIdNumber(
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                    required
-                                                                                />
-                                                                            </div>
-                                                                            <div className="col-6 mb-3">
-                                                                                <label className="form-label fw-bold d-block text-truncate">
-                                                                                    First
-                                                                                    Name
-                                                                                </label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control rounded"
-                                                                                    value={
-                                                                                        firstName
-                                                                                    }
-                                                                                    onChange={(
-                                                                                        e
-                                                                                    ) =>
-                                                                                        setFirstName(
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                    required
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="row">
-                                                                            <div className="col-6 mb-3">
-                                                                                <label className="form-label fw-bold d-block text-truncate">
-                                                                                    Last
-                                                                                    Name
-                                                                                </label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    className="form-control rounded"
-                                                                                    value={
-                                                                                        lastName
-                                                                                    }
-                                                                                    onChange={(
-                                                                                        e
-                                                                                    ) =>
-                                                                                        setLastName(
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                    required
-                                                                                />
-                                                                            </div>
-                                                                            <div className="col-6 mb-3">
-                                                                                <label className="form-label fw-bold d-block text-truncate">
-                                                                                    Email
-                                                                                </label>
-                                                                                <input
-                                                                                    type="email"
-                                                                                    className="form-control rounded"
-                                                                                    value={
-                                                                                        accountEmail
-                                                                                    }
-                                                                                    onChange={(
-                                                                                        e
-                                                                                    ) =>
-                                                                                        setAccountEmail(
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                    required
-                                                                                />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="row mt-3">
-                                                                            <div className="col-12">
-                                                                                <button
-                                                                                    type="submit"
-                                                                                    className="btn btn-primary me-2"
-                                                                                >
-                                                                                    Update
-                                                                                    Account
-                                                                                </button>
-                                                                                <button
-                                                                                    type="button"
-                                                                                    className="btn btn-secondary"
-                                                                                    onClick={() =>
-                                                                                        setEditingAccountId(
-                                                                                            null
-                                                                                        )
-                                                                                    }
-                                                                                >
-                                                                                    Cancel
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            )}
+                                            </Link>
                                         </div>
                                     ))}
                                     <div
@@ -370,124 +200,33 @@ function Home() {
                                 </div>
                             </div>
                         </div>
+                        
                         <h3 className="mt-10 mb-3 fw-bold">Clients Accounts</h3>
                         <div className="row forms-bg p-5">
                             <div className="col-12">
                                 <div className="row">
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
+                                    {users.map((user) => (
+                                        <div
+                                            key={user.id}
+                                            className="col-6 col-md-2 account-wrapper"
+                                        >
+                                            <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
+                                                <i className="bi bi-person-fill text-primary"></i>
+                                            </div>
+                                            <h5 className="account-name">
+                                                {user.name}
+                                            </h5>
+                                            <p className="account-email">
+                                                {user.email}
+                                            </p>
                                         </div>
-                                        <h5 className="account-name">
-                                            Nino Anasco
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            Add Account
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12">
-                                <div className="row">
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            Nino Anasco
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            Add Account
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
+                                    ))}
+                                    {/* Add user account button */}
+                                    
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div className="mt-10 mb-3 ">
                             <h3 className="d-inline fw-bold">
                                 Clients Accounts

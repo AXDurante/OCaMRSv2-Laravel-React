@@ -25,12 +25,12 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-})->name('loginHome');
+})->name('loginHome')->middleware('technician.auth');
 
 Route::prefix('technician')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Tech/Login');
-    })->name('technician.home');
+    })->name('technician.home')->middleware('technician.auth');
     Route::get('/home2', function () {
         return Inertia::render('Tech/Home2');
     })->name('technician.home2');
@@ -65,6 +65,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
     // Instrumentation Account routes
+
+    Route::get('/admin/edit/technician/{id}', [InstrumentationAccountController::class, 'editTech'])->name('admin.edit.tech');
+    Route::post('/admin/edit/technician/{id}', [InstrumentationAccountController::class, 'editTechPOST'])->name('admin.update.tech');
+
     Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
     Route::get('/admin/instrumentation-accounts/create', [InstrumentationAccountController::class, 'create'])->name('admin.instrumentation-accounts.create');
     Route::post('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'store'])->name('admin.instrumentation-accounts.store');
@@ -76,7 +80,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
 });
 
-Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login')->middleware('technician.auth');;
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
 // TO REMOVE
@@ -109,6 +113,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/manage-profile', [DashboardController::class, 'manageProfile'])
         ->name('manageProfile');
+        
+    Route::post('/manage-profile', [DashboardController::class, 'update'])
+        ->name('updateProfile');
 
      Route::get('/landingpage', function () {
         return Inertia::render('LandingPage');
