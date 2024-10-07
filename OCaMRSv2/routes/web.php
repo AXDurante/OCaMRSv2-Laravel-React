@@ -17,6 +17,7 @@ Route::resource('/jobOrder', JobOrderController::class);
 
 // Resource Route
 Route::resource('/viewInstrument', EquipmentController::class);
+Route::post('/equipment', [EquipmentController::class, 'store']);
 
 Route::get('/', function () {
     return Inertia::render('Login', [
@@ -147,8 +148,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::get('/equipments', [EquipmentController::class, 'index']);
-Route::post('/equipments', [EquipmentController::class, 'store']);
+
 require __DIR__ . '/auth.php';
 
 
