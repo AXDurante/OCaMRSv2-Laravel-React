@@ -31,6 +31,8 @@ class EquipmentController extends Controller
             'equip_name' => $request->equip_name,
         ]);
 
-        
+        // Redirect back with a success message
+        return redirect()->back() // Ensure this route is defined
+                         ->with('success', 'Instrument added successfully!');
     }
 }
