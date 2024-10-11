@@ -111,6 +111,14 @@ export default function NavBar({
                 </div>
                 <ul className="nav flex-column pt-4 theNav">
                     <li className="nav-item">
+                        <Link href={route("landingpage")}>
+                            <a className="nav-link">
+                                <i className="bi bi-house me-2"></i>
+                                {!isCollapsed && "Home"}
+                            </a>
+                        </Link>
+                    </li>
+                    <li className="nav-item">
                         <Link href="/jobOrder/create">
                             <a className="nav-link">
                                 <i className="bi bi-file-earmark-text me-2"></i>
@@ -163,7 +171,9 @@ export default function NavBar({
                                 as="button"
                                 className="logout-btn"
                             >
-                                Log Out
+                                <i className="bi bi-box-arrow-right me-2"></i>
+                                {!isCollapsed && "Log Out"}{" "}
+                                {/* Show 'Log Out' only when fully expanded */}
                             </Link>
                         </li>
                     </div>

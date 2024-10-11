@@ -3,7 +3,7 @@ import Navbar2 from "@/Layouts/Navbar2";
 function Home() {
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
                         <h1 class="d-inline">TECHNICIAN TO | </h1>

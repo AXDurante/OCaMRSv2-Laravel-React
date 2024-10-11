@@ -77,7 +77,7 @@ export default function NavBar({
                         }}
                     >
                         <i
-                            className="bi bi-person-fill"
+                            className="bi bi-person-fill text-primary"
                             style={{ fontSize: "50px" }}
                         ></i>
                     </div>
@@ -110,60 +110,89 @@ export default function NavBar({
                     )}
                 </div>
                 <ul className="nav flex-column pt-4 theNav">
-                    <li className="nav-item">
+                    <li
+                        className="nav-item"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <Link href="/jobOrder/create">
-                            <a className="nav-link">
+                            <a className="nav-link nav-link-blue">
+                                {" "}
+                                {/* Use nav-link-blue class */}
                                 <i className="bi bi-file-earmark-text me-2"></i>
                                 {!isCollapsed && "Open Request"}
                             </a>
                         </Link>
                     </li>
-                    <li className="nav-item">
+                    <li
+                        className="nav-item"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <Link href="/jobOrder">
-                            <a className="nav-link">
+                            <a className="nav-link nav-link-blue">
+                                {" "}
+                                {/* Use nav-link-blue class */}
                                 <i className="bi bi-search me-2"></i>
                                 {!isCollapsed && "Track Request"}
                             </a>
                         </Link>
                     </li>
-                    <li className="nav-item">
+                    <li
+                        className="nav-item"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <Link
                             href={route("manageProfile")}
-                            className="nav-link"
+                            className="nav-link nav-link-blue" // Use nav-link-blue class
                         >
                             <i className="bi bi-person-fill me-2"></i>
                             {!isCollapsed && "Manage Profile"}
                         </Link>
                     </li>
-                    <li className="nav-item">
+                    <li
+                        className="nav-item"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <Link href="/viewInstrument">
-                            <a className="nav-link">
+                            <a className="nav-link nav-link-blue">
+                                {" "}
+                                {/* Use nav-link-blue class */}
                                 <i className="bi bi-list me-2"></i>
                                 {!isCollapsed && "Instrument List"}
                             </a>
                         </Link>
                     </li>
-                    <li className="nav-item">
+                    <li
+                        className="nav-item"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <a className="nav-link" href="#">
                             <i className="bi bi-bell-fill me-2 "></i>
                             {!isCollapsed && "Notification"}
                         </a>
                     </li>
-                    <li className="nav-item">
+                    <li
+                        className="nav-item"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <a className="nav-link" href="#">
                             <i className="bi bi-arrow-left me-2 icon-bold"></i>
                             {!isCollapsed && "Go Back"}
                         </a>
                     </li>
                     <div className="logout">
-                        <li className="nav-item-logout">
+                        <li
+                            className="nav-item-logout"
+                            onClick={(e) => e.stopPropagation()}
+                        >
                             <Link
                                 href={route("logout")}
                                 method="post"
                                 as="button"
-                                className="logout-btn"
+                                className="logout-blue-btn"
                             >
-                                Log Out
+                                <i className="bi bi-box-arrow-right me-2"></i>
+                                {!isCollapsed && "Log Out"}{" "}
+                                {/* Show 'Log Out' only when fully expanded */}
                             </Link>
                         </li>
                     </div>

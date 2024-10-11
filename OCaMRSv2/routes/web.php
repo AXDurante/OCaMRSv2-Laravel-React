@@ -111,7 +111,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
      Route::get('/landingpage', function () {
         return Inertia::render('LandingPage');
-    });
+    })->name('landingpage');
 });
 
 Route::get('/instrumentation/login', [InstrumentationAuthController::class, 'showLoginForm'])->name('instrumentation.login');

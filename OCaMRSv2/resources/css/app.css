@@ -9,8 +9,7 @@
     margin-left: 250px;
     padding: 20px;
 }
-.wholecontent {
-}
+
 /* sidebar */
 #textHeader {
     font-weight: 500;
@@ -39,8 +38,7 @@
     margin: auto;
     text-align: center; /* Center the text horizontally */
 }
-h3 {
-}
+
 .sidebar {
     height: 68vh; /* Ensure the sidebar takes up the full height of the viewport */
     overflow-y: auto; /* Enable vertical scrolling if content exceeds the viewport height */
@@ -53,6 +51,13 @@ h3 {
     height: 37vh;
     top: 0;
     background-color: #ffd500;
+    overflow-y: auto;
+    position: fixed;
+}
+.sidebar4 {
+    height: 37vh;
+    top: 0;
+    background-color: #c3c3c3;
     overflow-y: auto;
     position: fixed;
 }
@@ -71,8 +76,6 @@ h3 {
     text-decoration: none !important;
 }
 
-ul {
-}
 .user-interface,
 .user-interface2 {
     color: #ffffff;
@@ -102,6 +105,19 @@ ul {
     text-decoration: none; /* Remove underline */
 }
 
+.nav-link-blue:hover,
+.nav-link-blue:focus,
+.nav-link-blue:active {
+    color: #0789e7; /* Hover, focus, and active color */
+    text-decoration: none; /* Remove underline */
+}
+
+.nav-item-blue.active .nav-link-blue,
+.nav-link-blue.active {
+    color: #0789e7; /* Active link color */
+    text-decoration: none; /* Remove underline */
+}
+
 @media (max-height: 600px) {
     .sidebar-header {
         padding-bottom: 50px; /* Adjust padding for smaller screens */
@@ -124,6 +140,18 @@ ul {
 .logout-btn {
     color: #ffffff;
     border: 2px solid #fbc600; /* Border stroke with specified color */
+    border-radius: 15px; /* Border radius */
+    padding: 10px 20px; /* Padding for the button */
+    background-color: transparent; /* Transparent background */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+.logout-blue-btn {
+    color: #ffffff;
+    border: 2px solid #0789e7; /* Border stroke with specified color */
     border-radius: 15px; /* Border radius */
     padding: 10px 20px; /* Padding for the button */
     background-color: transparent; /* Transparent background */
@@ -861,9 +889,6 @@ input[type="checkbox"] {
     text-align: start;
     padding: 10%;
     top: 10%;
-}
-
-.text-overlayhead {
 }
 
 .landing-description {
