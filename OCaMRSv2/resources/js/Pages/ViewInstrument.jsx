@@ -19,7 +19,7 @@ function ViewInstrument({ equipment }) {
 
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
                         <h1 className="d-inline">View Instrument | </h1>
@@ -38,13 +38,15 @@ function ViewInstrument({ equipment }) {
                         >
                             <option value="">Select a category</option>
                             {/* Get unique categories from the equipment prop */}
-                            {[...new Set(equipment.map(item => item.equip_category))].map(
-                                (category, index) => (
-                                    <option key={index} value={category}>
-                                        {category}
-                                    </option>
-                                )
-                            )}
+                            {[
+                                ...new Set(
+                                    equipment.map((item) => item.equip_category)
+                                ),
+                            ].map((category, index) => (
+                                <option key={index} value={category}>
+                                    {category}
+                                </option>
+                            ))}
                         </select>
                     </div>
 
@@ -52,9 +54,14 @@ function ViewInstrument({ equipment }) {
                     <div className="mt-4">
                         {filteredEquipments.length > 0 ? (
                             <div>
-                                <h3>Equipments in Category: {selectedCategory}</h3>
+                                <h3>
+                                    Equipments in Category: {selectedCategory}
+                                </h3>
                                 {filteredEquipments.map((item, index) => (
-                                    <div className="card mt-4 shadow-sm" key={index}>
+                                    <div
+                                        className="card mt-4 shadow-sm"
+                                        key={index}
+                                    >
                                         <div className="card-body d-flex">
                                             <img
                                                 src="https://via.placeholder.com/100"

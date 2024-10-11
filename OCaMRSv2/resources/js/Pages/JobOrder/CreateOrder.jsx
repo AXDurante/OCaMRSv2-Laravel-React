@@ -2,10 +2,16 @@ import { useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 import { useState } from "react";
 
-function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment }) {
+function CreateOrder({
+    jobOrder,
+    lastID,
+    employeeID,
+    college,
+    labLoc,
+    equipment,
+}) {
+    const equipmentName = equipment?.map((item) => item.equip_name) || [];
 
-    const equipmentName = equipment?.map(item => item.equip_name) || [];
-    
     const { data, setData, post, errors, processing } = useForm({
         // For Job Order
         service_type: "",
@@ -30,7 +36,7 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
     });
 
     const addInstrument = () => {
-        setData('instruments', [
+        setData("instruments", [
             ...data.instruments,
             {
                 instrument: "",
@@ -44,8 +50,10 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
     };
 
     const removeInstrument = (index) => {
-        const updatedInstruments = data.instruments.filter((_, i) => i !== index);
-        setData('instruments', updatedInstruments);
+        const updatedInstruments = data.instruments.filter(
+            (_, i) => i !== index
+        );
+        setData("instruments", updatedInstruments);
     };
 
     const handleInputChange = (index, event) => {
@@ -53,18 +61,18 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
         const updatedInstruments = data.instruments.map((inst, i) =>
             i === index ? { ...inst, [name]: value } : inst
         );
-        setData('instruments', updatedInstruments);
+        setData("instruments", updatedInstruments);
     };
 
     function onSubmit(e) {
         e.preventDefault();
-        post('/jobOrder');
+        post("/jobOrder");
     }
 
     return (
         <>
             <div className="d-flex">
-                <div id="content" className="main-content flex-fill p-3">
+                <div id="content" className=" flex-fill p-3">
                     <div>
                         <div>
                             <h1 class="d-inline">Job Request | </h1>
@@ -81,11 +89,29 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
                                     <select
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.service_type}
-                                        onChange={(e) => setData('service_type', e.target.value)}>
-                                            <option value="" disabled> Select an Option </option>
-                                            <option value="service1"> Service Type 1 </option>
-                                            <option value="service2"> Service Type 2 </option>
-                                            <option value="service3"> Service Type 3 </option>
+                                        onChange={(e) =>
+                                            setData(
+                                                "service_type",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        <option value="" disabled>
+                                            {" "}
+                                            Select an Option{" "}
+                                        </option>
+                                        <option value="service1">
+                                            {" "}
+                                            Service Type 1{" "}
+                                        </option>
+                                        <option value="service2">
+                                            {" "}
+                                            Service Type 2{" "}
+                                        </option>
+                                        <option value="service3">
+                                            {" "}
+                                            Service Type 3{" "}
+                                        </option>
                                     </select>
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Laboratory
@@ -94,8 +120,10 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
                                         type="text"
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.lab}
-                                        onChange={(e) => setData('lab', e.target.value)}
-                                        readOnly    
+                                        onChange={(e) =>
+                                            setData("lab", e.target.value)
+                                        }
+                                        readOnly
                                     />
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         College/ Faculty / Office
@@ -104,7 +132,9 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
                                         type="text"
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.dept_name}
-                                        onChange={(e) => setData('dept_name', e.target.value)}
+                                        onChange={(e) =>
+                                            setData("dept_name", e.target.value)
+                                        }
                                         readOnly
                                     />
                                 </div>
@@ -112,14 +142,32 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Instrumentation Transportation
                                     </h6>
-                                     <select
+                                    <select
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.trans_type}
-                                        onChange={(e) => setData('trans_type', e.target.value)}>
-                                            <option value=""> Select an Option </option>
-                                            <option value="transpo1"> Transportation Type 1 </option>
-                                            <option value="transpo2"> Transportation Type 2 </option>
-                                            <option value="transpo3"> Transportation Type 3 </option>
+                                        onChange={(e) =>
+                                            setData(
+                                                "trans_type",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        <option value="">
+                                            {" "}
+                                            Select an Option{" "}
+                                        </option>
+                                        <option value="transpo1">
+                                            {" "}
+                                            Transportation Type 1{" "}
+                                        </option>
+                                        <option value="transpo2">
+                                            {" "}
+                                            Transportation Type 2{" "}
+                                        </option>
+                                        <option value="transpo3">
+                                            {" "}
+                                            Transportation Type 3{" "}
+                                        </option>
                                     </select>
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Laboratory Location
@@ -128,7 +176,9 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
                                         type="text"
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.lab_loc}
-                                        onChange={(e) => setData('lab_loc', e.target.value)}
+                                        onChange={(e) =>
+                                            setData("lab_loc", e.target.value)
+                                        }
                                         readOnly
                                     />
                                     <h6 className="d-flex flex-column align-items-start  fw-bold mt-2 w-100">
@@ -138,7 +188,9 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
                                         type="text"
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.pos}
-                                        onChange={(e) => setData('pos', e.target.value)}
+                                        onChange={(e) =>
+                                            setData("pos", e.target.value)
+                                        }
                                         readOnly
                                     />
                                 </div>
@@ -152,70 +204,101 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
                                 <h4 className="mt-4">Item No. {index + 1}</h4>
                                 <div className="row forms-bg p-3">
                                     <div className="col-12 col-md-5 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">Instrument</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Instrument
+                                        </h6>
                                         <select
                                             className="w-100 mb-2 rounded form-control"
                                             name="instrument"
                                             value={instrument.instrument}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                         >
-                                            <option value="">Select an equipment</option>
+                                            <option value="">
+                                                Select an equipment
+                                            </option>
                                             {equipmentName.map((name, i) => (
                                                 <option key={i} value={name}>
                                                     {name}
                                                 </option>
                                             ))}
                                         </select>
-                                        <h6 className="w-100 fw-bold text-start">Model</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Model
+                                        </h6>
                                         <input
                                             type="text"
                                             className="w-100 mb-2 rounded"
                                             name="model"
                                             value={instrument.model}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                         />
                                     </div>
 
                                     <div className="col-12 col-md-3 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">Quantity</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Quantity
+                                        </h6>
                                         <input
                                             type="number"
                                             className="w-50 mb-2 justify-content-start rounded"
                                             name="qty"
                                             value={instrument.qty}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                         />
-                                        <h6 className="w-100 fw-bold text-start">Manufacturer</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Manufacturer
+                                        </h6>
                                         <input
                                             type="text"
                                             className="w-100 mb-2 rounded"
                                             name="manufacturer"
                                             value={instrument.manufacturer}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                         />
                                     </div>
 
                                     <div className="col-12 col-md-4 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">Instrument Serial No</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Instrument Serial No
+                                        </h6>
                                         <input
                                             type="number"
                                             className="w-100 mb-2 rounded"
                                             name="serial_num"
                                             value={instrument.serial_num}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                         />
-                                        <h6 className="w-100 fw-bold text-start">Property</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Property
+                                        </h6>
                                         <input
                                             type="text"
                                             className="w-100 mb-2 rounded"
                                             name="property_num"
                                             value={instrument.property_num}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                         />
                                     </div>
 
                                     <div className="col-12 d-flex flex-row-reverse">
-                                        <button className="btn btn-danger" onClick={() => removeInstrument(index)}>
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() =>
+                                                removeInstrument(index)
+                                            }
+                                        >
                                             Delete
                                         </button>
                                     </div>
@@ -223,12 +306,20 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
                             </div>
                         ))}
 
-                        <button className="jb-btn-add mt-3 mb-2" onClick={addInstrument}>
+                        <button
+                            className="jb-btn-add mt-3 mb-2"
+                            onClick={addInstrument}
+                        >
                             Add More Instrument
                         </button>
                         <hr />
-                        <button className="jb-btn-submit w-100 mt-3"
-                                onClick={onSubmit}> Submit Job Order</button>
+                        <button
+                            className="jb-btn-submit w-100 mt-3"
+                            onClick={onSubmit}
+                        >
+                            {" "}
+                            Submit Job Order
+                        </button>
                     </div>
                 </div>
             </div>
@@ -239,7 +330,7 @@ function CreateOrder({ jobOrder, lastID, employeeID, college, labLoc, equipment 
 CreateOrder.layout = (page) => {
     const props = page.props;
     return (
-        <Navbar 
+        <Navbar
             absolute={props.absolute}
             firstName={props.firstName}
             lastName={props.lastName}

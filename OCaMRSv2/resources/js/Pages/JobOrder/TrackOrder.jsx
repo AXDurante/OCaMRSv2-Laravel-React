@@ -2,13 +2,13 @@ import { Link } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 import JobOrder from "./CreateOrder";
 
-function TrackOrder({ jobOrder , firstName, lastName, email }) {
+function TrackOrder({ jobOrder, firstName, lastName, email }) {
     console.log("Job Order props:", { jobOrder, firstName, lastName, email });
 
     return (
         <div className="d-flex">
             {/* Search Button */}
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
                         <h1 className="d-inline">Track Request | </h1>
@@ -74,9 +74,7 @@ function TrackOrder({ jobOrder , firstName, lastName, email }) {
                                     </p>
                                     <p> Status: </p>
                                     <div className="d-flex justify-content-end mt-4">
-                                        <Link
-                                            href={`feedback`}
-                                        >
+                                        <Link href={`feedback`}>
                                             <button
                                                 className="btn btn-secondary me-2"
                                                 id="btnFeed"
@@ -108,7 +106,7 @@ function TrackOrder({ jobOrder , firstName, lastName, email }) {
 TrackOrder.layout = (page) => {
     const props = page.props;
     return (
-        <Navbar 
+        <Navbar
             absolute={props.absolute}
             firstName={props.firstName}
             lastName={props.lastName}

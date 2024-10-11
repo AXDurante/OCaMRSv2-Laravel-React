@@ -150,7 +150,7 @@ function Home({ absolute, firstName, lastName, email }) {
 Home.layout = (page) => {
     const props = page.props;
     return (
-        <Navbar 
+        <Navbar
             absolute={props.absolute}
             firstName={props.firstName}
             lastName={props.lastName}

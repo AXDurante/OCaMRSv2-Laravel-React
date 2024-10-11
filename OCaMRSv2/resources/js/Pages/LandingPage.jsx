@@ -6,7 +6,7 @@ import logo from "/public/images/lesog2.png"; // Import logo image
 function LandingPage() {
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className=" flex-fill p-3">
                 <div className="landing-section">
                     {/* Title and Description */}
                     <div className="text-overlay">
