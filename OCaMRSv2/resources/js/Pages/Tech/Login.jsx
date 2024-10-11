@@ -6,7 +6,9 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import LoginButton from "@/Components/LoginButton";
 import TextInput from "@/Components/TextInput";
 import TextInput2 from "@/Components/TextInput2";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react"; // Import useState
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,6 +16,8 @@ export default function Login({ status, canResetPassword }) {
         password: "",
         remember: false,
     });
+
+    const [showPassword, setShowPassword] = useState(false); // Add this line
 
     const submit = (e) => {
         e.preventDefault();
@@ -67,16 +71,39 @@ export default function Login({ status, canResetPassword }) {
                         <div className="mt-4">
                             <InputLabel htmlFor="password" value="Password" />
 
-                            <TextInput2
-                                id="password"
-                                type="password"
-                                name="password"
-                                value={data.password}
-                                autoComplete="current-password"
-                                onChange={(e) =>
-                                    setData("password", e.target.value)
-                                }
-                            />
+                            <div
+                                className="password-input-wrapper"
+                                style={{ position: "relative" }}
+                            >
+                                <TextInput2
+                                    id="password"
+                                    type={showPassword ? "text" : "password"} // Toggle type
+                                    name="password"
+                                    value={data.password}
+                                    autoComplete="current-password"
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                    style={{ paddingRight: "40px" }} // Add padding to the right for the icon
+                                />
+
+                                {/* Eye Icon to toggle password visibility */}
+                                <span
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                    style={{
+                                        position: "absolute",
+                                        right: "10px",
+                                        top: "50%",
+                                        transform: "translateY(-50%)",
+                                        cursor: "pointer",
+                                        fontSize: "1.5em", // Increased font size for larger icon
+                                    }}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </span>
+                            </div>
 
                             <InputError
                                 message={errors.password}

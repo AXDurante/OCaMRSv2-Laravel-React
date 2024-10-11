@@ -7,6 +7,8 @@ import LoginButton from "@/Components/LoginButton";
 import TextInput from "@/Components/TextInput";
 import TextInput2 from "@/Components/TextInput2";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,6 +16,8 @@ export default function Login({ status, canResetPassword }) {
         password: "",
         remember: false,
     });
+
+    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
     const submit = (e) => {
         e.preventDefault();
@@ -32,19 +36,25 @@ export default function Login({ status, canResetPassword }) {
 
             <div class="split2 right2"> </div>
             <div class="split3 right">
-            {status && <div className="mb-4 font-medium text-green">{status}</div>}
+                {status && (
+                    <div className="mb-4 font-medium text-green">{status}</div>
+                )}
                 <div class="centered2">
                     <form onSubmit={submit}>
                         <div>
-                            <h1 className="text-center titleLogin mb-5">Login</h1>
-                            <InputLabel htmlFor="employeeID" value="Employee ID" />
+                            <h1 className="text-center titleLogin mb-5">
+                                Login
+                            </h1>
+                            <InputLabel
+                                htmlFor="employeeID"
+                                value="Employee ID"
+                            />
 
                             <TextInput2
                                 id="employeeID"
                                 type="employeeID"
                                 name="employeeID"
                                 value={data.employeeID}
-                                
                                 autoComplete="username"
                                 isFocused={true}
                                 onChange={(e) =>
@@ -61,16 +71,38 @@ export default function Login({ status, canResetPassword }) {
                         <div className="mt-4">
                             <InputLabel htmlFor="password" value="Password" />
 
-                            <TextInput2
-                                id="password"
-                                type="password"
-                                name="password"
-                                value={data.password}
-                                autoComplete="current-password"
-                                onChange={(e) =>
-                                    setData("password", e.target.value)
-                                }
-                            />
+                            <div
+                                className="password-input-wrapper"
+                                style={{ position: "relative" }}
+                            >
+                                <TextInput2
+                                    id="password"
+                                    type={showPassword ? "text" : "password"} // Toggle type
+                                    name="password"
+                                    value={data.password}
+                                    autoComplete="current-password"
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                />
+
+                                {/* Eye Icon to toggle password visibility */}
+                                <span
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                    style={{
+                                        position: "absolute",
+                                        right: "10px",
+                                        top: "50%",
+                                        transform: "translateY(-50%)",
+                                        cursor: "pointer",
+                                        fontSize: "1.5em", // Increased font size for larger icon
+                                    }}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </span>
+                            </div>
 
                             <InputError
                                 message={errors.password}
@@ -80,15 +112,6 @@ export default function Login({ status, canResetPassword }) {
 
                         <div className="checkbox-container mt-3 mb-4">
                             <div className="">
-                                {/*
-                                    <Checkbox
-                                    name="remember"
-                                    checked={data.remember}
-                                    onChange={(e) => setData("remember", e.target.checked)}
-                                />
-                                <span className="remember-me-text">Remember me</span>
-                                */}
-
                                 <Link
                                     href={route("password.request")}
                                     className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

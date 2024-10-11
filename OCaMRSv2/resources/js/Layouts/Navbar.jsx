@@ -97,6 +97,7 @@ export default function NavBar({
                     borderBottomRightRadius: "15px",
                     transition: "width 0.3s ease-in-out",
                 }}
+                onClick={handleCollapseToggle} // Toggle collapse on click
             >
                 <div className="sidebar-user">
                     {!isCollapsed ? (

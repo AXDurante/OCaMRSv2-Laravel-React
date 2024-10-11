@@ -1,10 +1,15 @@
 import Navbar from "../Layouts/Navbar";
 
 function Home({ absolute, firstName, lastName, email }) {
-    console.log("Manage Profile props:", { absolute, firstName, lastName, email });
+    console.log("Manage Profile props:", {
+        absolute,
+        firstName,
+        lastName,
+        email,
+    });
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
                         <h1 class="d-inline">Manage Profile | </h1>
@@ -19,7 +24,9 @@ function Home({ absolute, firstName, lastName, email }) {
                                 <div>
                                     <i className="bi bi-person-fill fs-1"></i>
                                 </div>
-                                <h5>{firstName} {lastName}</h5>
+                                <h5>
+                                    {firstName} {lastName}
+                                </h5>
                                 <p>{email}</p>
                             </div>
 
@@ -84,7 +91,7 @@ function Home({ absolute, firstName, lastName, email }) {
 Home.layout = (page) => {
     const props = page.props;
     return (
-        <Navbar 
+        <Navbar
             absolute={props.absolute}
             firstName={props.firstName}
             lastName={props.lastName}
