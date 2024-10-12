@@ -119,6 +119,21 @@ const styles = StyleSheet.create({
         justifyContent: "center", // Ensure content is centered
         display: "flex", // Use flex for the column to apply centering
     },
+    tableRow1: {
+        flexDirection: "row",
+        alignItems: "center", // Ensure vertical alignment
+        justifyContent: "center", // Ensure horizontal alignment
+        height: 20, // Adjust height as needed
+        textAlign: "center",
+        fontSize: 11,
+        borderBottomWidth: 1,
+        borderColor: "#000", // Border for rows
+        borderLeftWidth: 1, // Ensure left border is present
+        borderRightWidth: 1, // Ensure right border is present
+        backgroundColor: "#FFF2CC",
+        justifyContent: "center", // Ensure content is centered
+        display: "flex", // Use flex for the column to apply centering
+    },
     tableColHeader1: {
         width: "50%",
         height: "100%",
@@ -129,6 +144,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF2CC",
     },
     tableTopBorder: {
+        borderTopWidth: 1,
+    },
+    tableTopBorder2: {
         borderTopWidth: 1,
     },
     tableCol1right: {
@@ -159,10 +177,54 @@ const styles = StyleSheet.create({
         alignItems: "center", // Ensure vertical alignment
         textAlign: "left",
     },
+    tableText1: {
+        width: "25%",
+        height: "100%",
+        textAlign: "center",
+        fontFamily: "ArialBold",
+        fontSize: 9,
+
+        paddingVertical: 4,
+        borderRightWidth: 1, // Ensure right border is present
+        borderColor: "#000", // Ensure border color is consistent
+        justifyContent: "center",
+        backgroundColor: "#FFF2CC",
+        textAlign: "center",
+        alignItems: "center", // Ensure vertical alignment
+    },
+    tableText3: {
+        width: "33.33%",
+        height: "100%",
+        textAlign: "center",
+        fontFamily: "ArialBold",
+        fontSize: 9,
+        backgroundColor: "#ffffff",
+        paddingVertical: 4,
+        borderRightWidth: 1, // Ensure right border is present
+        borderColor: "#000", // Ensure border color is consistent
+        justifyContent: "center",
+
+        textAlign: "center",
+        alignItems: "center", // Ensure vertical alignment
+    },
+    tableHeader3: {
+        flexDirection: "row",
+        alignItems: "center",
+        height: 20, // Adjust height for the header as needed
+        backgroundColor: "#d9d9d9", // Background color for the header
+        textAlign: "center",
+        fontSize: 12,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: "#000", // Unified border color
+        borderLeftWidth: 1,
+        borderRightWidth: 1,
+    },
     tableColHeader2: {
         width: "25%",
         height: "100%",
         textAlign: "center",
+
         fontWeight: "bold",
         fontSize: 9,
         paddingVertical: 4,
@@ -327,17 +389,20 @@ const COCpdf = () => {
                     {/* Second Table (4 columns, 5 rows) */}
                     <View style={styles.tableContainer}>
                         {/* Table Header */}
-                        <View style={styles.tableHeader}>
-                            <Text style={styles.tableColHeader2}>
-                                Equipment
-                            </Text>
-                            <Text style={styles.tableColHeader2}></Text>
-                            <Text style={styles.tableColHeader2}>
-                                Date Received
-                            </Text>
-                            <Text
-                                style={[styles.tableColHeader2, styles.lastCol]}
-                            ></Text>
+                        <View style={styles.tableTopBorder2}>
+                            <View style={styles.tableRow1}>
+                                <Text style={styles.tableText1}>Equipment</Text>
+                                <Text style={[styles.tableColHeader2]}></Text>
+                                <Text style={styles.tableText1}>
+                                    Date Received
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.tableColHeader2,
+                                        styles.lastCol,
+                                    ]}
+                                ></Text>
+                            </View>
                         </View>
 
                         {/* Table Rows */}
@@ -395,16 +460,13 @@ const COCpdf = () => {
                     </View>
                     <View style={styles.tableContainer}>
                         {/* Table Header */}
-                        <View style={styles.tableHeader}>
-                            <Text style={styles.tableColHeader3}>
-                                Standard Used
-                            </Text>
-                            <Text style={styles.tableColHeader3}>
+                        <View style={styles.tableTopBorder}></View>
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableText3}>Standard Used</Text>
+                            <Text style={styles.tableText3}>
                                 Calibration Certificate No.
                             </Text>
-                            <Text
-                                style={[styles.tableColHeader3, styles.lastCol]}
-                            >
+                            <Text style={[styles.tableText3, styles.lastCol]}>
                                 Issuing Laboratory
                             </Text>
                         </View>
