@@ -1,5 +1,5 @@
 import React, { useState } from "react"; // Import useState
-import AdminNavBar from "@/Layouts/AdminNavBar";
+import Navbar2 from "@/Layouts/Navbar2";
 import Navbar from "../../Layouts/Navbar";
 import TSRpdf from "./TSRpdf";
 import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
@@ -33,7 +33,7 @@ function TSR() {
                 <button onClick={closeModal}>Close</button> {/* Close button */}
             </Modal>
 
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
                         <h1 className="d-inline">
@@ -231,6 +231,6 @@ function TSR() {
 }
 
 // Change Home to TSR
-TSR.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
+TSR.layout = (page) => <Navbar2>{page}</Navbar2>;
 
 export default TSR;

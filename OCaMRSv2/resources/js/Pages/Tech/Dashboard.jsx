@@ -1,14 +1,16 @@
 import AdminNavBar from "@/Layouts/AdminNavBar";
-import Navbar from "../../Layouts/Navbar";
+import Navbar2 from "@/Layouts/Navbar2";
 
-function Home() {
+function Dashboard() {
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
-                        <h1 class="d-inline">Job Requests | </h1>
-                        <h1 class="d-inline fw-light">Manage Job Request</h1>
+                        <h1 className="d-inline">Job Requests | </h1>
+                        <h1 className="d-inline fw-light">
+                            Manage Job Request
+                        </h1>
                         <hr />
                     </div>
 
@@ -35,31 +37,31 @@ function Home() {
                         </div>
                     </div>
                     <div className="mt-3">
-                        <table class="table text-center table-bordered table-striped">
+                        <table className="table text-center table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Date Received
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Requested ID
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Client Name
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Instrument
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Service Requested
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Status
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Priority
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Action
                                     </th>
                                 </tr>
@@ -74,7 +76,7 @@ function Home() {
                                     <td>Pending</td>
                                     <td>Main</td>
                                     <td>
-                                        <button className="btn btn-yellow">
+                                        <button className="gradient-blue-button">
                                             See Details
                                         </button>
                                     </td>
@@ -88,7 +90,7 @@ function Home() {
                                     <td>Pending</td>
                                     <td>Main</td>
                                     <td>
-                                        <button className="btn btn-yellow">
+                                        <button className="gradient-blue-button">
                                             See Details
                                         </button>
                                     </td>
@@ -102,7 +104,7 @@ function Home() {
                                     <td>Pending</td>
                                     <td>Main</td>
                                     <td>
-                                        <button className="btn btn-yellow">
+                                        <button className="gradient-blue-button">
                                             See Details
                                         </button>
                                     </td>
@@ -116,7 +118,7 @@ function Home() {
                                     <td>Pending</td>
                                     <td>Main</td>
                                     <td>
-                                        <button className="btn btn-yellow">
+                                        <button className="gradient-blue-button">
                                             See Details
                                         </button>
                                     </td>
@@ -130,6 +132,6 @@ function Home() {
     );
 }
 
-Home.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
+Dashboard.layout = (page) => <Navbar2>{page}</Navbar2>;
 
-export default Home;
+export default Dashboard;

@@ -10,7 +10,11 @@ export default function NavBar({
 }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isFullyExpanded, setIsFullyExpanded] = useState(true); // For handling transition timing
-    const { auth } = usePage().props;
+    const { auth } = usePage().props; // Get auth from props
+
+    // Fallback for auth
+    const userFirstName = auth?.user?.firstName || "Guest"; // Use "Guest" if firstName is not available
+    const userLastName = auth?.user?.lastName || ""; // Use empty string if lastName is not available
 
     const handleResize = () => {
         if (window.innerWidth < 768) {
@@ -47,7 +51,7 @@ export default function NavBar({
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
             <div
-                className="sidebar2"
+                className="sidebar4"
                 style={{
                     width: isCollapsed ? "80px" : "250px",
                     minWidth: isCollapsed ? "80px" : "250px",
@@ -83,7 +87,8 @@ export default function NavBar({
                     </div>
                     {isFullyExpanded && (
                         <p className="mt-2">
-                            Welcome, {auth.user.firstName} {auth.user.lastName}
+                            Welcome, {userFirstName} {userLastName}{" "}
+                            {/* Display full name */}
                         </p>
                     )}
                 </div>
@@ -106,7 +111,7 @@ export default function NavBar({
                             <h4 className="user-interface2">Interface</h4>
                         </>
                     ) : (
-                        <h6>Client</h6>
+                        <h6>Te</h6>
                     )}
                 </div>
                 <ul className="nav flex-column pt-4 theNav">
@@ -114,12 +119,10 @@ export default function NavBar({
                         className="nav-item"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Link href="/jobOrder/create">
+                        <Link href={route("technician.Dashboard")}>
                             <a className="nav-link nav-link-blue">
-                                {" "}
-                                {/* Use nav-link-blue class */}
                                 <i className="bi bi-file-earmark-text me-2"></i>
-                                {!isCollapsed && "Open Request"}
+                                {!isCollapsed && "Dashboard"}
                             </a>
                         </Link>
                     </li>
@@ -129,8 +132,6 @@ export default function NavBar({
                     >
                         <Link href="/jobOrder">
                             <a className="nav-link nav-link-blue">
-                                {" "}
-                                {/* Use nav-link-blue class */}
                                 <i className="bi bi-search me-2"></i>
                                 {!isCollapsed && "Track Request"}
                             </a>
@@ -142,7 +143,7 @@ export default function NavBar({
                     >
                         <Link
                             href={route("manageProfile")}
-                            className="nav-link nav-link-blue" // Use nav-link-blue class
+                            className="nav-link nav-link-blue"
                         >
                             <i className="bi bi-person-fill me-2"></i>
                             {!isCollapsed && "Manage Profile"}
@@ -154,8 +155,6 @@ export default function NavBar({
                     >
                         <Link href="/viewInstrument">
                             <a className="nav-link nav-link-blue">
-                                {" "}
-                                {/* Use nav-link-blue class */}
                                 <i className="bi bi-list me-2"></i>
                                 {!isCollapsed && "Instrument List"}
                             </a>

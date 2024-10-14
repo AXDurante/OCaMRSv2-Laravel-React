@@ -31,13 +31,13 @@ Route::prefix('technician')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Tech/Login');
     })->name('technician.home');
-    Route::get('/home2', function () {
-        return Inertia::render('Tech/Home2');
-    })->name('technician.home2');
-    Route::get('/TechnicalServiceReport', function () {
+    Route::get('/Dashboard', function () {
+        return Inertia::render('Tech/Dashboard');
+    })->name('technician.Dashboard');
+    Route::get('/TSR', function () {
         return Inertia::render('Tech/TSR');
     })->name('technician.TSR');
-    Route::get('/CertificateOfCalibration', function () {
+    Route::get('/COC', function () {
         return Inertia::render('Tech/COC');
     })->name('technician.COC');
 });
@@ -145,3 +145,4 @@ require __DIR__ . '/auth.php';
 
 
 require __DIR__ . '/techAuth.php';
+

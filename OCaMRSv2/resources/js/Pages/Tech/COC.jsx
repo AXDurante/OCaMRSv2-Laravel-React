@@ -1,12 +1,13 @@
 import React, { useState } from "react"; // Ensure useState is imported
-import AdminNavBar from "@/Layouts/AdminNavBar";
-import Navbar from "../../Layouts/Navbar";
+import Navbar2 from "@/Layouts/Navbar2";
 import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
 import Modal from "react-modal";
 import COCpdf from "./COCpdf";
+import { usePage } from "@inertiajs/react";
 
 function COC() {
     const [showPreview, setShowPreview] = useState(false); // Define showPreview state
+    const { auth } = usePage().props; // Ensure auth is defined
 
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
@@ -18,7 +19,7 @@ function COC() {
 
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
                         <h1 class="d-inline">Certificate of Calibration | </h1>
@@ -254,6 +255,6 @@ function COC() {
     );
 }
 
-COC.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
+COC.layout = (page) => <Navbar2>{page}</Navbar2>;
 
 export default COC;
