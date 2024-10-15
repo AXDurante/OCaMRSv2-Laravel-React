@@ -163,6 +163,11 @@
     display: block;
     width: 100%;
 }
+.logout-btn.collapsed {
+    border: 0.5px solid #fbc600;
+    border-radius: 50px;
+}
+
 .logout-blue-btn {
     color: #ffffff;
     border: 2px solid #0789e7; /* Border stroke with specified color */
@@ -838,8 +843,14 @@ input[type="checkbox"] {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .animate-field {
@@ -1410,7 +1421,7 @@ input[type="checkbox"] {
 }
 
 .shadow-lg {
-    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
 }
 
 .animate-button {
@@ -1419,7 +1430,7 @@ input[type="checkbox"] {
 
 .animate-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.08);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .btn-outline-secondary {

@@ -120,7 +120,7 @@ export default function AdminNavBar({ children }) {
                     >
                         {!isCollapsed ? (
                             <>
-                                <h4 className="user-interface">Client&nbsp;</h4>
+                                <h4 className="user-interface">Admin&nbsp;</h4>
                                 <h4 className="user-interface2">Interface</h4>
                             </>
                         ) : (

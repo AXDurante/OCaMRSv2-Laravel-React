@@ -45,8 +45,8 @@ export default function NavBar({
     };
 
     return (
-        <div className="wholepage d-flex" style={{ height: "100vh" }}>
-            <div
+        <div className="d-flex">
+            <nav
                 className="sidebar2"
                 style={{
                     width: isCollapsed ? "80px" : "250px",
@@ -54,6 +54,7 @@ export default function NavBar({
                     borderTopRightRadius: "20px",
                     borderBottomRightRadius: "15px",
                     transition: "width 0.3s ease-in-out",
+                    overflow: "hidden",
                 }}
                 onClick={handleCollapseToggle} // Toggle collapse on click
             >
@@ -69,25 +70,39 @@ export default function NavBar({
                         LESO - ISC
                     </h4>
                     <div
-                        className="rounded-circle bg-dark d-flex justify-content-center align-items-center mt-4 shadow"
-                        style={{
-                            width: "100px",
-                            height: "100px",
-                            color: "white",
-                        }}
+                        className={`${
+                            isFullyExpanded
+                                ? "expanded-content"
+                                : "collapsed-content"
+                        }`}
                     >
-                        <i
-                            className="bi bi-person-fill"
-                            style={{ fontSize: "50px" }}
-                        ></i>
+                        <div
+                            className="rounded-circle bg-dark d-flex justify-content-center align-items-center mt-4 shadow"
+                            style={{
+                                width: "100px",
+                                height: "100px",
+                                color: "white",
+                                transition: "opacity 0.3s ease-in-out",
+                            }}
+                        >
+                            <i
+                                className="bi bi-person-fill"
+                                style={{ fontSize: "50px" }}
+                            ></i>
+                        </div>
                     </div>
-                    {isFullyExpanded && (
-                        <p className="mt-2">
-                            Welcome, {auth.user.firstName} {auth.user.lastName}
-                        </p>
-                    )}
+
+                    <p
+                        className={`fw-bold mb-0 text-dark ${
+                            isFullyExpanded
+                                ? "expanded-content"
+                                : "collapsed-content"
+                        }`}
+                    >
+                        Welcome, {auth.user.firstName} {auth.user.lastName}
+                    </p>
                 </div>
-            </div>
+            </nav>
 
             <nav
                 className="sidebar rounded-right text-light"
@@ -96,6 +111,7 @@ export default function NavBar({
                     minWidth: isCollapsed ? "80px" : "250px",
                     borderBottomRightRadius: "15px",
                     transition: "width 0.3s ease-in-out",
+                    overflow: "hidden",
                 }}
                 onClick={handleCollapseToggle} // Toggle collapse on click
             >
@@ -109,75 +125,96 @@ export default function NavBar({
                         <h6>Client</h6>
                     )}
                 </div>
-                <ul className="nav flex-column pt-4 theNav">
-                    <li className="nav-item">
-                        <Link href={route("landingpage")}>
-                            <a className="nav-link">
-                                <i className="bi bi-house me-2"></i>
-                                {!isCollapsed && "Home"}
+                <div className="p-4">
+                    <ul className="nav flex-column">
+                        <li className="nav-item">
+                            <Link
+                                href={route("landingpage")}
+                                className="a-nav-link"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <a className="nav-link">
+                                    <i className="bi bi-house me-2"></i>
+                                    {!isCollapsed && "Home"}
+                                </a>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link
+                                href="/jobOrder/create"
+                                className="a-nav-link"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <a className="nav-link">
+                                    <i className="bi bi-file-earmark-text me-2"></i>
+                                    {!isCollapsed && "Open Request"}
+                                </a>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link
+                                href="/jobOrder"
+                                className="a-nav-link"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <a className="nav-link">
+                                    <i className="bi bi-search me-2"></i>
+                                    {!isCollapsed && "Track Request"}
+                                </a>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link
+                                href={route("manageProfile")}
+                                className="a-nav-link"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <a className="nav-link">
+                                    <i className="bi bi-person-fill me-2"></i>
+                                    {!isCollapsed && "Manage Profile"}
+                                </a>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link
+                                href="/viewInstrument"
+                                className="a-nav-link"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <a className="nav-link">
+                                    <i className="bi bi-list me-2"></i>
+                                    {!isCollapsed && "Instrument List"}
+                                </a>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="#">
+                                <i className="bi bi-bell-fill me-2 "></i>
+                                {!isCollapsed && "Notification"}
                             </a>
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link href="/jobOrder/create">
-                            <a className="nav-link">
-                                <i className="bi bi-file-earmark-text me-2"></i>
-                                {!isCollapsed && "Open Request"}
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="#">
+                                <i className="bi bi-arrow-left me-2 icon-bold"></i>
+                                {!isCollapsed && "Go Back"}
                             </a>
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link href="/jobOrder">
-                            <a className="nav-link">
-                                <i className="bi bi-search me-2"></i>
-                                {!isCollapsed && "Track Request"}
-                            </a>
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link
-                            href={route("manageProfile")}
-                            className="nav-link"
-                        >
-                            <i className="bi bi-person-fill me-2"></i>
-                            {!isCollapsed && "Manage Profile"}
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link href="/viewInstrument">
-                            <a className="nav-link">
-                                <i className="bi bi-list me-2"></i>
-                                {!isCollapsed && "Instrument List"}
-                            </a>
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <i className="bi bi-bell-fill me-2 "></i>
-                            {!isCollapsed && "Notification"}
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <i className="bi bi-arrow-left me-2 icon-bold"></i>
-                            {!isCollapsed && "Go Back"}
-                        </a>
-                    </li>
-                    <div className="logout">
-                        <li className="nav-item-logout">
+                        </li>
+                        <li className="nav-item">
                             <Link
                                 href={route("logout")}
                                 method="post"
                                 as="button"
-                                className="logout-btn"
+                                className={`logout-btn ${
+                                    isCollapsed ? "collapsed" : ""
+                                }`}
                             >
                                 <i className="bi bi-box-arrow-right me-2"></i>
                                 {!isCollapsed && "Log Out"}{" "}
                                 {/* Show 'Log Out' only when fully expanded */}
                             </Link>
                         </li>
-                    </div>
-                </ul>
+                    </ul>
+                </div>
             </nav>
             <main
                 className="flex-fill p-3"
