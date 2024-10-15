@@ -6,7 +6,9 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import LoginButton from "@/Components/LoginButton";
 import TextInput from "@/Components/TextInput";
 import TextInput2 from "@/Components/TextInput2";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useState } from "react"; // Import useState
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -15,11 +17,13 @@ export default function Login({ status, canResetPassword }) {
         remember: false,
     });
 
+    const [showPassword, setShowPassword] = useState(false); // Add this line
+
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('technician.login'), {
-            onFinish: () => reset('password'),
+        post(route("technician.login"), {
+            onFinish: () => reset("password"),
         });
     };
 
@@ -30,21 +34,27 @@ export default function Login({ status, canResetPassword }) {
                 <div class="half login-imageHolder"></div>
             </div>
 
-            <div class="split2 right2">  </div>
+            <div class="split2 right2"> </div>
             <div class="split3 right">
-            {status && <div className="mb-4 font-medium text-green">{status}</div>}
+                {status && (
+                    <div className="mb-4 font-medium text-green">{status}</div>
+                )}
                 <div class="centered2">
                     <form onSubmit={submit}>
                         <div>
-                            <h1 className="text-center titleLogin mb-5">Technician Login</h1>
-                            <InputLabel htmlFor="employeeID" value="Employee ID" />
+                            <h1 className="text-center titleLogin mb-5">
+                                Technician Login
+                            </h1>
+                            <InputLabel
+                                htmlFor="employeeID"
+                                value="Employee ID"
+                            />
 
                             <TextInput2
                                 id="employeeID"
                                 type="employeeID"
                                 name="employeeID"
                                 value={data.employeeID}
-                                
                                 autoComplete="username"
                                 isFocused={true}
                                 onChange={(e) =>
@@ -61,17 +71,39 @@ export default function Login({ status, canResetPassword }) {
                         <div className="mt-4">
                             <InputLabel htmlFor="password" value="Password" />
 
-                            <TextInput2
-                                id="password"
-                                type="password"
-                                name="password"
-                                value={data.password}
-                                
-                                autoComplete="current-password"
-                                onChange={(e) =>
-                                    setData("password", e.target.value)
-                                }
-                            />
+                            <div
+                                className="password-input-wrapper"
+                                style={{ position: "relative" }}
+                            >
+                                <TextInput2
+                                    id="password"
+                                    type={showPassword ? "text" : "password"} // Toggle type
+                                    name="password"
+                                    value={data.password}
+                                    autoComplete="current-password"
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                    style={{ paddingRight: "40px" }} // Add padding to the right for the icon
+                                />
+
+                                {/* Eye Icon to toggle password visibility */}
+                                <span
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                    style={{
+                                        position: "absolute",
+                                        right: "10px",
+                                        top: "50%",
+                                        transform: "translateY(-50%)",
+                                        cursor: "pointer",
+                                        fontSize: "1.5em", // Increased font size for larger icon
+                                    }}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </span>
+                            </div>
 
                             <InputError
                                 message={errors.password}
@@ -79,8 +111,6 @@ export default function Login({ status, canResetPassword }) {
                             />
                         </div>
 
-                
-                            
                         <div className="checkbox-container mt-3 mb-4">
                             <div className="">
                                 {/*
@@ -98,26 +128,21 @@ export default function Login({ status, canResetPassword }) {
                                 >
                                     Forgot your password?
                                 </Link>
-                                
                             </div>
 
-                           
-                           
+                            <div className="">
+                                <Link
+                                    href={route("technician.register")}
+                                    className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                >
+                                    Don't have an account? Register
+                                </Link>
+                            </div>
                         </div>
 
-                        
-                            
-                               
-                            <div className="pt-3">
-                                <LoginButton classname="w-100">
-                                    Log in
-                            </LoginButton>    
-                            </div>
-                           
-                                
-                           
-                          
-                       
+                        <div className="pt-3">
+                            <LoginButton classname="w-100">Log in</LoginButton>
+                        </div>
                     </form>
                 </div>
             </div>

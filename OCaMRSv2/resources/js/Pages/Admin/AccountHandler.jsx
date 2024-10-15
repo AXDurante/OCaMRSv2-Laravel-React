@@ -99,7 +99,7 @@ function Home() {
                     lastName: lastName,
                     email: accountEmail,
                     password: accountPassword,
-                    password_confirmation: passwordConfirmation,  // Add this line
+                    password_confirmation: passwordConfirmation, // Add this line
                     employeeID: idNumber,
                     phoneNumber: phoneNumber,
                 });
@@ -126,13 +126,15 @@ function Home() {
                 console.error("Error data:", error.response.data);
                 console.error("Error status:", error.response.status);
                 console.error("Error headers:", error.response.headers);
-                
+
                 // Display validation errors to the user
                 if (error.response.status === 422) {
                     const validationErrors = error.response.data.errors;
                     let errorMessage = "Validation errors:\n";
                     for (const field in validationErrors) {
-                        errorMessage += `${field}: ${validationErrors[field].join(', ')}\n`;
+                        errorMessage += `${field}: ${validationErrors[
+                            field
+                        ].join(", ")}\n`;
                     }
                     alert(errorMessage);
                 }
@@ -144,13 +146,15 @@ function Home() {
                 console.error("Error message:", error.message);
             }
             // TODO: Show error message to user
-            alert("An error occurred while submitting the form. Please check the console for more details.");
+            alert(
+                "An error occurred while submitting the form. Please check the console for more details."
+            );
         }
     };
 
     return (
-        <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+        <div className="">
+            <div id="content" className="">
                 <div>
                     <div>
                         <h1 className="d-inline">Account Handler | </h1>
@@ -312,7 +316,10 @@ function Home() {
                                     <div>
                                         <i className="bi bi-person-fill fs-1"></i>
                                     </div>
-                                    <h5>{`${firstName} ${lastName}` || "New Account"}</h5>
+                                    <h5>
+                                        {`${firstName} ${lastName}` ||
+                                            "New Account"}
+                                    </h5>
                                     <p>{accountEmail || "email@example.com"}</p>
                                 </div>
 

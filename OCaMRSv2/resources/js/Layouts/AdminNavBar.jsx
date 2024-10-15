@@ -1,93 +1,211 @@
-import { Link, usePage } from "@inertiajs/react";
+import { useState, useEffect } from "react";
+import { Link } from "@inertiajs/react";
 
 export default function AdminNavBar({ children }) {
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isFullyExpanded, setIsFullyExpanded] = useState(true); // For handling transition timing
+
+    const handleResize = () => {
+        if (window.innerWidth < 768) {
+            setIsCollapsed(true);
+            setIsFullyExpanded(false);
+        } else {
+            setIsCollapsed(false);
+            setIsFullyExpanded(true);
+        }
+    };
+
+    useEffect(() => {
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    const handleCollapseToggle = () => {
+        if (isCollapsed) {
+            // Expanding the navbar
+            setIsCollapsed(false);
+            setTimeout(() => {
+                setIsFullyExpanded(true);
+            }, 300); // Delay to match transition time
+        } else {
+            // Collapsing the navbar
+            setIsFullyExpanded(false);
+            setTimeout(() => {
+                setIsCollapsed(true);
+            }, 300);
+        }
+    };
+
     return (
-        <div className="wholepage d-flex" style={{ height: "100vh" }}>
-            <div
-                className="sidebar3"
-                style={{
-                    width: "250px",
-                    minWidth: "250px",
-                    borderTopRightRadius: "20px",
-                    borderBottomRightRadius: "15px",
-                }}
-            >
-                <div className="mt-4">
-                    <h4 className="text-black pt-4" id="textHeader">
-                        LESO - ISC
-                    </h4>
-                    <p className="ms-4"></p>
-                </div>
-            </div>
-
+        <div className="d-flex">
             <nav
-                className="sidebar rounded-right text-light"
+                className={`shadow ${isCollapsed ? "collapsed" : ""}`}
                 style={{
-                    width: "250px",
-                    minWidth: "250px",
+                    width: isCollapsed ? "80px" : "250px",
+                    height: "100vh",
+                    position: "fixed",
+                    borderTopRightRadius: "30px",
+                    borderBottomRightRadius: "30px",
+                    overflow: "hidden",
+                    transition: "width 0.3s ease-in-out",
+                }}
+                onClick={handleCollapseToggle}
+            >
+                <div className="bg-blue h-30">
+                    <div className="d-flex flex-column align-items-center text-center">
+                        <h4
+                            className={`text-dark mt-7 ${
+                                isFullyExpanded
+                                    ? "expanded-content"
+                                    : "collapsed-content"
+                            }`}
+                            id="textHeader"
+                        >
+                            LESO - ISC
+                        </h4>
+                        <div
+                            className={`${
+                                isFullyExpanded
+                                    ? "expanded-content"
+                                    : "collapsed-content"
+                            }`}
+                        >
+                            <div
+                                className="rounded-circle bg-dark d-flex justify-content-center align-items-center mt-4 shadow"
+                                style={{
+                                    width: "100px",
+                                    height: "100px",
+                                    color: "white",
+                                    transition: "opacity 0.3s ease-in-out",
+                                }}
+                            >
+                                <i
+                                    className="bi bi-person-fill text-primary"
+                                    style={{ fontSize: "50px" }}
+                                ></i>
+                            </div>
+                        </div>
 
-                    borderBottomRightRadius: "15px",
+                        <div className="d-flex flex-column">
+                            <p
+                                className={`mt-2 mb-0 text-dark ${
+                                    isFullyExpanded
+                                        ? "expanded-content"
+                                        : "collapsed-content"
+                                }`}
+                            >
+                                {isFullyExpanded && "Welcome Back"}
+                            </p>
+                            <p
+                                className={`fw-bold mb-0 text-dark ${
+                                    isFullyExpanded
+                                        ? "expanded-content"
+                                        : "collapsed-content"
+                                }`}
+                            >
+                                {isFullyExpanded && "Sir Alferos!"}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div className="bg-charcoal h-70 rounded-right">
+                    <div
+                        className={`${
+                            isCollapsed ? "bg-black" : "bg-dark"
+                        } sidebar-heading text-light p-1 text-center`}
+                        style={{ width: "100%" }}
+                    >
+                        {!isCollapsed ? (
+                            <>
+                                <h4 className="user-interface">Client&nbsp;</h4>
+                                <h4 className="user-interface2">Interface</h4>
+                            </>
+                        ) : (
+                            <h6>Client</h6>
+                        )}
+                    </div>
+                    <div className="p-4 mt-4">
+                        <ul className="nav flex-column">
+                            <li className="mb-2">
+                                <Link
+                                    href="/admin"
+                                    className="a-nav-link"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <i className="bi bi-file-earmark-text me-2"></i>
+                                    {!isCollapsed && "Job Request"}
+                                </Link>
+                            </li>
+                            <li className="nav-item mb-2">
+                                <Link
+                                    href="/admin/account-handler"
+                                    className="a-nav-link"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <i className="bi bi-person-add me-2"></i>
+                                    {!isCollapsed && "Account Handler"}
+                                </Link>
+                            </li>
+                            <li className="nav-item mb-2">
+                                <Link
+                                    href="/admin/manage-profile"
+                                    className="a-nav-link"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <i className="bi bi-person-fill me-2"></i>
+                                    {!isCollapsed && "Manage Profile"}
+                                </Link>
+                            </li>
+                            <li className="mb-2">
+                                <a
+                                    className="a-nav-link"
+                                    href="#"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <i className="bi bi-list me-2"></i>
+                                    {!isCollapsed && "Instrument List"}
+                                </a>
+                            </li>
+                            <li className="mb-2">
+                                <a
+                                    className="a-nav-link"
+                                    href="#"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <i className="bi bi-arrow-left me-2"></i>
+                                    {!isCollapsed && "Go Back"}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="p-4">
+                        <Link
+                            href={route("admin.logout")}
+                            method="post"
+                            as="button"
+                            className="btn btn-dark w-100"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <i className="bi bi-box-arrow-right me-2"></i>
+                            {!isCollapsed && "Log Out"}
+                        </Link>
+                    </div>
+                </div>
+            </nav>
+
+            <div
+                className="flex-grow-1"
+                style={{
+                    marginLeft: isCollapsed ? "80px" : "250px",
+                    padding: "20px",
+                    transition: "margin-left 0.3s ease-in-out",
                 }}
             >
-                <div className="sidebar-user ">
-                    <h4 className="user-interface">Admin&nbsp;</h4>
-                    <h4 className="user-interface2"> Interface</h4>
-                </div>
-                <ul className="nav flex-column pt-4 theNav">
-                    <li className="nav-item">
-                        <Link href="/admin">
-                            <a className="nav-link">
-                                <i className="bi bi-file-earmark-text me-2"></i>
-                                Job Request
-                            </a>
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link href="/admin/account-handler">
-                            <a className="nav-link">
-                                <i class="bi bi-person-add me-2"></i>Account
-                                Handler
-                            </a>
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link href="/admin/manage-profile">
-                            <a className="nav-link">
-                                <i className="bi bi-person-fill me-2"></i>Manage
-                                Profile
-                            </a>
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link href="/admin/view-instrument">
-                            <a className="nav-link" href="#">
-                                <i className="bi bi-list me-2"></i>Instrument
-                                List
-                            </a>
-                        </Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">
-                            <i className="bi bi-arrow-left me-2 icon-bold"></i>
-                            Go Back
-                        </a>
-                    </li>
-                    <div className="logoutadmin">
-                        <li className="nav-item-logoutadmin">
-                            <Link
-                                href={route("admin.logout")}
-                                method="post"
-                                as="button"
-                                className="logout-btnadmin"
-                            >
-                                Log Out
-                            </Link>
-                        </li>
-                    </div>
-                </ul>
-            </nav>
-            <main className="flex-fill p-3">{children}</main>
+                {children}
+            </div>
         </div>
     );
 }

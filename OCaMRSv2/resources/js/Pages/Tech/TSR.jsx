@@ -1,14 +1,45 @@
-import AdminNavBar from "@/Layouts/AdminNavBar";
+import React, { useState } from "react"; // Import useState
+import Navbar2 from "@/Layouts/Navbar2";
 import Navbar from "../../Layouts/Navbar";
+import TSRpdf from "./TSRpdf";
+import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
+import Modal from "react-modal"; // Import Modal
 
-function Home() {
+function TSR() {
+    const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
+
+    const handlePreviewClick = () => {
+        setShowPreview(true); // Show the preview when the button is clicked
+    };
+
+    const closeModal = () => {
+        setShowPreview(false); // Close the modal
+    };
+
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            {/* Modal for PDF Preview */}
+            <Modal isOpen={showPreview} onRequestClose={closeModal}>
+                <h5>Print Preview:</h5>
+                <PDFViewer
+                    style={{
+                        width: "100%",
+                        height: "80%",
+                        border: "none", // Optional: remove border for a cleaner look
+                    }}
+                >
+                    <TSRpdf />
+                </PDFViewer>
+                <button onClick={closeModal}>Close</button> {/* Close button */}
+            </Modal>
+
+            <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
-                        <h1 class="d-inline">Technical Service Report | </h1>
-                        <h1 class="d-inline fw-light">Create</h1>
+                        <h1 className="d-inline">
+                            Technical Service Report |{" "}
+                        </h1>
+                        <h1 className="d-inline fw-light">Create</h1>
                         <hr />
                     </div>
                     <div className="mt-3">
@@ -177,9 +208,18 @@ function Home() {
                                     </div>
 
                                     <div className="row"></div>
-                                    <button className="btn btn-dark w-100 text-warning mt-2 mb-4">
-                                        Update Profile
-                                    </button>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <button
+                                                className="btn btn-primary mb-3"
+                                                onClick={handlePreviewClick} // Add click handler
+                                            >
+                                                Preview PDF
+                                            </button>
+                                            {/* Removed PDFViewer from here */}
+                                        </div>
+                                    </div>
+                                    {/* Removed PDFDownloadLink for download option */}
                                 </div>
                             </div>
                         </div>
@@ -190,6 +230,7 @@ function Home() {
     );
 }
 
-Home.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
+// Change Home to TSR
+TSR.layout = (page) => <Navbar2>{page}</Navbar2>;
 
-export default Home;
+export default TSR;

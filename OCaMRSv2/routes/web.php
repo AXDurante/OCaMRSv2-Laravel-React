@@ -32,13 +32,13 @@ Route::prefix('technician')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Tech/Login');
     })->name('technician.home')->middleware('technician.auth');
-    Route::get('/home2', function () {
-        return Inertia::render('Tech/Home2');
-    })->name('technician.home2');
-    Route::get('/TechnicalServiceReport', function () {
+    Route::get('/Dashboard', function () {
+        return Inertia::render('Tech/Dashboard');
+    })->name('technician.Dashboard');
+    Route::get('/TSR', function () {
         return Inertia::render('Tech/TSR');
     })->name('technician.TSR');
-    Route::get('/CertificateOfCalibration', function () {
+    Route::get('/COC', function () {
         return Inertia::render('Tech/COC');
     })->name('technician.COC');
 });
@@ -81,7 +81,8 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
 });
 
-Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login')->middleware('technician.auth');;
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login')->middleware('technician.auth');
+;
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
 // TO REMOVE
@@ -114,13 +115,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/manage-profile', [DashboardController::class, 'manageProfile'])
         ->name('manageProfile');
-        
+
     Route::post('/manage-profile', [DashboardController::class, 'update'])
         ->name('updateProfile');
 
-     Route::get('/landingpage', function () {
+    Route::get('/landingpage', function () {
         return Inertia::render('LandingPage');
-    });
+    })->name('landingpage');
 });
 
 Route::get('/instrumentation/login', [InstrumentationAuthController::class, 'showLoginForm'])->name('instrumentation.login');
@@ -153,3 +154,4 @@ require __DIR__ . '/auth.php';
 
 
 require __DIR__ . '/techAuth.php';
+

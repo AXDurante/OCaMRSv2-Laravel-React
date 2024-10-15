@@ -5,8 +5,8 @@ import { Link } from "@inertiajs/react";
 function Home({ jobOrder }) {
     console.log(jobOrder);
     return (
-        <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+        <div className="">
+            <div id="content" className="">
                 <div>
                     <div>
                         <h1 class="d-inline">Job Requests | </h1>
@@ -14,7 +14,7 @@ function Home({ jobOrder }) {
                         <hr />
                     </div>
 
-                    <div className="bg-dark row rounded text-center d-flex justify-content-between">
+                    <div className="bg-black row rounded text-center d-flex justify-content-between">
                         <div className="col bg-light m-4 p-3">
                             <h5>Total Request</h5>
                             <h1>1</h1>
@@ -68,18 +68,62 @@ function Home({ jobOrder }) {
                                 </tr>
                             </thead>
                             <tbody>
-                            {jobOrder.data.map((order, index) => (
-                                    <tr key={index} className="text-center align-middle">
-                                        <td scope="row">{new Date(order.date_request).toLocaleDateString()}</td> {/* Date Received */}
-                                        <td>{order.job_id}</td> {/* Job ID */}
-                                        <td>{order.employeeID} </td>
-                                        <td>{order.service_type}</td> {/* Service Request */}
-                                        <td>{order.status}</td> {/* Status */}
-                                        <td>
-                                            <button className="btn btn-yellow">See Details</button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                <tr className="text-center align-middle">
+                                    <td scope="row">8/30/2024</td>
+                                    <td>1243314534</td>
+                                    <td>John Doe</td>
+                                    <td>Microscope</td>
+                                    <td>Recallibration</td>
+                                    <td>Pending</td>
+                                    <td>Main</td>
+                                    <td>
+                                        <button className="gradient-blue-button">
+                                            See Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr className="text-center align-middle">
+                                    <td scope="row">8/30/2024</td>
+                                    <td>1243314534</td>
+                                    <td>John Doe</td>
+                                    <td>Microscope</td>
+                                    <td>Recallibration</td>
+                                    <td>Pending</td>
+                                    <td>Main</td>
+                                    <td>
+                                        <button className="gradient-blue-button">
+                                            See Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr className="text-center align-middle">
+                                    <td scope="row">8/30/2024</td>
+                                    <td>1243314534</td>
+                                    <td>John Doe</td>
+                                    <td>Microscope</td>
+                                    <td>Recallibration</td>
+                                    <td>Pending</td>
+                                    <td>Main</td>
+                                    <td>
+                                        <button className="gradient-blue-button">
+                                            See Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr className="text-center align-middle">
+                                    <td scope="row">8/30/2024</td>
+                                    <td>1243314534</td>
+                                    <td>John Doe</td>
+                                    <td>Microscope</td>
+                                    <td>Recallibration</td>
+                                    <td>Pending</td>
+                                    <td>Main</td>
+                                    <td>
+                                        <button className="gradient-blue-button">
+                                            See Details
+                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         <div className="text-center">

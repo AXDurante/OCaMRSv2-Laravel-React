@@ -2,8 +2,8 @@ import Navbar from "../../Layouts/Navbar";
 import AdminNavBar from "@/Layouts/AdminNavBar";
 function Home() {
     return (
-        <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+        <div className="">
+            <div id="content" className="">
                 <div>
                     <div>
                         <h1 class="d-inline">Manage Profile | </h1>
