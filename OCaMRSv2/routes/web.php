@@ -26,12 +26,12 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-})->name('loginHome')->middleware('technician.auth');
+})->name('loginHome');
 
 Route::prefix('technician')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Tech/Login');
-    })->name('technician.home')->middleware('technician.auth');
+    })->name('technician.home');
     Route::get('/Dashboard', function () {
         return Inertia::render('Tech/Dashboard');
     })->name('technician.Dashboard');
@@ -127,15 +127,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/instrumentation/login', [InstrumentationAuthController::class, 'showLoginForm'])->name('instrumentation.login');
 Route::post('/instrumentation/login', [InstrumentationAuthController::class, 'login'])->name('instrumentation.login.submit');
 
-Route::middleware('auth:instrumentation')->group(function () {
-    Route::get('/instrumentation/home', function () {
-        return Inertia::render('Instrumentation/InstrumentationHome');
-    })->name('instrumentation.home');
+// Route::middleware('auth:instrumentation')->group(function () {
+//     Route::get('/instrumentation/home', function () {
+//         return Inertia::render('Instrumentation/InstrumentationHome');
+//     })->name('instrumentation.home');
 
-    // Add a logout route
-    Route::post('/instrumentation/logout', [InstrumentationAuthController::class, 'logout'])->name('instrumentation.logout');
-});
+//     // Add a logout route
+//     Route::post('/instrumentation/logout', [InstrumentationAuthController::class, 'logout'])->name('instrumentation.logout');
+// });
 
+Route::get('/instrumentation/home', function () {
+    return Inertia::render('Instrumentation/InstrumentationHome');
+})->name('instrumentation.home');
+
+// Add a logout route
+Route::post('/instrumentation/logout', [InstrumentationAuthController::class, 'logout'])->name('instrumentation.logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
