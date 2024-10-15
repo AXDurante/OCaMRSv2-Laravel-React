@@ -27,19 +27,24 @@ Route::get('/', function () {
     ]);
 })->name('loginHome');
 
+
 Route::prefix('technician')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Tech/Login');
     })->name('technician.home');
-    Route::get('/Dashboard', function () {
-        return Inertia::render('Tech/Dashboard');
-    })->name('technician.Dashboard');
+
+    Route::get('/Dashboard', [JobOrderController::class, 'technicianIndex'])->name('technician.Dashboard'); // Updated route
+
     Route::get('/TSR', function () {
         return Inertia::render('Tech/TSR');
     })->name('technician.TSR');
+
     Route::get('/COC', function () {
         return Inertia::render('Tech/COC');
     })->name('technician.COC');
+
+    // New route to store technician job orders
+    Route::post('/job-order', [JobOrderController::class, 'storeTechnicianJobOrder'])->name('technician.jobOrder.store');
 });
 
 // Route::get('/manage profile', function () {

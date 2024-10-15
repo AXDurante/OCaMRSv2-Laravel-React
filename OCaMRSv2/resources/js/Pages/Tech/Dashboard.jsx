@@ -1,137 +1,63 @@
-import AdminNavBar from "@/Layouts/AdminNavBar";
+import React from "react";
 import Navbar2 from "@/Layouts/Navbar2";
 
-function Dashboard() {
+function TechnicianDashboard({ technicianJobOrders }) {
     return (
         <div className="d-flex">
-            <div id="content" className=" flex-fill p-3">
-                <div>
-                    <div>
-                        <h1 className="d-inline">Job Requests | </h1>
-                        <h1 className="d-inline fw-light">
-                            Manage Job Request
-                        </h1>
-                        <hr />
-                    </div>
-
-                    <div className="bg-dark row rounded text-center d-flex justify-content-between">
-                        <div className="col bg-light m-4 p-3">
-                            <h5>Total Request</h5>
-                            <h1>1</h1>
-                        </div>
-                        <div className="col bg-light m-4 p-3">
-                            <h5>For Approval</h5>
-                            <h1>1</h1>
-                        </div>
-                        <div className="col bg-light m-4 p-3">
-                            <h5>Approved</h5>
-                            <h1>1</h1>
-                        </div>
-                        <div className="col bg-light m-4 p-3">
-                            <h5>Completed</h5>
-                            <h1>1</h1>
-                        </div>
-                        <div className="col bg-light m-4 p-3">
-                            <h5>Cancelled</h5>
-                            <h1>1</h1>
-                        </div>
-                    </div>
-                    <div className="mt-3">
-                        <table className="table text-center table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th className="thead-custom" scope="col">
-                                        Date Received
-                                    </th>
-                                    <th className="thead-custom" scope="col">
-                                        Requested ID
-                                    </th>
-                                    <th className="thead-custom" scope="col">
-                                        Client Name
-                                    </th>
-                                    <th className="thead-custom" scope="col">
-                                        Instrument
-                                    </th>
-                                    <th className="thead-custom" scope="col">
-                                        Service Requested
-                                    </th>
-                                    <th className="thead-custom" scope="col">
-                                        Status
-                                    </th>
-                                    <th className="thead-custom" scope="col">
-                                        Priority
-                                    </th>
-                                    <th className="thead-custom" scope="col">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div id="content" className="flex-fill p-3">
+                <h1 className="d-inline">Technician Job Orders</h1>
+                <hr />
+                <table className="table text-center table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date Received</th>
+                            <th>Requested ID</th>
+                            <th>Client Name</th>
+                            <th>Instrument</th>
+                            <th>Service Requested</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {technicianJobOrders.map((order) => (
+                            <tr key={order.id}>
+                                <td>{order.date_received}</td>
+                                <td>{order.job_id}</td>
+                                <td>{/* Fetch Client Name using job_id */}</td>
+                                <td>{order.instrument || "-"}</td>
+                                <td>{order.service_requested || "-"}</td>
+                                <td>
+                                    <select defaultValue={order.status}>
+                                        <option value="approve">Approve</option>
+                                        <option value="completed">
+                                            Completed
+                                        </option>
+                                        <option value="cancel">Cancel</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select defaultValue={order.priority}>
+                                        <option value="Low">Low</option>
+                                        <option value="Mid">Mid</option>
+                                        <option value="High">High</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button className="gradient-blue-button">
+                                        Show Index
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
 }
 
-Dashboard.layout = (page) => <Navbar2>{page}</Navbar2>;
+TechnicianDashboard.layout = (page) => <Navbar2>{page}</Navbar2>;
 
-export default Dashboard;
+export default TechnicianDashboard;

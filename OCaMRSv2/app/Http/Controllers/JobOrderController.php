@@ -7,6 +7,7 @@ use App\Models\Equipment;
 use App\Http\Requests\StoreJobOrderRequest;
 use App\Http\Requests\UpdateJobOrderRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\TechnicianJobOrder;
 use Inertia\Inertia;
 use App\Models\IntUnit;
 use Illuminate\Http\Request;
@@ -125,5 +126,43 @@ class JobOrderController extends Controller
     public function destroy(JobOrder $jobOrder)
     {
         //
+    }
+
+    public function technicianIndex()
+    {
+        $user = Auth::user();
+    
+        // Check if the user is authenticated
+    
+    
+        // Fetch technician job orders using employeeID
+        $technicianJobOrders = TechnicianJobOrder::where('employeeID', $user->employeeID)->get();
+    
+        // Check if the orders were fetched successfully
+
+    
+        return Inertia::render('Technician/Dashboard', [
+            'technicianJobOrders' => $technicianJobOrders,
+        ]);
+    }
+    
+
+    public function storeTechnicianJobOrder(Request $request)
+    {
+        $request->validate([
+            'job_id' => 'required|exists:job_orders,job_id',
+            'status' => 'required|in:approve,completed,cancel',
+            'priority' => 'required|in:Low,Mid,High',
+        ]);
+
+        TechnicianJobOrder::create([
+            'job_id' => $request->job_id,
+            'user_id' => Auth::id(),
+            'date_received' => now(),
+            'status' => $request->status,
+            'priority' => $request->priority,
+        ]);
+
+        return redirect()->back();
     }
 }
