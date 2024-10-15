@@ -11,6 +11,7 @@ use App\Models\TechnicianJobOrder;
 use Inertia\Inertia;
 use App\Models\IntUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class JobOrderController extends Controller
 {
@@ -130,18 +131,18 @@ class JobOrderController extends Controller
 
     public function technicianIndex()
     {
-        $user = Auth::user();
-    
-        // Check if the user is authenticated
-    
-    
-        // Fetch technician job orders using employeeID
-        $technicianJobOrders = TechnicianJobOrder::where('employeeID', $user->employeeID)->get();
-    
-        // Check if the orders were fetched successfully
+        // Fetch all technician job orders from the table
+        $technicianJobOrders = TechnicianJobOrder::all(); // Fetch all records
 
-    
-        return Inertia::render('Technician/Dashboard', [
+        // Debugging: Check if records are fetched
+        if ($technicianJobOrders->isEmpty()) {
+            Log::info('No technician job orders found.');
+        } else {
+            Log::info('Fetched technician job orders: ', $technicianJobOrders->toArray());
+        }
+
+        // Pass the fetched records to the dashboard view
+        return Inertia::render('Tech/Dashboard', [
             'technicianJobOrders' => $technicianJobOrders,
         ]);
     }
