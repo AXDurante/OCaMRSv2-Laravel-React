@@ -15,9 +15,8 @@ class IntUnit extends Model
         'instrument',
         'qty',
         'model',
-        'serial_num',
+        'instrument_num',
         'manufacturer',
-        'property_num',
         'jobOrderID',
     ];
 

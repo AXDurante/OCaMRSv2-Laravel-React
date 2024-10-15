@@ -15,10 +15,9 @@ return new class extends Migration {
             $table->text('instrument');
             $table->unsignedBigInteger('qty');
             $table->text('model');
-            $table->string('serial_num');
+            $table->string('instrument_num');
             $table->text('manufacturer');
-            $table->string('property_num');
-            $table->unsignedBigInteger('jobOrderID');
+            $table->text('jobOrderID');
             // $table->timestamp('date_request')->nullable();
             // $table->timestamp('date_due')->nullable();
         });

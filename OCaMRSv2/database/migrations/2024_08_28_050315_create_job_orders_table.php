@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->text('pos');
             $table->text('status');
             $table->string('employeeID');
+            $table->text('remarks');
             $table->timestamp('date_request')->nullable();
             $table->timestamp('date_due')->nullable();
         });

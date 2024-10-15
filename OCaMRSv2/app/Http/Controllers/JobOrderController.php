@@ -65,12 +65,13 @@ class JobOrderController extends Controller
     {
         $jobOrderFields = $request->validate([
             'service_type' => ['required'],
-            'trans_type' => ['required'],
+            'trans_type' => ['nullable', 'string'],
             'dept_name' => ['required'],
             'lab' => ['required'],
             'lab_loc' => ['required'],
             'pos' => ['required'],
             'status' => ['required'],
+            'remarks' => ['nullable', 'string'],
         ]);
 
         // Set employeeID from authenticated user
@@ -81,11 +82,10 @@ class JobOrderController extends Controller
         $intUnitFields = $request->validate([
             'instruments' => ['required', 'array'],
             'instruments.*.instrument' => ['required'],
-            'instruments.*.qty' => ['required'],
+            'instruments.*.qty' => ['required', 'integer', 'min:1'],
             'instruments.*.model' => ['required'],
-            'instruments.*.serial_num' => ['required'],
+            'instruments.*.instrument_num' => ['required'],
             'instruments.*.manufacturer' => ['required'],
-            'instruments.*.property_num' => ['required'],
         ]);
 
         foreach ($intUnitFields['instruments'] as $instrument) {
@@ -100,13 +100,13 @@ class JobOrderController extends Controller
      * Display the specified resource.
      */
     public function show(JobOrder $jobOrder)
-{
-    // Eager load the int_units relationship
-    $jobOrder->load('int_units');
-    return inertia('JobOrder/ViewOrder', [
-        'jobOrder' => $jobOrder
-    ]);
-}
+    {
+        // Eager load the int_units relationship
+        $jobOrder->load('int_units');
+        return inertia('JobOrder/ViewOrder', [
+            'jobOrder' => $jobOrder
+        ]);
+    }
 
     /**
      * Show the form for editing the specified resource.
