@@ -160,14 +160,14 @@ export default function AdminNavBar({ children }) {
                                 </Link>
                             </li>
                             <li className="mb-2">
-                                <a
+                                <Link
                                     className="a-nav-link"
-                                    href="#"
+                                    href="/admin/view-instrument"
                                     onClick={(e) => e.stopPropagation()}
                                 >
                                     <i className="bi bi-list me-2"></i>
                                     {!isCollapsed && "Instrument List"}
-                                </a>
+                                </Link>
                             </li>
                             <li className="mb-2">
                                 <a
