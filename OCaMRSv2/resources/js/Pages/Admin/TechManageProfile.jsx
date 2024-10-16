@@ -47,7 +47,7 @@ function Home({ theUser }) {
 
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className="flex-fill p-3">
                 <div className="container">
                     {/* Aesthetic header */}
                     <div className="card shadow-lg rounded-lg overflow-hidden mb-4 bg-primary text-white">
