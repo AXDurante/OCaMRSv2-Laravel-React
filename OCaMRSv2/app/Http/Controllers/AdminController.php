@@ -77,4 +77,53 @@ class AdminController extends Controller
         ]);
     }
 
+    public function editJobOrder($id)
+    {
+        $jobOrder = JobOrder::with('int_units')->findOrFail($id);
+        $equipment = Equipment::all();
+        $college = $jobOrder->dept_name;
+        $labLoc = $jobOrder->lab_loc;
+        $employeeID = $jobOrder->employeeID;
+
+        return Inertia::render('Admin/EditOrder', [
+            'jobOrder' => $jobOrder,
+            'equipment' => $equipment,
+            'college' => $college,
+            'labLoc' => $labLoc,
+            'employeeID' => $employeeID,
+        ]);
+    }
+
+    public function updateJobOrder(Request $request, $id)
+    {
+        $jobOrder = JobOrder::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'service_type' => 'required',
+            'trans_type' => 'required',
+            'remarks' => 'nullable',
+            'status' => 'required|in:Pending,Processing,Cancelled',
+            'instruments' => 'required|array',
+            'instruments.*.instrument' => 'required',
+            'instruments.*.qty' => 'required|integer',
+            'instruments.*.model' => 'nullable',
+            'instruments.*.instrument_num' => 'required',
+            'instruments.*.manufacturer' => 'nullable',
+        ]);
+
+        $jobOrder->update([
+            'service_type' => $validatedData['service_type'],
+            'trans_type' => $validatedData['trans_type'],
+            'remarks' => $validatedData['remarks'],
+            'status' => $validatedData['status'],
+        ]);
+
+        // Update or create instrument units
+        $jobOrder->int_units()->delete(); // Remove existing units
+        foreach ($validatedData['instruments'] as $instrumentData) {
+            $jobOrder->int_units()->create($instrumentData);
+        }
+
+        return redirect()->route('admin.showJobOrder', $jobOrder->job_id);
+    }
 }

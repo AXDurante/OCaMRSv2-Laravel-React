@@ -132,23 +132,15 @@ function ViewOrder({ jobOrder }) {
 
                                     <div className="col-12 col-md-4 d-flex flex-column p-3">
                                         <h6 className="w-100 fw-bold text-start">
-                                            Instrument Serial No
+                                            Serial Number/Property Number
                                         </h6>
                                         <input
                                             type="number"
                                             className="w-100 mb-2 rounded"
-                                            value={instrument.serial_num}
+                                            value={instrument.instrument_num}
                                             readOnly
                                         />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Property
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                            value={instrument.property_num}
-                                            readOnly
-                                        />
+                                        
                                     </div>
                                 </div>
                             </div>

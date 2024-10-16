@@ -76,7 +76,7 @@ function TrackOrder({ jobOrder, firstName, lastName, email }) {
                                                 </h5>
 
                                                 <h6 className="card-subtitle mt-3">
-                                                    Status
+                                                    Status: {jobOrder.status}
                                                 </h6>
                                             </div>
                                         </div>

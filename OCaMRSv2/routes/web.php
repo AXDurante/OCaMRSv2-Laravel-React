@@ -60,7 +60,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/manage-profile', [AdminController::class, 'manageProfile']);
     Route::get('/admin/view-instrument', [AdminController::class, 'showViewInstrument']);
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-    Route::get('/admin/showJobOrder/{id}', [AdminController::class, 'showJobOrder']);
+    Route::get('/admin/showJobOrder/{id}', [AdminController::class, 'showJobOrder'])->name('admin.showJobOrder');
+    Route::get('/admin/showJobOrder/{id}/edit', [AdminController::class, 'editJobOrder']);
+    Route::put('/admin/showJobOrder/{id}', [AdminController::class, 'updateJobOrder'])->name('admin.updateJobOrder');
+    ;
 
     // Instrumentation Account routes
 

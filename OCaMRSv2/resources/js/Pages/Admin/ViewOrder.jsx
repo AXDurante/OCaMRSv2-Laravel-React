@@ -1,5 +1,6 @@
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
+import { Link } from "@inertiajs/react";
 
 function ViewOrder({ jobOrder }) {
     console.log("Job Order Data:", jobOrder); // Debugging: Check the jobOrder structure
@@ -16,19 +17,7 @@ function ViewOrder({ jobOrder }) {
                         {" "}
                         Job Order Request Details
                     </h1>
-                    <h4 className="mt-2"> Status </h4>
-                    <select className="w-25">
-                        <option defaultChecked>
-                            Pending
-                        </option>
-                        <option>
-                            Processing
-                        </option>
-                        <option>
-                            Cancelled
-                        </option>
-                    </select>
-                    <button className="ms-5 btn btn-success"> Save </button>
+                    <h4> Status: <b> {jobOrder.status}  </b></h4>
                     <hr />
                 </div>
                 <div className="mt-3">
@@ -145,22 +134,13 @@ function ViewOrder({ jobOrder }) {
                                     </div>
 
                                     <div className="col-12 col-md-4 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Instrument Serial No
+                                    <h6 className="w-100 fw-bold text-start">
+                                            Serial Number/Property Number
                                         </h6>
                                         <input
                                             type="number"
                                             className="w-100 mb-2 rounded"
-                                            value={instrument.serial_num}
-                                            readOnly
-                                        />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Property
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                            value={instrument.property_num}
+                                            value={instrument.instrument_num}
                                             readOnly
                                         />
                                     </div>
@@ -171,7 +151,13 @@ function ViewOrder({ jobOrder }) {
                         <p>No instruments available.</p>
                     )}
                 </div>
-
+                <Link
+                    href={`/admin/showJobOrder/${jobOrder.job_id}/edit`}
+                    className="btn btn-success w-100"
+                >
+                    Edit
+                </Link>
+                
                 {/* Return Button */}
                 <a
                     href="/admin"
