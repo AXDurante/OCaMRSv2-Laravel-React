@@ -184,7 +184,7 @@ export default function NavBar({
                             onClick={(e) => e.stopPropagation()}
                         >
                             <Link
-                                href={route("logout")}
+                                href={route("technician.logout")}
                                 method="post"
                                 as="button"
                                 className="logout-blue-btn"

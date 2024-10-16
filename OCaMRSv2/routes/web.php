@@ -26,12 +26,12 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-})->name('loginHome');
+})->name('loginHome')->middleware('technician.auth');
 
 Route::prefix('technician')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Tech/Login');
-    })->name('technician.home');
+    })->name('technician.home')->middleware('technician.auth');
     Route::get('/Dashboard', function () {
         return Inertia::render('Tech/Dashboard');
     })->name('technician.Dashboard');
