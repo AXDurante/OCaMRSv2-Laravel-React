@@ -86,7 +86,7 @@ function TrackOrder({ jobOrder, firstName, lastName, email }) {
                                                     Date Created:{" "}
                                                     {jobOrder.date_request}
                                                 </p>
-                                                <p>Due Date: </p>
+                                                <p>Due Date: {jobOrder.date_due} </p>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <Link href={`feedback`}>

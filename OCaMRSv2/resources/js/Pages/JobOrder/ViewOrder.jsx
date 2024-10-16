@@ -8,13 +8,14 @@ function ViewOrder({ jobOrder }) {
     console.log(instruments);
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            <div id="content" className="flex-fill p-3">
                 <div>
                     <h1 className="d-inline">Track Request | </h1>
                     <h1 className="d-inline fw-light">
                         {" "}
                         Job Order Request Details
                     </h1>
+                    <h4> Status: {jobOrder.status} </h4>
                     <hr />
                 </div>
                 <div className="mt-3">
