@@ -40,9 +40,10 @@ Route::middleware('auth:technicians')->group(function () {
     Route::put('technician/password', [PasswordController::class, 'update'])->name('technician.password.update');
     Route::post('technician/logout', [AuthenticatedSessionController::class, 'destroy'])->name('technician.logout');
 
-    Route::get('technician/dashboard', function () {
-       return Inertia::render('Tech/Dashboard');
-    })->name('technician.dashboard');
+    Route::get('technician/dashboard', [TechnicianController::class, 'index'])->name('technician.dashboard');
+    Route::get('technician/showJobOrder/{id}', [TechnicianController::class, 'showJobOrder'])->name('technician.showJobOrder');
+    Route::get('technician/showJobOrder/{id}/edit', [TechnicianController::class, 'editJobOrder']);
+    Route::put('technician/showJobOrder/{id}', [TechnicianController::class, 'updateJobOrder'])->name('technician.updateJobOrder');
 
     Route::get('technician/TSR', function () {
         return Inertia::render('Tech/TSR');

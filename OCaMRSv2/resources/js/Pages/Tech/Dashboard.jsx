@@ -1,7 +1,9 @@
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar2 from "@/Layouts/Navbar2";
+import { Link } from "@inertiajs/react";
 
-function Dashboard() {
+function Dashboard({jobOrder}) {
+    console.log(jobOrder);
     return (
         <div className="d-flex">
             <div id="content" className=" flex-fill p-3">
@@ -37,94 +39,74 @@ function Dashboard() {
                         </div>
                     </div>
                     <div className="mt-3">
-                        <table className="table text-center table-bordered table-striped">
+                        <table class="table text-center table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th className="thead-custom" scope="col">
+                                    <th class="thead-custom" scope="col">
                                         Date Received
                                     </th>
-                                    <th className="thead-custom" scope="col">
-                                        Requested ID
+                                    <th class="thead-custom" scope="col">
+                                        Job ID
                                     </th>
-                                    <th className="thead-custom" scope="col">
+                                    <th class="thead-custom" scope="col">
                                         Client Name
                                     </th>
-                                    <th className="thead-custom" scope="col">
-                                        Instrument
+                                    <th class="thead-custom" scope="col">
+                                        Email
                                     </th>
-                                    <th className="thead-custom" scope="col">
+                                    {/* <th class="thead-custom" scope="col">
+                                        Instrument
+                                    </th> */}
+                                    <th class="thead-custom" scope="col">
                                         Service Requested
                                     </th>
-                                    <th className="thead-custom" scope="col">
+                                    <th class="thead-custom" scope="col">
                                         Status
                                     </th>
-                                    <th className="thead-custom" scope="col">
+                                    {/* To Ask 
+                                    <th class="thead-custom" scope="col">
                                         Priority
-                                    </th>
-                                    <th className="thead-custom" scope="col">
+                                    </th> */}
+                                    <th class="thead-custom" scope="col">
                                         Action
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
+                            {jobOrder.data.map((order, index) => (
+                                    <tr key={index} className="text-center align-middle">
+                                        <td scope="row">{new Date(order.date_request).toLocaleDateString()}</td> {/* Date Received */}
+                                        <td>{order.job_id}</td> {/* Job ID */}
+                                        <td>{order.user.firstName} {order.user.lastName} </td>
+                                        <td>{order.user.email} </td>
+                                        <td>{order.service_type}</td> {/* Service Request */}
+                                        <td>{order.status}</td> {/* Status */}
+                                        <td>
+                                            <Link
+                                                    href={`/technician/showJobOrder/${order.job_id}`}
+                                                >
+                                                    <button
+                                                        className="gradient-blue-button"
+                                                        id="btnSee"
+                                                    >
+                                                        See Details
+                                                    </button>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
+                        <div className="text-center">
+                            {jobOrder.links.map((link) => (
+                                <Link 
+                                    className={`px-3 ${ link.active ? "text-secondary" : " text-dark "}`}
+                                    key={link.label}
+                                    href={link.url}
+                                    dangerouslySetInnerHTML={{ __html: link.label }}    
+                                />
+                                ))}
+                        </div>
                     </div>
                 </div>
             </div>
