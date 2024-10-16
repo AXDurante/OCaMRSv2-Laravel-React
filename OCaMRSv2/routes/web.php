@@ -32,9 +32,11 @@ Route::prefix('technician')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Tech/Login');
     })->name('technician.home')->middleware('technician.auth');
+    /*
     Route::get('/Dashboard', function () {
         return Inertia::render('Tech/Dashboard');
     })->name('technician.Dashboard');
+    */
     Route::get('/TSR', function () {
         return Inertia::render('Tech/TSR');
     })->name('technician.TSR');

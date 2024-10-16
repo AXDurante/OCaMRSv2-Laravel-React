@@ -41,8 +41,15 @@ Route::middleware('auth:technicians')->group(function () {
     Route::post('technician/logout', [AuthenticatedSessionController::class, 'destroy'])->name('technician.logout');
 
     Route::get('technician/dashboard', function () {
-        return Inertia::render('Tech/Home');
+       return Inertia::render('Tech/Dashboard');
     })->name('technician.dashboard');
+
+    Route::get('technician/TSR', function () {
+        return Inertia::render('Tech/TSR');
+    })->name('technician.TSR');
+    Route::get('technician/COC', function () {
+        return Inertia::render('Tech/COC');
+    })->name('technician.COC');
 
     Route::get('technician/ManageProfile', [TechnicianController::class, 'manageProfile'])->name('technician.manageProfile');
     Route::post('technician/update-profile', [TechnicianController::class, 'updateProfile'])->name('technician.updateProfile');

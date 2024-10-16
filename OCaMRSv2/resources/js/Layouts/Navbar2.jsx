@@ -115,22 +115,12 @@ export default function NavBar({
                     )}
                 </div>
                 <ul className="nav flex-column pt-4 theNav">
+                   
                     <li
                         className="nav-item"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Link href={route("technician.Dashboard")}>
-                            <a className="nav-link nav-link-blue">
-                                <i className="bi bi-file-earmark-text me-2"></i>
-                                {!isCollapsed && "Dashboard"}
-                            </a>
-                        </Link>
-                    </li>
-                    <li
-                        className="nav-item"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <Link href="/jobOrder">
+                        <Link href={route("technician.dashboard")}>
                             <a className="nav-link nav-link-blue">
                                 <i className="bi bi-search me-2"></i>
                                 {!isCollapsed && "Track Request"}
@@ -142,7 +132,7 @@ export default function NavBar({
                         onClick={(e) => e.stopPropagation()}
                     >
                         <Link
-                            href={route("manageProfile")}
+                           href={route('technician.manageProfile')}
                             className="nav-link nav-link-blue"
                         >
                             <i className="bi bi-person-fill me-2"></i>
