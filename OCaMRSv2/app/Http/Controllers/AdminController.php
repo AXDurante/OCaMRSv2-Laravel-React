@@ -41,11 +41,12 @@ class AdminController extends Controller
 
     public function index()
     {
-        $jobOrder = JobOrder::paginate(10);
+        $jobOrder = JobOrder::with('user')->paginate(10);
         return Inertia::render('Admin/Manage Job Request', [
             'jobOrder' => $jobOrder,
         ]);
     }
+
 
     public function accountHandler()
     {
@@ -66,6 +67,14 @@ class AdminController extends Controller
         return Inertia::render("Admin/ViewInstrument", [
             "equipment" => $equipment,
         ]);
-   
     }
+    public function showJobOrder($id)
+    {
+        $jobOrder = JobOrder::with('int_units')->findOrFail($id); // Adjust as necessary based on your relationships
+
+        return Inertia::render('Admin/ViewOrder', [
+            'jobOrder' => $jobOrder,
+        ]);
+    }
+
 }

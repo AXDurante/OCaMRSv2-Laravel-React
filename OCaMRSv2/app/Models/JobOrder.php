@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class JobOrder extends Model
 {
@@ -47,5 +48,10 @@ class JobOrder extends Model
     public function int_units()
     {
         return $this->hasMany(IntUnit::class, 'jobOrderID', 'job_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'employeeID', 'employeeID');
     }
 }

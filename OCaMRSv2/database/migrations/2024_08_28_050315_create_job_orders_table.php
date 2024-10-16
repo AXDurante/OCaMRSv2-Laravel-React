@@ -10,6 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        Schema::dropIfExists('job_orders');
         Schema::create('job_orders', function (Blueprint $table) {
             $table->id('job_id');
             $table->text('service_type');

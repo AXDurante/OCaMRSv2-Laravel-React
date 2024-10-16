@@ -47,7 +47,10 @@ function Home({ jobOrder }) {
                                         Job ID
                                     </th>
                                     <th class="thead-custom" scope="col">
-                                        Client ID
+                                        Client Name
+                                    </th>
+                                    <th class="thead-custom" scope="col">
+                                        Email
                                     </th>
                                     {/* <th class="thead-custom" scope="col">
                                         Instrument
@@ -68,62 +71,28 @@ function Home({ jobOrder }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr className="text-center align-middle">
-                                    <td scope="row">8/30/2024</td>
-                                    <td>1243314534</td>
-                                    <td>John Doe</td>
-                                    <td>Microscope</td>
-                                    <td>Recallibration</td>
-                                    <td>Pending</td>
-                                    <td>Main</td>
-                                    <td>
-                                        <button className="gradient-blue-button">
-                                            See Details
-                                        </button>
-                                    </td>
-                                </tr>
+                            {jobOrder.data.map((order, index) => (
+                                    <tr key={index} className="text-center align-middle">
+                                        <td scope="row">{new Date(order.date_request).toLocaleDateString()}</td> {/* Date Received */}
+                                        <td>{order.job_id}</td> {/* Job ID */}
+                                        <td>{order.user.firstName} {order.user.lastName} </td>
+                                        <td>{order.user.email} </td>
+                                        <td>{order.service_type}</td> {/* Service Request */}
+                                        <td>{order.status}</td> {/* Status */}
+                                        <td>
+                                            <Link
+                                                    href={`/admin/showJobOrder/${order.job_id}`}
+                                                >
+                                                    <button
+                                                        className="btn btn-primary"
+                                                        id="btnSee"
+                                                    >
+                                                        See Details
+                                                    </button>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                         <div className="text-center">
