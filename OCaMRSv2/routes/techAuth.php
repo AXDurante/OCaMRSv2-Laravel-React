@@ -45,9 +45,7 @@ Route::middleware('auth:technicians')->group(function () {
     Route::get('technician/showJobOrder/{id}/edit', [TechnicianController::class, 'editJobOrder']);
     Route::put('technician/showJobOrder/{id}', [TechnicianController::class, 'updateJobOrder'])->name('technician.updateJobOrder');
 
-    Route::get('technician/TSR', function () {
-        return Inertia::render('Tech/TSR');
-    })->name('technician.TSR');
+    Route::get('technician/TSR/{id}', [TechnicianController::class, 'createTSR'])->name('technician.TSR');
     Route::get('technician/COC', function () {
         return Inertia::render('Tech/COC');
     })->name('technician.COC');

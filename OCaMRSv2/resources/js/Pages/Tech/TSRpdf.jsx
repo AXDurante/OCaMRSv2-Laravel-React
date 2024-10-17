@@ -60,6 +60,9 @@ const styles = StyleSheet.create({
     textStyle: {
         fontSize: 9,
     },
+    valueText: {
+        fontSize: 9,
+    },
     underline: {
         borderBottomWidth: 1,
         flex: 1,
@@ -81,8 +84,9 @@ const styles = StyleSheet.create({
     },
     underlineFull: {
         borderBottomWidth: 1,
-        flex: 1,
-        marginLeft: 5,
+        borderBottomColor: 'black',
+        flex: 1, // This makes the underline stretch fully
+        marginLeft: 5, // Adjust the space between the text and underline
     },
     boxPR: {
         border: 1.8,
@@ -113,7 +117,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const TSRpdf = () => {
+function TSRpdf ({jobOrder}) {
     return (
         <Document>
             <Page size={[8.5 * 72, 13 * 72]}>
@@ -186,27 +190,33 @@ const TSRpdf = () => {
                 </Text>
                 {/* Form Fields */}
                 <View style={{ margin: "0px 60px 0px 60px", marginTop: 20 }}>
-                    {/* Row 1 */}
+                    {/* Row 1 - LABORATORY and Date */}
                     <View style={styles.container}>
-                        <View style={styles.leftSection}>
-                            <Text style={styles.textStyle}>LABORATORY:</Text>
-                            <Text style={styles.underlineFull} />
+                        <View style={{ flexDirection: 'row', width: '65%' }}>
+                            <Text style={styles.textStyle}>LABORATORY: </Text>
+                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center' }}>
+                                <Text style={styles.valueText}>{jobOrder.lab}</Text>
+                            </View>
                         </View>
-                        <View style={styles.rightSection}>
+                        <View style={{ flexDirection: 'row', width: '25%' }}>
                             <Text style={styles.textStyle}>Date:</Text>
-                            <Text style={styles.underlineFull} />
+                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black' }} />
                         </View>
                     </View>
 
-                    {/* Row 2 */}
+                    {/* Row 2 - LAB LOCATION and Tel No */}
                     <View style={styles.container}>
-                        <View style={styles.leftSection}>
-                            <Text style={styles.textStyle}>LAB LOCATION:</Text>
-                            <Text style={styles.underlineFull} />
+                        <View style={{ flexDirection: 'row', width: '65%' }}>
+                            <Text style={styles.textStyle}>LAB LOCATION: </Text>
+                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center' }}>
+                                <Text style={styles.valueText}>{jobOrder.lab_loc}</Text>
+                            </View>
                         </View>
-                        <View style={styles.rightSection}>
+                        <View style={{ flexDirection: 'row', width: '25%' }}>
                             <Text style={styles.textStyle}>Tel No:</Text>
-                            <Text style={styles.underlineFull} />
+                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center' }}>
+                                <Text style={styles.valueText}>{jobOrder.user.phoneNumber}</Text>
+                            </View>
                         </View>
                     </View>
 

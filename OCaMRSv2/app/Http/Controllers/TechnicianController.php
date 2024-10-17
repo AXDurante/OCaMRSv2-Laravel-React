@@ -83,6 +83,14 @@ class TechnicianController extends Controller
         return redirect()->route('technician.showJobOrder', $jobOrder->job_id);
     }
 
+    public function createTSR($id)
+    {
+        $jobOrder = JobOrder::with(['int_units', 'user'])->findOrFail($id);
+        return Inertia::render('Tech/TSR', [
+            'jobOrder' => $jobOrder
+        ]);
+    }
+
     public function manageProfile()
     {
         $user = Auth::user();

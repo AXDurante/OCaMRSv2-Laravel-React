@@ -5,7 +5,7 @@ import TSRpdf from "./TSRpdf";
 import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
 import Modal from "react-modal"; // Import Modal
 
-function TSR() {
+function TSR({jobOrder}) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
 
     const handlePreviewClick = () => {
@@ -16,6 +16,7 @@ function TSR() {
         setShowPreview(false); // Close the modal
     };
 
+    console.log(jobOrder)
     return (
         <div className="d-flex">
             {/* Modal for PDF Preview */}
@@ -28,7 +29,7 @@ function TSR() {
                         border: "none", // Optional: remove border for a cleaner look
                     }}
                 >
-                    <TSRpdf />
+                    <TSRpdf jobOrder={jobOrder} />
                 </PDFViewer>
                 <button onClick={closeModal}>Close</button> {/* Close button */}
             </Modal>
@@ -84,7 +85,7 @@ function TSR() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                
                                             />
                                         </div>
                                     </div>
@@ -98,7 +99,7 @@ function TSR() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                value={jobOrder.date_request}
                                             />
                                         </div>
                                     </div>
@@ -113,7 +114,7 @@ function TSR() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                value={jobOrder.user.phoneNumber}
                                             />
                                         </div>
                                     </div>
@@ -128,7 +129,7 @@ function TSR() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                
                                             />
                                         </div>
                                     </div>
@@ -143,7 +144,7 @@ function TSR() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                
                                             />
                                         </div>
                                     </div>
@@ -158,7 +159,7 @@ function TSR() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                
                                             />
                                         </div>
                                     </div>
@@ -173,7 +174,7 @@ function TSR() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                
                                             />
                                         </div>
                                     </div>
@@ -202,7 +203,7 @@ function TSR() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value=""
+                                                
                                             />
                                         </div>
                                     </div>
