@@ -37,12 +37,12 @@ Route::prefix('technician')->group(function () {
         return Inertia::render('Tech/Dashboard');
     })->name('technician.Dashboard');
     */
-    Route::get('/TSR', function () {
-        return Inertia::render('Tech/TSR');
-    })->name('technician.TSR');
-    Route::get('/COC', function () {
-        return Inertia::render('Tech/COC');
-    })->name('technician.COC');
+    // Route::get('/TSR', function () {
+    //     return Inertia::render('Tech/TSR');
+    // })->name('technician.TSR');
+    // Route::get('/COC', function () {
+    //     return Inertia::render('Tech/COC');
+    // })->name('technician.COC');
 });
 
 // Route::get('/manage profile', function () {
