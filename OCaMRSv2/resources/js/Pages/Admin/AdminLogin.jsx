@@ -29,11 +29,11 @@ export default function AdminLogin() {
             <div class="split2 right2 bg-black"> </div>
             <div class="split3 right ">
                 <div class="centered2">
-                    <h1 className="text-2xl font-bold mb-4 text-center text-white">
-                        Admin Login
-                    </h1>
                     <form onSubmit={submit}>
                         <div className="mb-4">
+                            <h1 className="text-2xl font-bold mb-4 text-center text-white">
+                                Admin Login
+                            </h1>
                             <InputLabel
                                 htmlFor="id_number"
                                 className="block mb-2 text-sm font-medium text-white"
