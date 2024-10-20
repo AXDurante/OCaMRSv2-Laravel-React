@@ -30,7 +30,7 @@ export default function AdminLogin() {
             </div>
 
             <div className="split2 right2 bg-black"> </div>
-            <div className="split3 right ">
+            <div className="split3-ad right ">
                 <div className="centered2">
                     <div className="container p-5">
                         <form onSubmit={submit}>
