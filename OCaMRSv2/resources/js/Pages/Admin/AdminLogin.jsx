@@ -3,6 +3,7 @@ import { useForm } from "@inertiajs/react";
 import LoginButton from "@/Components/LoginButton";
 import TextInput2 from "@/Components/TextInput2";
 import InputLabel from "@/Components/InputLabel";
+import { FaUser } from "react-icons/fa";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function AdminLogin() {
@@ -34,10 +35,15 @@ export default function AdminLogin() {
                 <div className="centered2">
                     <div className="container p-5">
                         <form onSubmit={submit}>
-                            <div className="mb-4">
-                                <h1 className="text-2xl font-bold mb-4 text-center text-white">
+                            <div className="flex items-center justify-center mb-4">
+                                {/* Admin Icon */}
+
+                                <h1 className="text-2xl font-bold text-center text-white">
+                                    <FaUser className="fs-4 pb-1 text-white" />{" "}
                                     Admin Login
                                 </h1>
+                            </div>
+                            <div className="mb-4">
                                 <InputLabel
                                     htmlFor="id_number"
                                     className="block mb-2 text-sm font-medium text-white"
