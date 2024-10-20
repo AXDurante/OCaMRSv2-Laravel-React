@@ -76,6 +76,7 @@ export default function Login({ status, canResetPassword }) {
                                 onChange={(e) =>
                                     setData("employeeID", e.target.value)
                                 }
+                                className="form-control w-100"
                             />
 
                             <InputError
@@ -130,7 +131,7 @@ export default function Login({ status, canResetPassword }) {
                             <div className="">
                                 <Link
                                     href={route("password.request")}
-                                    className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    className="link-login underline text text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
                                     Forgot your password?
                                 </Link>
@@ -139,14 +140,14 @@ export default function Login({ status, canResetPassword }) {
                             <div className="">
                                 <Link
                                     href={route("register")}
-                                    className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                    className="link-login rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                 >
                                     Don't have an account? Register
                                 </Link>
                             </div>
                         </div>
 
-                        <div className="pt-3">
+                        <div className="login-btn-padding">
                             <LoginButton classname="w-100">Log in</LoginButton>
                         </div>
                     </form>

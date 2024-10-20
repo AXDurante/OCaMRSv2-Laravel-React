@@ -283,7 +283,6 @@ input {
     z-index: 2 !important;
     top: 0;
     overflow-x: hidden;
-
     border-radius: 0.6vw;
 }
 
@@ -456,7 +455,24 @@ input {
     width: 100%; /* Ensure button takes full width of its container */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
+@media (max-width: 768px) {
+    .theButton {
+        height: 50px; /* Set a fixed height for small screens */
+        font-size: 16px; /* Adjust font size for readability */
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
 
+/* Media query for very small screens (like small smartphones) */
+@media (max-width: 480px) {
+    .theButton {
+        height: 40px; /* Smaller height for very small screens */
+        font-size: 14px; /* Reduce font size for smaller buttons */
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}
 .theButton::before {
     content: "";
     position: absolute;
@@ -536,12 +552,37 @@ input {
 }
 
 .centered2 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+@media (max-width: 768px) {
+    .centered2 {
+        padding: 0 30px;
+    }
 }
 
+@media (max-width: 480px) {
+    .centered2 {
+        padding: 0 30px;
+    }
+}
+.link-login {
+    font-size: 1rem; /* Default size for larger screens */
+}
+
+@media (max-width: 768px) {
+    .link-login {
+        font-size: 0.85rem; /* Slightly smaller font on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .link-login {
+        font-size: 0.6rem; /* Even smaller font for mobile devices */
+    }
+}
 input[type="checkbox"] {
     width: auto;
     height: auto;
@@ -561,16 +602,37 @@ input[type="checkbox"] {
 
 .titleLabel {
     font-weight: 600;
-    font-size: 1.5vw;
+    font-size: 1.5vw; /* Font size based on viewport width for larger screens */
+}
+
+/* Media query for tablets and smaller screens */
+@media (max-width: 768px) {
+    .titleLabel {
+        font-size: 18px; /* Fixed size for tablets */
+    }
+}
+
+/* Media query for mobile devices */
+@media (max-width: 480px) {
+    .titleLabel {
+        font-size: 16px; /* Fixed size for mobile phones */
+    }
+}
+.login-btn-padding {
+    padding-top: 1rem; /* Default padding (equivalent to pt-3) */
+}
+
+@media (max-width: 768px) {
+    .login-btn-padding {
+        padding-top: 0.1rem; /* Smaller padding (equivalent to pt-1) on small screens */
+    }
 }
 
 .inputText3 {
     background-color: #f2f2f2 !important;
     border: 1px solid #fff !important;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
-    height: 3vw !important;
-    padding: 1vw !important;
-    font-size: 1.5vw !important;
+
     color: #7a7a7a !important;
 }
 
@@ -1442,4 +1504,19 @@ input[type="checkbox"] {
     color: #fff;
     background-color: #6c757d;
     border-color: #6c757d;
+}
+
+/* Media query for medium and smaller screens */
+@media (max-width: 768px) {
+    .split {
+        display: none; /* Hide split left */
+    }
+
+    .split3 {
+        width: 100%; /* Make split3 take full width */
+    }
+
+    .split2 {
+        display: none; /* Optionally hide split2 if not needed */
+    }
 }
