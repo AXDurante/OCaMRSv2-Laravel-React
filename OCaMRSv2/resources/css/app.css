@@ -1519,4 +1519,9 @@ input[type="checkbox"] {
     .split2 {
         display: none; /* Optionally hide split2 if not needed */
     }
+    h1,
+    .text-sm,
+    .text-white {
+        color: black !important; /* Change color to black */
+    }
 }
