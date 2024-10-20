@@ -88,16 +88,20 @@ const styles = StyleSheet.create({
         flex: 1, // This makes the underline stretch fully
         marginLeft: 5, // Adjust the space between the text and underline
     },
+
     boxPR: {
         border: 1.8,
         width: "100%",
         height: "70",
+        padding: "5",
     },
+
     boxDO: {
         border: 1.8,
         width: "100%",
         height: "90",
     },
+
     boxAT: {
         border: 1.8,
         width: "100%",
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function TSRpdf ({jobOrder}) {
+function TSRpdf ({jobOrder, reportDetails}) {
     return (
         <Document>
             <Page size={[8.5 * 72, 13 * 72]}>
@@ -223,12 +227,16 @@ function TSRpdf ({jobOrder}) {
                     {/* Row 3 */}
                     <View style={styles.container}>
                         <View style={styles.leftSection}>
-                            <Text style={styles.textStyle}>INSTRUMENT:</Text>
-                            <Text style={styles.underlineFull} />
+                            <Text style={styles.textStyle}>INSTRUMENT: </Text>
+                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center' }}>
+                                <Text style={styles.valueText}>{reportDetails.instrument}</Text>
+                            </View>
                         </View>
                         <View style={styles.rightSection}>
                             <Text style={styles.textStyle}>MODEL:</Text>
-                            <Text style={styles.underlineFull} />
+                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center' }}>
+                                <Text style={styles.valueText}>{reportDetails.model}</Text>
+                            </View>
                         </View>
                     </View>
 
@@ -236,7 +244,9 @@ function TSRpdf ({jobOrder}) {
                     <View style={styles.container}>
                         <View style={styles.leftSection}>
                             <Text style={styles.textStyle}>SERIAL NO:</Text>
-                            <Text style={styles.underlineFull} />
+                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center' }}>
+                                <Text style={styles.valueText}>{reportDetails.serialNo}</Text>
+                            </View>
                         </View>
                         <View style={styles.rightSection}>
                             <Text style={styles.textStyle}></Text>
@@ -258,8 +268,12 @@ function TSRpdf ({jobOrder}) {
                     >
                         PROBLEM REPORTED
                     </Text>
-                    <View style={styles.boxPR}></View>
-
+                    <View style={styles.boxPR}>
+                        <Text style={{ flex: 1, padding: 5, fontSize: 9}}>
+                            {reportDetails.problemReported}
+                        </Text>
+                    </View>
+                            
                     <Text
                         style={[
                             styles.alignLeft,
@@ -275,7 +289,8 @@ function TSRpdf ({jobOrder}) {
                     >
                         DIAGNOSIS/OBSERVATION
                     </Text>
-                    <View style={styles.boxDO}></View>
+                    <View style={styles.boxDO}>
+                    </View>
 
                     <Text
                         style={[

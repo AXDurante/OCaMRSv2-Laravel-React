@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JobOrder extends Model
 {
@@ -53,5 +54,10 @@ class JobOrder extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'employeeID', 'employeeID');
+    }
+
+    public function tsr(): HasMany
+    {
+        return $this->hasMany(TSR::class, 'job_id', 'job_id');
     }
 }

@@ -7,11 +7,30 @@ import Modal from "react-modal"; // Import Modal
 
 function TSR({jobOrder}) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
+    
+    // For PDF Previewer
+    const [instrument, setInstrument] = useState();
+    const [model, setModel] = useState();
+    const [serialNo, setSerialNo] = useState();
+    const [problemReported, setProblemReported] = useState();
+    const [diagnosis, setDiagnosis] = useState();
+    const [actionTaken, setActionTaken] = useState();
+    const [remarks, setRemarks] = useState();
 
+    const reportDetails = {
+        instrument,
+        model,
+        serialNo,
+        problemReported,
+        diagnosis,
+        actionTaken,
+        remarks,
+    };
+    
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
     };
-
+    
     const closeModal = () => {
         setShowPreview(false); // Close the modal
     };
@@ -29,7 +48,9 @@ function TSR({jobOrder}) {
                         border: "none", // Optional: remove border for a cleaner look
                     }}
                 >
-                    <TSRpdf jobOrder={jobOrder} />
+                    <TSRpdf 
+                        jobOrder={jobOrder}
+                        reportDetails={reportDetails} />
                 </PDFViewer>
                 <button onClick={closeModal}>Close</button> {/* Close button */}
             </Modal>
@@ -85,6 +106,8 @@ function TSR({jobOrder}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
+                                                value={instrument} // Set the value from state
+                                                onChange={(e) => setInstrument(e.target.value)}
                                                 
                                             />
                                         </div>
@@ -129,7 +152,24 @@ function TSR({jobOrder}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                
+                                                value={model} // Set the value from state
+                                                onChange={(e) => setModel(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-12 col-sm-3 mb-3">
+                                            <label className="form-label fw-bold d-block text-truncate">
+                                                Serial No.
+                                            </label>
+                                        </div>
+                                        <div className="col-12 col-sm-9 mb-3">
+                                            <input
+                                                type="text"
+                                                className="form-control rounded"
+                                                value={serialNo} // Set the value from state
+                                                onChange={(e) => setSerialNo(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -144,7 +184,8 @@ function TSR({jobOrder}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                
+                                                value={problemReported} // Set the value from state
+                                                onChange={(e) => setProblemReported(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -159,7 +200,8 @@ function TSR({jobOrder}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                
+                                                value={diagnosis} // Set the value from state
+                                                onChange={(e) => setDiagnosis(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -174,7 +216,8 @@ function TSR({jobOrder}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                
+                                                value={actionTaken} // Set the value from state
+                                                onChange={(e) => setActionTaken(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -186,11 +229,20 @@ function TSR({jobOrder}) {
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value="DAPAT DROPDOWN"
-                                            />
+                                            <select className="w-100 rounded p-2">
+                                                <option>
+                                                    For Pull-Out
+                                                </option>
+                                                <option>
+                                                    Forward to Supplier
+                                                </option>
+                                                <option>
+                                                    For Repair
+                                                </option>
+                                                <option>
+                                                    Beyond Repair
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div className="row">
@@ -203,7 +255,8 @@ function TSR({jobOrder}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                
+                                                value={remarks} // Set the value from state
+                                                onChange={(e) => setRemarks(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -216,6 +269,11 @@ function TSR({jobOrder}) {
                                                 onClick={handlePreviewClick} // Add click handler
                                             >
                                                 Preview PDF
+                                            </button>
+                                            <button
+                                                className="btn btn-primary ms-3 mb-3" // Add click handler
+                                            >
+                                                Save Document
                                             </button>
                                             {/* Removed PDFViewer from here */}
                                         </div>
