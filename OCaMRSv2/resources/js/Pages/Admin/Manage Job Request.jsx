@@ -4,6 +4,10 @@ import { Link } from "@inertiajs/react";
 
 function Home({ jobOrder }) {
     console.log(jobOrder);
+    const totalRequests = jobOrder.data.length;
+    const cancelledRequests = jobOrder.data.filter(
+        (order) => order.status === "Cancelled"
+    ).length; // Count cancelled requests
     return (
         <div className="">
             <div id="content" className="">
@@ -17,7 +21,7 @@ function Home({ jobOrder }) {
                     <div className="bg-black row rounded text-center d-flex justify-content-between">
                         <div className="col bg-light m-4 p-3">
                             <h5>Total Request</h5>
-                            <h1>1</h1>
+                            <h1>{totalRequests}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>For Approval</h5>
@@ -33,7 +37,8 @@ function Home({ jobOrder }) {
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Cancelled</h5>
-                            <h1>1</h1>
+                            <h1>{cancelledRequests}</h1>{" "}
+                            {/* Updated to show cancelled requests count */}
                         </div>
                     </div>
                     <div className="mt-3">
@@ -71,24 +76,36 @@ function Home({ jobOrder }) {
                                 </tr>
                             </thead>
                             <tbody>
-                            {jobOrder.data.map((order, index) => (
-                                    <tr key={index} className="text-center align-middle">
-                                        <td scope="row">{new Date(order.date_request).toLocaleDateString()}</td> {/* Date Received */}
+                                {jobOrder.data.map((order, index) => (
+                                    <tr
+                                        key={index}
+                                        className="text-center align-middle"
+                                    >
+                                        <td scope="row">
+                                            {new Date(
+                                                order.date_request
+                                            ).toLocaleDateString()}
+                                        </td>{" "}
+                                        {/* Date Received */}
                                         <td>{order.job_id}</td> {/* Job ID */}
-                                        <td>{order.user.firstName} {order.user.lastName} </td>
+                                        <td>
+                                            {order.user.firstName}{" "}
+                                            {order.user.lastName}{" "}
+                                        </td>
                                         <td>{order.user.email} </td>
-                                        <td>{order.service_type}</td> {/* Service Request */}
+                                        <td>{order.service_type}</td>{" "}
+                                        {/* Service Request */}
                                         <td>{order.status}</td> {/* Status */}
                                         <td>
                                             <Link
-                                                    href={`/admin/showJobOrder/${order.job_id}`}
+                                                href={`/admin/showJobOrder/${order.job_id}`}
+                                            >
+                                                <button
+                                                    className="btn btn-primary"
+                                                    id="btnSee"
                                                 >
-                                                    <button
-                                                        className="btn btn-primary"
-                                                        id="btnSee"
-                                                    >
-                                                        See Details
-                                                    </button>
+                                                    See Details
+                                                </button>
                                             </Link>
                                         </td>
                                     </tr>
@@ -97,13 +114,19 @@ function Home({ jobOrder }) {
                         </table>
                         <div className="text-center">
                             {jobOrder.links.map((link) => (
-                                <Link 
-                                    className={`px-3 ${ link.active ? "text-secondary" : " text-dark "}`}
+                                <Link
+                                    className={`px-3 ${
+                                        link.active
+                                            ? "text-secondary"
+                                            : " text-dark "
+                                    }`}
                                     key={link.label}
                                     href={link.url}
-                                    dangerouslySetInnerHTML={{ __html: link.label }}    
+                                    dangerouslySetInnerHTML={{
+                                        __html: link.label,
+                                    }}
                                 />
-                                ))}
+                            ))}
                         </div>
                     </div>
                 </div>

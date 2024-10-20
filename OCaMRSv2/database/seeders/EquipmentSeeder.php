@@ -51,6 +51,6 @@ class EquipmentSeeder extends Seeder
             ['id' => 34, 'equip_category' => 'Balances', 'equip_name' => 'Analytical Balances'],
         ];
 
-        Equipment::table('equipment')->insert($equipments);
+        DB::table('equipment')->insert($equipments);
     }
 }

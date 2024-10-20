@@ -124,7 +124,7 @@ export default function AdminNavBar({ children }) {
                                 <h4 className="user-interface2">Interface</h4>
                             </>
                         ) : (
-                            <h6>Client</h6>
+                            <h6>Admin</h6>
                         )}
                     </div>
                     <div className="p-4 mt-4">

@@ -17,7 +17,22 @@ function ViewOrder({ jobOrder }) {
                         {" "}
                         Job Order Request Details
                     </h1>
-                    <h4> Status: <b> {jobOrder.status}  </b></h4>
+                    <h4>
+                        {" "}
+                        Status:{" "}
+                        <b
+                            className={
+                                jobOrder.status === "Processing"
+                                    ? "text-warning"
+                                    : jobOrder.status === "Cancelled"
+                                    ? "text-danger"
+                                    : ""
+                            }
+                        >
+                            {" "}
+                            {jobOrder.status}{" "}
+                        </b>
+                    </h4>
                     <hr />
                 </div>
                 <div className="mt-3">
@@ -134,7 +149,7 @@ function ViewOrder({ jobOrder }) {
                                     </div>
 
                                     <div className="col-12 col-md-4 d-flex flex-column p-3">
-                                    <h6 className="w-100 fw-bold text-start">
+                                        <h6 className="w-100 fw-bold text-start">
                                             Serial Number/Property Number
                                         </h6>
                                         <input
@@ -157,7 +172,7 @@ function ViewOrder({ jobOrder }) {
                 >
                     Edit
                 </Link>
-                
+
                 {/* Return Button */}
                 <a
                     href="/admin"

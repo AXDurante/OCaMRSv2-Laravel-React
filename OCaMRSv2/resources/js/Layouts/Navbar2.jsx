@@ -73,17 +73,26 @@ export default function NavBar({
                         LESO - ISC
                     </h4>
                     <div
-                        className="rounded-circle bg-dark d-flex justify-content-center align-items-center mt-4 shadow"
-                        style={{
-                            width: "100px",
-                            height: "100px",
-                            color: "white",
-                        }}
+                        className={`${
+                            isFullyExpanded
+                                ? "expanded-content"
+                                : "collapsed-content"
+                        }`}
                     >
-                        <i
-                            className="bi bi-person-fill text-primary"
-                            style={{ fontSize: "50px" }}
-                        ></i>
+                        <div
+                            className="rounded-circle bg-dark d-flex justify-content-center align-items-center mt-4 shadow"
+                            style={{
+                                width: "100px",
+                                height: "100px",
+                                color: "white",
+                                transition: "opacity 0.3s ease-in-out",
+                            }}
+                        >
+                            <i
+                                className="bi bi-person-fill text-primary"
+                                style={{ fontSize: "50px" }}
+                            ></i>
+                        </div>
                     </div>
                     {isFullyExpanded && (
                         <p className="mt-2">
@@ -101,6 +110,7 @@ export default function NavBar({
                     minWidth: isCollapsed ? "80px" : "250px",
                     borderBottomRightRadius: "15px",
                     transition: "width 0.3s ease-in-out",
+                    overflow: "hidden",
                 }}
                 onClick={handleCollapseToggle} // Toggle collapse on click
             >
@@ -111,16 +121,18 @@ export default function NavBar({
                             <h4 className="user-interface2">Interface</h4>
                         </>
                     ) : (
-                        <h6>Te</h6>
+                        <h6>Tech</h6>
                     )}
                 </div>
                 <ul className="nav flex-column pt-4 theNav">
-                   
                     <li
-                        className="nav-item"
+                        className="a-nav-link"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Link href={route("technician.dashboard")}>
+                        <Link
+                            href={route("technician.dashboard")}
+                            className="a-nav-link"
+                        >
                             <a className="nav-link nav-link-blue">
                                 <i className="bi bi-search me-2"></i>
                                 {!isCollapsed && "Track Request"}
@@ -128,11 +140,11 @@ export default function NavBar({
                         </Link>
                     </li>
                     <li
-                        className="nav-item"
+                        className="a-nav-link"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <Link
-                           href={route('technician.manageProfile')}
+                            href={route("technician.manageProfile")}
                             className="nav-link nav-link-blue"
                         >
                             <i className="bi bi-person-fill me-2"></i>
@@ -140,10 +152,10 @@ export default function NavBar({
                         </Link>
                     </li>
                     <li
-                        className="nav-item"
+                        className="a-nav-link"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Link href="/viewInstrument">
+                        <Link href="/viewInstrument" className="a-nav-link">
                             <a className="nav-link nav-link-blue">
                                 <i className="bi bi-list me-2"></i>
                                 {!isCollapsed && "Instrument List"}
@@ -151,7 +163,7 @@ export default function NavBar({
                         </Link>
                     </li>
                     <li
-                        className="nav-item"
+                        className="a-nav-link"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <a className="nav-link" href="#">
@@ -160,7 +172,7 @@ export default function NavBar({
                         </a>
                     </li>
                     <li
-                        className="nav-item"
+                        className="a-nav-link"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <a className="nav-link" href="#">
@@ -168,22 +180,18 @@ export default function NavBar({
                             {!isCollapsed && "Go Back"}
                         </a>
                     </li>
-                    <div className="logout">
-                        <li
-                            className="nav-item-logout"
+                    <div className="p-3">
+                        <Link
+                            href={route("technician.logout")}
+                            method="post"
+                            as="button"
+                            className="btn btn-dark w-100"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <Link
-                                href={route("technician.logout")}
-                                method="post"
-                                as="button"
-                                className="logout-blue-btn"
-                            >
-                                <i className="bi bi-box-arrow-right me-2"></i>
-                                {!isCollapsed && "Log Out"}{" "}
-                                {/* Show 'Log Out' only when fully expanded */}
-                            </Link>
-                        </li>
+                            <i className="bi bi-box-arrow-right me-2"></i>
+                            {!isCollapsed && "Log Out"}{" "}
+                            {/* Show 'Log Out' only when fully expanded */}
+                        </Link>
                     </div>
                 </ul>
             </nav>
