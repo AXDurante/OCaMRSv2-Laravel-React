@@ -6,6 +6,7 @@ import TextInput from '@/Components/TextInput';
 import TextInput2 from "@/Components/TextInput2";
 import LoginButton from "@/Components/LoginButton";
 import PhoneNumberInput from '@/Components/PhoneNumberInput';
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
@@ -26,6 +27,8 @@ export default function Register() {
     const [switchForm, setSwitchForm] = useState(1);
     const [submitted, setSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const nextForm = () => {
         if (switchForm === 3) {
@@ -238,31 +241,61 @@ export default function Register() {
                                     </div>
                                    
                                     
-                                    <TextInput2
-                                        id="password"
-                                        type="password"
-                                        name="password"
-                                        value={data.password}
-                                        className="mt-1 block w-full"
-                                        autoComplete="new-password"
-                                        onChange={(e) => setData('password', e.target.value)}
-                                        required
-                                    />
+                                    <div className="password-input-wrapper" style={{ position: "relative" }}>
+                                        <TextInput2
+                                            id="password"
+                                            type={showPassword ? "text" : "password"}
+                                            name="password"
+                                            value={data.password}
+                                            className="mt-1 block w-full"
+                                            autoComplete="new-password"
+                                            onChange={(e) => setData('password', e.target.value)}
+                                            required
+                                        />
+                                        <span
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            style={{
+                                                position: "absolute",
+                                                right: "10px",
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                                cursor: "pointer",
+                                                fontSize: "1.5em",
+                                            }}
+                                        >
+                                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                        </span>
+                                    </div>
                                     <InputError message={errors.password} className="mt-2 text-danger" />
                                 </div>
 
                                 <div className="mt-4">
                                     <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
-                                    <TextInput2
-                                        id="password_confirmation"
-                                        type="password"
-                                        name="password_confirmation"
-                                        value={data.password_confirmation}
-                                        className="mt-1 block w-full"
-                                        autoComplete="new-password"
-                                        onChange={(e) => setData('password_confirmation', e.target.value)}
-                                        required
-                                    />
+                                    <div className="password-input-wrapper" style={{ position: "relative" }}>
+                                        <TextInput2
+                                            id="password_confirmation"
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            name="password_confirmation"
+                                            value={data.password_confirmation}
+                                            className="mt-1 block w-full"
+                                            autoComplete="new-password"
+                                            onChange={(e) => setData('password_confirmation', e.target.value)}
+                                            required
+                                        />
+                                        <span
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            style={{
+                                                position: "absolute",
+                                                right: "10px",
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                                cursor: "pointer",
+                                                fontSize: "1.5em",
+                                            }}
+                                        >
+                                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                                        </span>
+                                    </div>
                                     <InputError message={errors.password_confirmation} className="mt-2 text-danger" />
                                 </div>
 

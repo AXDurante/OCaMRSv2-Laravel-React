@@ -70,7 +70,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
 
     return (
         <div className="d-flex">
-            <div id="content" className="main-content flex-fill p-3">
+            
                 <div className="container">
                     <h1 className="mb-4">Manage Profile</h1>
                     <div className="card shadow-lg rounded-lg overflow-hidden">
@@ -201,8 +201,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                         </div>
                     </div>
                 </div>
-            </div>
-
+            
             {/* Photo Modal */}
             <Modal show={showPhotoModal} onHide={handleClosePhoto}>
                 <Modal.Header closeButton>

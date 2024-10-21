@@ -16,10 +16,22 @@ class JobOrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        $jobOrder = JobOrder::where('employeeID', $user->employeeID)->get();
+        $sortBy = $request->input('sortBy', 'newest');
+
+        $query = JobOrder::where('employeeID', $user->employeeID);
+
+        // Apply sorting
+        if ($sortBy === 'newest') {
+            $query->orderBy('date_request', 'desc');
+        } elseif ($sortBy === 'oldest') {
+            $query->orderBy('date_request', 'asc');
+        }
+        // Add more sorting options here if needed
+
+        $jobOrder = $query->get();
         $intUnit = IntUnit::all();
 
         return Inertia::render('JobOrder/TrackOrder', [
@@ -28,7 +40,8 @@ class JobOrderController extends Controller
             'lastName' => $user->lastName,
             'email' => $user->email,
             'jobOrder' => $jobOrder,
-            'intUnit' => $intUnit
+            'intUnit' => $intUnit,
+            'currentSort' => $sortBy
         ]);
     }
 

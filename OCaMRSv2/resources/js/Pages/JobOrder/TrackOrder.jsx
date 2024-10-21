@@ -1,8 +1,19 @@
-import { Link } from "@inertiajs/react";
+import React, { useState, useEffect } from "react";
+import { Link, useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 import JobOrder from "./CreateOrder";
 
-function TrackOrder({ jobOrder, firstName, lastName, email }) {
+function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
+    const [sortBy, setSortBy] = useState(currentSort || "newest");
+    const { get } = useForm();
+
+    useEffect(() => {
+        get(route('jobOrder.index', { sortBy }), {
+            preserveState: true,
+            preserveScroll: true,
+        });
+    }, [sortBy]);
+
     console.log("Job Order props:", { jobOrder, firstName, lastName, email });
 
     return (
@@ -37,6 +48,20 @@ function TrackOrder({ jobOrder, firstName, lastName, email }) {
                     </div>
 
                     <div className="container"></div>
+                </div>
+
+                {/* Sorting select */}
+                <div className="d-flex align-items-center mt-3">
+                    <span className="me-2">Sort by:</span>
+                    <select
+                        className="form-select w-auto"
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                    >
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        {/* Add more sorting options as needed */}
+                    </select>
                 </div>
 
                 {/* Card */}
