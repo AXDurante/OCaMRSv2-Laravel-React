@@ -182,7 +182,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                         fontWeight: "bold",
                     }}
                 >
-                    TSR No.
+                    TSR No. {reportDetails.tsrNum}
                 </Text>
                 <Text
                     style={{
@@ -217,14 +217,9 @@ function TSRpdf({ jobOrder, reportDetails }) {
                         </View>
                         <View style={{ flexDirection: "row", width: "25%" }}>
                             <Text style={styles.textStyle}>Date:</Text>
-                            <View
-                                style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    borderBottomWidth: 1,
-                                    borderBottomColor: "black",
-                                }}
-                            />
+                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center'}}>
+                                <Text style={styles.valueText}>{jobOrder.date_request}</Text>
+                            </View>
                         </View>
                     </View>
 

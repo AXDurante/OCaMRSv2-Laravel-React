@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Technician;
 use App\Models\Equipment;
+use App\Models\TSR;
 use Illuminate\Support\Facades\Storage;
 use App\Models\JobOrder;
 
@@ -83,6 +84,8 @@ class TechnicianController extends Controller
         return redirect()->route('technician.showJobOrder', $jobOrder->job_id);
     }
 
+
+    //TSR and COC
     public function createTSR($id)
     {
         $jobOrder = JobOrder::with(['int_units', 'user'])->findOrFail($id);
@@ -90,6 +93,30 @@ class TechnicianController extends Controller
             'jobOrder' => $jobOrder
         ]);
     }
+
+    public function storeTSR(Request $request)
+    {
+        $tsrFields = $request->validate([
+            'tsr_num' => ['required'],
+            'instrument' => ['required'],
+            'model' => ['nullable', 'string'],
+            'serial_num' => ['nullable', 'string'],
+            'problemReported' => ['nullable', 'string'],
+            'diagnosis' => ['nullable', 'string'],
+            'actionTaken' => ['nullable', 'string'],
+            'recommendation' => ['required'],
+            'tsr_remarks' => ['nullable', 'string'],
+            'date_request' => ['required'],
+            'phone' => ['required'],
+            'job_id' => ['required'],
+        ]);
+
+        $tsrFields['tech_id'] = Auth::user()->employeeID;
+        TSR::create($tsrFields);
+
+        return redirect()->route('technician.dashboard');
+    }
+
 
     public function manageProfile()
     {

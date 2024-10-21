@@ -11,6 +11,7 @@ use App\Http\Controllers\InstrumentationAuthController;
 use Inertia\Inertia;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\TechnicianController;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);

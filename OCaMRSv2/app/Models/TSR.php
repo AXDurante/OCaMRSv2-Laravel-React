@@ -15,9 +15,16 @@ class TSR extends Model
 
     protected $fillable = [
         'tsr_num',
-        'date_processed',
+        'instrument',
+        'model',
+        'serial_num',
+        'problemReported',
+        'diagnosis',
+        'actionTaken',
         'recommendation',
         'tsr_remarks',
+        'date_request',
+        'phone',
         'job_id',
         'tech_id',
     ];
