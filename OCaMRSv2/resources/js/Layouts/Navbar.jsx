@@ -147,7 +147,7 @@ export default function NavBar({
                             >
                                 <a className="nav-link">
                                     <i className="bi bi-file-earmark-text me-2"></i>
-                                    {!isCollapsed && "Open Request"}
+                                    {!isCollapsed && "Create Request"}
                                 </a>
                             </Link>
                         </li>
