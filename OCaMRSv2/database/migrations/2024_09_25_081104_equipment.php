@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->id();
             $table->string('equip_category');
             $table->string('equip_name');
+            $table->string('image_path')->nullable(); // Add this line to include an image column
         });
     }
 

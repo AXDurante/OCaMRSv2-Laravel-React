@@ -64,8 +64,11 @@ function ViewInstrument({ equipment }) {
                                     >
                                         <div className="card-body d-flex">
                                             <img
-                                                src="https://via.placeholder.com/100"
-                                                alt="Placeholder"
+                                                src={
+                                                    item.image_path ||
+                                                    "https://via.placeholder.com/100"
+                                                }
+                                                alt={item.equip_name}
                                                 className="me-3"
                                                 style={{
                                                     width: "100px",

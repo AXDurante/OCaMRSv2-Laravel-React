@@ -8,7 +8,7 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
     const { get } = useForm();
 
     useEffect(() => {
-        get(route('jobOrder.index', { sortBy }), {
+        get(route("jobOrder.index", { sortBy }), {
             preserveState: true,
             preserveScroll: true,
         });
@@ -76,7 +76,7 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
                                 {/* Image */}
                                 <div className="col-auto">
                                     <img
-                                        src="https://via.placeholder.com/100"
+                                        src="images/Repair.png"
                                         alt="Placeholder"
                                         className="me-3"
                                         style={{
@@ -111,7 +111,10 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
                                                     Date Created:{" "}
                                                     {jobOrder.date_request}
                                                 </p>
-                                                <p>Due Date: {jobOrder.date_due} </p>
+                                                <p>
+                                                    Due Date:{" "}
+                                                    {jobOrder.date_due}{" "}
+                                                </p>
                                             </div>
                                             <div className="d-flex justify-content-end">
                                                 <Link href={`feedback`}>
