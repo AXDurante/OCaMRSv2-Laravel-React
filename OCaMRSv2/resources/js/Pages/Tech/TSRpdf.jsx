@@ -84,20 +84,24 @@ const styles = StyleSheet.create({
     },
     underlineFull: {
         borderBottomWidth: 1,
-        borderBottomColor: 'black',
+        borderBottomColor: "black",
         flex: 1, // This makes the underline stretch fully
         marginLeft: 5, // Adjust the space between the text and underline
     },
+
     boxPR: {
         border: 1.8,
         width: "100%",
         height: "70",
+        padding: "5",
     },
+
     boxDO: {
         border: 1.8,
         width: "100%",
         height: "90",
     },
+
     boxAT: {
         border: 1.8,
         width: "100%",
@@ -116,8 +120,11 @@ const styles = StyleSheet.create({
         marginLeft: 50,
     },
 });
+function breakLongWords(text) {
+    return text.replace(/(\S{92})/g, "$1\n"); // Inserts a newline every 30 characters
+}
 
-function TSRpdf ({jobOrder}) {
+function TSRpdf({ jobOrder, reportDetails }) {
     return (
         <Document>
             <Page size={[8.5 * 72, 13 * 72]}>
@@ -175,7 +182,7 @@ function TSRpdf ({jobOrder}) {
                         fontWeight: "bold",
                     }}
                 >
-                    TSR No.
+                    TSR No. {reportDetails.tsrNum}
                 </Text>
                 <Text
                     style={{
@@ -192,30 +199,62 @@ function TSRpdf ({jobOrder}) {
                 <View style={{ margin: "0px 60px 0px 60px", marginTop: 20 }}>
                     {/* Row 1 - LABORATORY and Date */}
                     <View style={styles.container}>
-                        <View style={{ flexDirection: 'row', width: '65%' }}>
+                        <View style={{ flexDirection: "row", width: "65%" }}>
                             <Text style={styles.textStyle}>LABORATORY: </Text>
-                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center' }}>
-                                <Text style={styles.valueText}>{jobOrder.lab}</Text>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: "black",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Text style={styles.valueText}>
+                                    {jobOrder.lab}
+                                </Text>
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', width: '25%' }}>
+                        <View style={{ flexDirection: "row", width: "25%" }}>
                             <Text style={styles.textStyle}>Date:</Text>
-                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black' }} />
+                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center'}}>
+                                <Text style={styles.valueText}>{jobOrder.date_request}</Text>
+                            </View>
                         </View>
                     </View>
 
                     {/* Row 2 - LAB LOCATION and Tel No */}
                     <View style={styles.container}>
-                        <View style={{ flexDirection: 'row', width: '65%' }}>
+                        <View style={{ flexDirection: "row", width: "65%" }}>
                             <Text style={styles.textStyle}>LAB LOCATION: </Text>
-                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center' }}>
-                                <Text style={styles.valueText}>{jobOrder.lab_loc}</Text>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: "black",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Text style={styles.valueText}>
+                                    {jobOrder.lab_loc}
+                                </Text>
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', width: '25%' }}>
+                        <View style={{ flexDirection: "row", width: "25%" }}>
                             <Text style={styles.textStyle}>Tel No:</Text>
-                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center' }}>
-                                <Text style={styles.valueText}>{jobOrder.user.phoneNumber}</Text>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: "black",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Text style={styles.valueText}>
+                                    {jobOrder.user.phoneNumber}
+                                </Text>
                             </View>
                         </View>
                     </View>
@@ -223,12 +262,36 @@ function TSRpdf ({jobOrder}) {
                     {/* Row 3 */}
                     <View style={styles.container}>
                         <View style={styles.leftSection}>
-                            <Text style={styles.textStyle}>INSTRUMENT:</Text>
-                            <Text style={styles.underlineFull} />
+                            <Text style={styles.textStyle}>INSTRUMENT: </Text>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: "black",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Text style={styles.valueText}>
+                                    {reportDetails.instrument}
+                                </Text>
+                            </View>
                         </View>
                         <View style={styles.rightSection}>
                             <Text style={styles.textStyle}>MODEL:</Text>
-                            <Text style={styles.underlineFull} />
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: "black",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Text style={styles.valueText}>
+                                    {reportDetails.model}
+                                </Text>
+                            </View>
                         </View>
                     </View>
 
@@ -236,7 +299,19 @@ function TSRpdf ({jobOrder}) {
                     <View style={styles.container}>
                         <View style={styles.leftSection}>
                             <Text style={styles.textStyle}>SERIAL NO:</Text>
-                            <Text style={styles.underlineFull} />
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: "black",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Text style={styles.valueText}>
+                                    {reportDetails.serialNo}
+                                </Text>
+                            </View>
                         </View>
                         <View style={styles.rightSection}>
                             <Text style={styles.textStyle}></Text>
@@ -258,7 +333,11 @@ function TSRpdf ({jobOrder}) {
                     >
                         PROBLEM REPORTED
                     </Text>
-                    <View style={styles.boxPR}></View>
+                    <View style={styles.boxPR}>
+                        <Text style={{ padding: 5, fontSize: 9 }}>
+                            {breakLongWords(reportDetails.problemReported)}
+                        </Text>
+                    </View>
 
                     <Text
                         style={[
@@ -577,6 +656,6 @@ function TSRpdf ({jobOrder}) {
             </Page>
         </Document>
     );
-};
+}
 
 export default TSRpdf;
