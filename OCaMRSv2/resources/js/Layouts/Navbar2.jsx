@@ -155,11 +155,12 @@ export default function NavBar({
                         className="a-nav-link"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Link href="/viewInstrument" className="a-nav-link">
-                            <a className="nav-link nav-link-blue">
-                                <i className="bi bi-list me-2"></i>
-                                {!isCollapsed && "Instrument List"}
-                            </a>
+                        <Link
+                            href={route("technician.viewInstrument")} // Updated to use the named route for viewing instruments
+                            className="nav-link nav-link-blue"
+                        >
+                            <i className="bi bi-list me-2"></i>
+                            {!isCollapsed && "Instrument List"}
                         </Link>
                     </li>
                     <li

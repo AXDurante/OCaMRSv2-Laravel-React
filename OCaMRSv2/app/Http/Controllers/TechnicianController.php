@@ -144,4 +144,12 @@ class TechnicianController extends Controller
 
         return redirect()->route('technician.manageProfile')->with('success', 'Profile updated successfully');
     }
+
+    public function viewInstrument()
+    {
+        $equipment = Equipment::all();
+        return Inertia::render("Tech/ViewInstrument", [
+            "equipment" => $equipment,
+        ]);
+    }
 }
