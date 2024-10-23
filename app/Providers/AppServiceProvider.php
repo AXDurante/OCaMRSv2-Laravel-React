@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+
 use App\Models\Technician;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
@@ -24,19 +25,21 @@ class AppServiceProvider extends ServiceProvider
    
     public function boot(): void
     {
-        ResetPassword::createUrlUsing(function ($user, string $token) {
-            if ($user instanceof Technician) {
-                return 'http://127.0.0.1:8000/technician/reset-password/' . $token  . '?email=' . urlencode($user->email);
-            } elseif ($user instanceof User) {
-                return 'http://127.0.0.1:8000/reset-password/' . $token . '?email=' . urlencode($user->email);
-            }
-    
-            // Default to a generic URL if the user type is unknown
-            return 'http://127.0.0.1:8000/reset-password/' . $token;
-        });
-
-        $appUrl = URL::to('/');
+        $appUrl = config('app.url');
         $isProduction = app()->environment('production');
+
+        ResetPassword::createUrlUsing(function ($user, string $token) use ($appUrl, $isProduction) {
+            $resetUrl = $isProduction ? 'https://leso.online' : 'http://127.0.0.1:8000';
+            
+            if ($user instanceof Technician) {
+                return $resetUrl . '/technician/reset-password/' . $token . '?email=' . urlencode($user->email);
+            } elseif ($user instanceof User) {
+                return $resetUrl . '/reset-password/' . $token . '?email=' . urlencode($user->email);
+            }
+
+            // Default to a generic URL if the user type is unknown
+            return $resetUrl . '/reset-password/' . $token;
+        });
 
         Inertia::share([
             'appUrl' => $appUrl,
