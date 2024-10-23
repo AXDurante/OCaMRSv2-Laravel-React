@@ -217,8 +217,18 @@ function TSRpdf({ jobOrder, reportDetails }) {
                         </View>
                         <View style={{ flexDirection: "row", width: "25%" }}>
                             <Text style={styles.textStyle}>Date:</Text>
-                            <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'black', alignItems: 'center'}}>
-                                <Text style={styles.valueText}>{jobOrder.date_request}</Text>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: "black",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Text style={styles.valueText}>
+                                    {jobOrder.date_request}
+                                </Text>
                             </View>
                         </View>
                     </View>
@@ -354,7 +364,12 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     >
                         DIAGNOSIS/OBSERVATION
                     </Text>
-                    <View style={styles.boxDO}></View>
+                    <View style={styles.boxDO}>
+                        <Text style={{ padding: 5, fontSize: 9 }}>
+                            {breakLongWords(reportDetails.diagnosis)} // Added
+                            to display diagnosis text
+                        </Text>
+                    </View>
 
                     <Text
                         style={[
@@ -371,7 +386,12 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     >
                         ACTION TAKEN
                     </Text>
-                    <View style={styles.boxAT}></View>
+                    <View style={styles.boxAT}>
+                        <Text style={{ padding: 5, fontSize: 9 }}>
+                            {breakLongWords(reportDetails.actionTaken)} // Added
+                            to display action taken text
+                        </Text>
+                    </View>
                     <Text
                         style={[
                             styles.alignLeft,
