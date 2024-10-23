@@ -27,15 +27,12 @@ jobs:
       - name: Deploy via SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          HOST: ${{ secrets.HOST }} # Should be set to 82.112.239.91
-          USERNAME: ${{ secrets.USERNAME }} # Should be set to u472469429
+          HOST: ${{ secrets.HOST }} # 82.112.239.91
+          USERNAME: ${{ secrets.USERNAME }} # u472469429
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
           mkdir -p ~/.ssh
-          # Add the host key to known_hosts
-          echo "82.112.239.91:65002 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCstgxOByXZCiUvQHgTfUit+DrgEnVcSktVHWD8q9GWswByIxFrpWhj5SmT940SsTn2/LEtzGapp6boxHMvNsJC6+lRVmzV9eKZ1eweDopOJ+5xAXsyL1CSCtEOjP2LBrueYn0HvaPVS+R9k0xV4+q/XhEObBl2mHyUu5a5zY3bZmNhBfY0JdgcGGpF69O9+zWSk7ryUwaFq3QQWHnipZ9+PrZ1APYGNc1Z6xSdmHeykwpjOy8Ck4wax5IY6VS0PwyEfO9VSp9OjbylCMI67FHp9n1KA523EYwul6tZB5Z4q2uEbtWLMhV4ycG1ctwTVz7+A6QPL1cublHLRyVCugNNeX/NlH5tqlHApj7mePhHAMNvdHCnQVadwdHKRKa+mJUzLBuGrMDJSwUUDcJFFCrUMrIHpOgQKkVvK8tzBaZFRGuzgEhi81kLzhUt/ms1af1GRQ9FnJaBEgX5+CIO3HtMKLOtMRXcYLY45RQA8hvWoibK3QVr0hGCTjdt43LIcIk=" >> ~/.ssh/known_hosts
-          # Use SCP to copy files to the server
+          ssh-keyscan -p 65002 $HOST >> ~/.ssh/known_hosts
           scp -i private_key.pem -P 65002 -r build/* $USERNAME@$HOST:/home/u472469429/domains/leso.online/public_html
-          # Remove the private key after use
           rm private_key.pem
