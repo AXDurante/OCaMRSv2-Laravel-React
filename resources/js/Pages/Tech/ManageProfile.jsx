@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"; // Add useEffect
 import { Modal, Button } from 'react-bootstrap'; // Make sure to install react-bootstrap if not already installed
 
 function Home({ absolute, firstName, lastName, email, theID }) {
-    const { auth } = usePage().props;
+    const { auth, flash, appUrl } = usePage().props;
     const [showSuccess, setShowSuccess] = useState(false);
     const [showNoChanges, setShowNoChanges] = useState(false); // Add this line
     const [showPhotoModal, setShowPhotoModal] = useState(false);
@@ -20,6 +20,14 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         removePhoto: false, // Add this line
     });
 
+    // Add this useEffect for debugging
+    useEffect(() => {
+        if (flash && flash.message) {
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 5000);
+        }
+    }, [flash]);
+
     // Modify the hasChanges function
     const hasChanges = () => {
         return data.firstName !== auth.user.firstName ||
@@ -34,13 +42,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
     const submit = (e) => {
         e.preventDefault();
         if (hasChanges()) {
-            const formData = new FormData();
-            for (let key in data) {
-                if (key === 'photo' && data[key] === null) continue;
-                formData.append(key, data[key]);
-            }
-            
-            post(route('technician.updateProfile'), formData, {
+            post(route('technician.updateProfile'), {
                 preserveState: true,
                 preserveScroll: true,
                 onSuccess: () => {
@@ -53,12 +55,6 @@ function Home({ absolute, firstName, lastName, email, theID }) {
             setTimeout(() => setShowNoChanges(false), 5000);
         }
     };
-
-    // Add this effect to hide notifications when data changes
-    useEffect(() => {
-        setShowSuccess(false);
-        setShowNoChanges(false);
-    }, [data]);
 
     const handleShowPhoto = () => {
         setShowPhotoModal(true);
@@ -82,7 +78,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                             <div className="message-container mb-4">
                                                 {showSuccess && (
                                                     <div className="alert alert-success shadow-lg animate-message" role="alert">
-                                                        Your profile has been successfully updated!
+                                                        {flash && flash.message ? flash.message : 'Profile updated successfully'}
                                                     </div>
                                                 )}
                                                 {showNoChanges && (
@@ -191,8 +187,9 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                             <button 
                                                 type="submit" 
                                                 className="btn btn-dark shadow-lg w-100 animate-button custom-button"
+                                                disabled={processing}
                                             >
-                                                Update Profile
+                                                {processing ? 'Updating...' : 'Update Profile'}
                                             </button>
                                         </form>
                                     </div>
@@ -210,7 +207,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                 <Modal.Body>
                     {auth.user.photo && (
                         <img 
-                            src={`https://leso.online/public/storage/photos/${auth.user.photo}`} 
+                            src={`${appUrl}/storage/photos/${auth.user.photo}`} 
                             alt="Profile Photo" 
                             className="img-fluid"
                         />

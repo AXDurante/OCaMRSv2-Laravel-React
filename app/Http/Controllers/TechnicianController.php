@@ -169,7 +169,7 @@ class TechnicianController extends Controller
 
         $user->update($validatedData);
 
-        return redirect()->route('technician.manageProfile')->with('success', 'Profile updated successfully');
+        return redirect()->route('technician.manageProfile')->with('message', 'Profile updated successfully');
     }
 
     public function viewInstrument()

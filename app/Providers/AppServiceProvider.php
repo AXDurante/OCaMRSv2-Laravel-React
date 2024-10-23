@@ -5,6 +5,8 @@ use App\Models\Technician;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Support\Facades\URL;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +34,9 @@ class AppServiceProvider extends ServiceProvider
             // Default to a generic URL if the user type is unknown
             return 'http://127.0.0.1:8000/reset-password/' . $token;
         });
+
+        Inertia::share([
+            'appUrl' => URL::to('/'),
+        ]);
     }
 }
