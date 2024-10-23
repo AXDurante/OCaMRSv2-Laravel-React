@@ -72,7 +72,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         <div className="d-flex">
             
                 <div className="container">
-                    <h1 className="mb-4">Manage Profile</h1>
+                    <h1 className="mb-4">Manage Profilesss</h1>
                     <div className="card shadow-lg rounded-lg overflow-hidden">
                         <div className="card-body p-0">
                             <div className="row">
