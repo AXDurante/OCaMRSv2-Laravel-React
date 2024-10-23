@@ -40,7 +40,7 @@ jobs:
 
           # Check if the public/build directory exists
           if [ -d "public/build" ]; then
-            scp -i private_key.pem -P 65002 -r public/build/* $USERNAME@$HOST:/home/u472469429/domains/leso.online/public_html
+            scp -i private_key.pem -P 65002 -r public/build/* $USERNAME@$HOST:/home/u472469429/domains/leso.online/public_html/public/build
           else
             echo "Build directory does not exist. Skipping file transfer."
             exit 1
