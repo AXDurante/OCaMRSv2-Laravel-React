@@ -35,8 +35,13 @@ class AppServiceProvider extends ServiceProvider
             return 'http://127.0.0.1:8000/reset-password/' . $token;
         });
 
+        $appUrl = URL::to('/');
+        $isProduction = app()->environment('production');
+
         Inertia::share([
-            'appUrl' => URL::to('/'),
+            'appUrl' => $appUrl,
+            'isProduction' => $isProduction,
+            'storageBaseUrl' => $isProduction ? $appUrl . '/public/storage' : $appUrl . '/storage',
         ]);
     }
 }

@@ -3,7 +3,7 @@ import { usePage, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react"; // Add useEffect
 
 function Home({ absolute, firstName, lastName, email, theID }) {
-    const { auth } = usePage().props;
+    const { auth, storageBaseUrl } = usePage().props;
     const [showSuccess, setShowSuccess] = useState(false);
     const [showNoChanges, setShowNoChanges] = useState(false); // Add this line
     const { data, setData, post, processing, errors } = useForm({
@@ -50,6 +50,10 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         setShowSuccess(false);
         setShowNoChanges(false);
     }, [data]);
+
+    const getStorageUrl = (path) => `${storageBaseUrl}/${path}`;
+
+    const photoUrl = auth.user.photo ? getStorageUrl(`photos/${auth.user.photo}`) : null;
 
     return (
         <div className="d-flex">
