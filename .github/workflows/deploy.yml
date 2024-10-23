@@ -33,6 +33,16 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
           mkdir -p ~/.ssh
-          ssh-keyscan -p 65002 $HOST >> ~/.ssh/known_hosts
-          scp -i private_key.pem -P 65002 -r build/* $USERNAME@$HOST:/home/u472469429/domains/leso.online/public_html
+          ssh-keyscan -p 65002 $HOST 2>/dev/null >> ~/.ssh/known_hosts
+
+          # List files for debugging
+          ls -R public
+
+          # Check if the public/build directory exists
+          if [ -d "public/build" ]; then
+            scp -i private_key.pem -P 65002 -r public/build/* $USERNAME@$HOST:/home/u472469429/domains/leso.online/public_html
+          else
+            echo "Build directory does not exist. Skipping file transfer."
+            exit 1
+          fi
           rm private_key.pem
