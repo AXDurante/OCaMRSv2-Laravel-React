@@ -37,15 +37,15 @@ export default function ForgotPassword({ status }) {
 
     return (
         <div>
-            <div class="split left">
-                <div class="centered"></div>
-                <div class="half login-imageHolder"></div>
+            <div className="split left">
+                <div className="centered"></div>
+                <div className="half login-imageHolder"></div>
             </div>
 
-            <div class="split2 right2"></div>
-            <div class="split3 right">
-                <div class="centered2">
-                    <div class="container">
+            <div className="split2 right2"></div>
+            <div className="split3 right">
+                <div className="centered2">
+                    <div className="container">
                         <h1 className="text-center titleLogin mb-5">
                             Forgot Password
                         </h1>
@@ -82,8 +82,11 @@ export default function ForgotPassword({ status }) {
                             </div>
 
                             <div className="pt-3 mt-3">
-                                <LoginButton classname="w-100">
-                                    Email Password Reset Link
+                                <LoginButton 
+                                    className="w-100"
+                                    disabled={processing || isSubmitting}
+                                >
+                                    {isSubmitting ? 'Sending...' : 'Email Password Reset Link'}
                                 </LoginButton>
 
                                 <Link
