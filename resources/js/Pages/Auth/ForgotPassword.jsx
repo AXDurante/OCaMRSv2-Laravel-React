@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -5,17 +7,32 @@ import TextInput from '@/Components/TextInput';
 import TextInput2 from '@/Components/TextInput2';
 import LoginButton from '@/Components/LoginButton';
 import InputLabel from '@/Components/InputLabel';
-import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
         identifier: '',  // Use identifier instead of email
     });
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            setIsSubmitting(false);
+        }
+    }, [errors]);
+
     const submit = (e) => {
         e.preventDefault();
+        if (isSubmitting) return; // Prevent double submission
+        setIsSubmitting(true);
 
-        post(route('password.email'));
+        post(route('password.email'), {
+            preserveState: true,
+            preserveScroll: true,
+            onFinish: () => {
+                setIsSubmitting(false);
+            },
+        });
     };
 
     return (
@@ -54,11 +71,14 @@ export default function ForgotPassword({ status }) {
                         </div>
 
                         <div className="pt-3 mt-3">
-                            <LoginButton classname="w-100">
-                                Email Password Reset Link
+                            <LoginButton 
+                                className="w-100" 
+                                disabled={processing || isSubmitting}
+                            >
+                                {isSubmitting ? 'Sending...' : 'Email Password Reset Link'}
                             </LoginButton>
 
-                             <Link type="button" className="btn btn mt-4 btn-outline-dark w-100 h-50 goBack"  href={route('loginHome') } as="button">
+                            <Link type="button" className="btn btn mt-4 btn-outline-dark w-100 h-50 goBack"  href={route('loginHome') } as="button">
                                 Go Back
                             </Link>
                         </div>
