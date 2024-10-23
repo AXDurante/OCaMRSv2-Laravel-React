@@ -95,6 +95,12 @@ function ViewOrder({ jobOrder }) {
                                 readOnly
                             />
                         </div>
+                        <h6 className="w-100 fw-bold text-start"> Remarks </h6>
+                            <textarea
+                                value={jobOrder.remarks}
+                                onChange={(e) => setData('remarks', e.target.value)}
+                                readOnly
+                        />  
                     </div>
                 </div>
 
