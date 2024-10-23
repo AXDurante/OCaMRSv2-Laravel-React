@@ -9,7 +9,7 @@ class TSRController extends Controller
     // Method to show a list of technicians
     public function index()
     {
-        // Logic to retrieve and return a list of technicians
+
     }
 
     // Method to show the form for creating a new technician
