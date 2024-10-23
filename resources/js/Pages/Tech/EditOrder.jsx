@@ -117,6 +117,7 @@ function EditOrder({
                                             setData("lab", e.target.value)
                                         }
                                         readOnly
+                                        disabled
                                     />
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         College/ Faculty / Office
@@ -129,6 +130,7 @@ function EditOrder({
                                             setData("dept_name", e.target.value)
                                         }
                                         readOnly
+                                        disabled
                                     />
                                 </div>
                                 <div className="col d-flex flex-column align-items-center  p-3">
@@ -153,6 +155,7 @@ function EditOrder({
                                             setData("lab_loc", e.target.value)
                                         }
                                         readOnly
+                                        disabled
                                     />
                                     <h6 className="d-flex flex-column align-items-start  fw-bold mt-2 w-100">
                                         Position
@@ -165,6 +168,7 @@ function EditOrder({
                                             setData("pos", e.target.value)
                                         }
                                         readOnly
+                                        disabled
                                     />
                                 </div>
                                 <h6 className="w-100 fw-bold text-start"> Remarks </h6>
@@ -172,6 +176,7 @@ function EditOrder({
                                     value={data.remarks}
                                     onChange={(e) => setData('remarks', e.target.value)}
                                     readOnly
+                                    disabled
                                 />  
                             </div>
                         </div>

@@ -55,6 +55,7 @@ function ViewOrder({ jobOrder }) {
                                 className="d-flex flex-column align-items-center w-100 rounded"
                                 value={jobOrder?.lab || ""}
                                 readOnly
+                                disabled
                             />
                             <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                 College/ Faculty / Office
@@ -64,6 +65,7 @@ function ViewOrder({ jobOrder }) {
                                 className="d-flex flex-column align-items-center w-100 rounded"
                                 value={jobOrder?.dept_name || ""}
                                 readOnly
+                                disabled
                             />
                         </div>
                         <div className="col d-flex flex-column align-items-center p-3">
@@ -84,6 +86,7 @@ function ViewOrder({ jobOrder }) {
                                 className="d-flex flex-column align-items-center w-100 rounded"
                                 value={jobOrder?.lab_loc || ""}
                                 readOnly
+                                disabled
                             />
                             <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                 Position
@@ -93,6 +96,7 @@ function ViewOrder({ jobOrder }) {
                                 className="d-flex flex-column align-items-center w-100 rounded"
                                 value={jobOrder?.pos || ""}
                                 readOnly
+                                disabled
                             />
                         </div>
                         <h6 className="w-100 fw-bold text-start"> Remarks </h6>
@@ -100,6 +104,7 @@ function ViewOrder({ jobOrder }) {
                                 value={jobOrder.remarks}
                                 onChange={(e) => setData('remarks', e.target.value)}
                                 readOnly
+                                disabled
                         />  
                     </div>
                 </div>
