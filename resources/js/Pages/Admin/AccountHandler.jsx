@@ -158,7 +158,7 @@ function Home() {
                 <div>
                     <div>
                         <h1 className="d-inline">Account Handler | </h1>
-                        <h1 className="d-inline fw-light">Lorem Ipsum</h1>
+                        <h1 className="d-inline fw-light">Modify Accounts</h1>
                         <hr />
                     </div>
                     <div className="mt-3">
