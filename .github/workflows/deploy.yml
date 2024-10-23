@@ -27,10 +27,10 @@ jobs:
       - name: Deploy via SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          HOST: ${{ secrets.HOST }}
-          USERNAME: ${{ secrets.USERNAME }}
+          HOST: ${{ secrets.HOST }} # This will be set to 82.112.239.91
+          USERNAME: ${{ secrets.USERNAME }} # This will be set to u472469429
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
-          scp -i private_key.pem -r build/* $USERNAME@$HOST:/home/u472469429/domains/leso.online/public_html
+          scp -i private_key.pem -P 65002 -r build/* $USERNAME@$HOST:/home/u472469429/domains/leso.online/public_html
           rm private_key.pem
