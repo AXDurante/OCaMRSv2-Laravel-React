@@ -121,6 +121,7 @@ class TechnicianController extends Controller
     public function manageProfile()
     {
         $user = Auth::user();
+        $user->photo_url = $user->photo ? asset('storage/photos/' . $user->photo) : null;
         return Inertia::render('Tech/ManageProfile', [
             'user' => $user
         ]);
@@ -156,12 +157,14 @@ class TechnicianController extends Controller
             // Store new photo
             $photoPath = $request->file('photo')->store('public/photos');
             $validatedData['photo'] = basename($photoPath);
+            $validatedData['photo_url'] = asset('storage/photos/' . $validatedData['photo']);
         } elseif ($request->boolean('removePhoto')) {
             // Remove existing photo
             if ($user->photo) {
                 Storage::delete('public/photos/' . $user->photo);
             }
             $validatedData['photo'] = null;
+            $validatedData['photo_url'] = null;
         } else {
             // Keep existing photo
             unset($validatedData['photo']);

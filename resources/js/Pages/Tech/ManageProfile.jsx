@@ -72,7 +72,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         <div className="d-flex">
             
                 <div className="container">
-                    <h1 className="mb-4">Manage Profile</h1>
+                    <h1 className="mb-4">Manage Profilezzz</h1>
                     <div className="card shadow-lg rounded-lg overflow-hidden">
                         <div className="card-body p-0">
                             <div className="row">
@@ -209,11 +209,19 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                 </Modal.Header>
                 <Modal.Body>
                     {auth.user.photo && (
-                        <img 
-                            src={`/storage/photos/${auth.user.photo}`} 
-                            alt="Profile Photo" 
-                            className="img-fluid"
-                        />
+                        <>
+                            <p>Debug: {auth.user.photo_url}</p>
+                            <img 
+                                src={auth.user.photo_url}
+                                alt="Profile Photo" 
+                                className="img-fluid"
+                                onError={(e) => {
+                                    console.error("Image failed to load:", e.target.src);
+                                    e.target.onerror = null;
+                                    e.target.src = "/path/to/fallback/image.jpg"; // Replace with an actual fallback image path
+                                }}
+                            />
+                        </>
                     )}
                 </Modal.Body>
                 <Modal.Footer>
