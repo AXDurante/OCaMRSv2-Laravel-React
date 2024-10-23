@@ -209,11 +209,19 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                 </Modal.Header>
                 <Modal.Body>
                     {auth.user.photo && (
-                        <img 
-                            src={`/storage/photos/${auth.user.photo}`} 
-                            alt="Profile Photo" 
-                            className="img-fluid"
-                        />
+                        <>
+                            <p>Debug: {`/storage/photos/${auth.user.photo}`}</p>
+                            <img 
+                                src={auth.user.photo_url || `/storage/photos/${auth.user.photo}`}
+                                alt="Profile Photo" 
+                                className="img-fluid"
+                                onError={(e) => {
+                                    console.error("Image failed to load:", e.target.src);
+                                    e.target.onerror = null;
+                                    e.target.src = "/path/to/fallback/image.jpg";
+                                }}
+                            />
+                        </>
                     )}
                 </Modal.Body>
                 <Modal.Footer>
