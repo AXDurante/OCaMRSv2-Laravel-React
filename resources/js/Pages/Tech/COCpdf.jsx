@@ -20,16 +20,16 @@ Font.register({
 });
 Font.register({
     family: "Arial",
-    src: "/fonts/ARIAL.ttf",
+    src: "/fonts/ARIAL.TTF",
 });
 Font.register({
     family: "ArialBold",
-    src: "/fonts/ARIALBD 1.ttf",
+    src: "/fonts/ARIALBD 1.TTF",
     fontWeight: "bold",
 });
 Font.register({
     family: "Arial",
-    src: "/fonts/ARIALI.ttf",
+    src: "/fonts/ARIALI.TTF",
     fontStyle: "italic",
 });
 
