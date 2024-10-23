@@ -1,10 +1,10 @@
 import Navbar2 from "@/Layouts/Navbar2";
-import { usePage, useForm } from "@inertiajs/react";
+import { usePage, useForm, Link } from "@inertiajs/react";
 import { useState, useEffect } from "react"; // Add useEffect
 import { Modal, Button } from 'react-bootstrap'; // Make sure to install react-bootstrap if not already installed
 
-function Home({ absolute, firstName, lastName, email, theID }) {
-    const { auth } = usePage().props;
+function Home({ absolute, firstName, lastName, email, theID, photoUrl, message }) {
+    const { auth, flash } = usePage().props;
     const [showSuccess, setShowSuccess] = useState(false);
     const [showNoChanges, setShowNoChanges] = useState(false); // Add this line
     const [showPhotoModal, setShowPhotoModal] = useState(false);
@@ -68,11 +68,22 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         setShowPhotoModal(false);
     };
 
+    // Add this function to get the correct photo URL
+    const getPhotoUrl = (photoName) => {
+        if (!photoName) return null;
+        // Check if the URL already contains '/public/'
+        if (photoName.startsWith('http') || photoName.startsWith('/public/')) {
+            return photoName;
+        }
+        // Otherwise, prepend '/storage/' to the photo name
+        return `/storage/photos/${photoName}`;
+    };
+
     return (
         <div className="d-flex">
             
                 <div className="container">
-                    <h1 className="mb-4">Manage Profilezzz</h1>
+                    <h1 className="mb-4">Manage Profiles</h1>
                     <div className="card shadow-lg rounded-lg overflow-hidden">
                         <div className="card-body p-0">
                             <div className="row">
@@ -88,6 +99,17 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                 {showNoChanges && (
                                                     <div className="alert alert-warning shadow-lg animate-message" role="alert">
                                                         No changes were made to your profile.
+                                                    </div>
+                                                )}
+                                                {message && (
+                                                    <div className="alert alert-success" role="alert">
+                                                        {message}
+                                                    </div>
+                                                )}
+                                                {photoUrl && (
+                                                    <div className="alert alert-info" role="alert">
+                                                        <p><strong>Debug - Photo URL:</strong></p>
+                                                        <p>{photoUrl}</p>
                                                     </div>
                                                 )}
                                             </div>
@@ -209,19 +231,11 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                 </Modal.Header>
                 <Modal.Body>
                     {auth.user.photo && (
-                        <>
-                            <p>Debug: {auth.user.photo_url}</p>
-                            <img 
-                                src={auth.user.photo_url}
-                                alt="Profile Photo" 
-                                className="img-fluid"
-                                onError={(e) => {
-                                    console.error("Image failed to load:", e.target.src);
-                                    e.target.onerror = null;
-                                    e.target.src = "/path/to/fallback/image.jpg"; // Replace with an actual fallback image path
-                                }}
-                            />
-                        </>
+                        <img 
+                            src={getPhotoUrl(auth.user.photo)}
+                            alt="Profile Photo" 
+                            className="img-fluid"
+                        />
                     )}
                 </Modal.Body>
                 <Modal.Footer>

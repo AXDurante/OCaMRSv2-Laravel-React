@@ -10,6 +10,7 @@ use App\Models\Equipment;
 use App\Models\TSR;
 use Illuminate\Support\Facades\Storage;
 use App\Models\JobOrder;
+use Illuminate\Support\Facades\Log;
 
 class TechnicianController extends Controller
 {
@@ -121,7 +122,6 @@ class TechnicianController extends Controller
     public function manageProfile()
     {
         $user = Auth::user();
-        $user->photo_url = $user->photo ? asset('storage/photos/' . $user->photo) : null;
         return Inertia::render('Tech/ManageProfile', [
             'user' => $user
         ]);
@@ -148,6 +148,8 @@ class TechnicianController extends Controller
             $validatedData['password'] = bcrypt($validatedData['password']);
         }
 
+        $photoUrl = null; // Initialize photoUrl variable
+
         if ($request->hasFile('photo')) {
             // Delete old photo if exists
             if ($user->photo) {
@@ -157,22 +159,31 @@ class TechnicianController extends Controller
             // Store new photo
             $photoPath = $request->file('photo')->store('public/photos');
             $validatedData['photo'] = basename($photoPath);
-            $validatedData['photo_url'] = asset('storage/photos/' . $validatedData['photo']);
+            $photoUrl = Storage::url($photoPath); // Get the URL for the new photo
         } elseif ($request->boolean('removePhoto')) {
             // Remove existing photo
             if ($user->photo) {
                 Storage::delete('public/photos/' . $user->photo);
             }
             $validatedData['photo'] = null;
-            $validatedData['photo_url'] = null;
         } else {
             // Keep existing photo
             unset($validatedData['photo']);
+            if ($user->photo) {
+                $photoUrl = Storage::url('public/photos/' . $user->photo); // Get the URL for the existing photo
+            }
         }
 
         $user->update($validatedData);
 
-        return redirect()->route('technician.manageProfile')->with('success', 'Profile updated successfully');
+        // Debug output
+        Log::info('Photo URL: ' . $photoUrl);
+
+        return Inertia::render('Tech/ManageProfile', [
+            'user' => $user,
+            'photoUrl' => $photoUrl,
+            'message' => 'Profile updated successfully'
+        ]);
     }
 
     public function viewInstrument()
