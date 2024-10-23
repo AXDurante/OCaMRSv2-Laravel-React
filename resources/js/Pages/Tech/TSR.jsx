@@ -122,6 +122,10 @@ function TSR({jobOrder}) {
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Job Request
                                     </button>
+                                    <button className="btn btn-light w-100 mb-2">
+                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                        Certificate of Calibration
+                                    </button>
                                 </div>
                             </div>
 
@@ -333,6 +337,7 @@ function TSR({jobOrder}) {
                                             >
                                                 Save Document
                                             </button>
+                                            
                                         </div>
                                     </div>
                                 </div>
