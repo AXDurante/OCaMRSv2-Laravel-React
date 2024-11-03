@@ -48,7 +48,7 @@ function TSR({jobOrder}) {
         problemReported: '',
         diagnosis: '',
         actionTaken: '',
-        recommendation: '',
+        recommendation: 'Test',
         tsr_remarks: '',
         date_request: jobOrder.date_request,
         phone: jobOrder.user.phoneNumber,
@@ -63,7 +63,7 @@ function TSR({jobOrder}) {
 
     function onSubmit(e) {
         e.preventDefault();
-        post('technician/store-tsr');
+        post(route('technician.store-tsr'));
     }
 
     console.log(jobOrder)

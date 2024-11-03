@@ -50,6 +50,9 @@ Route::middleware('auth:technicians')->group(function () {
     Route::get('technician/COC', function () {
         return Inertia::render('Tech/COC');
     })->name('technician.COC');
+    Route::post('technician/TSR/store-tsr', [TechnicianController::class, 'storeTSR'])->name('technician.store-tsr');
+
+    Route::resource('/tsr', TechnicianController::class);
 
     Route::get('technician/ManageProfile', [TechnicianController::class, 'manageProfile'])->name('technician.manageProfile');
     Route::post('technician/update-profile', [TechnicianController::class, 'updateProfile'])->name('technician.updateProfile');

@@ -11,6 +11,8 @@ class TSR extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+    protected $table = 'TSR';
     protected $primaryKey = 'tsr_id';
 
     protected $fillable = [
@@ -33,7 +35,6 @@ class TSR extends Model
     {
         return $this->belongsTo(JobOrder::class, 'job_id', 'job_id');
     }
-
 
     public function coc(): HasOne
     {
