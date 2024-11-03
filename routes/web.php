@@ -41,9 +41,9 @@ Route::prefix('technician')->group(function () {
     // Route::get('/TSR', function () {
     //     return Inertia::render('Tech/TSR');
     // })->name('technician.TSR');
-   Route::get('/COC', function () {
-       return Inertia::render('Tech/COC');
-    })->name('technician.COC');
+    //    Route::get('/COC', function () {
+    //        return Inertia::render('Tech/COC');
+    //     })->name('technician.COC');
 });
 
 // Route::get('/manage profile', function () {

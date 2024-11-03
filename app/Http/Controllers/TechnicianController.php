@@ -85,7 +85,7 @@ class TechnicianController extends Controller
     }
 
 
-    //TSR and COC
+    // TSR
     public function createTSR($id)
     {
         $jobOrder = JobOrder::with(['int_units', 'user'])->findOrFail($id);
@@ -117,6 +117,16 @@ class TechnicianController extends Controller
         return redirect()->route('technician.dashboard');
     }
 
+    // CoC
+    public function createCoC($id)
+    {
+        return Inertia::render('Tech/COC');
+    }
+
+    public function storeCoC(Request $request)
+    {
+
+    }
 
     public function manageProfile()
     {

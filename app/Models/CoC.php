@@ -10,6 +10,7 @@ class CoC extends Model
 {
     use HasFactory;
 
+    protected $table = 'COC';
     protected $primaryKey = 'coc_id';
 
     protected $fillable = [
@@ -18,7 +19,8 @@ class CoC extends Model
         'standard',
         'calibration_res',
         'remark',
-        'tsr_num'
+        'tsr_num',
+        'tsr_id'
     ];
 
     public function tsr(): BelongsTo

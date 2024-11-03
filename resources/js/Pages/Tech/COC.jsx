@@ -5,7 +5,8 @@ import Modal from "react-modal";
 import COCpdf from "./COCpdf";
 import { usePage } from "@inertiajs/react";
 
-function COC() {
+function COC({tsr}) {
+    console.log(tsr);
     const [showPreview, setShowPreview] = useState(false); // Define showPreview state
     const { auth } = usePage().props; // Ensure auth is defined
 

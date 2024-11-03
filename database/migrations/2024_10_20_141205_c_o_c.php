@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->text('calibration_res');
             $table->text('remark');
             $table->text('tsr_num');
+            $table->text('tsr_id');
         });
     }
 

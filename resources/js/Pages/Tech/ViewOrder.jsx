@@ -190,13 +190,6 @@ function ViewOrder({ jobOrder }) {
                     Show Technical Service Report
                 </Link>
 
-                <Link
-                    href={`/technician/COC`}
-                    className="btn btn-warning w-100 mt-2"
-                >
-                    Show Certificate of Calibration
-                </Link>
-
                 {/* Return Button */}
                 <a
                     href="/admin"

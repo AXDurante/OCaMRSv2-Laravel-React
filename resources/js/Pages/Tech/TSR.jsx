@@ -4,7 +4,7 @@ import Navbar from "../../Layouts/Navbar";
 import TSRpdf from "./TSRpdf";
 import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
 import Modal from "react-modal"; // Import Modal
-import { useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 
 function TSR({jobOrder}) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
@@ -122,10 +122,13 @@ function TSR({jobOrder}) {
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Job Request
                                     </button>
-                                    <button className="btn btn-light w-100 mb-2">
-                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                        Certificate of Calibration
-                                    </button>
+                                    <Link
+                                        href="">
+                                        <button className="btn btn-light w-100 mb-2">
+                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                            Create Certificate of Calibration
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
 
