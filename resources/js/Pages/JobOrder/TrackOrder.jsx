@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
-import JobOrder from "./CreateOrder";
 
 function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
     const [sortBy, setSortBy] = useState(currentSort || "newest");
@@ -18,8 +17,6 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
 
     return (
         <div className="">
-            {/* Search Button */}
-
             <div>
                 <div>
                     <h1 className="d-inline">Track Request | </h1>
@@ -46,11 +43,8 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
                             Search
                         </button>
                     </div>
-
-                    <div className="container"></div>
                 </div>
 
-                {/* Sorting select */}
                 <div className="d-flex align-items-center mt-3">
                     <span className="me-2">Sort by:</span>
                     <select
@@ -60,11 +54,9 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
                     >
                         <option value="newest">Newest</option>
                         <option value="oldest">Oldest</option>
-                        {/* Add more sorting options as needed */}
                     </select>
                 </div>
 
-                {/* Card */}
                 {jobOrder.map((jobOrder) => (
                     <div
                         className="card mt-4 shadow-sm"
@@ -73,7 +65,6 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
                     >
                         <div className="card-body">
                             <div className="row align-items-center">
-                                {/* Image */}
                                 <div className="col-auto">
                                     <img
                                         src="images/Repair.png"
@@ -88,7 +79,6 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
                                     />
                                 </div>
 
-                                {/* Text content */}
                                 <div className="col">
                                     <div className="row">
                                         <div className="col-8">
@@ -99,7 +89,6 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
                                                 <h5 className="card-title">
                                                     Instrument Title:
                                                 </h5>
-
                                                 <h6 className="card-subtitle mt-3">
                                                     Status: {jobOrder.status}
                                                 </h6>
@@ -117,14 +106,17 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
                                                 </p>
                                             </div>
                                             <div className="d-flex justify-content-end">
-                                                <Link href={`feedback`}>
-                                                    <button
-                                                        className="btn btn-secondary me-2"
-                                                        id="btnFeed"
-                                                    >
-                                                        Give Feedback
-                                                    </button>
-                                                </Link>
+                                                {jobOrder.status ===
+                                                    "Completed" && (
+                                                    <Link href={`feedback`}>
+                                                        <button
+                                                            className="btn btn-secondary me-2"
+                                                            id="btnFeed"
+                                                        >
+                                                            Give Feedback
+                                                        </button>
+                                                    </Link>
+                                                )}
                                                 <Link
                                                     href={`jobOrder/${jobOrder.job_id}`}
                                                 >
@@ -161,4 +153,5 @@ TrackOrder.layout = (page) => {
         </Navbar>
     );
 };
+
 export default TrackOrder;
