@@ -44,12 +44,12 @@ function ViewTSR({tsrs, jobOrderId}) {
                                     <td>{tsr.model || 'N/A'}</td>
                                     <td>{tsr.serial_num || 'N/A'}</td>
                                     <td>
-                                        {/* <Link
+                                        <Link
                                             href={route('technician.viewTSRDetails', tsr.tsr_id)}
                                             className="btn btn-primary btn-sm"
                                         >
                                             View Details
-                                        </Link> */}
+                                        </Link>
                                     </td>
                                 </tr>
                             ))

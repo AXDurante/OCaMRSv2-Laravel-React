@@ -129,6 +129,15 @@ class TechnicianController extends Controller
         return redirect()->route('technician.dashboard');
     }
 
+    public function viewTSR($tsr_id)
+    {
+        $tsr = TSR::with(['job_order.user'])->findOrFail($tsr_id);
+
+        return Inertia::render('Tech/ViewTSRDetails', [
+            'tsr' => $tsr
+        ]);
+    }
+
     // CoC
     public function createCoC($id)
     {

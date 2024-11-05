@@ -366,8 +366,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     </Text>
                     <View style={styles.boxDO}>
                         <Text style={{ padding: 5, fontSize: 9 }}>
-                            {breakLongWords(reportDetails.diagnosis)} // Added
-                            to display diagnosis text
+                            {breakLongWords(reportDetails.diagnosis)}
                         </Text>
                     </View>
 
@@ -388,8 +387,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     </Text>
                     <View style={styles.boxAT}>
                         <Text style={{ padding: 5, fontSize: 9 }}>
-                            {breakLongWords(reportDetails.actionTaken)} // Added
-                            to display action taken text
+                            {breakLongWords(reportDetails.actionTaken)}
                         </Text>
                     </View>
                     <Text
