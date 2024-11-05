@@ -13,7 +13,6 @@ function ViewOrder({ jobOrder }) {
                 <div>
                     <h1 className="d-inline">Track Request | </h1>
                     <h1 className="d-inline fw-light">
-                        {" "}
                         Job Order Request Details
                     </h1>
                     <h4>
@@ -184,10 +183,17 @@ function ViewOrder({ jobOrder }) {
                 </Link>
 
                 <Link
-                    href={`/technician/TSR/${jobOrder.job_id}`}
+                    href={`/technician/TSR/${jobOrder.job_id}/create`}
                     className="btn btn-warning w-100 mt-2"
                 >
-                    Show Technical Service Report
+                    Create Technical Service Report
+                </Link>
+
+                <Link
+                    href={`/technician/TSR/${jobOrder.job_id}`}
+                    className="btn btn-info w-100 mt-2"
+                >
+                    View Technical Service Reports
                 </Link>
 
                 {/* Return Button */}

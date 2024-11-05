@@ -86,6 +86,18 @@ class TechnicianController extends Controller
 
 
     // TSR
+
+    public function indexTSR($id)
+    {
+        // Retrieve TSRs associated with the specified Job Order ID
+        $tsrs = TSR::where('job_id', $id)->get();
+
+        return Inertia::render('Tech/ViewTSR', [
+            'tsrs' => $tsrs,
+            'jobOrderId' => $id, // Pass the Job Order ID for reference
+        ]);
+    }
+
     public function createTSR($id)
     {
         $jobOrder = JobOrder::with(['int_units', 'user'])->findOrFail($id);
