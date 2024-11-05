@@ -64,14 +64,14 @@ function ViewTSRDetails({ tsr }) {
 
                                 <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
-                                    <button className="btn btn-light w-100 mb-2">
-                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                        Technical Service Report
-                                    </button>
-                                    <button className="btn btn-light w-100 mb-2">
-                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                        Job Request
-                                    </button>
+                                    <Link href={route('technician.COC', tsr.job_id)}>
+                                        <button className="btn btn-light w-100 mb-2">
+                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                            Create Certificate of Calibration
+                                        </button>
+                                    </Link>
+                                    
+                                    
                                     {/* <Link href={route('technician.createCoC', tsr.job_id)}>
                                         <button className="btn btn-light w-100 mb-2">
                                             <i className="bi bi-file-earmark-text-fill me-2"></i>
@@ -283,7 +283,7 @@ function ViewTSRDetails({ tsr }) {
                                                 type="button"
                                                 className="btn btn-primary ms-3 mb-3"
                                             >
-                                                Save Document
+                                                Edit Document
                                             </button>
                                             
                                         </div>

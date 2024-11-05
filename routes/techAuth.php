@@ -52,7 +52,7 @@ Route::middleware('auth:technicians')->group(function () {
     Route::post('technician/TSR/store-tsr', [TechnicianController::class, 'storeTSR'])->name('technician.store-tsr'); //Post
     Route::get('technician/TSR/details/{tsr_id}', [TechnicianController::class, 'viewTSR'])->name('technician.viewTSRDetails');
     // CoC Routes
-    Route::get('technician/COC/{id}', [TechnicianController::class, 'createCoC'])->name('technician.COC');
+    Route::get('technician/COC/{id}/create', [TechnicianController::class, 'createCoC'])->name('technician.COC');
 
     Route::resource('/tsr', TechnicianController::class);
 

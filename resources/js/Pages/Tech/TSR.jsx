@@ -112,7 +112,7 @@ function TSR({jobOrder}) {
                                     </h5>
                                 </div>
 
-                                <h6 className="mt-4">Related Documents:</h6>
+                                {/* <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
                                     <button className="btn btn-light w-100 mb-2">
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
@@ -129,7 +129,7 @@ function TSR({jobOrder}) {
                                             Create Certificate of Calibration
                                         </button>
                                     </Link>
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="col-12 col-md-8">

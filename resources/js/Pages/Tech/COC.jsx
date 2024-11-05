@@ -50,10 +50,10 @@ function COC({tsr}) {
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Technical Service Report
                                     </button>
-                                    <button className="btn btn-light w-100">
+                                    {/* <button className="btn btn-light w-100">
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Job Request
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
 
