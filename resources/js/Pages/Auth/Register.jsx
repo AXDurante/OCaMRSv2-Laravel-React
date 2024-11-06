@@ -478,12 +478,13 @@ export default function Register() {
                                     )}
                                 {/* Terms and Conditions Link */}
                                 <div className="text-center mt-3">
-                                    <button
+                                    <a
                                         className="text-link"
                                         onClick={() => setShowTerms(true)}
+                                        style={{ cursor: "pointer" }}
                                     >
                                         Terms and Conditions
-                                    </button>
+                                    </a>
                                 </div>
                                 {/* Terms and Conditions Modal */}
                                 {showTerms && (
