@@ -842,6 +842,15 @@ export default function Register() {
                                             <div className="modal-footer">
                                                 <button
                                                     type="button"
+                                                    className="btn btn-warning m-2"
+                                                    onClick={() =>
+                                                        setShowTerms(false)
+                                                    }
+                                                >
+                                                    Accept
+                                                </button>
+                                                <button
+                                                    type="button"
                                                     className="btn btn-secondary"
                                                     onClick={() =>
                                                         setShowTerms(false)

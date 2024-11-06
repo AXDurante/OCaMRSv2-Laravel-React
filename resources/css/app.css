@@ -1538,13 +1538,6 @@ input[type="checkbox"] {
         display: block !important; /* Ensure the modal is visible */
     }
 }
-.modal-content {
-    z-index: 1050; /* Standard Bootstrap modal z-index */
-    display: flex;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    height: 100%; /* Ensure it takes full height of the modal */
-}
 
 .modal {
     display: none; /* Default to hidden */
@@ -1574,13 +1567,17 @@ input[type="checkbox"] {
     justify-content: center; /* Center horizontally */
 }
 
+/* Update the modal content styles */
 .modal-content {
     z-index: 1050; /* Standard Bootstrap modal z-index */
     display: flex;
-    height: auto; /* Adjust height as needed */
-    max-width: 500px; /* Set a max width for the modal content */
+    flex-direction: column; /* Ensure content stacks vertically */
+    height: 500px; /* Adjust height as needed */
+    width: 700px; /* Set a max width for the modal content */
     margin: 0; /* Remove default margin */
     padding: 20px; /* Add padding for better spacing */
-    margin-top: 50%;
-    margin-bottom: 50%;
+    margin-top: 20%;
+    margin-bottom: 20%;
+    overflow: auto; /* Allow scrolling if content exceeds height */
+    border-radius: 8px; /* Add rounded corners */
 }
