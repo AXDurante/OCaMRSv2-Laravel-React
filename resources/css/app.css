@@ -292,7 +292,6 @@ input {
     z-index: 3 !important;
     top: 0;
     overflow-x: hidden;
-    padding-top: 20px;
 }
 .split3-ad {
     height: 100%;
