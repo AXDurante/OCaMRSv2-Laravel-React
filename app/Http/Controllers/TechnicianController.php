@@ -102,7 +102,10 @@ class TechnicianController extends Controller
     {
         $jobOrder = JobOrder::with(['int_units', 'user'])->findOrFail($id);
         return Inertia::render('Tech/TSR', [
-            'jobOrder' => $jobOrder
+            'jobOrder' => $jobOrder,
+            'auth' => [
+                'user' => Auth::user()
+            ]
         ]);
     }
 
@@ -123,7 +126,10 @@ class TechnicianController extends Controller
             'job_id' => ['required'],
         ]);
 
-        $tsrFields['tech_id'] = Auth::user()->employeeID;
+        // Get the authenticated user's full name
+        $user = Auth::user();
+        $tsrFields['tech_id'] = $user->firstName . ' ' . $user->lastName;
+        
         TSR::create($tsrFields);
 
         return redirect()->route('technician.dashboard');

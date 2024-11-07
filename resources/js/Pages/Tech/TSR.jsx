@@ -6,7 +6,7 @@ import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
 import Modal from "react-modal"; // Import Modal
 import { Link, useForm } from "@inertiajs/react";
 
-function TSR({jobOrder}) {
+function TSR({jobOrder, auth}) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
     
     // For PDF Previewer
@@ -53,6 +53,7 @@ function TSR({jobOrder}) {
         date_request: jobOrder.date_request,
         phone: jobOrder.user.phoneNumber,
         job_id: jobOrder.job_id,
+        tech_id: `${auth.user.firstName} ${auth.user.lastName}`
     });
 
     // Update the input fields to use setData instead of separate state variables
@@ -81,7 +82,10 @@ function TSR({jobOrder}) {
                 >
                     <TSRpdf 
                         jobOrder={jobOrder}
-                        reportDetails={data} />
+                        reportDetails={{
+                            ...data,
+                            tech_id: `${auth.user.firstName} ${auth.user.lastName}`
+                        }} />
                 </PDFViewer>
                 <button onClick={closeModal}>Close</button> {/* Close button */}
             </Modal>
@@ -290,19 +294,16 @@ function TSR({jobOrder}) {
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
-                                            <select className="w-100 rounded p-2">
-                                                <option>
-                                                    For Pull-Out
-                                                </option>
-                                                <option>
-                                                    Forward to Supplier
-                                                </option>
-                                                <option>
-                                                    For Repair
-                                                </option>
-                                                <option>
-                                                    Beyond Repair
-                                                </option>
+                                            <select 
+                                                className="w-100 rounded p-2"
+                                                name="recommendation"
+                                                value={data.recommendation}
+                                                onChange={handleInputChange}
+                                            >
+                                                <option value="For Pull-Out">For Pull-Out</option>
+                                                <option value="Forward to Supplier">Forward to Supplier</option>
+                                                <option value="For Repair">For Repair</option>
+                                                <option value="Beyond Repair">Beyond Repair</option>
                                             </select>
                                         </div>
                                     </div>

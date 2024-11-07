@@ -40,4 +40,9 @@ class TSR extends Model
     {
         return $this->hasOne(CoC::class, 'tsr_num', 'tsr_num');
     }
+
+    public function technician(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'tech_id', 'id');
+    }
 }   
