@@ -11,11 +11,12 @@ function CreateOrder({
     equipment,
 }) {
     const equipmentName = equipment?.map((item) => item.equip_name) || [];
+    const [remarksError, setRemarksError] = useState("");
 
     const { data, setData, post, errors, processing } = useForm({
         // For Job Order
         service_type: "",
-        trans_type: 'None',
+        trans_type: "None",
         dept_name: college,
         lab: labLoc,
         lab_loc: labLoc,
@@ -64,15 +65,35 @@ function CreateOrder({
         setData("instruments", updatedInstruments);
     };
 
-    function onSubmit(e) {
+    const onSubmit = (e) => {
         e.preventDefault();
+
+        // Validate remarks
+        if (!data.remarks.trim()) {
+            setRemarksError("Remarks should not be empty.");
+            return; // Prevent form submission
+        } else {
+            setRemarksError(""); // Clear error if remarks are valid
+        }
+        if (data.service_type === "") {
+            alert("Please select a service type."); // Alert user to select an option
+            return; // Prevent form submission
+        }
+        const equipmentErrors = data.instruments.some(
+            (instrument) => instrument.instrument === ""
+        );
+        if (equipmentErrors) {
+            alert("Please select an equipment for all items."); // Alert user to select equipment
+            return; // Prevent form submission
+        }
+
         post("/jobOrder");
-    }
+    };
 
     return (
         <>
             <div className="d-flex">
-                <div id="content" className=" flex-fill p-3">
+                <div id="content" className="flex-fill p-3">
                     <div>
                         <div>
                             <h1 class="d-inline">Job Request | </h1>
@@ -80,7 +101,8 @@ function CreateOrder({
                             <hr />
                         </div>
                         <div className="mt3">
-                            <h4>Information</h4> <p> Please fill in important* fields</p>
+                            <h4>Information</h4>{" "}
+                            <p> Please fill in important* fields</p>
                             <div className="row forms-bg p-3">
                                 <div className="col d-flex flex-column align-items-center p-3">
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
@@ -89,10 +111,22 @@ function CreateOrder({
                                     <select
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.service_type}
-                                        onChange={(e) => setData('service_type', e.target.value)}>
-                                            <option value="" disabled> Select an Option </option>
-                                            <option value="Repair"> Repair </option>
-                                            <option value="Calibration/Maintenance"> Calibration/Maintenance </option>
+                                        onChange={(e) =>
+                                            setData(
+                                                "service_type",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        <option value="" disabled>
+                                            {" "}
+                                            Select an Option{" "}
+                                        </option>
+                                        <option value="Repair"> Repair </option>
+                                        <option value="Calibration/Maintenance">
+                                            {" "}
+                                            Calibration/Maintenance{" "}
+                                        </option>
                                     </select>
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Laboratory
@@ -122,12 +156,17 @@ function CreateOrder({
                                 <div className="col d-flex flex-column align-items-center  p-3">
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Instrumentation Transportation
-                                    </h6>   
+                                    </h6>
                                     <input
                                         type="text"
                                         className="d-flex flex-column align-items-center w-100 rounded"
                                         value={data.trans_type}
-                                        onChange={(e) => setData('trans_type', e.target.value)}
+                                        onChange={(e) =>
+                                            setData(
+                                                "trans_type",
+                                                e.target.value
+                                            )
+                                        }
                                         placeholder="Please indicate if there is any, or type None if otherwise"
                                     />
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
@@ -155,11 +194,21 @@ function CreateOrder({
                                         readOnly
                                     />
                                 </div>
-                                <h6 className="w-100 fw-bold text-start"> Remarks </h6>
+                                <h6 className="w-100 fw-bold text-start">
+                                    {" "}
+                                    Remarks{" "}
+                                </h6>
                                 <textarea
                                     value={data.remarks}
-                                    onChange={(e) => setData('remarks', e.target.value)}
-                                />  
+                                    onChange={(e) =>
+                                        setData("remarks", e.target.value)
+                                    }
+                                />
+                                {remarksError && (
+                                    <div className="text-danger ">
+                                        {remarksError}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -170,63 +219,91 @@ function CreateOrder({
                                 <h4 className="mt-4">Item No. {index + 1}</h4>
                                 <div className="row forms-bg p-3">
                                     <div className="col-12 col-md-5 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">Equipment*</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Equipment*
+                                        </h6>
                                         <select
                                             className="w-100 mb-2 rounded form-control"
                                             name="instrument"
                                             value={instrument.instrument}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                         >
-                                            <option value="">Select an equipment</option>
+                                            <option value="">
+                                                Select an equipment
+                                            </option>
                                             {equipmentName.map((name, i) => (
                                                 <option key={i} value={name}>
                                                     {name}
                                                 </option>
                                             ))}
                                         </select>
-                                        <h6 className="w-100 fw-bold text-start">Model</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Model
+                                        </h6>
                                         <input
                                             type="text"
                                             className="w-100 mb-2 rounded"
                                             name="model"
                                             value={instrument.model}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                             placeholder="Please indicate if there is any, or type N/A if otherwise"
                                         />
                                     </div>
 
                                     <div className="col-12 col-md-3 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">Quantity*</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Quantity*
+                                        </h6>
                                         <input
                                             type="number"
                                             className="w-50 mb-2 justify-content-start rounded"
                                             name="qty"
                                             value={instrument.qty}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                         />
-                                        <h6 className="w-100 fw-bold text-start">Manufacturer</h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            Manufacturer
+                                        </h6>
                                         <input
                                             type="text"
                                             className="w-100 mb-2 rounded"
                                             name="manufacturer"
                                             value={instrument.manufacturer}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                             placeholder="Please indicate if there is any, or type N/A if otherwise"
                                         />
                                     </div>
 
                                     <div className="col-12 col-md-4 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start"> Serial Number/Property Number* </h6>
+                                        <h6 className="w-100 fw-bold text-start">
+                                            {" "}
+                                            Serial Number/Property Number*{" "}
+                                        </h6>
                                         <input
                                             type="number"
                                             className="w-100 mb-2 rounded"
                                             name="instrument_num"
                                             value={instrument.instrument_num}
-                                            onChange={(e) => handleInputChange(index, e)}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
                                         />
                                     </div>
                                     <div className="col-12 d-flex flex-row-reverse">
-                                        <button className="btn btn-danger" onClick={() => removeInstrument(index)}>
+                                        <button
+                                            className="btn btn-danger"
+                                            onClick={() =>
+                                                removeInstrument(index)
+                                            }
+                                        >
                                             Delete
                                         </button>
                                     </div>
@@ -234,12 +311,20 @@ function CreateOrder({
                             </div>
                         ))}
 
-                        <button className="jb-btn-add mt-3 mb-2" onClick={addInstrument}>
+                        <button
+                            className="jb-btn-add mt-3 mb-2"
+                            onClick={addInstrument}
+                        >
                             Add More Instrument
                         </button>
                         <hr />
-                        <button className="jb-btn-submit w-100 mt-3"
-                                onClick={onSubmit}> Submit Job Order</button>
+                        <button
+                            className="jb-btn-submit w-100 mt-3"
+                            onClick={onSubmit}
+                        >
+                            {" "}
+                            Submit Job Order
+                        </button>
                     </div>
                 </div>
             </div>
