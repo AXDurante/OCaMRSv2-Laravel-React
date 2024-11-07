@@ -15,12 +15,20 @@ class CoC extends Model
 
     protected $fillable = [
         'coc_num',
+        'equipment',
+        'model',
+        'serial_num',
         'calibration',
         'standard',
         'calibration_res',
         'remark',
         'tsr_num',
-        'tsr_id'
+        'tsr_id',
+        'calibration_cert_no',
+        'manufacturer',
+        'cert_num',
+        'issuing_lab',
+        'standard'
     ];
 
     public function tsr(): BelongsTo

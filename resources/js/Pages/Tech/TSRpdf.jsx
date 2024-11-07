@@ -172,18 +172,36 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     TECHNICAL SERVICE REPORT
                 </Text>
                 {/* TSR No. */}
-                <Text
-                    style={{
-                        textAlign: "right",
-                        fontSize: 12,
-                        marginTop: 10,
-                        marginRight: 150,
-                        fontFamily: "Arial",
-                        fontWeight: "bold",
-                    }}
-                >
-                    TSR No. {reportDetails.tsrNum}
-                </Text>
+                <View style={{ 
+                    flexDirection: 'row', 
+                    justifyContent: 'flex-end',
+                    marginTop: 10,
+                    
+                }}>
+                    <Text
+                        style={{
+                            fontSize: 12,
+                            fontFamily: "Arial",
+                            fontWeight: "bold",
+                            marginRight: 150,
+                        }}
+                    >
+                        TSR No.
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 12,
+                            fontFamily: "Arial",
+                            fontWeight: "bold",
+                            marginLeft: 5,
+                            position: 'absolute',
+                            marginRight: 125,
+                        }}
+                    >
+                        {reportDetails.tsr_num}
+                    </Text>
+                </View>
+                    
                 <Text
                     style={{
                         textAlign: "right",
@@ -319,7 +337,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                                 }}
                             >
                                 <Text style={styles.valueText}>
-                                    {reportDetails.serialNo}
+                                    {reportDetails.serial_num}
                                 </Text>
                             </View>
                         </View>
@@ -477,7 +495,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     >
                         REMARKS 
                     </Text>
-                    <View style={{ marginLeft: 9, marginRight: 9, marginTop: 5, minHeight: 40 }}>
+                    <View style={{ marginLeft: 9, marginRight: 9, marginTop: 1, minHeight: 40 }}>
                         <Text style={{ fontSize: 9, lineHeight: 15, paddingTop: 2, position: 'absolute', zIndex: 1 }}>
                             {breakLongWords(reportDetails.tsr_remarks)}
                         </Text>
@@ -515,7 +533,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                                                 top: -8,
                                                 left: 5,
                                                 zIndex: 1,
-                                                marginTop: 5,
+                                                marginTop: 4,
                                             },
                                         ]}
                                     >
@@ -542,7 +560,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                                     {
                                         fontFamily: "Arial",
                                         fontWeight: "bold",
-                                        marginLeft: 20,
+                                        marginLeft: 70,
                                     },
                                 ]}
                             >
@@ -552,7 +570,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                                 style={[
                                     styles.alignLeft,
                                     styles.textStyle,
-                                    { marginLeft: 90 },
+                                    { marginLeft: 120 },
                                 ]}
                             >
                                 LESO Administrator / Date
@@ -589,55 +607,47 @@ function TSRpdf({ jobOrder, reportDetails }) {
                         performed and completed in our laboratory/office.
                     </Text>
 
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            marginTop: 2,
-                        }}
-                    >
-                        <Text
-                            style={[
-                                styles.textStyle,
-                                { fontFamily: "Arial", fontWeight: "bold" },
-                            ]}
-                        >
-                            REQUESTED BY:
-                            ___________________________________________
+                    <View style={{ marginTop: 2 }}>
+                        {/* REQUESTED BY section */}
+                        <View style={{ flexDirection: "row", marginBottom: 2 }}>
+                            <Text style={[styles.textStyle, { fontFamily: "Arial", fontWeight: "bold" }]}>
+                                REQUESTED BY:
+                            </Text>
+                            <View style={{ flex: 1, marginLeft: 5, marginRight: 20 }}>
+                                <Text style={{ marginTop: 8, position: "absolute", top: -8, left: 5, fontSize: 9 }}>
+                                    {`${jobOrder.user.firstName} ${jobOrder.user.lastName}`}
+                                </Text>
+                                <View style={{ marginTop: 9, borderBottomWidth: 1, borderBottomColor: "black" }} />
+                            </View>
+                            <Text style={[styles.textStyle, { fontFamily: "Arial", fontWeight: "bold" }]}>
+                                E-mail:
+                            </Text>
+                            <View style={{ flex: 1, marginLeft: 5 }}>
+                                <Text style={{ marginTop: 8, position: "absolute", top: -8, left: 5, fontSize: 9 }}>
+                                    {jobOrder.user.email}
+                                </Text>
+                                <View style={{ marginTop: 9, borderBottomWidth: 1, borderBottomColor: "black" }} />
+                            </View>
+                        </View>
+
+                        {/* Signature line text */}
+                        <Text style={[styles.textStyle, { marginLeft: 90, marginBottom: 2 }]}>
+                            Signature over printed name / Date
                         </Text>
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                { marginLeft: 70 },
-                            ]}
-                        >
-                            E-mail: __________________
-                        </Text>
+
+                        {/* Position section */}
+                        <View style={{ flexDirection: "row" }}>
+                            <Text style={[styles.textStyle, { fontFamily: "Arial", fontWeight: "bold" }]}>
+                                POSITION:
+                            </Text> 
+                            <View style={{ flex: 1, marginLeft: 5 }}>
+                                <Text style={{ marginTop: 8, position: "absolute", top: -8, left: 5, fontSize: 9 }}>
+                                    {jobOrder.pos}
+                                </Text>
+                                <View style={{ marginTop: 9, borderBottomWidth: 1, borderBottomColor: "black" }} />
+                            </View>
+                        </View>
                     </View>
-
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            { marginLeft: 90, marginTop: 2 },
-                        ]}
-                    >
-                        Signature over printed name / Date
-                    </Text>
-
-                    <Text
-                        style={[
-                            styles.textStyle,
-                            {
-                                fontFamily: "Arial",
-                                fontWeight: "bold",
-                                marginTop: 4,
-                            },
-                        ]}
-                    >
-                        POSITION:
-                        _______________________________________________
-                    </Text>
 
                     <Text
                         style={[
@@ -658,7 +668,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     src="/images/TSRFooter.png"
                     style={[
                         styles.logo,
-                        { width: "100%", height: "auto", marginTop: 30 },
+                        { width: "100%", height: "auto", marginTop: 10 },
                     ]} // Updated to full width
                 />
             </Page>

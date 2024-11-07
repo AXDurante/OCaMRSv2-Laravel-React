@@ -9,28 +9,6 @@ import { Link, useForm } from "@inertiajs/react";
 function TSR({jobOrder, auth}) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
     
-    // For PDF Previewer
-    const [tsrNum, setTsrNum] = useState();
-    const [instrument, setInstrument] = useState();
-    const [model, setModel] = useState();
-    const [serialNo, setSerialNo] = useState();
-    const [problemReported, setProblemReported] = useState();
-    const [diagnosis, setDiagnosis] = useState();
-    const [actionTaken, setActionTaken] = useState();
-    const [tsrRemarks, setRemarks] = useState();
-
-    const reportDetails = {
-        tsrNum,
-        instrument,
-        model,
-        serialNo,
-        problemReported,
-        diagnosis,
-        actionTaken,
-        tsrRemarks,
-
-    };
-    
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
     };

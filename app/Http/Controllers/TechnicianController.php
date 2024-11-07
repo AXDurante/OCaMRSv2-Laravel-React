@@ -10,6 +10,7 @@ use App\Models\Equipment;
 use App\Models\TSR;
 use Illuminate\Support\Facades\Storage;
 use App\Models\JobOrder;
+use App\Models\CoC;
 
 class TechnicianController extends Controller
 {
@@ -147,12 +148,38 @@ class TechnicianController extends Controller
     // CoC
     public function createCoC($id)
     {
-        return Inertia::render('Tech/COC');
+        // Load job_order relationship and its user
+        $tsr = TSR::with(['job_order', 'job_order.user'])->findOrFail($id);
+        return Inertia::render('Tech/COC', [
+            'tsr' => $tsr,
+            'auth' => [
+                'user' => Auth::user()
+            ]
+        ]);
     }
 
     public function storeCoC(Request $request)
     {
+        $cocFields = $request->validate([
+            'coc_num' => ['required'],
+            'equipment' => ['required'],
+            'model' => ['required'],
+            'serial_num' => ['required'],
+            'calibration' => ['required'],
+            'calibration_res' => ['required'],
+            'remark' => ['nullable', 'string'],
+            'tsr_num' => ['required'],
+            'tsr_id' => ['required'],
+            'calibration_cert_no' => ['required'],
+            'manufacturer' => ['required'],
+            'cert_num' => ['required'],
+            'issuing_lab' => ['required'],
+            'standard' => ['required']
+        ]);
 
+        CoC::create($cocFields);
+
+        return redirect()->route('technician.dashboard');
     }
 
     public function manageProfile()
