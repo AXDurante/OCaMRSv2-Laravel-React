@@ -12,6 +12,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\TechnicianController;
+use App\Http\Controllers\FeedbackControllerAdmin;
+use App\Http\Controllers\FeedbackController;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
@@ -83,6 +85,13 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::delete('/admin/instrumentation-accounts/{account}', [InstrumentationAccountController::class, 'destroy'])->name('admin.instrumentation-accounts.destroy');
     Route::post('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'store'])->name('admin.instrumentation-accounts.store');
     Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
+
+    // Admin Feedback routes
+    Route::controller(FeedbackControllerAdmin::class)->group(function () {
+        Route::get('/admin/feedback', 'index')->name('admin.feedback.index');
+        Route::get('/admin/feedback/{feedback}', 'show')->name('admin.feedback.show');
+        Route::delete('/admin/feedback/{feedback}', 'destroy')->name('admin.feedback.destroy');
+    });
 });
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login')->middleware('technician.auth');
@@ -94,9 +103,7 @@ Route::get('/test', function () {
     return Inertia::render('VerifyEmail2');
 });
 
-Route::get('/feedback', function () {
-    return Inertia::render('Feedback');
-});
+
 
 
 Route::get('/original', function () {
@@ -126,6 +133,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/landingpage', function () {
         return Inertia::render('LandingPage');
     })->name('landingpage');
+
+    Route::controller(FeedbackController::class)->group(function () {
+        Route::get('/feedback/create/{jobOrderId}', 'create')->name('feedback.create');
+        Route::post('/feedback', 'store')->name('feedback.store');
+        Route::get('/feedback/{feedback}', 'show')->name('feedback.show');
+        Route::put('/feedback/{feedback}', 'update')->name('feedback.update');
+        Route::delete('/feedback/{feedback}', 'destroy')->name('feedback.destroy');
+        Route::get('/feedback/{feedback}/edit', 'edit')->name('feedback.edit');
+    });
 });
 
 Route::get('/instrumentation/login', [InstrumentationAuthController::class, 'showLoginForm'])->name('instrumentation.login');
