@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\IntUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JobOrderController extends Controller
 {
@@ -18,30 +19,42 @@ class JobOrderController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $sortBy = $request->input('sortBy', 'newest');
+        $sort = $request->input('sort', 'newest');
+        $filter = $request->input('filter', 'all');
+        
+        $jobOrders = JobOrder::select('job_orders.*')
+            ->leftJoin('feedbacks', function($join) {
+                $join->on('job_orders.job_id', '=', 'feedbacks.job_order_id')
+                    ->where('feedbacks.user_id', '=', auth()->id());
+            })
+            ->selectRaw('
+                job_orders.*, 
+                CASE WHEN feedbacks.id IS NOT NULL THEN true ELSE false END as has_feedback,
+                feedbacks.id as feedback_id
+            ')
+            ->where('job_orders.employeeID', auth()->user()->employeeID);
 
-        $query = JobOrder::where('employeeID', $user->employeeID);
+        // Apply status filter
+        if ($filter !== 'all') {
+            $jobOrders = $jobOrders->where('job_orders.status', ucfirst($filter));
+        }
 
         // Apply sorting
-        if ($sortBy === 'newest') {
-            $query->orderBy('date_request', 'desc');
-        } elseif ($sortBy === 'oldest') {
-            $query->orderBy('date_request', 'asc');
+        if ($sort === 'oldest') {
+            $jobOrders = $jobOrders->orderBy('job_orders.date_request', 'asc');
+        } else {
+            $jobOrders = $jobOrders->orderBy('job_orders.date_request', 'desc');
         }
-        // Add more sorting options here if needed
 
-        $jobOrder = $query->get();
-        $intUnit = IntUnit::all();
+        $jobOrders = $jobOrders->get();
 
         return Inertia::render('JobOrder/TrackOrder', [
-            'absolute' => false,
-            'firstName' => $user->firstName,
-            'lastName' => $user->lastName,
-            'email' => $user->email,
-            'jobOrder' => $jobOrder,
-            'intUnit' => $intUnit,
-            'currentSort' => $sortBy
+            'jobOrder' => $jobOrders,
+            'firstName' => auth()->user()->firstName,
+            'lastName' => auth()->user()->lastName,
+            'email' => auth()->user()->email,
+            'currentSort' => $sort,
+            'currentFilter' => $filter,
         ]);
     }
 

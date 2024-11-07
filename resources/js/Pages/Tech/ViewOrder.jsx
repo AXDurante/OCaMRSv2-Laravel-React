@@ -24,6 +24,8 @@ function ViewOrder({ jobOrder }) {
                                     ? "text-warning"
                                     : jobOrder.status === "Cancelled"
                                     ? "text-danger"
+                                    : jobOrder.status === "Completed" // Added condition for Completed
+                                    ? "text-success" // Green text for Completed
                                     : ""
                             }
                         >
@@ -99,12 +101,12 @@ function ViewOrder({ jobOrder }) {
                             />
                         </div>
                         <h6 className="w-100 fw-bold text-start"> Remarks </h6>
-                            <textarea
-                                value={jobOrder.remarks}
-                                onChange={(e) => setData('remarks', e.target.value)}
-                                readOnly
-                                disabled
-                        />  
+                        <textarea
+                            value={jobOrder.remarks}
+                            onChange={(e) => setData("remarks", e.target.value)}
+                            readOnly
+                            disabled
+                        />
                     </div>
                 </div>
 

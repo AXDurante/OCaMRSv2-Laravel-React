@@ -8,6 +8,16 @@ function ViewOrder({ jobOrder }) {
     // Check if jobOrder is defined and has instruments
     const instruments = jobOrder?.int_units || []; // Use int_units instead of instruments
     console.log(instruments);
+
+    // Add console.log to debug feedback data
+    console.log("Job Order Status:", jobOrder.status);
+    console.log("Feedback Data:", jobOrder.feedback);
+
+    // Add detailed console logs
+    console.log("Full Job Order Data:", jobOrder);
+    console.log("Job Order ID:", jobOrder.job_id);
+    console.log("Feedback Data:", jobOrder.feedback);
+
     return (
         <div className="d-flex">
             <div id="content" className="flex-fill p-3">
@@ -17,22 +27,41 @@ function ViewOrder({ jobOrder }) {
                         {" "}
                         Job Order Request Details
                     </h1>
-                    <h4>
-                        {" "}
-                        Status:{" "}
-                        <b
-                            className={
-                                jobOrder.status === "Processing"
-                                    ? "text-warning"
-                                    : jobOrder.status === "Cancelled"
-                                    ? "text-danger"
-                                    : ""
-                            }
-                        >
-                            {" "}
-                            {jobOrder.status}{" "}
-                        </b>
-                    </h4>
+                    <div className="d-flex align-items-center gap-3">
+                        <h4>
+                            Status:{" "}
+                            <b
+                                className={
+                                    jobOrder.status === "Processing"
+                                        ? "text-warning"
+                                        : jobOrder.status === "Cancelled"
+                                        ? "text-danger"
+                                        : jobOrder.status === "Completed"
+                                        ? "text-success"
+                                        : ""
+                                }
+                            >
+                                {jobOrder.status}
+                            </b>
+                        </h4>
+                        {/* Add more detailed condition and debug info */}
+                        {jobOrder.status === "Completed" && (
+                            <>
+                                {jobOrder.feedback ? (
+                                    <Link
+                                        href={route('admin.feedback.show', jobOrder.feedback.id)}
+                                        className="btn btn-primary"
+                                    >
+                                        View Feedback
+                                    </Link>
+                                ) : (
+                                    <span className="text-muted">
+                                        (No feedback found - ID: {jobOrder.job_id})
+                                    </span>
+                                )}
+                            </>
+                        )}
+                    </div>
                     <hr />
                 </div>
                 <div className="mt-3">

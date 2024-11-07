@@ -51,8 +51,8 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function job_orders(): HasMany
+    public function jobOrders()
     {
-        return $this->hasMany(JobOrder::class, 'job_id', 'employeeID');
+        return $this->hasMany(JobOrder::class, 'employeeID', 'employeeID');
     }
 }

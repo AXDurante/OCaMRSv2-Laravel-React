@@ -70,7 +70,17 @@ class AdminController extends Controller
     }
     public function showJobOrder($id)
     {
-        $jobOrder = JobOrder::with('int_units')->findOrFail($id); // Adjust as necessary based on your relationships
+        // Add debug logging to see what's being loaded
+        \Log::info('Loading Job Order:', ['id' => $id]);
+        
+        $jobOrder = JobOrder::with(['int_units', 'feedback', 'user'])->findOrFail($id);
+        
+        // Debug log the loaded data
+        \Log::info('Job Order Data:', [
+            'job_id' => $jobOrder->job_id,
+            'has_feedback' => $jobOrder->feedback ? 'yes' : 'no',
+            'feedback_data' => $jobOrder->feedback
+        ]);
 
         return Inertia::render('Admin/ViewOrder', [
             'jobOrder' => $jobOrder,
