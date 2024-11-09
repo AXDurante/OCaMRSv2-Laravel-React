@@ -1531,3 +1531,17 @@ input[type="checkbox"] {
         display: none; /* Optionally hide split2 if not needed */
     }
 }
+
+.input-error {
+    border: 2px solid #d43f18; /* Red border for error */
+}
+
+.error-message {
+    color: #d43f18; /* Error message color */
+    display: flex;
+    align-items: center; /* Align icon and text */
+}
+
+.error-icon {
+    margin-right: 5px; /* Space between icon and text */
+}

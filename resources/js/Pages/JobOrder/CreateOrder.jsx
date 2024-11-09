@@ -12,8 +12,9 @@ function CreateOrder({
 }) {
     const equipmentName = equipment?.map((item) => item.equip_name) || [];
     const [remarksError, setRemarksError] = useState("");
+    const [errors, setErrors] = useState({}); // State for all errors
 
-    const { data, setData, post, errors, processing } = useForm({
+    const { data, setData, post, processing } = useForm({
         // For Job Order
         service_type: "",
         trans_type: "None",
@@ -64,45 +65,42 @@ function CreateOrder({
         );
         setData("instruments", updatedInstruments);
     };
-    const [submitted, setSubmitted] = useState(false);
+
     const onSubmit = (e) => {
         e.preventDefault();
-        setSubmitted(true);
+        setErrors({}); // Clear previous errors
+        setRemarksError(""); // Clear remarks error
 
         // Validate remarks
         if (!data.remarks.trim()) {
             setRemarksError("Remarks should not be empty.");
-            return; // Prevent form submission
-        } else {
-            setRemarksError(""); // Clear error if remarks are valid
         }
+
+        // Collect errors
+        const newErrors = {};
         if (data.service_type === "") {
-            alert("Please select a service type."); // Alert user to select an option
-            return; // Prevent form submission
+            newErrors.service_type = "Please select a service type.";
         }
-        const equipmentErrors = data.instruments.some(
-            (instrument) => instrument.instrument === ""
-        );
-        if (equipmentErrors) {
-            alert("Please select an equipment for all items."); // Alert user to select equipment
+        data.instruments.forEach((instrument, index) => {
+            if (instrument.instrument === "") {
+                newErrors[`instrument_${index}`] =
+                    "Please select an equipment for all items.";
+            }
+            if (instrument.instrument_num === "") {
+                newErrors[`serialNumber_${index}`] =
+                    "Serial Number is required.";
+            }
+            if (instrument.qty === "") {
+                newErrors[`quantity_${index}`] = "Quantity is required.";
+            }
+        });
+
+        // Set errors if any
+        if (Object.keys(newErrors).length > 0 || remarksError) {
+            setErrors(newErrors);
             return; // Prevent form submission
         }
 
-        const serialNumberErrors = data.instruments.some(
-            (instrument) => instrument.instrument_num === "" // Check for empty serial number
-        );
-        if (serialNumberErrors) {
-            alert("Please provide a serial number for all items."); // Alert user to provide serial number
-            return; // Prevent form submission
-        }
-
-        const quantityError = data.instruments.some(
-            (instrument) => instrument.qty === "" // Check for empty quantity
-        );
-        if (quantityError) {
-            alert("Please provide a quantity for all items."); // Alert user to provide quantity
-            return; // Prevent form submission
-        }
         post("/jobOrder");
     };
 
@@ -112,20 +110,24 @@ function CreateOrder({
                 <div id="content" className="flex-fill p-3">
                     <div>
                         <div>
-                            <h1 class="d-inline">Job Request | </h1>
-                            <h1 class="d-inline fw-light">Open Request</h1>
+                            <h1 className="d-inline">Job Request | </h1>
+                            <h1 className="d-inline fw-light">Open Request</h1>
                             <hr />
                         </div>
                         <div className="mt3">
                             <h4>Information</h4>{" "}
                             <p> Please fill in important* fields</p>
                             <div className="row forms-bg p-3">
-                                <div className="col d-flex flex-column align-items-center p-3">
+                                <div className="col d-flex flex-column  p-3">
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Service Requested*
                                     </h6>
                                     <select
-                                        className="d-flex flex-column align-items-center w-100 rounded"
+                                        className={`d-flex flex-column align-items-center w-100 rounded ${
+                                            errors.service_type
+                                                ? "input-error"
+                                                : ""
+                                        }`}
                                         value={data.service_type}
                                         onChange={(e) =>
                                             setData(
@@ -135,15 +137,19 @@ function CreateOrder({
                                         }
                                     >
                                         <option value="" disabled>
-                                            {" "}
-                                            Select an Option{" "}
+                                            Select an Option
                                         </option>
-                                        <option value="Repair"> Repair </option>
+                                        <option value="Repair">Repair</option>
                                         <option value="Calibration/Maintenance">
-                                            {" "}
-                                            Calibration/Maintenance{" "}
+                                            Calibration/Maintenance
                                         </option>
                                     </select>
+                                    {errors.service_type && (
+                                        <div className="error-message  align-items-start  mt-2 w-100">
+                                            <i className="bi bi-exclamation-diamond-fill m-1"></i>
+                                            {errors.service_type}
+                                        </div>
+                                    )}
                                     <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
                                         Laboratory
                                     </h6>
@@ -215,13 +221,19 @@ function CreateOrder({
                                     Remarks{" "}
                                 </h6>
                                 <textarea
+                                    className={`w-100 ${
+                                        remarksError ? "input-error" : ""
+                                    }`}
                                     value={data.remarks}
                                     onChange={(e) =>
                                         setData("remarks", e.target.value)
                                     }
                                 />
                                 {remarksError && (
-                                    <div className="text-danger ">
+                                    <div className="error-message">
+                                        <i class="bi bi-exclamation-diamond-fill m-1">
+                                            {" "}
+                                        </i>
                                         {remarksError}
                                     </div>
                                 )}
@@ -239,7 +251,11 @@ function CreateOrder({
                                             Equipment*
                                         </h6>
                                         <select
-                                            className="w-100 mb-2 rounded form-control"
+                                            className={`w-100 mb-2 rounded ${
+                                                errors[`instrument_${index}`]
+                                                    ? "input-error"
+                                                    : ""
+                                            }`}
                                             name="instrument"
                                             value={instrument.instrument}
                                             onChange={(e) =>
@@ -255,6 +271,12 @@ function CreateOrder({
                                                 </option>
                                             ))}
                                         </select>
+                                        {errors[`instrument_${index}`] && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-diamond-fill m-1"></i>
+                                                {errors[`instrument_${index}`]}
+                                            </div>
+                                        )}
                                         <h6 className="w-100 fw-bold text-start">
                                             Model
                                         </h6>
@@ -276,7 +298,11 @@ function CreateOrder({
                                         </h6>
                                         <input
                                             type="number"
-                                            className="w-50 mb-2 justify-content-start rounded"
+                                            className={`w-50 mb-2 justify-content-start rounded ${
+                                                errors[`quantity_${index}`]
+                                                    ? "input-error"
+                                                    : ""
+                                            }`}
                                             name="qty"
                                             value={instrument.qty}
                                             onChange={(e) =>
@@ -284,13 +310,12 @@ function CreateOrder({
                                             }
                                             required
                                         />
-                                        {submitted &&
-                                            instrument.qty === "" && ( // Display error message if quantity is empty
-                                                <div className="text-danger">
-                                                    Quantity is required.
-                                                </div>
-                                            )}
-
+                                        {errors[`quantity_${index}`] && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-diamond-fill m-1"></i>
+                                                {errors[`quantity_${index}`]}
+                                            </div>
+                                        )}
                                         <h6 className="w-100 fw-bold text-start">
                                             Manufacturer
                                         </h6>
@@ -313,20 +338,27 @@ function CreateOrder({
                                         </h6>
                                         <input
                                             type="number"
-                                            className="w-100 mb-2 rounded"
+                                            className={`w-100 mb-2 rounded ${
+                                                errors[`serialNumber_${index}`]
+                                                    ? "input-error"
+                                                    : ""
+                                            }`}
                                             name="instrument_num"
                                             value={instrument.instrument_num}
                                             onChange={(e) =>
                                                 handleInputChange(index, e)
                                             }
                                         />
-                                        {submitted &&
-                                            instrument.instrument_num ===
-                                                "" && ( // Display error message if serial number is empty
-                                                <div className="text-danger">
-                                                    Serial Number is required.
-                                                </div>
-                                            )}
+                                        {errors[`serialNumber_${index}`] && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-diamond-fill m-1"></i>
+                                                {
+                                                    errors[
+                                                        `serialNumber_${index}`
+                                                    ]
+                                                }
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="col-12 d-flex flex-row-reverse">
                                         <button
