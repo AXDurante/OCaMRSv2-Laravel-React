@@ -2,9 +2,31 @@ import React, { useState, useEffect } from "react";
 import { Link, useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 
-function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
+function TrackOrder({
+    jobOrder,
+    firstName,
+    lastName,
+    email,
+    currentSort,
+    flash,
+}) {
     const [sortBy, setSortBy] = useState(currentSort || "newest");
     const { get } = useForm();
+    const [successMessage, setSuccessMessage] = useState("");
+
+    useEffect(() => {
+        if (flash.success) {
+            setSuccessMessage(flash.success);
+        } else {
+            const timer = setTimeout(() => {
+                setSuccessMessage("");
+            }, 5000);
+
+            return () => {
+                clearTimeout(timer);
+            };
+        }
+    }, [flash]);
 
     useEffect(() => {
         get(route("jobOrder.index", { sortBy }), {
@@ -56,6 +78,16 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort }) {
                         <option value="oldest">Oldest</option>
                     </select>
                 </div>
+                {successMessage && (
+                    <div
+                        role="alert"
+                        className="mt-2 alert alert-success w-100"
+                    >
+                        <h6 className="text-base font-semibold">
+                            {successMessage}
+                        </h6>
+                    </div>
+                )}
 
                 {jobOrder.map((jobOrder) => (
                     <div

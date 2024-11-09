@@ -41,7 +41,10 @@ class JobOrderController extends Controller
             'email' => $user->email,
             'jobOrder' => $jobOrder,
             'intUnit' => $intUnit,
-            'currentSort' => $sortBy
+            'currentSort' => $sortBy,
+            'flash' => [
+                'success' => session('success'), // Pass the success message from the session
+            ],
         ]);
     }
 
@@ -106,7 +109,7 @@ class JobOrderController extends Controller
             IntUnit::create($instrument);
         }
 
-        return redirect('/jobOrder');
+          return redirect()->route('jobOrder.index')->with('success', 'Job Order is successfully submitted!');
     }
 
     /**
