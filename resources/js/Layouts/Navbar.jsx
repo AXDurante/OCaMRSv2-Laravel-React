@@ -93,7 +93,7 @@ export default function NavBar({
                     </div>
 
                     <p
-                        className={`fw-bold mb-0 text-dark ${
+                        className={`fw-bold mb-0 mt-2 text-dark ${
                             isFullyExpanded
                                 ? "expanded-content"
                                 : "collapsed-content"
@@ -125,12 +125,20 @@ export default function NavBar({
                         <h6>Client</h6>
                     )}
                 </div>
-                <div className="p-4">
+                <div
+                    className={`p-4 ${
+                        isCollapsed
+                            ? "d-flex flex-column align-items-center justify-content-center"
+                            : ""
+                    }`}
+                >
                     <ul className="nav flex-column">
                         <li className="nav-item">
                             <Link
                                 href={route("landingpage")}
-                                className="a-nav-link"
+                                className={`a-nav-link ${
+                                    isCollapsed ? "text-center" : ""
+                                }`}
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <a className="nav-link">
@@ -142,7 +150,9 @@ export default function NavBar({
                         <li className="nav-item">
                             <Link
                                 href="/jobOrder/create"
-                                className="a-nav-link"
+                                className={`a-nav-link ${
+                                    isCollapsed ? "text-center" : ""
+                                }`}
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <a className="nav-link">
@@ -154,7 +164,9 @@ export default function NavBar({
                         <li className="nav-item">
                             <Link
                                 href="/jobOrder"
-                                className="a-nav-link"
+                                className={`a-nav-link ${
+                                    isCollapsed ? "text-center" : ""
+                                }`}
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <a className="nav-link">
@@ -166,7 +178,9 @@ export default function NavBar({
                         <li className="nav-item">
                             <Link
                                 href={route("manageProfile")}
-                                className="a-nav-link"
+                                className={`a-nav-link ${
+                                    isCollapsed ? "text-center" : ""
+                                }`}
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <a className="nav-link">
@@ -178,7 +192,9 @@ export default function NavBar({
                         <li className="nav-item">
                             <Link
                                 href="/viewInstrument"
-                                className="a-nav-link"
+                                className={`a-nav-link ${
+                                    isCollapsed ? "text-center" : ""
+                                }`}
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <a className="nav-link">
@@ -188,13 +204,25 @@ export default function NavBar({
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
+                            <a
+                                className={`nav-link ${
+                                    isCollapsed ? "text-center" : ""
+                                }`}
+                                href="#"
+                                onClick={(e) => e.stopPropagation()}
+                            >
                                 <i className="bi bi-bell-fill me-2 "></i>
                                 {!isCollapsed && "Notification"}
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">
+                            <a
+                                className={`nav-link ${
+                                    isCollapsed ? "text-center" : ""
+                                }`}
+                                href="#"
+                                onClick={(e) => e.stopPropagation()}
+                            >
                                 <i className="bi bi-arrow-left me-2 icon-bold"></i>
                                 {!isCollapsed && "Go Back"}
                             </a>

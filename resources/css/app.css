@@ -1545,3 +1545,16 @@ input[type="checkbox"] {
 .error-icon {
     margin-right: 5px; /* Space between icon and text */
 }
+/* Apply to sidebar items when collapsed */
+.collapsed-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%; /* Full width for centering */
+}
+
+.nav-item i {
+    font-size: 24px; /* Adjust icon size if needed */
+    margin: 0; /* Remove default margin */
+}
