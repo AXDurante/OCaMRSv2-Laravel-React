@@ -64,9 +64,10 @@ function CreateOrder({
         );
         setData("instruments", updatedInstruments);
     };
-
+    const [submitted, setSubmitted] = useState(false);
     const onSubmit = (e) => {
         e.preventDefault();
+        setSubmitted(true);
 
         // Validate remarks
         if (!data.remarks.trim()) {
@@ -87,6 +88,21 @@ function CreateOrder({
             return; // Prevent form submission
         }
 
+        const serialNumberErrors = data.instruments.some(
+            (instrument) => instrument.instrument_num === "" // Check for empty serial number
+        );
+        if (serialNumberErrors) {
+            alert("Please provide a serial number for all items."); // Alert user to provide serial number
+            return; // Prevent form submission
+        }
+
+        const quantityError = data.instruments.some(
+            (instrument) => instrument.qty === "" // Check for empty quantity
+        );
+        if (quantityError) {
+            alert("Please provide a quantity for all items."); // Alert user to provide quantity
+            return; // Prevent form submission
+        }
         post("/jobOrder");
     };
 
@@ -266,7 +282,15 @@ function CreateOrder({
                                             onChange={(e) =>
                                                 handleInputChange(index, e)
                                             }
+                                            required
                                         />
+                                        {submitted &&
+                                            instrument.qty === "" && ( // Display error message if quantity is empty
+                                                <div className="text-danger">
+                                                    Quantity is required.
+                                                </div>
+                                            )}
+
                                         <h6 className="w-100 fw-bold text-start">
                                             Manufacturer
                                         </h6>
@@ -296,6 +320,13 @@ function CreateOrder({
                                                 handleInputChange(index, e)
                                             }
                                         />
+                                        {submitted &&
+                                            instrument.instrument_num ===
+                                                "" && ( // Display error message if serial number is empty
+                                                <div className="text-danger">
+                                                    Serial Number is required.
+                                                </div>
+                                            )}
                                     </div>
                                     <div className="col-12 d-flex flex-row-reverse">
                                         <button
