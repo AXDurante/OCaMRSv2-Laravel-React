@@ -10,6 +10,7 @@ use App\Models\Equipment;
 use App\Models\TSR;
 use Illuminate\Support\Facades\Storage;
 use App\Models\JobOrder;
+use Illuminate\Support\Str;
 
 class TechnicianController extends Controller
 {
@@ -150,16 +151,20 @@ class TechnicianController extends Controller
         if ($request->hasFile('photo')) {
             // Delete old photo if exists
             if ($user->photo) {
-                Storage::delete('public/photos/' . $user->photo);
+                Storage::delete('public/photos/technicianSignature/' . $user->photo);
             }
 
-            // Store new photo
-            $photoPath = $request->file('photo')->store('public/photos');
-            $validatedData['photo'] = basename($photoPath);
+            $photo = $request->file('photo');
+            // Generate unique filename using timestamp and random string
+            $filename = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
+            
+            // Store new photo in technician subfolder
+            $photoPath = $photo->storeAs('public/photos/technicianSignature', $filename);
+            $validatedData['photo'] = $filename;
         } elseif ($request->boolean('removePhoto')) {
             // Remove existing photo
             if ($user->photo) {
-                Storage::delete('public/photos/' . $user->photo);
+                Storage::delete('public/photos/technicianSignature/' . $user->photo);
             }
             $validatedData['photo'] = null;
         } else {

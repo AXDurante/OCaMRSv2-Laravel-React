@@ -44,7 +44,10 @@ class AppServiceProvider extends ServiceProvider
         Inertia::share([
             'appUrl' => $appUrl,
             'isProduction' => $isProduction,
-            'storageBaseUrl' => $isProduction ? $appUrl . '/public/storage' : $appUrl . '/storage',
+            'storageBaseUrl' => $isProduction 
+                ? $appUrl . '/public/storage/photos'  // Updated path
+                : url('storage/photos'), // Updated path
+            'userType' => fn () => auth()->check() ? class_basename(auth()->user()) : null,
         ]);
     }
 }

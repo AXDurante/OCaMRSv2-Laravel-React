@@ -8,6 +8,11 @@ function Home({ absolute, firstName, lastName, email, theID }) {
     const [showSuccess, setShowSuccess] = useState(false);
     const [showNoChanges, setShowNoChanges] = useState(false);
     const [showPhotoModal, setShowPhotoModal] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [passwordMatch, setPasswordMatch] = useState(true);
+    const [passwordLength, setPasswordLength] = useState(true);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
         firstName: auth.user.firstName,
         lastName: auth.user.lastName,
@@ -36,21 +41,53 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                data.photo !== null;
     };
 
-    const submit = (e) => {
-        e.preventDefault();
-        if (hasChanges()) {
-            post(route('technician.updateProfile'), {
-                preserveState: true,
-                preserveScroll: true,
-                onSuccess: () => {
-                    setShowSuccess(true);
-                    setTimeout(() => setShowSuccess(false), 5000);
-                },
-            });
+    const validatePasswords = (password, confirmation) => {
+        if (password || confirmation) {
+            setPasswordMatch(password === confirmation);
+            setPasswordLength(password.length >= 8);
         } else {
+            setPasswordMatch(true);
+            setPasswordLength(true);
+        }
+    };
+
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setData('password', newPassword);
+        validatePasswords(newPassword, data.password_confirmation);
+    };
+
+    const handleConfirmPasswordChange = (e) => {
+        const confirmation = e.target.value;
+        setData('password_confirmation', confirmation);
+        validatePasswords(data.password, confirmation);
+    };
+
+    const handleSubmitClick = (e) => {
+        e.preventDefault();
+        
+        if (!hasChanges()) {
             setShowNoChanges(true);
             setTimeout(() => setShowNoChanges(false), 5000);
+            return;
         }
+
+        setShowConfirmModal(true);
+    };
+
+    const confirmSubmit = () => {
+        post(route('technician.updateProfile'), {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                setShowSuccess(true);
+                setTimeout(() => setShowSuccess(false), 5000);
+                setShowConfirmModal(false);
+            },
+            onError: () => {
+                setShowConfirmModal(false);
+            }
+        });
     };
 
     const handleShowPhoto = () => {
@@ -61,7 +98,11 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         setShowPhotoModal(false);
     };
 
-    const getStorageUrl = (path) => `${storageBaseUrl}/${path}`;
+    const getStorageUrl = (path) => {
+        const userType = usePage().props.userType;
+        const subfolder = userType === 'Technician' ? 'technicianSignature' : 'clientSignature';
+        return `${storageBaseUrl}/${subfolder}/${auth.user.photo}`;
+    };
 
     const photoUrl = auth.user.photo ? getStorageUrl(`photos/${auth.user.photo}`) : null;
 
@@ -74,7 +115,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                         <div className="row">
                             <div className="col-12">
                                 <div className="p-5">
-                                    <form onSubmit={submit} encType="multipart/form-data">
+                                    <form onSubmit={handleSubmitClick} encType="multipart/form-data">
                                         <div className="message-container mb-4">
                                             {showSuccess && (
                                                 <div className="alert alert-success shadow-lg animate-message" role="alert">
@@ -135,27 +176,73 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                             <div className="col-md-6 mb-4">
                                                 <div className='d-flex align-items-center'>
                                                     <label className="form-label fw-bold">Password</label>
-                                                    <small className='mb-0 ml-2 mx-2 text-danger'>(1 uppercase letter, 1 number, and 1 special character required.)</small>
+                                                    <small className='mb-0 ml-2 mx-2 text-danger'>
+                                                        (1 uppercase letter, 1 number, and 1 special character required.)
+                                                    </small>
                                                 </div>
-                                                <input
-                                                    name="password"
-                                                    type="password"
-                                                    className="form-control shadow-sm animate-field"
-                                                    value={data.password}
-                                                    onChange={e => setData('password', e.target.value)}
-                                                />
-                                                {errors.password && <small className="text-danger mt-1">{errors.password}</small>}
+                                                <div className="position-relative">
+                                                    <input
+                                                        name="password"
+                                                        type={showPassword ? "text" : "password"}
+                                                        className={`form-control shadow-sm animate-field ${!passwordMatch || !passwordLength ? 'is-invalid' : ''}`}
+                                                        value={data.password}
+                                                        onChange={handlePasswordChange}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="btn position-absolute end-0 top-50 translate-middle-y text-muted"
+                                                        onClick={() => setShowPassword(!showPassword)}
+                                                        style={{ 
+                                                            border: 'none', 
+                                                            background: 'none',
+                                                            padding: '0.375rem 0.75rem',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                    >
+                                                        {showPassword ? '👁️' : '👁️'}
+                                                    </button>
+                                                </div>
+                                                {!passwordLength && data.password && (
+                                                    <div className="text-danger mt-1">
+                                                        Password must be at least 8 characters.
+                                                    </div>
+                                                )}
+                                                {errors.password && (
+                                                    <div className="text-danger mt-1">{errors.password}</div>
+                                                )}
                                             </div>
                                             <div className="col-md-6 mb-4">
                                                 <label className="form-label fw-bold">Confirm Password</label>
-                                                <input
-                                                    name="password_confirmation"
-                                                    type="password"
-                                                    className="form-control shadow-sm animate-field"
-                                                    value={data.password_confirmation}
-                                                    onChange={e => setData('password_confirmation', e.target.value)}
-                                                />
-                                                <small className="text-muted">Leave password fields empty to keep your current password.</small>
+                                                <div className="position-relative">
+                                                    <input
+                                                        name="password_confirmation"
+                                                        type={showConfirmPassword ? "text" : "password"}
+                                                        className={`form-control shadow-sm animate-field ${!passwordMatch ? 'is-invalid' : ''}`}
+                                                        value={data.password_confirmation}
+                                                        onChange={handleConfirmPasswordChange}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="btn position-absolute end-0 top-50 translate-middle-y text-muted"
+                                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                        style={{ 
+                                                            border: 'none', 
+                                                            background: 'none',
+                                                            padding: '0.375rem 0.75rem',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                    >
+                                                        {showConfirmPassword ? '👁️' : '👁️'}
+                                                    </button>
+                                                </div>
+                                                <small className="text-muted d-block mt-1">
+                                                    Leave password fields empty to keep your current password.
+                                                </small>
+                                                {!passwordMatch && data.password_confirmation && (
+                                                    <div className="text-danger mt-1">
+                                                        Passwords do not match.
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="row">
@@ -215,6 +302,31 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClosePhoto}>
                         Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Add Confirmation Modal */}
+            <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Update</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Are you sure you want to update your profile? This action cannot be undone.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button 
+                        variant="secondary" 
+                        onClick={() => setShowConfirmModal(false)}
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        variant="primary" 
+                        onClick={confirmSubmit}
+                        disabled={processing}
+                    >
+                        {processing ? 'Updating...' : 'Confirm Update'}
                     </Button>
                 </Modal.Footer>
             </Modal>

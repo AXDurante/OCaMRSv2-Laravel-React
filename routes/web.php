@@ -60,7 +60,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/account-handler', [AdminController::class, 'accountHandler']);
     Route::get('/admin/approve-profile', [AdminController::class, 'approveProfile']);
     Route::get('/admin/remove-profile', [AdminController::class, 'removeProfile']);
-    Route::get('/admin/manage-profile', [AdminController::class, 'manageProfile']);
+    Route::get('/admin/manage-profile', [AdminController::class, 'manageProfile'])->name('admin.manageProfile');
     Route::get('/admin/view-instrument', [AdminController::class, 'showViewInstrument']);
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
@@ -83,6 +83,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::delete('/admin/instrumentation-accounts/{account}', [InstrumentationAccountController::class, 'destroy'])->name('admin.instrumentation-accounts.destroy');
     Route::post('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'store'])->name('admin.instrumentation-accounts.store');
     Route::get('/admin/instrumentation-accounts', [InstrumentationAccountController::class, 'index'])->name('admin.instrumentation-accounts.index');
+
+    Route::post('/admin/manage-profile', [AdminController::class, 'updateProfile'])
+        ->name('admin.updateProfile')
+        ->middleware(['web']);
 });
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login')->middleware('technician.auth');

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phoneNumber');
             $table->string('college');
             $table->string('labLoc');
+            $table->string('photo')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -47,8 +48,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
+        // Drop dependent tables first
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('job_orders'); // if this exists
+        // Drop any other tables that depend on users
+        
+        // Finally drop the users table
+        Schema::dropIfExists('users');
     }
 };
