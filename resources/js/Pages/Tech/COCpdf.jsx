@@ -298,12 +298,18 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     calibrationText: {
+        textAlign: "left",
+        padding: 8,
         fontSize: 11, // Font size for the text
         lineHeight: 1.5, // Line height for better readability
     },
 });
 
-const COCpdf = () => {
+function breakLongWords(text) {
+    return text.replace(/(\S{92})/g, "$1\n"); // Inserts a newline every 30 characters
+}
+
+function COCpdf ({tsr, cocDetails}) {
     return (
         <Document>
             <Page size={[8.5 * 72, 13 * 72]}>
@@ -365,7 +371,7 @@ const COCpdf = () => {
                                         styles.tableCol1right,
                                         styles.lastCol,
                                     ]} // Ensure this is consistent with styles
-                                ></Text>
+                                >{cocDetails.coc_num}</Text>
                             </View>
                         </View>
                         {/* Table Rows */}
@@ -375,7 +381,7 @@ const COCpdf = () => {
                             </Text>
                             <Text
                                 style={[styles.tableCol1right, styles.lastCol]}
-                            ></Text>
+                            >{cocDetails.college}</Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol1}>
@@ -383,7 +389,7 @@ const COCpdf = () => {
                             </Text>
                             <Text
                                 style={[styles.tableCol1right, styles.lastCol]}
-                            ></Text>
+                            >{cocDetails.lab_loc}</Text>
                         </View>
                     </View>
                     {/* Second Table (4 columns, 5 rows) */}
@@ -392,7 +398,7 @@ const COCpdf = () => {
                         <View style={styles.tableTopBorder2}>
                             <View style={styles.tableRow1}>
                                 <Text style={styles.tableText1}>Equipment</Text>
-                                <Text style={[styles.tableColHeader2]}></Text>
+                                <Text style={[styles.tableColHeader2]}>{cocDetails.equipment}</Text>
                                 <Text style={styles.tableText1}>
                                     Date Received
                                 </Text>
@@ -401,40 +407,40 @@ const COCpdf = () => {
                                         styles.tableColHeader2,
                                         styles.lastCol,
                                     ]}
-                                ></Text>
+                                >{cocDetails.date_req}</Text>
                             </View>
                         </View>
 
                         {/* Table Rows */}
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol2}>Manufacturer</Text>
-                            <Text style={styles.tableCol2}></Text>
+                            <Text style={styles.tableCol2}>{cocDetails.manufacturer}</Text>
                             <Text style={styles.tableCol2}>
                                 Date Calibrated
                             </Text>
                             <Text
                                 style={[styles.tableCol2, styles.lastCol]}
-                            ></Text>
+                            >{cocDetails.date_cal}</Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol2}>Model No.</Text>
-                            <Text style={styles.tableCol2}></Text>
+                            <Text style={styles.tableCol2}>{cocDetails.model}</Text>
                             <Text style={styles.tableCol2}>
                                 Recommended Due Date
                             </Text>
                             <Text
                                 style={[styles.tableCol2, styles.lastCol]}
-                            ></Text>
+                            >{cocDetails.date_due}</Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol2}>Serial No.</Text>
-                            <Text style={styles.tableCol2}></Text>
+                            <Text style={styles.tableCol2}>{cocDetails.serial_num}</Text>
                             <Text style={styles.tableCol2}>
                                 Place of Calibration
                             </Text>
                             <Text
                                 style={[styles.tableCol2, styles.lastCol]}
-                            ></Text>
+                            > UST LESO Office </Text>
                         </View>
                     </View>
 
@@ -453,9 +459,7 @@ const COCpdf = () => {
                                 { textAlign: "left" },
                             ]}
                         >
-                            Above equipment has been calibrated using STANDARD
-                            CALIBRATION WEIGHTS designed for highly precise
-                            calibration and adjustment of electronics balances.
+                            {breakLongWords(cocDetails.calibration)}
                         </Text>
                     </View>
                     <View style={styles.tableContainer}>
@@ -473,11 +477,11 @@ const COCpdf = () => {
 
                         {/* Row 1 */}
                         <View style={styles.tableRow}>
-                            <Text style={styles.tableCol3}></Text>
-                            <Text style={styles.tableCol3}></Text>
+                            <Text style={styles.tableText3}>{cocDetails.standard}</Text>
+                            <Text style={styles.tableText3}>{cocDetails.coc_num}</Text>
                             <Text
-                                style={[styles.tableCol3, styles.lastCol]}
-                            ></Text>
+                                style={[styles.tableText3, styles.lastCol]}
+                            >{cocDetails.labLocation}</Text>
                         </View>
                     </View>
 
@@ -490,7 +494,9 @@ const COCpdf = () => {
                         Calibration Results:
                     </Text>
                     <View style={styles.resultsContainer}>
-                        <Text style={styles.calibrationText}></Text>
+                        <Text style={styles.calibrationText}>
+                            {breakLongWords(cocDetails.calibration_res)}
+                        </Text>
                     </View>
 
                     <Text
@@ -503,7 +509,7 @@ const COCpdf = () => {
                     </Text>
                     <View style={styles.remarksContainer}>
                         <Text style={styles.remarksText}>
-                            EQUIPMENT CALIBRATION / ROUTINE MAINTENANC
+                            {breakLongWords(cocDetails.remark)}
                         </Text>
                     </View>
 

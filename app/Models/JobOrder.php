@@ -60,4 +60,9 @@ class JobOrder extends Model
     {
         return $this->hasMany(TSR::class, 'job_id', 'job_id');
     }
+
+    public function feedback()
+    {
+        return $this->hasOne(Feedback::class, 'job_order_id', 'job_id');
+    }
 }

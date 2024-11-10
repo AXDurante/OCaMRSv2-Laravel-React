@@ -3,11 +3,40 @@ import Navbar2 from "@/Layouts/Navbar2";
 import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
 import Modal from "react-modal";
 import COCpdf from "./COCpdf";
-import { usePage } from "@inertiajs/react";
+import { usePage, useForm } from "@inertiajs/react";
 
-function COC() {
+function COC({ tsr, auth }) {
+    const { data, setData, post, processing, errors } = useForm({
+        coc_num: '',
+        college: tsr.job_order.dept_name,
+        lab_loc: tsr.job_order.lab_loc,
+        equipment: '',
+        model: '',
+        serial_num: '',
+        calibration: '',
+        calibration_res: '',
+        remark: '',
+        tsr_num: tsr.tsr_num,
+        tsr_id: tsr.tsr_id,
+        manufacturer: '',
+        standard: '',
+        date_req: tsr.job_order.date_request,
+        date_req: tsr.job_order.date_request,
+        date_cal: tsr.job_order.date_request,
+        date_due: tsr.job_order.date_due,
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setData(name, value);
+    };
+
+    function onSubmit(e) {
+        e.preventDefault();
+        post(route('technician.storeCoC'));
+    };
+
     const [showPreview, setShowPreview] = useState(false); // Define showPreview state
-    const { auth } = usePage().props; // Ensure auth is defined
 
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
@@ -49,15 +78,31 @@ function COC() {
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Technical Service Report
                                     </button>
-                                    <button className="btn btn-light w-100">
+                                    {/* <button className="btn btn-light w-100">
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Job Request
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
 
                             <div className="col-12 col-md-8">
                                 <div className="pt-5 pb-5 p-3">
+                                <div className="row">
+                                        <div className="col-12 col-sm-3 mb-3">
+                                            <label className="form-label fw-bold d-block text-truncate">
+                                                Calibration No.
+                                            </label>
+                                        </div>
+                                        <div className="col-12 col-sm-9 mb-3">
+                                            <input
+                                                type="text"
+                                                className="form-control rounded"
+                                                name="coc_num"
+                                                value={data.coc_num}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                    </div>
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
@@ -68,21 +113,26 @@ function COC() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                name="equipment"
+                                                value={data.equipment}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
+
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Date Manufacturer
+                                                Manufacturer
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                name="manufacturer"
+                                                value={data.manufacturer}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -97,7 +147,9 @@ function COC() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                name="model"
+                                                value={data.model}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -112,7 +164,9 @@ function COC() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                name="serial_num"
+                                                value={data.serial_num}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -120,14 +174,16 @@ function COC() {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Date Received
+                                                Procedure and Traceability
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                name="calibration"
+                                                value={data.calibration}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -135,14 +191,16 @@ function COC() {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Date Calibrated
+                                                Standard Used
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
+                                                name="standard"
+                                                value={data.standard}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -150,44 +208,16 @@ function COC() {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Recommended Due Date
+                                                Calibration Result
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value="John"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Place of Calibration
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value="DAPAT DROPDOWN"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Job Order No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value="DAPAT DROPDOWN"
+                                                name="calibration_res"
+                                                value={data.calibration_res}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -202,14 +232,18 @@ function COC() {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value=""
+                                                name="remark"
+                                                value={data.remark}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
 
                                     <div className="row"></div>
-                                    <button className="btn btn-dark w-100 text-warning mt-2 mb-4">
-                                        Update Profile
+                                    <button 
+                                        className="btn btn-dark w-100 text-warning mt-2 mb-4"
+                                        onClick={onSubmit}>
+                                        Create Certificate of Calibration
                                     </button>
                                     <Modal
                                         isOpen={showPreview}
@@ -223,7 +257,12 @@ function COC() {
                                                 border: "none", // Optional: remove border for a cleaner look
                                             }}
                                         >
-                                            <COCpdf />
+                                            <COCpdf 
+                                                tsr={tsr}
+                                                cocDetails={{
+                                                    ...data,
+                                                }}
+                                            />
                                         </PDFViewer>
                                         <button onClick={closeModal}>
                                             Close

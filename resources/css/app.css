@@ -1532,6 +1532,497 @@ input[type="checkbox"] {
     }
 }
 
+/* ViewFeedback Component Styles */
+.forms-bg {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 
+        20px 20px 60px #d9d9d9,
+        -20px -20px 60px #ffffff;
+}
+
+.profile-bg {
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+}
+
+.text-yellow1 {
+    color: #fbc600;
+}
+
+.icon-wrapper {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 193, 7, 0.1);
+    box-shadow: 
+        4px 4px 8px rgba(0,0,0,0.2),
+        -4px -4px 8px rgba(255,255,255,0.05);
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.star-rating i {
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+    transition: transform 0.2s ease;
+}
+
+.star-rating i:hover {
+    transform: scale(1.1);
+}
+
+/* Neumorphic card styles */
+.feedback-card {
+    border-radius: 15px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
+}
+
+.comment-box {
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 5px #d1d1d1, inset -2px -2px 5px #ffffff;
+    padding: 1rem;
+    line-height: 1.6;
+}
+
+/* Return button hover effect */
+.return-button {
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+}
+
+.return-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Animation classes for framer-motion fallback */
+.fade-in {
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+.slide-in {
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .icon-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .star-rating i {
+        font-size: 1.2rem;
+    }
+}
+
+.hover-scale {
+    transition: transform 0.2s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.02);
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.fade-in-delayed {
+    animation: fadeIn 0.5s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feedback-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feedback-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 12px 12px 20px #d1d1d1, -12px -12px 20px #ffffff;
+}
+
+.return-button {
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+}
+
+.return-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Track Order Card Styles */
+.order-card {
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 
+        8px 8px 16px #d1d1d1,
+        -8px -8px 16px #ffffff;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.order-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        15px 15px 30px #9e9e9e,  /* Darker shadow */
+        -15px -15px 30px #ffffff;
+    background-color: #e0e0e0;  /* Darker gray on hover */
+}
+
+.service-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(145deg, #f0f0f0, #ffffff);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        4px 4px 8px #d1d1d1,
+        -4px -4px 8px #ffffff;
+    padding: 15px;
+}
+
+.service-icon {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.order-card:hover .service-icon {
+    transform: scale(1.1);
+}
+
+.order-title {
+    color: #202020;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.status-badge {
+    font-size: 0.85rem;
+    padding: 0.35em 1em;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.status-completed {
+    background: linear-gradient(145deg, #28a745, #20c997);
+    color: white;
+}
+
+.status-pending {
+    background: linear-gradient(145deg, #ffc107, #fd7e14);
+    color: white;
+}
+
+.status-processing {
+    background: linear-gradient(145deg, #17a2b8, #0dcaf0);
+    color: white;
+}
+
+.order-info {
+    display: flex;
+    gap: 2rem;
+    margin-top: 0.5rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-view-feedback {
+    background: linear-gradient(145deg, #17a2b8, #0dcaf0);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-give-feedback {
+    background: linear-gradient(145deg, #ffc107, #fd7e14);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-details {
+    background: linear-gradient(145deg, #0d6efd, #0dcaf0);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.btn-view-feedback:hover,
+.btn-give-feedback:hover,
+.btn-details:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    filter: brightness(110%);
+}
+
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+/* Animation for new cards */
+.fade-in {
+    animation: cardFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom Select Styles - Yellow Theme */
+.custom-select {
+    background: #FFD600;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    color: #202020;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23202020' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.custom-select:hover {
+    background: #FFE03D;
+    transform: translateY(-1px);
+}
+
+.custom-select:focus {
+    outline: none;
+    background: #FFE03D;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Filter Label Styles */
+.filter-label {
+    background: #FFD600;
+    color: #202020;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin-right: 0.5rem;
+}
+
+/* Container for sort and filter */
+.filter-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Filter Group Styles */
+.filter-group {
+    display: inline-flex;
+    align-items: stretch;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.filter-group:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+
+/* Label Styles */
+.filter-label {
+    background: #FFD600;
+    color: #202020;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    min-width: fit-content;
+}
+
+/* Select Styles */
+.filter-select {
+    background: white;
+    border: none;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    color: #202020;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23202020' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    min-width: 140px;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    outline: none;
+    background-color: #f8f9fa;
+}
+
+/* Hover state for the entire group */
+.filter-group:hover .filter-label {
+    background: #FFE03D;
+}
+
+.filter-group:hover .filter-select {
+    background-color: #f8f9fa;
+}
+
+/* Animation for the dropdown */
+.filter-select option {
+    padding: 10px;
+    background: white;
+}
+
+/* Optional: Add a subtle border to the entire group */
+.filter-group {
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Card styles */
+.card.order-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for job order cards */
+.card.order-card:hover {
+    background-color: #f0f0f0;  /* Darker gray background */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);  /* Deeper shadow */
+    transform: translateY(-4px);  /* Slight lift effect */
+}
+
+@media (min-width: 768px) {
+    .modal {
+        display: block !important; /* Ensure the modal is visible */
+    }
+}
+
+.modal {
+    display: none; /* Default to hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1050; /* Bootstrap modal default z-index */
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+}
+
+.modal.show {
+    display: block; /* Show when active */
+}
+
+.modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Update the modal content styles */
+.modal-content {
+    z-index: 1050; /* Standard Bootstrap modal z-index */
+    display: flex;
+    flex-direction: column; /* Ensure content stacks vertically */
+    height: 500px; /* Adjust height as needed */
+    width: 700px; /* Set a max width for the modal content */
+    margin: 0; /* Remove default margin */
+    padding: 20px; /* Add padding for better spacing */
+    margin-top: 20%;
+    margin-bottom: 20%;
+    overflow: auto; /* Allow scrolling if content exceeds height */
+    border-radius: 8px; /* Add rounded corners */
+}
+
 .input-error {
     border: 2px solid #d43f18; /* Red border for error */
 }

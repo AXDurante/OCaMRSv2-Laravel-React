@@ -1,0 +1,121 @@
+import AdminNavBar from "@/Layouts/AdminNavBar";
+
+function ViewFeedbackAdmin({ feedback }) {
+    // Function to render stars based on rating
+    const renderStars = (rating) => {
+        return [...Array(5)].map((_, index) => (
+            <i
+                key={index}
+                className={`bi bi-star-fill fs-4 ${
+                    index < rating ? 'text-warning' : 'text-secondary'
+                }`}
+            />
+        ));
+    };
+
+    return (
+        <div className="ps-3 pe-3">
+            <div>
+                <h1 className="d-inline">View Feedback | </h1>
+                <h1 className="d-inline fw-light">Client Service Rating</h1>
+                <hr />
+            </div>
+            <div className="mt-3">
+                <div className="row forms-bg">
+                    <div className="col-12 col-md-4 profile-bg d-flex flex-column align-items-center justify-content-center p-3 text-yellow1">
+                        <div className="icon-wrapper mb-4">
+                            <i className="bi bi-chat-square-dots fs-1"></i>
+                        </div>
+                        <h3 className="text-center">Feedback Details</h3>
+                    </div>
+
+                    <div className="col-12 col-md-8 p-4 fade-in">
+                        <div className="card shadow-lg border-0 feedback-card">
+                            <div className="card-body p-4">
+                                <div className="row mb-4">
+                                    <div className="col-12">
+                                        <div className="d-flex align-items-center mb-2">
+                                            <label className="form-label fw-bold mb-0 me-3">
+                                                Client Name:
+                                            </label>
+                                            <span className="text-muted">{feedback.user.name}</span>
+                                        </div>
+                                        <div className="d-flex align-items-center mb-2">
+                                            <label className="form-label fw-bold mb-0 me-3">
+                                                Employee ID:
+                                            </label>
+                                            <span className="text-muted">{feedback.user?.employeeID}</span>
+                                        </div>
+                                        <div className="d-flex align-items-center mb-2">
+                                            <label className="form-label fw-bold mb-0 me-3">
+                                                Job Order ID:
+                                            </label>
+                                            <span className="text-muted">#{feedback.job_order_id}</span>
+                                        </div>
+                                        <div className="d-flex align-items-center mb-2">
+                                            <label className="form-label fw-bold mb-0 me-3">
+                                                Service Type:
+                                            </label>
+                                            <span className="text-muted">{feedback.job_order?.service_type}</span>
+                                        </div>
+                                        <div className="d-flex align-items-center">
+                                            <label className="form-label fw-bold mb-0 me-3">
+                                                Submitted on:
+                                            </label>
+                                            <span className="text-muted">
+                                                {new Date(feedback.created_at).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row mb-4 hover-scale">
+                                    <div className="col-12">
+                                        <label className="form-label fw-bold mb-3">
+                                            Client Rating
+                                        </label>
+                                        <div className="star-rating d-flex gap-2">
+                                            {renderStars(feedback.rating)}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="row hover-scale">
+                                    <div className="col-12">
+                                        <label className="form-label fw-bold mb-3">
+                                            Client Comment
+                                        </label>
+                                        <div className="comment-box">
+                                            <p className="mb-0">
+                                                {feedback.comment}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="fade-in-delayed">
+                    <a
+                        href="/admin"
+                        className="btn btn-dark w-100 text-warning mt-5 mb-4 return-button"
+                    >
+                        Return to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+ViewFeedbackAdmin.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
+
+export default ViewFeedbackAdmin;

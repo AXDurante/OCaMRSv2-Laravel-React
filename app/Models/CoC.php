@@ -10,15 +10,28 @@ class CoC extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+    protected $table = 'COC';
     protected $primaryKey = 'coc_id';
 
     protected $fillable = [
         'coc_num',
+        'college',
+        'lab_loc',
+        'equipment',
+        'model',
+        'serial_num',
+        'manufacturer',
+        'date_req',
+        'date_cal',
+        'date_due',
+        // Place of Calibration 
         'calibration',
         'standard',
         'calibration_res',
         'remark',
-        'tsr_num'
+        'tsr_num',
+        'tsr_id',
     ];
 
     public function tsr(): BelongsTo

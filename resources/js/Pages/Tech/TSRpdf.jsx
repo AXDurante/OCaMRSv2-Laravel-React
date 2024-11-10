@@ -172,18 +172,36 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     TECHNICAL SERVICE REPORT
                 </Text>
                 {/* TSR No. */}
-                <Text
-                    style={{
-                        textAlign: "right",
-                        fontSize: 12,
-                        marginTop: 10,
-                        marginRight: 150,
-                        fontFamily: "Arial",
-                        fontWeight: "bold",
-                    }}
-                >
-                    TSR No. {reportDetails.tsrNum}
-                </Text>
+                <View style={{ 
+                    flexDirection: 'row', 
+                    justifyContent: 'flex-end',
+                    marginTop: 10,
+                    
+                }}>
+                    <Text
+                        style={{
+                            fontSize: 12,
+                            fontFamily: "Arial",
+                            fontWeight: "bold",
+                            marginRight: 150,
+                        }}
+                    >
+                        TSR No.
+                    </Text>
+                    <Text
+                        style={{
+                            fontSize: 9,
+                            fontFamily: "Arial",
+                            fontWeight: "bold",
+                            marginLeft: 5,
+                            position: 'absolute',
+                            marginRight: 125,
+                        }}
+                    >
+                        {reportDetails.tsr_num}
+                    </Text>
+                </View>
+                    
                 <Text
                     style={{
                         textAlign: "right",
@@ -319,7 +337,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                                 }}
                             >
                                 <Text style={styles.valueText}>
-                                    {reportDetails.serialNo}
+                                    {reportDetails.serial_num}
                                 </Text>
                             </View>
                         </View>
@@ -366,8 +384,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     </Text>
                     <View style={styles.boxDO}>
                         <Text style={{ padding: 5, fontSize: 9 }}>
-                            {breakLongWords(reportDetails.diagnosis)} // Added
-                            to display diagnosis text
+                            {breakLongWords(reportDetails.diagnosis)}
                         </Text>
                     </View>
 
@@ -388,8 +405,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     </Text>
                     <View style={styles.boxAT}>
                         <Text style={{ padding: 5, fontSize: 9 }}>
-                            {breakLongWords(reportDetails.actionTaken)} // Added
-                            to display action taken text
+                            {breakLongWords(reportDetails.actionTaken)}
                         </Text>
                     </View>
                     <Text
@@ -407,76 +423,60 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     >
                         RECOMMENDATION
                     </Text>
-                    <View
-                        style={{
-                            flexDirection: "row",
+                    <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
+                        <View style={{
+                            width: 10,
+                            height: 10,
+                            borderWidth: 1,
+                            borderColor: "#000",
                             alignItems: "center",
-                            marginTop: 5,
-                        }}
-                    >
-                        <View
-                            style={{
-                                width: 10,
-                                height: 10,
-                                borderWidth: 1,
-                                borderColor: "#000",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginRight: 10,
-                                marginLeft: 5,
-                            }}
-                        >
-                            {/* Checkbox for "For Pull-out" */}
+                            justifyContent: "center",
+                            marginRight: 10,
+                            marginLeft: 5,
+                            backgroundColor: reportDetails.recommendation === "For Pull-Out" ? "#000" : "#fff"
+                        }}>
                         </View>
                         <Text style={styles.textStyle}>For Pull-out</Text>
 
-                        <View
-                            style={{
-                                width: 10,
-                                height: 10,
-                                borderWidth: 1,
-                                borderColor: "#000",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginLeft: 20,
-                                marginRight: 5,
-                            }}
-                        >
-                            {/* Checkbox for "Forward to Supplier" */}
+                        <View style={{
+                            width: 10,
+                            height: 10,
+                            borderWidth: 1,
+                            borderColor: "#000",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginLeft: 20,
+                            marginRight: 5,
+                            backgroundColor: reportDetails.recommendation === "Forward to Supplier" ? "#000" : "#fff"
+                        }}>
                         </View>
-                        <Text style={styles.textStyle}>
-                            Forward to Supplier (External Calibration)
-                        </Text>
+                        <Text style={styles.textStyle}>Forward to Supplier (External Calibration)</Text>
 
-                        <View
-                            style={{
-                                width: 10,
-                                height: 10,
-                                borderWidth: 1,
-                                borderColor: "#000",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginLeft: 20,
-                                marginRight: 5,
-                            }}
-                        >
-                            {/* Checkbox for "For Repair" */}
+                        <View style={{
+                            width: 10,
+                            height: 10,
+                            borderWidth: 1,
+                            borderColor: "#000",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginLeft: 20,
+                            marginRight: 5,
+                            backgroundColor: reportDetails.recommendation === "For Repair" ? "#000" : "#fff"
+                        }}>
                         </View>
                         <Text style={styles.textStyle}>For Repair</Text>
 
-                        <View
-                            style={{
-                                width: 10,
-                                height: 10,
-                                borderWidth: 1,
-                                borderColor: "#000",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                marginLeft: 20,
-                                marginRight: 5,
-                            }}
-                        >
-                            {/* Checkbox for "For Repair" */}
+                        <View style={{
+                            width: 10,
+                            height: 10,
+                            borderWidth: 1,
+                            borderColor: "#000",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginLeft: 20,
+                            marginRight: 5,
+                            backgroundColor: reportDetails.recommendation === "Beyond Repair" ? "#000" : "#fff"
+                        }}>
                         </View>
                         <Text style={styles.textStyle}>Beyond Repair</Text>
                     </View>
@@ -493,85 +493,91 @@ function TSRpdf({ jobOrder, reportDetails }) {
                             },
                         ]}
                     >
-                        REMARKS
+                        REMARKS 
                     </Text>
-                    <View
-                        style={{
-                            borderBottomWidth: 2,
-                            borderBottomColor: "black",
-                            marginTop: 15,
-                            marginLeft: 9,
-                        }}
-                    />
-                    <View
-                        style={{
-                            borderBottomWidth: 2,
-                            borderBottomColor: "black",
-                            marginTop: 15,
-                            marginLeft: 9,
-                        }}
-                    />
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            marginTop: 15,
-                            marginLeft: 9,
-                        }}
-                    >
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                {
-                                    fontFamily: "Arial",
-                                    fontWeight: "bold",
-                                },
-                            ]}
-                        >
-                            SERVICE PERFORMED BY:
-                            ___________________________________
+                    <View style={{ marginLeft: 9, marginRight: 9, marginTop: 1, minHeight: 40 }}>
+                        <Text style={{ fontSize: 9, lineHeight: 15, paddingTop: 2, position: 'absolute', zIndex: 1 }}>
+                            {breakLongWords(reportDetails.tsr_remarks)}
                         </Text>
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                {
-                                    fontFamily: "Arial",
-                                    fontWeight: "bold",
-                                    marginLeft: 20, // Adjust the marginLeft to provide spacing between the two elements
-                                },
-                            ]}
-                        >
-                            Noted by: ________________________
-                        </Text>
+                        <View style={{ borderBottomWidth: 1, borderBottomColor: "black", marginTop: 15 }} />
+                        <View style={{ borderBottomWidth: 1, borderBottomColor: "black", marginTop: 15 }} />
                     </View>
 
                     <View
                         style={{
                             flexDirection: "row",
-                            marginTop: 2,
+                            marginTop: 15,
                             marginLeft: 9,
                         }}
                     >
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                { marginLeft: 138 },
-                            ]}
-                        >
-                            Instrumentation Technician / Date
-                        </Text>
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                { marginLeft: 90 },
-                            ]}
-                        >
-                            LESO Administrator / Date
-                        </Text>
+                        <View style={{ flexDirection: "column", flex: 1, position: 'relative' }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text
+                                    style={[
+                                        styles.alignLeft,
+                                        styles.textStyle,
+                                        {
+                                            fontFamily: "Arial",
+                                            fontWeight: "bold",
+                                        },
+                                    ]}
+                                >
+                                    SERVICE PERFORMED BY:
+                                </Text>
+                                <View style={{ position: 'relative', flex: 1, marginLeft: 5 }}>
+                                    <Text
+                                        style={[
+                                            styles.textStyle,
+                                            { 
+                                                position: 'absolute',
+                                                top: -8,
+                                                left: 5,
+                                                zIndex: 1,
+                                                marginTop: 4,
+                                            },
+                                        ]}
+                                    >
+                                        {reportDetails.tech_id}
+                                    </Text>
+                                    <View style={{ marginTop: 5.5, borderBottomWidth: 1, borderBottomColor: 'black', marginRight: 5 }} />
+                                </View>
+                            </View>
+                            <Text
+                                style={[
+                                    styles.alignLeft,
+                                    styles.textStyle,
+                                    { marginLeft: 100 },
+                                ]}
+                            >
+                                Instrumentation Technician / Date
+                            </Text>
+                        </View>
+                        <View style={{ flexDirection: "column", flex: 1 }}>
+                            <Text
+                                style={[
+                                    styles.alignLeft,
+                                    styles.textStyle,
+                                    {
+                                        fontFamily: "Arial",
+                                        fontWeight: "bold",
+                                        marginLeft: 70,
+                                    },
+                                ]}
+                            >
+                                Noted by: ________________________
+                            </Text>
+                            <Text
+                                style={[
+                                    styles.alignLeft,
+                                    styles.textStyle,
+                                    { marginLeft: 120 },
+                                ]}
+                            >
+                                LESO Administrator / Date
+                            </Text>
+                        </View>
                     </View>
+
                     <Text
                         style={[
                             styles.alignLeft,
@@ -601,55 +607,47 @@ function TSRpdf({ jobOrder, reportDetails }) {
                         performed and completed in our laboratory/office.
                     </Text>
 
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            marginTop: 2,
-                        }}
-                    >
-                        <Text
-                            style={[
-                                styles.textStyle,
-                                { fontFamily: "Arial", fontWeight: "bold" },
-                            ]}
-                        >
-                            REQUESTED BY:
-                            ___________________________________________
+                    <View style={{ marginTop: 2 }}>
+                        {/* REQUESTED BY section */}
+                        <View style={{ flexDirection: "row", marginBottom: 2 }}>
+                            <Text style={[styles.textStyle, { fontFamily: "Arial", fontWeight: "bold" }]}>
+                                REQUESTED BY:
+                            </Text>
+                            <View style={{ flex: 1, marginLeft: 5, marginRight: 20 }}>
+                                <Text style={{ marginTop: 8, position: "absolute", top: -8, left: 5, fontSize: 9 }}>
+                                    {`${jobOrder.user.firstName} ${jobOrder.user.lastName}`}
+                                </Text>
+                                <View style={{ marginTop: 9, borderBottomWidth: 1, borderBottomColor: "black" }} />
+                            </View>
+                            <Text style={[styles.textStyle, { fontFamily: "Arial", fontWeight: "bold" }]}>
+                                E-mail:
+                            </Text>
+                            <View style={{ flex: 1, marginLeft: 5 }}>
+                                <Text style={{ marginTop: 8, position: "absolute", top: -8, left: 5, fontSize: 9 }}>
+                                    {jobOrder.user.email}
+                                </Text>
+                                <View style={{ marginTop: 9, borderBottomWidth: 1, borderBottomColor: "black" }} />
+                            </View>
+                        </View>
+
+                        {/* Signature line text */}
+                        <Text style={[styles.textStyle, { marginLeft: 90, marginBottom: 2 }]}>
+                            Signature over printed name / Date
                         </Text>
-                        <Text
-                            style={[
-                                styles.alignLeft,
-                                styles.textStyle,
-                                { marginLeft: 70 },
-                            ]}
-                        >
-                            E-mail: __________________
-                        </Text>
+
+                        {/* Position section */}
+                        <View style={{ flexDirection: "row" }}>
+                            <Text style={[styles.textStyle, { fontFamily: "Arial", fontWeight: "bold" }]}>
+                                POSITION:
+                            </Text> 
+                            <View style={{ flex: 1, marginLeft: 5 }}>
+                                <Text style={{ marginTop: 8, position: "absolute", top: -8, left: 5, fontSize: 9 }}>
+                                    {jobOrder.pos}
+                                </Text>
+                                <View style={{ marginTop: 9, borderBottomWidth: 1, borderBottomColor: "black" }} />
+                            </View>
+                        </View>
                     </View>
-
-                    <Text
-                        style={[
-                            styles.alignLeft,
-                            styles.textStyle,
-                            { marginLeft: 90, marginTop: 2 },
-                        ]}
-                    >
-                        Signature over printed name / Date
-                    </Text>
-
-                    <Text
-                        style={[
-                            styles.textStyle,
-                            {
-                                fontFamily: "Arial",
-                                fontWeight: "bold",
-                                marginTop: 4,
-                            },
-                        ]}
-                    >
-                        POSITION:
-                        _______________________________________________
-                    </Text>
 
                     <Text
                         style={[
@@ -670,7 +668,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     src="/images/TSRFooter.png"
                     style={[
                         styles.logo,
-                        { width: "100%", height: "auto", marginTop: 30 },
+                        { width: "100%", height: "auto", marginTop: 10 },
                     ]} // Updated to full width
                 />
             </Page>

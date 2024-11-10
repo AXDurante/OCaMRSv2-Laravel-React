@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 export default function AdminNavBar({ children }) {
+    const { auth } = usePage().props;
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const [isFullyExpanded, setIsFullyExpanded] = useState(true); // For handling transition timing
+    const [isFullyExpanded, setIsFullyExpanded] = useState(true);
 
     const handleResize = () => {
         if (window.innerWidth < 768) {
@@ -106,7 +107,7 @@ export default function AdminNavBar({ children }) {
                                         : "collapsed-content"
                                 }`}
                             >
-                                {isFullyExpanded && "Sir Alferos!"}
+                                {isFullyExpanded && auth?.user?.lastName ? `Sir ${auth.user.lastName}!` : 'Admin!'}
                             </p>
                         </div>
                     </div>

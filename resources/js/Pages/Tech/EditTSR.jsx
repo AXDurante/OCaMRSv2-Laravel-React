@@ -6,7 +6,7 @@ import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
 import Modal from "react-modal"; // Import Modal
 import { Link, useForm } from "@inertiajs/react";
 
-function TSR({jobOrder, auth}) {
+function EditTSR({jobOrder, auth, tsr}) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
     
     const handlePreviewClick = () => {
@@ -17,21 +17,21 @@ function TSR({jobOrder, auth}) {
         setShowPreview(false); // Close the modal
     };
 
-    // Update the useForm hook to match your TSR model fields
-    const { data, setData, post, processing, errors } = useForm({
-        tsr_num: '',
-        instrument: '',
-        model: '',
-        serial_num: '',
-        problemReported: '',
-        diagnosis: '',
-        actionTaken: '',
-        recommendation: 'Test',
-        tsr_remarks: '',
-        date_request: jobOrder.date_request,
-        phone: jobOrder.user.phoneNumber,
-        job_id: jobOrder.job_id,
-        tech_id: `${auth.user.firstName} ${auth.user.lastName}`
+    // Initialize useForm with existing TSR data
+    const { data, setData, put, processing, errors } = useForm({
+        tsr_num: tsr.tsr_num || '',
+        instrument: tsr.instrument || '',
+        model: tsr.model || '',
+        serial_num: tsr.serial_num || '',
+        problemReported: tsr.problemReported || '',
+        diagnosis: tsr.diagnosis || '',
+        actionTaken: tsr.actionTaken || '',
+        recommendation: tsr.recommendation || 'Test',
+        tsr_remarks: tsr.tsr_remarks || '',
+        date_request: tsr.date_request || jobOrder.date_request,
+        phone: tsr.phone || jobOrder.user.phoneNumber,
+        job_id: tsr.job_id || jobOrder.job_id,
+        tech_id: tsr.tech_id || `${auth.user.firstName} ${auth.user.lastName}`,
     });
 
     // Update the input fields to use setData instead of separate state variables
@@ -42,10 +42,9 @@ function TSR({jobOrder, auth}) {
 
     function onSubmit(e) {
         e.preventDefault();
-        post(route('technician.store-tsr'));
+        put(route('technician.update-tsr', tsr.tsr_id));
     }
 
-    console.log(jobOrder)
     return (
         <div className="d-flex">
             {/* Modal for PDF Preview */}
@@ -74,7 +73,7 @@ function TSR({jobOrder, auth}) {
                         <h1 className="d-inline">
                             Technical Service Report |{" "}
                         </h1>
-                        <h1 className="d-inline fw-light">Create</h1>
+                        <h1 className="d-inline fw-light"> Edit </h1>
                         <hr />
                     </div>
                     <div className="mt-3">
@@ -84,7 +83,7 @@ function TSR({jobOrder, auth}) {
                                     <i className="bi bi-person-fill fs-2 text-primary"></i>
                                 </div>
                                 <h5 className="mb-4 mt-9 ">
-                                    {data.tsr_num}
+                                    Analytical Balance
                                 </h5>
 
                                 <div className="mt-20">
@@ -333,6 +332,6 @@ function TSR({jobOrder, auth}) {
 }
 
 // Change Home to TSR
-TSR.layout = (page) => <Navbar2>{page}</Navbar2>;
+EditTSR.layout = (page) => <Navbar2>{page}</Navbar2>;
 
-export default TSR;
+export default EditTSR;

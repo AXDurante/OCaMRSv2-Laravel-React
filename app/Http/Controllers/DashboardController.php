@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
@@ -31,7 +33,8 @@ class DashboardController extends Controller
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'email' => $user->email,
-            'theID' => session('theID'), // Retrieve the flashed value
+            'user' => $user,
+            'theID' => session('theID'),
         ]);
     }
 
@@ -40,26 +43,48 @@ class DashboardController extends Controller
         
         $user = User::findOrFail($theID);
 
-        // Validate the request data
         $validatedData = $request->validate([
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $theID,
             'phoneNumber' => 'nullable|string|max:20',
             'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/',
+            'photo' => 'nullable|image|max:2048',
+            'removePhoto' => 'boolean',
         ]);
-        
-        // Remove password field if it's empty
+
         if (empty($validatedData['password'])) {
             unset($validatedData['password']);
         } else {
-            // Hash the new password
             $validatedData['password'] = bcrypt($validatedData['password']);
         }
 
-        // Update the user with validated data
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($user->photo) {
+                Storage::delete('public/photos/clientSignature/' . $user->photo);
+            }
+
+            $photo = $request->file('photo');
+            // Generate unique filename using timestamp and random string
+            $filename = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
+            
+            // Store new photo in client subfolder
+            $photoPath = $photo->storeAs('public/photos/clientSignature', $filename);
+            $validatedData['photo'] = $filename;
+        } elseif ($request->boolean('removePhoto')) {
+            // Remove existing photo
+            if ($user->photo) {
+                Storage::delete('public/photos/clientSignature/' . $user->photo);
+            }
+            $validatedData['photo'] = null;
+        } else {
+            // Keep existing photo
+            unset($validatedData['photo']);
+        }
+
         $user->update($validatedData);
 
-        return redirect()->route('manageProfile')->with('theID', $theID);
+        return redirect()->route('manageProfile')->with('message', 'Profile updated successfully');
     }
 }
