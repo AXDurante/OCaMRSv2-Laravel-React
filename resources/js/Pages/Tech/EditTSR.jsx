@@ -1,29 +1,79 @@
-import React, { useState } from "react"; // Ensure useState is imported
+import React, { useState } from "react"; // Import useState
 import Navbar2 from "@/Layouts/Navbar2";
+import Navbar from "../../Layouts/Navbar";
+import TSRpdf from "./TSRpdf";
 import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
-import Modal from "react-modal";
-import COCpdf from "./COCpdf";
-import { usePage, useForm } from "@inertiajs/react";
-import { Link } from "@inertiajs/react";
+import Modal from "react-modal"; // Import Modal
+import { Link, useForm } from "@inertiajs/react";
 
-function ViewCOCDetails({ coc, auth }) {
-    const [showPreview, setShowPreview] = useState(false); // Define showPreview state
-
+function EditTSR({jobOrder, auth, tsr}) {
+    const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
+    
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
     };
-
+    
     const closeModal = () => {
         setShowPreview(false); // Close the modal
     };
 
+    // Initialize useForm with existing TSR data
+    const { data, setData, put, processing, errors } = useForm({
+        tsr_num: tsr.tsr_num || '',
+        instrument: tsr.instrument || '',
+        model: tsr.model || '',
+        serial_num: tsr.serial_num || '',
+        problemReported: tsr.problemReported || '',
+        diagnosis: tsr.diagnosis || '',
+        actionTaken: tsr.actionTaken || '',
+        recommendation: tsr.recommendation || 'Test',
+        tsr_remarks: tsr.tsr_remarks || '',
+        date_request: tsr.date_request || jobOrder.date_request,
+        phone: tsr.phone || jobOrder.user.phoneNumber,
+        job_id: tsr.job_id || jobOrder.job_id,
+        tech_id: tsr.tech_id || `${auth.user.firstName} ${auth.user.lastName}`,
+    });
+
+    // Update the input fields to use setData instead of separate state variables
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setData(name, value);
+    };
+
+    function onSubmit(e) {
+        e.preventDefault();
+        put(route('technician.update-tsr', tsr.tsr_id));
+    }
+
     return (
         <div className="d-flex">
+            {/* Modal for PDF Preview */}
+            <Modal isOpen={showPreview} onRequestClose={closeModal}>
+                <h5>Print Preview:</h5>
+                <PDFViewer
+                    style={{
+                        width: "100%",
+                        height: "80%",
+                        border: "none", // Optional: remove border for a cleaner look
+                    }}
+                >
+                    <TSRpdf 
+                        jobOrder={jobOrder}
+                        reportDetails={{
+                            ...data,
+                            tech_id: `${auth.user.firstName} ${auth.user.lastName}`
+                        }} />
+                </PDFViewer>
+                <button onClick={closeModal}>Close</button> {/* Close button */}
+            </Modal>
+
             <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
-                        <h1 class="d-inline">Certificate of Calibration | </h1>
-                        <h1 class="d-inline fw-light">Create</h1>
+                        <h1 className="d-inline">
+                            Technical Service Report |{" "}
+                        </h1>
+                        <h1 className="d-inline fw-light"> Edit </h1>
                         <hr />
                     </div>
                     <div className="mt-3">
@@ -43,19 +93,24 @@ function ViewCOCDetails({ coc, auth }) {
                                     </h5>
                                 </div>
 
-                                <h6 className="mt-4">Related Documents:</h6>
+                                {/* <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
-                                    <Link href={route('technician.viewTSRDetails', coc.tsr_id)}>
-                                        <button className="btn btn-light w-100 mb-2">
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            Technical Service Report
-                                        </button>
-                                    </Link>
-                                    {/* <button className="btn btn-light w-100">
+                                    <button className="btn btn-light w-100 mb-2">
+                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                        Technical Service Report
+                                    </button>
+                                    <button className="btn btn-light w-100 mb-2">
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Job Request
-                                    </button> */}
-                                </div>
+                                    </button>
+                                    <Link
+                                        href="">
+                                        <button className="btn btn-light w-100 mb-2">
+                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                            Create Certificate of Calibration
+                                        </button>
+                                    </Link>
+                                </div> */}
                             </div>
 
                             <div className="col-12 col-md-8">
@@ -63,31 +118,46 @@ function ViewCOCDetails({ coc, auth }) {
                                 <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Calibration No.
+                                                TSR Number*
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="coc_num"
-                                                value={coc.coc_num}
-                                                disabled
+                                                name="tsr_num"
+                                                value={data.tsr_num}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Equipment
+                                                Instrument*
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="equipment"
-                                                value={coc.equipment}
+                                                name="instrument"
+                                                value={data.instrument}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-12 col-sm-3 mb-3">
+                                            <label className="form-label fw-bold d-block text-truncate">
+                                                Date Requested
+                                            </label>
+                                        </div>
+                                        <div className="col-12 col-sm-9 mb-3">
+                                            <input
+                                                type="text"
+                                                className="form-control rounded"
+                                                value={jobOrder.date_request}
                                                 disabled
                                             />
                                         </div>
@@ -96,15 +166,14 @@ function ViewCOCDetails({ coc, auth }) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Manufacturer
+                                                Tel No.
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="manufacturer"
-                                                value={coc.manufacturer}
+                                                value={jobOrder.user.phoneNumber}
                                                 disabled
                                             />
                                         </div>
@@ -113,7 +182,7 @@ function ViewCOCDetails({ coc, auth }) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Model No.
+                                                Model
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
@@ -121,8 +190,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="model"
-                                                value={coc.model}
-                                                disabled
+                                                value={data.model}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -138,8 +207,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="serial_num"
-                                                value={coc.serial_num}
-                                                disabled
+                                                value={data.serial_num}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -147,16 +216,16 @@ function ViewCOCDetails({ coc, auth }) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Procedure and Traceability
+                                                Problem Reported
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="calibration"
-                                                value={coc.calibration}
-                                                disabled
+                                                name="problemReported"
+                                                value={data.problemReported}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -164,16 +233,16 @@ function ViewCOCDetails({ coc, auth }) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Standard Used
+                                                Diagnosis/Observation
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="standard"
-                                                value={coc.standard}
-                                                disabled
+                                                name="diagnosis"
+                                                value={data.diagnosis}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -181,20 +250,40 @@ function ViewCOCDetails({ coc, auth }) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Calibration Result
+                                                Action Taken
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="calibration_res"
-                                                value={coc.calibration_res}
-                                                disabled
+                                                name="actionTaken"
+                                                value={data.actionTaken}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
 
+                                    <div className="row">
+                                        <div className="col-12 col-sm-3 mb-3">
+                                            <label className="form-label fw-bold d-block text-truncate">
+                                                Recommendation
+                                            </label>
+                                        </div>
+                                        <div className="col-12 col-sm-9 mb-3">
+                                            <select 
+                                                className="w-100 rounded p-2"
+                                                name="recommendation"
+                                                value={data.recommendation}
+                                                onChange={handleInputChange}
+                                            >
+                                                <option value="For Pull-Out">For Pull-Out</option>
+                                                <option value="Forward to Supplier">Forward to Supplier</option>
+                                                <option value="For Repair">For Repair</option>
+                                                <option value="Beyond Repair">Beyond Repair</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
@@ -205,59 +294,31 @@ function ViewCOCDetails({ coc, auth }) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="remark"
-                                                value={coc.remark}
-                                                disabled
+                                                name="tsr_remarks"
+                                                value={data.tsr_remarks}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
 
                                     <div className="row"></div>
-                                    <Modal
-                                        isOpen={showPreview}
-                                        onRequestClose={closeModal}
-                                    >
-                                        <h5>Print Preview:</h5>
-                                        <PDFViewer
-                                            style={{
-                                                width: "100%",
-                                                height: "80%",
-                                                border: "none", // Optional: remove border for a cleaner look
-                                            }}
-                                        >
-                                            <COCpdf 
-                                                cocDetails={{
-                                                    ...coc,
-                                                    department: coc.dept_name,
-                                                    labLocation: coc.lab_loc,
-                                                    dateRequested: coc.date_request,
-                                                    dueDate: coc.date_due
-                                                }}
-                                            />
-                                        </PDFViewer>
-                                        <button onClick={closeModal}>
-                                            Close
-                                        </button>{" "}
-                                        {/* Close button */}
-                                    </Modal>
-
-                                    <div
-                                        id="content"
-                                        className="main-content flex-fill p-3"
-                                    >
-                                        <div className="mt-3">
-                                            {/* Form fields for COC */}
+                                    <div className="row">
+                                        <div className="col-12">
                                             <button
+                                                type="button"
                                                 className="btn btn-primary mb-3"
                                                 onClick={handlePreviewClick} // Add click handler
                                             >
                                                 Preview PDF
                                             </button>
-                                            <Link href={route('technician.editCoC', coc.coc_id)}>
-                                                <button className="btn btn-primary mb-3 ms-2">
-                                                    Edit Certificate of Calibration
-                                                </button>
-                                            </Link>
+                                            <button
+                                                type="button"
+                                                className="btn btn-primary ms-3 mb-3"
+                                                onClick={onSubmit}
+                                            >
+                                                Save Document
+                                            </button>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -270,6 +331,7 @@ function ViewCOCDetails({ coc, auth }) {
     );
 }
 
-ViewCOCDetails.layout = (page) => <Navbar2>{page}</Navbar2>;
+// Change Home to TSR
+EditTSR.layout = (page) => <Navbar2>{page}</Navbar2>;
 
-export default ViewCOCDetails;
+export default EditTSR;

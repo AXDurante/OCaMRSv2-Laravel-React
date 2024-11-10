@@ -130,7 +130,7 @@ class TechnicianController extends Controller
         // Get the authenticated user's full name
         $user = Auth::user();
         $tsrFields['tech_id'] = $user->firstName . ' ' . $user->lastName;
-        
+
         TSR::create($tsrFields);
 
         return redirect()->route('technician.dashboard');
@@ -143,6 +143,44 @@ class TechnicianController extends Controller
         return Inertia::render('Tech/ViewTSRDetails', [
             'tsr' => $tsr
         ]);
+    }
+
+    public function editTSR($tsr_id)
+    {
+        $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
+        return Inertia::render('Tech/EditTSR', [
+            'tsr' => $tsr,
+            'jobOrder' => $tsr->job_order,
+            'auth' => [
+                'user' => Auth::user()
+            ]
+        ]);
+    }
+
+    public function updateTSR(Request $request, $tsr_id)
+    {
+        $tsr = TSR::findOrFail($tsr_id);
+        
+        $tsrFields = $request->validate([
+            'tsr_num' => ['required'],
+            'instrument' => ['required'],
+            'model' => ['nullable', 'string'],
+            'serial_num' => ['nullable', 'string'],
+            'problemReported' => ['nullable', 'string'],
+            'diagnosis' => ['nullable', 'string'],
+            'actionTaken' => ['nullable', 'string'],
+            'recommendation' => ['required'],
+            'tsr_remarks' => ['nullable', 'string'],
+            'date_request' => ['required'],
+            'phone' => ['required'],
+            'job_id' => ['required'],
+        ]);
+
+        // Update the TSR
+        $tsr->update($tsrFields);
+
+        return redirect()->route('technician.viewTSRDetails', $tsr->tsr_id)
+            ->with('message', 'TSR updated successfully');
     }
 
     // CoC
@@ -184,7 +222,8 @@ class TechnicianController extends Controller
         return redirect()->route('technician.dashboard');
     }
 
-    public function viewCoC($coc_id) {
+    public function viewCoC($coc_id)
+    {
         $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
         return Inertia::render('Tech/ViewCOCDetails', [
             'coc' => $coc
@@ -251,5 +290,46 @@ class TechnicianController extends Controller
         return Inertia::render("Tech/ViewInstrument", [
             "equipment" => $equipment,
         ]);
+    }
+
+    public function editCoC($coc_id)
+    {
+        $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
+        return Inertia::render('Tech/EditCOC', [
+            'coc' => $coc,
+            'tsr' => $coc->tsr,
+            'auth' => [
+                'user' => Auth::user()
+            ]
+        ]);
+    }
+
+    public function updateCoC(Request $request, $coc_id)
+    {
+        $coc = CoC::findOrFail($coc_id);
+        
+        $cocFields = $request->validate([
+            'coc_num' => ['required'],
+            'college' => ['required'],
+            'lab_loc' => ['required'],
+            'equipment' => ['required'],
+            'model' => ['required'],
+            'serial_num' => ['required'],
+            'calibration' => ['required'],
+            'calibration_res' => ['required'],
+            'remark' => ['nullable', 'string'],
+            'tsr_num' => ['required'],
+            'tsr_id' => ['required'],
+            'manufacturer' => ['required'],
+            'standard' => ['required'],
+            'date_req' => ['required'],
+            'date_cal' => ['required'],
+            'date_due' => ['required'],
+        ]);
+
+        $coc->update($cocFields);
+
+        return redirect()->route('technician.viewCoCDetails', $coc->coc_id)
+            ->with('message', 'Certificate of Calibration updated successfully');
     }
 }

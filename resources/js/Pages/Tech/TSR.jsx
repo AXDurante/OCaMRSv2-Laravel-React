@@ -84,7 +84,7 @@ function TSR({jobOrder, auth}) {
                                     <i className="bi bi-person-fill fs-2 text-primary"></i>
                                 </div>
                                 <h5 className="mb-4 mt-9 ">
-                                    Analytical Balance
+                                    {data.tsr_num}
                                 </h5>
 
                                 <div className="mt-20">

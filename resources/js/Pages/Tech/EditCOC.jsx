@@ -1,20 +1,48 @@
-import React, { useState } from "react"; // Ensure useState is imported
+import React, { useState } from "react";
 import Navbar2 from "@/Layouts/Navbar2";
-import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
+import { PDFViewer } from "@react-pdf/renderer";
 import Modal from "react-modal";
 import COCpdf from "./COCpdf";
 import { usePage, useForm } from "@inertiajs/react";
-import { Link } from "@inertiajs/react";
 
-function ViewCOCDetails({ coc, auth }) {
-    const [showPreview, setShowPreview] = useState(false); // Define showPreview state
+function EditCOC({ tsr, auth, coc }) {
+    const { data, setData, put, processing, errors } = useForm({
+        coc_num: coc.coc_num || '',
+        college: coc.college || tsr.job_order.dept_name,
+        lab_loc: coc.lab_loc || tsr.job_order.lab_loc,
+        equipment: coc.equipment || '',
+        model: coc.model || '',
+        serial_num: coc.serial_num || '',
+        calibration: coc.calibration || '',
+        calibration_res: coc.calibration_res || '',
+        remark: coc.remark || '',
+        tsr_num: coc.tsr_num || tsr.tsr_num,
+        tsr_id: coc.tsr_id || tsr.tsr_id,
+        manufacturer: coc.manufacturer || '',
+        standard: coc.standard || '',
+        date_req: coc.date_req || tsr.job_order.date_request,
+        date_cal: coc.date_cal || tsr.job_order.date_request,
+        date_due: coc.date_due || tsr.job_order.date_due,
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setData(name, value);
+    };
+
+    function onSubmit(e) {
+        e.preventDefault();
+        put(route('technician.update-coc', coc.coc_id));
+    };
+
+    const [showPreview, setShowPreview] = useState(false);
 
     const handlePreviewClick = () => {
-        setShowPreview(true); // Show the preview when the button is clicked
+        setShowPreview(true);
     };
 
     const closeModal = () => {
-        setShowPreview(false); // Close the modal
+        setShowPreview(false);
     };
 
     return (
@@ -23,7 +51,7 @@ function ViewCOCDetails({ coc, auth }) {
                 <div>
                     <div>
                         <h1 class="d-inline">Certificate of Calibration | </h1>
-                        <h1 class="d-inline fw-light">Create</h1>
+                        <h1 class="d-inline fw-light">Edit</h1>
                         <hr />
                     </div>
                     <div className="mt-3">
@@ -45,12 +73,10 @@ function ViewCOCDetails({ coc, auth }) {
 
                                 <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
-                                    <Link href={route('technician.viewTSRDetails', coc.tsr_id)}>
-                                        <button className="btn btn-light w-100 mb-2">
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            Technical Service Report
-                                        </button>
-                                    </Link>
+                                    <button className="btn btn-light w-100 mb-2">
+                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                        Technical Service Report
+                                    </button>
                                     {/* <button className="btn btn-light w-100">
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Job Request
@@ -71,8 +97,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="coc_num"
-                                                value={coc.coc_num}
-                                                disabled
+                                                value={data.coc_num}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -87,8 +113,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="equipment"
-                                                value={coc.equipment}
-                                                disabled
+                                                value={data.equipment}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -104,8 +130,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="manufacturer"
-                                                value={coc.manufacturer}
-                                                disabled
+                                                value={data.manufacturer}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -121,8 +147,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="model"
-                                                value={coc.model}
-                                                disabled
+                                                value={data.model}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -138,8 +164,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="serial_num"
-                                                value={coc.serial_num}
-                                                disabled
+                                                value={data.serial_num}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -155,8 +181,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="calibration"
-                                                value={coc.calibration}
-                                                disabled
+                                                value={data.calibration}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -172,8 +198,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="standard"
-                                                value={coc.standard}
-                                                disabled
+                                                value={data.standard}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -189,8 +215,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="calibration_res"
-                                                value={coc.calibration_res}
-                                                disabled
+                                                value={data.calibration_res}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -206,13 +232,18 @@ function ViewCOCDetails({ coc, auth }) {
                                                 type="text"
                                                 className="form-control rounded"
                                                 name="remark"
-                                                value={coc.remark}
-                                                disabled
+                                                value={data.remark}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
 
                                     <div className="row"></div>
+                                    <button 
+                                        className="btn btn-dark w-100 text-warning mt-2 mb-4"
+                                        onClick={onSubmit}>
+                                        Edit Certificate of Calibration
+                                    </button>
                                     <Modal
                                         isOpen={showPreview}
                                         onRequestClose={closeModal}
@@ -226,12 +257,9 @@ function ViewCOCDetails({ coc, auth }) {
                                             }}
                                         >
                                             <COCpdf 
+                                                tsr={tsr}
                                                 cocDetails={{
-                                                    ...coc,
-                                                    department: coc.dept_name,
-                                                    labLocation: coc.lab_loc,
-                                                    dateRequested: coc.date_request,
-                                                    dueDate: coc.date_due
+                                                    ...data,
                                                 }}
                                             />
                                         </PDFViewer>
@@ -253,11 +281,6 @@ function ViewCOCDetails({ coc, auth }) {
                                             >
                                                 Preview PDF
                                             </button>
-                                            <Link href={route('technician.editCoC', coc.coc_id)}>
-                                                <button className="btn btn-primary mb-3 ms-2">
-                                                    Edit Certificate of Calibration
-                                                </button>
-                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -270,6 +293,6 @@ function ViewCOCDetails({ coc, auth }) {
     );
 }
 
-ViewCOCDetails.layout = (page) => <Navbar2>{page}</Navbar2>;
+EditCOC.layout = (page) => <Navbar2>{page}</Navbar2>;
 
-export default ViewCOCDetails;
+export default EditCOC;

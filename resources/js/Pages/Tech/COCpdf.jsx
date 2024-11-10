@@ -381,7 +381,7 @@ function COCpdf ({tsr, cocDetails}) {
                             </Text>
                             <Text
                                 style={[styles.tableCol1right, styles.lastCol]}
-                            >{cocDetails.department}</Text>
+                            >{cocDetails.college}</Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol1}>
@@ -389,7 +389,7 @@ function COCpdf ({tsr, cocDetails}) {
                             </Text>
                             <Text
                                 style={[styles.tableCol1right, styles.lastCol]}
-                            >{cocDetails.labLocation}</Text>
+                            >{cocDetails.lab_loc}</Text>
                         </View>
                     </View>
                     {/* Second Table (4 columns, 5 rows) */}
@@ -407,7 +407,7 @@ function COCpdf ({tsr, cocDetails}) {
                                         styles.tableColHeader2,
                                         styles.lastCol,
                                     ]}
-                                >{cocDetails.dateRequested}</Text>
+                                >{cocDetails.date_req}</Text>
                             </View>
                         </View>
 
@@ -420,7 +420,7 @@ function COCpdf ({tsr, cocDetails}) {
                             </Text>
                             <Text
                                 style={[styles.tableCol2, styles.lastCol]}
-                            >{cocDetails.dateRequested}</Text>
+                            >{cocDetails.date_cal}</Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol2}>Model No.</Text>
@@ -430,7 +430,7 @@ function COCpdf ({tsr, cocDetails}) {
                             </Text>
                             <Text
                                 style={[styles.tableCol2, styles.lastCol]}
-                            >{cocDetails.dueDate}</Text>
+                            >{cocDetails.date_due}</Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol2}>Serial No.</Text>

@@ -51,12 +51,15 @@ Route::middleware('auth:technicians')->group(function () {
     Route::get('technician/TSR/{id}/create', [TechnicianController::class, 'createTSR'])->name('technician.TSR'); //Create
     Route::post('technician/TSR/store-tsr', [TechnicianController::class, 'storeTSR'])->name('technician.store-tsr'); //Post
     Route::get('technician/TSR/details/{tsr_id}', [TechnicianController::class, 'viewTSR'])->name('technician.viewTSRDetails');
-
+    Route::put('technician/TSR/{tsr_id}', [TechnicianController::class, 'updateTSR'])->name('technician.update-tsr');
+    Route::get('technician/TSR/edit/{tsr_id}', [TechnicianController::class, 'editTSR'])->name('technician.editTSR');
     // CoC Routes
     Route::get('technician/COC/{id}/create', [TechnicianController::class, 'createCoC'])->name('technician.COC');
     Route::post('/technician/coc/store', [TechnicianController::class, 'storeCoC'])->name('technician.storeCoC');
     Route::get('technician/COC/details/{coc_id}', [TechnicianController::class, 'viewCoC'])->name('technician.viewCoCDetails');
-    
+    Route::get('technician/COC/edit/{coc_id}', [TechnicianController::class, 'editCoC'])->name('technician.editCoC');
+    Route::put('technician/COC/{coc_id}', [TechnicianController::class, 'updateCoC'])->name('technician.update-coc');
+
     Route::resource('/tsr', TechnicianController::class);
 
     Route::get('technician/ManageProfile', [TechnicianController::class, 'manageProfile'])->name('technician.manageProfile');

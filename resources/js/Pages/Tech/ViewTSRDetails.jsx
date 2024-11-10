@@ -64,26 +64,21 @@ function ViewTSRDetails({ tsr }) {
 
                                 <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
-                                    <Link href={route('technician.COC', tsr.tsr_id)}>
-                                        <button className="btn btn-light w-100 mb-2">
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            Create Certificate of Calibration
-                                        </button>
-                                    </Link>
-                                    {/* <Link href={route('technician.viewCoCDetails', tsr.coc.coc_id)}>
-                                        <button className="btn btn-light w-100 mb-2">
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            View Certificate of Calibration
-                                        </button>
-                                    </Link> */}
-                                    
-                                
-                                    {/* <Link href={route('technician.createCoC', tsr.job_id)}>
-                                        <button className="btn btn-light w-100 mb-2">
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            Create Certificate of Calibration
-                                        </button>
-                                    </Link> */}
+                                    {tsr.coc ? (
+                                        <Link href={route('technician.viewCoCDetails', tsr.coc.coc_id)}>
+                                            <button className="btn btn-light w-100 mb-2">
+                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                View Certificate of Calibration
+                                            </button>
+                                        </Link>
+                                    ) : (
+                                        <Link href={route('technician.COC', tsr.tsr_id)}>
+                                            <button className="btn btn-light w-100 mb-2">
+                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                Create Certificate of Calibration
+                                            </button>
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
 
@@ -285,12 +280,16 @@ function ViewTSRDetails({ tsr }) {
                                             >
                                                 Preview PDF
                                             </button>
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary ms-3 mb-3"
-                                            >
-                                                Edit Document
-                                            </button>
+                                            <Link
+                                                href={route('technician.editTSR', tsr.tsr_id)}>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-primary ms-3 mb-3"
+                                                >
+                                                    Edit Document
+                                                </button>
+                                            </Link>
+                                            
                                             
                                         </div>
                                     </div>

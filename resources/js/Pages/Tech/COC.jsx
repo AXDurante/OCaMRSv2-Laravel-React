@@ -261,10 +261,6 @@ function COC({ tsr, auth }) {
                                                 tsr={tsr}
                                                 cocDetails={{
                                                     ...data,
-                                                    department: tsr.job_order.dept_name,
-                                                    labLocation: tsr.job_order.lab_loc,
-                                                    dateRequested: tsr.job_order.date_request,
-                                                    dueDate: tsr.job_order.date_due
                                                 }}
                                             />
                                         </PDFViewer>

@@ -22,7 +22,7 @@ class CoC extends Model
         'model',
         'serial_num',
         'manufacturer',
-        'date_rec',
+        'date_req',
         'date_cal',
         'date_due',
         // Place of Calibration 
