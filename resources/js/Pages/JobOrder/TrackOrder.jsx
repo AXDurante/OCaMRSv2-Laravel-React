@@ -2,10 +2,25 @@ import React, { useState, useEffect } from "react";
 import { Link, useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 
-function TrackOrder({ jobOrder, firstName, lastName, email, currentSort, currentFilter }) {
+function TrackOrder({ jobOrder, firstName, lastName, email, currentSort, currentFilter,flash }) {
     const [sortBy, setSortBy] = useState(currentSort || "newest");
     const [filterStatus, setFilterStatus] = useState(currentFilter || "all");
     const { get } = useForm();
+    const [successMessage, setSuccessMessage] = useState("");
+
+    useEffect(() => {
+        if (flash.success) {
+            setSuccessMessage(flash.success);
+        } else {
+            const timer = setTimeout(() => {
+                setSuccessMessage("");
+            }, 5000);
+
+            return () => {
+                clearTimeout(timer);
+            };
+        }
+    }, [flash]);
 
     useEffect(() => {
         if (currentSort !== sortBy || currentFilter !== filterStatus) {
@@ -84,6 +99,16 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort, current
                         </select>
                     </div>
                 </div>
+                {successMessage && (
+                    <div
+                        role="alert"
+                        className="mt-2 alert alert-success w-100"
+                    >
+                        <h6 className="text-base font-semibold">
+                            {successMessage}
+                        </h6>
+                    </div>
+                )}
 
                 {filteredJobOrders.map((jobOrder) => {
                     console.log('Job Order feedback status:', {

@@ -6,6 +6,8 @@ use App\Models\JobOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -54,7 +56,16 @@ class AdminController extends Controller
     }
     public function manageProfile()
     {
-        return Inertia::render('Admin/ManageProfile');
+        $admin = Auth::guard('admin')->user();
+        return Inertia::render('Admin/ManageProfile', [
+            'auth' => [
+                'user' => $admin
+            ],
+            'storageBaseUrl' => asset('storage/photos'),
+            'flash' => [
+                'message' => session('message')
+            ],
+        ]);
     }
 
     public function showJobRequest()
@@ -135,5 +146,80 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.showJobOrder', $jobOrder->job_id);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        try {
+            $admin = Auth::guard('admin')->user();
+            
+            // Validate the request
+            $validationRules = [
+                'firstName' => 'sometimes|required|string|max:255',
+                'lastName' => 'sometimes|required|string|max:255',
+                'email' => 'sometimes|nullable|email|unique:admins,email,' . $admin->id,
+                'id_number' => 'sometimes|required|string|unique:admins,id_number,' . $admin->id,
+            ];
+
+            // Add password validation rules only if password is being updated
+            if ($request->filled('password')) {
+                $validationRules['password'] = [
+                    'required',
+                    'string',
+                    'min:8',
+                    'confirmed',
+                    'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/'
+                ];
+            }
+
+            // Custom error messages
+            $customMessages = [
+                'password.confirmed' => 'The password confirmation does not match.',
+                'password.regex' => 'The password must contain at least one uppercase letter, one number, and one special character.',
+            ];
+
+            $validated = $request->validate($validationRules, $customMessages);
+            $updateData = [];
+
+            // Handle basic fields
+            if ($request->has('firstName')) {
+                $updateData['firstName'] = $request->firstName;
+            }
+            if ($request->has('lastName')) {
+                $updateData['lastName'] = $request->lastName;
+            }
+            if ($request->has('email')) {
+                $updateData['email'] = $request->email ?: null;
+            }
+            if ($request->has('id_number')) {
+                $updateData['id_number'] = $request->id_number;
+            }
+            if ($request->filled('password')) {
+                $updateData['password'] = bcrypt($request->password);
+            }
+
+            // Only handle photo if a new file was uploaded
+            if ($request->hasFile('photo')) {
+                if ($admin->photo) {
+                    Storage::delete('public/photos/adminSignature/' . $admin->photo);
+                }
+
+                $photo = $request->file('photo');
+                $filename = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
+                $photo->storeAs('public/photos/adminSignature', $filename);
+                $updateData['photo'] = $filename;
+            }
+
+            // Update the admin record
+            $admin->update($updateData);
+
+            return redirect()->back()->with('message', 'Profile updated successfully');
+        } catch (\Exception $e) {
+            \Log::error('Update Profile Error:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->withErrors(['error' => 'An error occurred while updating the profile: ' . $e->getMessage()]);
+        }
     }
 }

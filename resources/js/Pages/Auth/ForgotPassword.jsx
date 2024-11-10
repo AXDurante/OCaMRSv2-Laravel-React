@@ -82,11 +82,13 @@ export default function ForgotPassword({ status }) {
                             </div>
 
                             <div className="pt-3 mt-3">
-                                <LoginButton 
+                                <LoginButton
                                     className="w-100"
                                     disabled={processing || isSubmitting}
                                 >
-                                    {isSubmitting ? 'Sending...' : 'Email Password Reset Link'}
+                                    {isSubmitting
+                                        ? "Sending..."
+                                        : "Email Password Reset Link"}
                                 </LoginButton>
 
                                 <Link

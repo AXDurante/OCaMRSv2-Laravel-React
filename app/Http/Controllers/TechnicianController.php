@@ -10,6 +10,7 @@ use App\Models\Equipment;
 use App\Models\TSR;
 use Illuminate\Support\Facades\Storage;
 use App\Models\JobOrder;
+use Illuminate\Support\Str;
 use App\Models\CoC;
 
 class TechnicianController extends Controller
@@ -160,7 +161,7 @@ class TechnicianController extends Controller
     public function updateTSR(Request $request, $tsr_id)
     {
         $tsr = TSR::findOrFail($tsr_id);
-        
+
         $tsrFields = $request->validate([
             'tsr_num' => ['required'],
             'instrument' => ['required'],
@@ -262,16 +263,20 @@ class TechnicianController extends Controller
         if ($request->hasFile('photo')) {
             // Delete old photo if exists
             if ($user->photo) {
-                Storage::delete('public/photos/' . $user->photo);
+                Storage::delete('public/photos/technicianSignature/' . $user->photo);
             }
 
-            // Store new photo
-            $photoPath = $request->file('photo')->store('public/photos');
-            $validatedData['photo'] = basename($photoPath);
+            $photo = $request->file('photo');
+            // Generate unique filename using timestamp and random string
+            $filename = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
+
+            // Store new photo in technician subfolder
+            $photoPath = $photo->storeAs('public/photos/technicianSignature', $filename);
+            $validatedData['photo'] = $filename;
         } elseif ($request->boolean('removePhoto')) {
             // Remove existing photo
             if ($user->photo) {
-                Storage::delete('public/photos/' . $user->photo);
+                Storage::delete('public/photos/technicianSignature/' . $user->photo);
             }
             $validatedData['photo'] = null;
         } else {
@@ -307,7 +312,7 @@ class TechnicianController extends Controller
     public function updateCoC(Request $request, $coc_id)
     {
         $coc = CoC::findOrFail($coc_id);
-        
+
         $cocFields = $request->validate([
             'coc_num' => ['required'],
             'college' => ['required'],

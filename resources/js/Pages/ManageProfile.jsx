@@ -1,11 +1,18 @@
 import Navbar from "../Layouts/Navbar";
 import { usePage, useForm } from "@inertiajs/react";
-import { useState, useEffect } from "react"; // Add useEffect
+import { useState, useEffect } from "react";
+import { Modal, Button } from 'react-bootstrap';
 
 function Home({ absolute, firstName, lastName, email, theID }) {
-    const { auth } = usePage().props;
+    const { auth, flash, storageBaseUrl } = usePage().props;
     const [showSuccess, setShowSuccess] = useState(false);
-    const [showNoChanges, setShowNoChanges] = useState(false); // Add this line
+    const [showNoChanges, setShowNoChanges] = useState(false);
+    const [showPhotoModal, setShowPhotoModal] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [passwordMatch, setPasswordMatch] = useState(true);
+    const [passwordLength, setPasswordLength] = useState(true);
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
         firstName: auth.user.firstName,
         lastName: auth.user.lastName,
@@ -14,42 +21,90 @@ function Home({ absolute, firstName, lastName, email, theID }) {
         userID: auth.user.id,
         password: "",
         password_confirmation: "",
+        photo: null,
+        removePhoto: false,
     });
 
-    // Modify the hasChanges function
+    useEffect(() => {
+        if (flash && flash.message) {
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 5000);
+        }
+    }, [flash]);
+
     const hasChanges = () => {
         return (
             data.firstName !== auth.user.firstName ||
             data.lastName !== auth.user.lastName ||
             data.email !== auth.user.email ||
             data.phoneNumber !== auth.user.phoneNumber ||
-            (data.password !== "" && data.password_confirmation !== "")
+            (data.password !== "" && data.password_confirmation !== "") ||
+            data.photo !== null
         );
     };
 
-    // Modify the submit function
-    const submit = (e) => {
-        e.preventDefault();
-        if (hasChanges()) {
-            post(route("updateProfile"), {
-                preserveState: true,
-                preserveScroll: true,
-                onSuccess: () => {
-                    setShowSuccess(true);
-                    setTimeout(() => setShowSuccess(false), 5000);
-                },
-            });
+    const validatePasswords = (password, confirmation) => {
+        if (password || confirmation) {
+            setPasswordMatch(password === confirmation);
+            setPasswordLength(password.length >= 8);
         } else {
-            setShowNoChanges(true);
-            setTimeout(() => setShowNoChanges(false), 5000);
+            setPasswordMatch(true);
+            setPasswordLength(true);
         }
     };
 
-    // Add this effect to hide notifications when data changes
-    useEffect(() => {
-        setShowSuccess(false);
-        setShowNoChanges(false);
-    }, [data]);
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setData('password', newPassword);
+        validatePasswords(newPassword, data.password_confirmation);
+    };
+
+    const handleConfirmPasswordChange = (e) => {
+        const confirmation = e.target.value;
+        setData('password_confirmation', confirmation);
+        validatePasswords(data.password, confirmation);
+    };
+
+    const handleSubmitClick = (e) => {
+        e.preventDefault();
+        
+        if (!hasChanges()) {
+            setShowNoChanges(true);
+            setTimeout(() => setShowNoChanges(false), 5000);
+            return;
+        }
+
+        setShowConfirmModal(true);
+    };
+
+    const confirmSubmit = () => {
+        post(route("updateProfile"), {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                setShowSuccess(true);
+                setTimeout(() => setShowSuccess(false), 5000);
+                setShowConfirmModal(false);
+            },
+            onError: () => {
+                setShowConfirmModal(false);
+            }
+        });
+    };
+
+    const handleShowPhoto = () => {
+        setShowPhotoModal(true);
+    };
+
+    const handleClosePhoto = () => {
+        setShowPhotoModal(false);
+    };
+
+    const getStorageUrl = () => {
+        return `${storageBaseUrl}/clientSignature/${auth.user.photo}`;
+    };
+
+    const photoUrl = auth.user.photo ? getStorageUrl() : null;
 
     return (
         <div className="d-flex">
@@ -60,7 +115,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                         <div className="row">
                             <div className="col-12">
                                 <div className="p-5">
-                                    <form onSubmit={submit}>
+                                    <form onSubmit={handleSubmitClick}>
                                         <div className="message-container mb-4">
                                             {showSuccess && (
                                                 <div
@@ -154,6 +209,29 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                             </div>
                                         </div>
                                         <div className="row">
+                                            <div className="col-12 mb-4">
+                                                <label className="form-label fw-bold">Signature Photo</label>
+                                                <div className="d-flex align-items-center">
+                                                    <input
+                                                        type="file"
+                                                        name="photo"
+                                                        className="form-control shadow-sm animate-field me-2"
+                                                        onChange={e => setData('photo', e.target.files[0])}
+                                                    />
+                                                    {photoUrl && (
+                                                        <Button 
+                                                            variant="outline-primary" 
+                                                            onClick={handleShowPhoto}
+                                                            className="me-2"
+                                                        >
+                                                            View Current Signature Photo
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                                {errors.photo && <small className="text-danger mt-1">{errors.photo}</small>}
+                                            </div>
+                                        </div>
+                                        <div className="row">
                                             <div className="col-md-6 mb-4">
                                                 <div className="d-flex align-items-center">
                                                     <label className="form-label fw-bold">
@@ -165,47 +243,71 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                         character required.)
                                                     </small>
                                                 </div>
-                                                <input
-                                                    name="password"
-                                                    type="password"
-                                                    className="form-control shadow-sm animate-field"
-                                                    value={data.password}
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "password",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                />
+                                                <div className="position-relative">
+                                                    <input
+                                                        name="password"
+                                                        type={showPassword ? "text" : "password"}
+                                                        className={`form-control shadow-sm animate-field ${!passwordMatch || !passwordLength ? 'is-invalid' : ''}`}
+                                                        value={data.password}
+                                                        onChange={handlePasswordChange}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="btn position-absolute end-0 top-50 translate-middle-y text-muted"
+                                                        onClick={() => setShowPassword(!showPassword)}
+                                                        style={{ 
+                                                            border: 'none', 
+                                                            background: 'none',
+                                                            padding: '0.375rem 0.75rem',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                    >
+                                                        {showPassword ? '👁️' : '👁️'}
+                                                    </button>
+                                                </div>
+                                                {!passwordLength && data.password && (
+                                                    <div className="text-danger mt-1">
+                                                        Password must be at least 8 characters.
+                                                    </div>
+                                                )}
                                                 {errors.password && (
-                                                    <small className="text-danger mt-1">
-                                                        {errors.password}
-                                                    </small>
+                                                    <div className="text-danger mt-1">{errors.password}</div>
                                                 )}
                                             </div>
                                             <div className="col-md-6 mb-4">
                                                 <label className="form-label fw-bold">
                                                     Confirm Password
                                                 </label>
-                                                <input
-                                                    name="password_confirmation"
-                                                    type="password"
-                                                    className="form-control shadow-sm animate-field"
-                                                    value={
-                                                        data.password_confirmation
-                                                    }
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "password_confirmation",
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                />
-                                                <small className="text-muted">
-                                                    Leave password fields empty
-                                                    to keep your current
-                                                    password.
+                                                <div className="position-relative">
+                                                    <input
+                                                        name="password_confirmation"
+                                                        type={showConfirmPassword ? "text" : "password"}
+                                                        className={`form-control shadow-sm animate-field ${!passwordMatch ? 'is-invalid' : ''}`}
+                                                        value={data.password_confirmation}
+                                                        onChange={handleConfirmPasswordChange}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="btn position-absolute end-0 top-50 translate-middle-y text-muted"
+                                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                        style={{ 
+                                                            border: 'none', 
+                                                            background: 'none',
+                                                            padding: '0.375rem 0.75rem',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                    >
+                                                        {showConfirmPassword ? '👁️' : '👁️'}
+                                                    </button>
+                                                </div>
+                                                <small className="text-muted d-block mt-1">
+                                                    Leave password fields empty to keep your current password.
                                                 </small>
+                                                {!passwordMatch && data.password_confirmation && (
+                                                    <div className="text-danger mt-1">
+                                                        Passwords do not match.
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <button
@@ -221,6 +323,48 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                     </div>
                 </div>
             </div>
+            <Modal show={showPhotoModal} onHide={handleClosePhoto}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Current Signature</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {photoUrl && (
+                        <img 
+                            src={photoUrl} 
+                            alt="Profile Photo" 
+                            className="img-fluid"
+                        />
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClosePhoto}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm Update</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Are you sure you want to update your profile? This action cannot be undone.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button 
+                        variant="secondary" 
+                        onClick={() => setShowConfirmModal(false)}
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        variant="primary" 
+                        onClick={confirmSubmit}
+                        disabled={processing}
+                    >
+                        {processing ? 'Updating...' : 'Confirm Update'}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

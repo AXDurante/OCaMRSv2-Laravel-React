@@ -21,9 +21,9 @@ class JobOrderController extends Controller
     {
         $sort = $request->input('sort', 'newest');
         $filter = $request->input('filter', 'all');
-        
+
         $jobOrders = JobOrder::select('job_orders.*')
-            ->leftJoin('feedbacks', function($join) {
+            ->leftJoin('feedbacks', function ($join) {
                 $join->on('job_orders.job_id', '=', 'feedbacks.job_order_id')
                     ->where('feedbacks.user_id', '=', auth()->id());
             })
@@ -55,6 +55,9 @@ class JobOrderController extends Controller
             'email' => auth()->user()->email,
             'currentSort' => $sort,
             'currentFilter' => $filter,
+            'flash' => [
+                'success' => session('success'), // Pass the success message from the session
+            ],
         ]);
     }
 
@@ -119,7 +122,7 @@ class JobOrderController extends Controller
             IntUnit::create($instrument);
         }
 
-        return redirect('/jobOrder');
+        return redirect()->route('jobOrder.index')->with('success', 'Job Order is successfully submitted!');
     }
 
     /**
