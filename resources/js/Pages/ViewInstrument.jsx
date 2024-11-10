@@ -66,7 +66,7 @@ function ViewInstrument({ equipment }) {
                                             <img
                                                 src={
                                                     item.image_path ||
-                                                    "https://via.placeholder.com/100"
+                                                    "/images/Repair.png"
                                                 }
                                                 alt={item.equip_name}
                                                 className="me-3"

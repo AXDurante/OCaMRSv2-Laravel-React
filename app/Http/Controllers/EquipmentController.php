@@ -23,7 +23,7 @@ class EquipmentController extends Controller
         $request->validate([
             'equip_category' => 'required|string|max:255',
             'equip_name' => 'required|string|max:255',
-            'image_path' => 'required|string|max:255',
+            'image_path' 
         ]);
 
         // Create a new equipment entry
