@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('coc', function (Blueprint $table) {
-            $table->string('equipment')->nullable();
-            $table->string('model')->nullable();
-            $table->string('serial_num')->nullable();
+            $table->string('manufacturer');
         });
     }
 
@@ -24,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('coc', function (Blueprint $table) {
-            $table->dropColumn(['equipment', 'model', 'serial_num']);
+            //
         });
     }
 };

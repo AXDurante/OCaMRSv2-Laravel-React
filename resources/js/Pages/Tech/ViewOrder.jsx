@@ -185,13 +185,6 @@ function ViewOrder({ jobOrder }) {
                 </Link>
 
                 <Link
-                    href={`/technician/TSR/${jobOrder.job_id}/create`}
-                    className="btn btn-warning w-100 mt-2"
-                >
-                    Create Technical Service Report
-                </Link>
-
-                <Link
                     href={`/technician/TSR/${jobOrder.job_id}`}
                     className="btn btn-info w-100 mt-2"
                 >

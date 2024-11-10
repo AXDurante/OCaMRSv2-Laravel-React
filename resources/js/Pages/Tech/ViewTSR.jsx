@@ -69,6 +69,12 @@ function ViewTSR({tsrs, jobOrderId}) {
                 >
                     Back to Job Order
                 </Link>
+                <Link
+                    href={`/technician/TSR/${jobOrderId}/create`}
+                    className="btn btn-warning w-100 mt-2"
+                >
+                    Create Technical Service Report
+                </Link>
             </div>
         </>
     );

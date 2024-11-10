@@ -36,7 +36,7 @@ class TSR extends Model
         return $this->belongsTo(JobOrder::class, 'job_id', 'job_id');
     }
 
-    public function tsr_num(): HasOne
+    public function coc(): HasOne
     {
         return $this->hasOne(CoC::class, 'tsr_num', 'tsr_num');
     }

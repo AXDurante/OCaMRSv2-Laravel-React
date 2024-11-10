@@ -190,7 +190,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     </Text>
                     <Text
                         style={{
-                            fontSize: 12,
+                            fontSize: 9,
                             fontFamily: "Arial",
                             fontWeight: "bold",
                             marginLeft: 5,

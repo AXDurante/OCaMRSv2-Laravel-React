@@ -371,7 +371,7 @@ function COCpdf ({tsr, cocDetails}) {
                                         styles.tableCol1right,
                                         styles.lastCol,
                                     ]} // Ensure this is consistent with styles
-                                >{cocDetails.calibration_cert_no}</Text>
+                                >{cocDetails.coc_num}</Text>
                             </View>
                         </View>
                         {/* Table Rows */}
@@ -420,7 +420,7 @@ function COCpdf ({tsr, cocDetails}) {
                             </Text>
                             <Text
                                 style={[styles.tableCol2, styles.lastCol]}
-                            ></Text>
+                            >{cocDetails.dateRequested}</Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={styles.tableCol2}>Model No.</Text>
@@ -478,10 +478,10 @@ function COCpdf ({tsr, cocDetails}) {
                         {/* Row 1 */}
                         <View style={styles.tableRow}>
                             <Text style={styles.tableText3}>{cocDetails.standard}</Text>
-                            <Text style={styles.tableText3}>{cocDetails.calibration_cert_no}</Text>
+                            <Text style={styles.tableText3}>{cocDetails.coc_num}</Text>
                             <Text
                                 style={[styles.tableText3, styles.lastCol]}
-                            >{cocDetails.issuing_lab}</Text>
+                            >{cocDetails.labLocation}</Text>
                         </View>
                     </View>
 

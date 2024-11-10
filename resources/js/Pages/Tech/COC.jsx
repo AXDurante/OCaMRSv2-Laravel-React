@@ -8,6 +8,8 @@ import { usePage, useForm } from "@inertiajs/react";
 function COC({ tsr, auth }) {
     const { data, setData, post, processing, errors } = useForm({
         coc_num: '',
+        college: tsr.job_order.dept_name,
+        lab_loc: tsr.job_order.lab_loc,
         equipment: '',
         model: '',
         serial_num: '',
@@ -16,10 +18,12 @@ function COC({ tsr, auth }) {
         remark: '',
         tsr_num: tsr.tsr_num,
         tsr_id: tsr.tsr_id,
-        calibration_cert_no: '',
         manufacturer: '',
-        issuing_lab: '',
-        standard: ''
+        standard: '',
+        date_req: tsr.job_order.date_request,
+        date_req: tsr.job_order.date_request,
+        date_cal: tsr.job_order.date_request,
+        date_due: tsr.job_order.date_due,
     });
 
     const handleInputChange = (e) => {
@@ -83,6 +87,22 @@ function COC({ tsr, auth }) {
 
                             <div className="col-12 col-md-8">
                                 <div className="pt-5 pb-5 p-3">
+                                <div className="row">
+                                        <div className="col-12 col-sm-3 mb-3">
+                                            <label className="form-label fw-bold d-block text-truncate">
+                                                Calibration No.
+                                            </label>
+                                        </div>
+                                        <div className="col-12 col-sm-9 mb-3">
+                                            <input
+                                                type="text"
+                                                className="form-control rounded"
+                                                name="coc_num"
+                                                value={data.coc_num}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                    </div>
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
@@ -99,6 +119,24 @@ function COC({ tsr, auth }) {
                                             />
                                         </div>
                                     </div>
+
+                                    <div className="row">
+                                        <div className="col-12 col-sm-3 mb-3">
+                                            <label className="form-label fw-bold d-block text-truncate">
+                                                Manufacturer
+                                            </label>
+                                        </div>
+                                        <div className="col-12 col-sm-9 mb-3">
+                                            <input
+                                                type="text"
+                                                className="form-control rounded"
+                                                name="manufacturer"
+                                                value={data.manufacturer}
+                                                onChange={handleInputChange}
+                                            />
+                                        </div>
+                                    </div>
+
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
@@ -136,14 +174,14 @@ function COC({ tsr, auth }) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Date Calibrated
+                                                Procedure and Traceability
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="date_calibration"
+                                                name="calibration"
                                                 value={data.calibration}
                                                 onChange={handleInputChange}
                                             />
@@ -153,7 +191,7 @@ function COC({ tsr, auth }) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Standard
+                                                Standard Used
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
@@ -201,141 +239,11 @@ function COC({ tsr, auth }) {
                                         </div>
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                College/Department
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.job_order.dept_name}
-                                                disabled
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Laboratory Location
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.job_order.lab_loc}
-                                                disabled
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Date Requested
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.job_order.date_request}
-                                                disabled
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Due Date
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.job_order.date_due}
-                                                disabled
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Calibration Certification No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="calibration_cert_no"
-                                                value={data.calibration_cert_no}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Manufacturer
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="manufacturer"
-                                                value={data.manufacturer}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Issuing Laboratory
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="issuing_lab"
-                                                value={data.issuing_lab}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Calibration Procedure
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="calibration"
-                                                value={data.calibration}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
                                     <div className="row"></div>
-                                    <button className="btn btn-dark w-100 text-warning mt-2 mb-4">
-                                        Update Profile
+                                    <button 
+                                        className="btn btn-dark w-100 text-warning mt-2 mb-4"
+                                        onClick={onSubmit}>
+                                        Create Certificate of Calibration
                                     </button>
                                     <Modal
                                         isOpen={showPreview}
