@@ -1102,7 +1102,7 @@ input[type="checkbox"] {
     margin: 0;
 }
 
-/* overlay page for instrument add */
+/* h page for instrument add */
 .overlay {
     position: fixed;
     top: 0;
@@ -1565,5 +1565,87 @@ input[type="checkbox"] {
     }
     .flex-grow-1 {
         margin-left: 60px; /* Adjust margin for smaller screens */
+    }
+}
+/* ... existing styles ... */
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .vision-section h2,
+    .mission-section h2 {
+        font-size: 1.5rem; /* Smaller font size for headings */
+    }
+
+    .vision-section p,
+    .mission-section p {
+        font-size: 1rem; /* Smaller font size for paragraphs */
+        padding: 0 10px; /* Add some padding for better readability */
+    }
+
+    .landing-description {
+        font-size: 1rem; /* Adjust landing description font size */
+        padding: 0 10px; /* Add padding for better readability */
+    }
+
+    .text-overlay {
+        padding: 5%; /* Reduce padding for smaller screens */
+    }
+}
+
+/* Additional media query for very small screens */
+@media (max-width: 480px) {
+    .vision-section h2,
+    .mission-section h2 {
+        font-size: 1.2rem; /* Further reduce font size for headings */
+    }
+
+    .vision-section p,
+    .mission-section p {
+        font-size: 0.9rem; /* Further reduce font size for paragraphs */
+    }
+
+    .landing-description {
+        font-size: 0.9rem; /* Further adjust landing description font size */
+    }
+}
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    /* Update font sizes for headings and paragraphs */
+    .vision-section h2,
+    .mission-section h2 {
+        font-size: 4vw; /* Responsive font size for headings */
+    }
+
+    .vision-section p,
+    .mission-section p {
+        font-size: 2.5vw; /* Responsive font size for paragraphs */
+    }
+
+    .landing-description {
+        font-size: 2vw; /* Responsive landing description font size */
+    }
+
+    /* Adjust other text elements similarly */
+    .text-overlay {
+        padding: 5%; /* Keep padding as is or adjust as needed */
+    }
+
+    /* Example for other text elements */
+    .footer-text p {
+        font-size: 1.5vw; /* Responsive footer text size */
+    }
+
+    /* Adjust button font sizes */
+    .landing-button {
+        font-size: 2vw; /* Responsive button font size */
+    }
+}
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .responsive-heading {
+        font-size: 5vw; /* Responsive font size for headings */
+    }
+    .text-overlayhead {
+        font-size: 5vw;
     }
 }
