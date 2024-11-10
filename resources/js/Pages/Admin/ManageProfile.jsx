@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Modal, Button } from 'react-bootstrap';
 
 function Home() {
-    const { auth, flash, storageBaseUrl } = usePage().props;
+    const { auth, flash, storageBaseUrl, imageRequirements } = usePage().props;
     const [showSuccess, setShowSuccess] = useState(false);
     const [showNoChanges, setShowNoChanges] = useState(false);
     const [showPhotoModal, setShowPhotoModal] = useState(false);
@@ -290,10 +290,16 @@ function Home() {
                                         <div className="row">
                                             <div className="col-12 mb-4">
                                                 <label className="form-label fw-bold">Signature Photo</label>
+                                                <div className="mb-2">
+                                                    <small className="text-muted">
+                                                        {imageRequirements.message}
+                                                    </small>
+                                                </div>
                                                 <div className="d-flex align-items-center">
                                                     <input
                                                         type="file"
                                                         name="photo"
+                                                        accept=".png"
                                                         className="form-control shadow-sm animate-field me-2"
                                                         onChange={e => setData('photo', e.target.files[0])}
                                                     />
@@ -307,7 +313,7 @@ function Home() {
                                                         </Button>
                                                     )}
                                                 </div>
-                                                {errors.photo && <div className="text-danger">{errors.photo}</div>}
+                                                {errors.photo && <div className="text-danger mt-1">{errors.photo}</div>}
                                             </div>
                                         </div>
 
