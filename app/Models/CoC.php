@@ -11,7 +11,7 @@ class CoC extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'COC';
+    protected $table = 'coc';
     protected $primaryKey = 'coc_id';
 
     protected $fillable = [

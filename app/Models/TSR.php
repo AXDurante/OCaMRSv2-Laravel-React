@@ -12,7 +12,7 @@ class TSR extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $table = 'TSR';
+    protected $table = 'tsr';
     protected $primaryKey = 'tsr_id';
 
     protected $fillable = [
@@ -45,4 +45,4 @@ class TSR extends Model
     {
         return $this->belongsTo(User::class, 'tech_id', 'id');
     }
-}   
+}
