@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link, useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 
-function TrackOrder({ jobOrder, firstName, lastName, email, currentSort, currentFilter,flash }) {
+function TrackOrder({
+    jobOrder,
+    firstName,
+    lastName,
+    email,
+    currentSort,
+    currentFilter,
+    flash,
+}) {
     const [sortBy, setSortBy] = useState(currentSort || "newest");
     const [filterStatus, setFilterStatus] = useState(currentFilter || "all");
     const { get } = useForm();
@@ -24,26 +32,33 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort, current
 
     useEffect(() => {
         if (currentSort !== sortBy || currentFilter !== filterStatus) {
-            get(route("jobOrder.index", { 
-                sort: sortBy,
-                filter: filterStatus 
-            }), {
-                preserveState: true,
-                preserveScroll: true,
-            });
+            get(
+                route("jobOrder.index", {
+                    sort: sortBy,
+                    filter: filterStatus,
+                }),
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                }
+            );
         }
     }, [sortBy, filterStatus]);
 
     // Filter job orders based on status
-    const filteredJobOrders = filterStatus === "all" 
-        ? jobOrder 
-        : jobOrder.filter(order => order.status.toLowerCase() === filterStatus.toLowerCase());
+    const filteredJobOrders =
+        filterStatus === "all"
+            ? jobOrder
+            : jobOrder.filter(
+                  (order) =>
+                      order.status.toLowerCase() === filterStatus.toLowerCase()
+              );
 
     console.log("Job Order props:", { jobOrder, firstName, lastName, email });
 
     return (
         <div className="">
-            <div>
+            <div id="content" className="flex-fill p-3">
                 <div>
                     <h1 className="d-inline">Track Request | </h1>
                     <h1 className="d-inline fw-light">
@@ -111,10 +126,10 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort, current
                 )}
 
                 {filteredJobOrders.map((jobOrder) => {
-                    console.log('Job Order feedback status:', {
+                    console.log("Job Order feedback status:", {
                         id: jobOrder.job_id,
                         has_feedback: jobOrder.has_feedback,
-                        feedback_id: jobOrder.feedback_id
+                        feedback_id: jobOrder.feedback_id,
                     });
 
                     return (
@@ -134,33 +149,44 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort, current
                                             />
                                         </div>
                                     </div>
-                                    
+
                                     <div className="col">
                                         <div className="order-details">
                                             <h5 className="order-title mb-3">
-                                                Service Request #{jobOrder.job_id}
-                                                <span className={`status-badge status-${jobOrder.status.toLowerCase()}`}>
+                                                Service Request #
+                                                {jobOrder.job_id}
+                                                <span
+                                                    className={`status-badge status-${jobOrder.status.toLowerCase()}`}
+                                                >
                                                     {jobOrder.status}
                                                 </span>
                                             </h5>
-                                            
+
                                             <div className="order-info">
                                                 <div className="info-item">
                                                     <i className="bi bi-calendar3 me-2"></i>
-                                                    <span>Created: {jobOrder.date_request}</span>
+                                                    <span>
+                                                        Created:{" "}
+                                                        {jobOrder.date_request}
+                                                    </span>
                                                 </div>
                                                 <div className="info-item">
                                                     <i className="bi bi-clock-history me-2"></i>
-                                                    <span>Due: {jobOrder.date_due}</span>
+                                                    <span>
+                                                        Due: {jobOrder.date_due}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div className="action-buttons mt-3">
-                                            {jobOrder.status === "Completed" && (
+                                            {jobOrder.status ===
+                                                "Completed" && (
                                                 <>
-                                                    {Boolean(jobOrder.has_feedback) ? (
-                                                        <Link 
+                                                    {Boolean(
+                                                        jobOrder.has_feedback
+                                                    ) ? (
+                                                        <Link
                                                             href={`/feedback/${jobOrder.feedback_id}`}
                                                             className="me-2"
                                                         >
@@ -170,8 +196,14 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort, current
                                                             </button>
                                                         </Link>
                                                     ) : (
-                                                        <Link 
-                                                            href={route('feedback.create', { jobOrderId: jobOrder.job_id })}
+                                                        <Link
+                                                            href={route(
+                                                                "feedback.create",
+                                                                {
+                                                                    jobOrderId:
+                                                                        jobOrder.job_id,
+                                                                }
+                                                            )}
                                                             className="me-2"
                                                         >
                                                             <button className="btn btn-give-feedback">
@@ -182,7 +214,9 @@ function TrackOrder({ jobOrder, firstName, lastName, email, currentSort, current
                                                     )}
                                                 </>
                                             )}
-                                            <Link href={`jobOrder/${jobOrder.job_id}`}>
+                                            <Link
+                                                href={`jobOrder/${jobOrder.job_id}`}
+                                            >
                                                 <button className="btn btn-details">
                                                     <i className="bi bi-arrow-right-circle me-2"></i>
                                                     See Details
