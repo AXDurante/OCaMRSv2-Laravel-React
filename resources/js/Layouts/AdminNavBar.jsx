@@ -186,7 +186,7 @@ export default function AdminNavBar({ children }) {
                             href={route("admin.logout")}
                             method="post"
                             as="button"
-                            className="btn btn-dark  w-100"
+                            className="btn btn-dark w-100"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <i className="bi bi-box-arrow-right me-2"></i>
