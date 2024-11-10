@@ -1531,3 +1531,52 @@ input[type="checkbox"] {
         display: none; /* Optionally hide split2 if not needed */
     }
 }
+
+@media (min-width: 768px) {
+    .modal {
+        display: block !important; /* Ensure the modal is visible */
+    }
+}
+
+.modal {
+    display: none; /* Default to hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1050; /* Bootstrap modal default z-index */
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+}
+
+.modal.show {
+    display: block; /* Show when active */
+}
+
+.modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Update the modal content styles */
+.modal-content {
+    z-index: 1050; /* Standard Bootstrap modal z-index */
+    display: flex;
+    flex-direction: column; /* Ensure content stacks vertically */
+    height: 500px; /* Adjust height as needed */
+    width: 700px; /* Set a max width for the modal content */
+    margin: 0; /* Remove default margin */
+    padding: 20px; /* Add padding for better spacing */
+    margin-top: 20%;
+    margin-bottom: 20%;
+    overflow: auto; /* Allow scrolling if content exceeds height */
+    border-radius: 8px; /* Add rounded corners */
+}
