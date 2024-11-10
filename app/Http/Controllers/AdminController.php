@@ -57,11 +57,16 @@ class AdminController extends Controller
     public function manageProfile()
     {
         $admin = Auth::guard('admin')->user();
+        $isProduction = app()->environment('production');
+        $appUrl = config('app.url');
+
         return Inertia::render('Admin/ManageProfile', [
             'auth' => [
                 'user' => $admin
             ],
-            'storageBaseUrl' => asset('storage/photos'),
+            'storageBaseUrl' => $isProduction 
+                ? $appUrl . '/public/storage/photos'  // Add public/ prefix for production
+                : url('storage/photos'),
             'flash' => [
                 'message' => session('message')
             ],
