@@ -2,7 +2,7 @@ import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar2 from "@/Layouts/Navbar2";
 import { Link } from "@inertiajs/react";
 
-function Dashboard({jobOrder}) {
+function Dashboard({ jobOrder }) {
     console.log(jobOrder);
     return (
         <div className="d-flex">
@@ -63,6 +63,9 @@ function Dashboard({jobOrder}) {
                                     <th class="thead-custom" scope="col">
                                         Status
                                     </th>
+                                    <th class="thead-custom" scope="col">
+                                        Priority
+                                    </th>
                                     {/* To Ask 
                                     <th class="thead-custom" scope="col">
                                         Priority
@@ -73,24 +76,37 @@ function Dashboard({jobOrder}) {
                                 </tr>
                             </thead>
                             <tbody>
-                            {jobOrder.data.map((order, index) => (
-                                    <tr key={index} className="text-center align-middle">
-                                        <td scope="row">{new Date(order.date_request).toLocaleDateString()}</td> {/* Date Received */}
+                                {jobOrder.data.map((order, index) => (
+                                    <tr
+                                        key={index}
+                                        className="text-center align-middle"
+                                    >
+                                        <td scope="row">
+                                            {new Date(
+                                                order.date_request
+                                            ).toLocaleDateString()}
+                                        </td>{" "}
+                                        {/* Date Received */}
                                         <td>{order.job_id}</td> {/* Job ID */}
-                                        <td>{order.user.firstName} {order.user.lastName} </td>
+                                        <td>
+                                            {order.user.firstName}{" "}
+                                            {order.user.lastName}{" "}
+                                        </td>
                                         <td>{order.user.email} </td>
-                                        <td>{order.service_type}</td> {/* Service Request */}
+                                        <td>{order.service_type}</td>{" "}
+                                        {/* Service Request */}
                                         <td>{order.status}</td> {/* Status */}
+                                        <td>{order.priority}</td> {/* Status */}
                                         <td>
                                             <Link
-                                                    href={`/technician/showJobOrder/${order.job_id}`}
+                                                href={`/technician/showJobOrder/${order.job_id}`}
+                                            >
+                                                <button
+                                                    className="gradient-blue-button"
+                                                    id="btnSee"
                                                 >
-                                                    <button
-                                                        className="gradient-blue-button"
-                                                        id="btnSee"
-                                                    >
-                                                        See Details
-                                                    </button>
+                                                    See Details
+                                                </button>
                                             </Link>
                                         </td>
                                     </tr>
@@ -99,13 +115,19 @@ function Dashboard({jobOrder}) {
                         </table>
                         <div className="text-center">
                             {jobOrder.links.map((link) => (
-                                <Link 
-                                    className={`px-3 ${ link.active ? "text-secondary" : " text-dark "}`}
+                                <Link
+                                    className={`px-3 ${
+                                        link.active
+                                            ? "text-secondary"
+                                            : " text-dark "
+                                    }`}
                                     key={link.label}
                                     href={link.url}
-                                    dangerouslySetInnerHTML={{ __html: link.label }}    
+                                    dangerouslySetInnerHTML={{
+                                        __html: link.label,
+                                    }}
                                 />
-                                ))}
+                            ))}
                         </div>
                     </div>
                 </div>

@@ -14,6 +14,7 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
         employeeID: employeeID,
         remarks: jobOrder.remarks || "",
         status: jobOrder.status || "Pending",
+        priority: jobOrder.priority || "Regular",
 
         instruments: jobOrder.int_units.map((unit) => ({
             instrument: unit.instrument || "",
@@ -73,19 +74,36 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                         <div>
                             <h1 class="d-inline">Job Request | </h1>
                             <h1 class="d-inline fw-light">Update Request</h1>
-                            <h4> Status </h4>
-                            <select
-                                className="w-25"
-                                value={data.status}
-                                onChange={(e) =>
-                                    setData("status", e.target.value)
-                                }
-                            >
-                                <option value="Pending">Pending</option>
-                                <option value="Processing">Processing</option>
-                                <option value="Cancelled">Cancelled</option>
-                                <option value="Completed">Completed</option>
-                            </select>
+                            <div className="container statusprio">
+                                {" "}
+                                <h5 className="d-inline"> Status: </h5>
+                                <select
+                                    className="w-25 me-3"
+                                    value={data.status}
+                                    onChange={(e) =>
+                                        setData("status", e.target.value)
+                                    }
+                                >
+                                    <option value="Pending">Pending</option>
+                                    <option value="Processing">
+                                        Processing
+                                    </option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                                <h5 className="d-inline"> Priority: </h5>
+                                <select
+                                    className="w-25 "
+                                    value={data.priority}
+                                    onChange={(e) =>
+                                        setData("priority", e.target.value)
+                                    }
+                                >
+                                    <option value="Regular">Regular</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                            </div>
                             <hr />
                         </div>
                         <div className="mt3">

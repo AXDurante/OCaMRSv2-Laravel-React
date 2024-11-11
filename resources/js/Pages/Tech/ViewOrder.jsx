@@ -15,24 +15,63 @@ function ViewOrder({ jobOrder }) {
                     <h1 className="d-inline fw-light">
                         Job Order Request Details
                     </h1>
-                    <h4>
-                        {" "}
-                        Status:{" "}
-                        <b
-                            className={
-                                jobOrder.status === "Processing"
-                                    ? "text-warning"
-                                    : jobOrder.status === "Cancelled"
-                                    ? "text-danger"
-                                    : jobOrder.status === "Completed" // Added condition for Completed
-                                    ? "text-success" // Green text for Completed
-                                    : ""
-                            }
-                        >
-                            {" "}
-                            {jobOrder.status}{" "}
-                        </b>
-                    </h4>
+                    <div className="d-flex align-items-center gap-3">
+                        <h4>
+                            Status:{" "}
+                            <b
+                                className={
+                                    jobOrder.status === "Processing"
+                                        ? "text-warning"
+                                        : jobOrder.status === "Cancelled"
+                                        ? "text-danger"
+                                        : jobOrder.status === "Completed"
+                                        ? "text-success"
+                                        : ""
+                                }
+                            >
+                                {jobOrder.status}
+                            </b>
+                        </h4>
+                        <h4>
+                            Priority:{" "}
+                            <b
+                                className={
+                                    jobOrder.priority === "Regular"
+                                        ? "text-"
+                                        : jobOrder.priority === "High"
+                                        ? "text-high"
+                                        : jobOrder.priority === "Medium"
+                                        ? "text-medium"
+                                        : jobOrder.priority === "Low"
+                                        ? "text-low"
+                                        : ""
+                                }
+                            >
+                                {jobOrder.priority}
+                            </b>
+                        </h4>
+                        {/* Add more detailed condition and debug info */}
+                        {jobOrder.status === "Completed" && (
+                            <>
+                                {jobOrder.feedback ? (
+                                    <Link
+                                        href={route(
+                                            "admin.feedback.show",
+                                            jobOrder.feedback.id
+                                        )}
+                                        className="btn btn-primary"
+                                    >
+                                        View Feedback
+                                    </Link>
+                                ) : (
+                                    <span className="text-muted">
+                                        (No feedback found - ID:{" "}
+                                        {jobOrder.job_id})
+                                    </span>
+                                )}
+                            </>
+                        )}
+                    </div>
                     <hr />
                 </div>
                 <div className="mt-3">
