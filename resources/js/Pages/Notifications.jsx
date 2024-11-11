@@ -5,18 +5,24 @@ import Navbar from "../Layouts/Navbar";
 import axios from 'axios';
 
 function Notifications({ notifications }) {
-    // Function to mark a notification as read
+    // Function to mark a notification as read and update the count
     const markAsRead = async (notificationId) => {
         try {
             await axios.post(`/notifications/${notificationId}/mark-as-read`);
+            // Immediately trigger a count update in the Navbar
+            const countResponse = await axios.get('/notifications/unread-count');
+            // Dispatch a custom event that Navbar will listen for
+            window.dispatchEvent(new CustomEvent('updateNotificationCount', {
+                detail: { count: countResponse.data.count }
+            }));
         } catch (error) {
             console.error('Error marking notification as read:', error);
         }
     };
 
     // Handle clicking on a job order link
-    const handleJobOrderClick = (notificationId) => {
-        markAsRead(notificationId);
+    const handleJobOrderClick = async (notificationId) => {
+        await markAsRead(notificationId);
     };
 
     return (
@@ -32,7 +38,7 @@ function Notifications({ notifications }) {
                     {notifications.length > 0 ? (
                         notifications.map((notification) => (
                             <div key={notification.id} 
-                                className={`notification-card fade-in hover-lift mb-4 ${!notification.read_at ? 'unread' : ''}`}
+                                className={`notification-card fade-in hover-lift mb-4 ${!notification.read_at ? 'unread' : ''} ${notification.job_order?.status.toLowerCase() === 'completed' ? 'completed' : ''}`}
                             >
                                 <div className="card-body p-4">
                                     <div className="row align-items-center">
@@ -46,12 +52,7 @@ function Notifications({ notifications }) {
                                             <div className="notification-details">
                                                 <div className="d-flex justify-content-between align-items-center mb-2">
                                                     <h5 className="notification-title mb-0">
-                                                        {notification.title}
-                                                        {notification.job_order && (
-                                                            <span className={`status-badge ms-3 status-${notification.job_order.status.toLowerCase()}`}>
-                                                                {notification.job_order.status}
-                                                            </span>
-                                                        )}
+                                                        Job Order #{notification.job_order?.id}
                                                     </h5>
                                                     <span className="notification-date">
                                                         <i className="bi bi-calendar3 me-2"></i>
@@ -59,31 +60,33 @@ function Notifications({ notifications }) {
                                                     </span>
                                                 </div>
 
-                                                {notification.job_order && (
-                                                    <div className="order-info mb-3">
-                                                        <div className="info-item">
-                                                            <i className="bi bi-file-earmark-text me-2 text-warning"></i>
-                                                            <span className="fw-bold">Job Order #{notification.job_order.id}</span>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                <div className="message-box mb-3">
-                                                    <p className="mb-0">{notification.message}</p>
+                                                <div className="d-flex align-items-center mb-3">
+                                                    <span className="me-2">Current Status:</span>
+                                                    <span className={`status-badge status-${notification.job_order?.status.toLowerCase()}`}>
+                                                        {notification.job_order?.status}
+                                                    </span>
                                                 </div>
 
-                                                {notification.job_order && (
-                                                    <div className="action-buttons">
-                                                        <Link 
-                                                            href={`/jobOrder/${notification.job_order.id}`}
-                                                            className="btn btn-details"
-                                                            onClick={() => handleJobOrderClick(notification.id)}
-                                                        >
-                                                            <i className="bi bi-arrow-right-circle me-2"></i>
-                                                            View Job Order
-                                                        </Link>
-                                                    </div>
-                                                )}
+                                                <div className="message-box mb-3">
+                                                    <p className="mb-0">
+                                                        Your job order #{notification.job_order?.id} status has been updated to{' '}
+                                                        <span className={`fw-bold text-${notification.job_order?.status.toLowerCase()}`}>
+                                                            {notification.job_order?.status}
+                                                        </span>
+                                                        {notification.message.includes('by') ? ' by' + notification.message.split('by')[1] : ''}
+                                                    </p>
+                                                </div>
+
+                                                <div className="action-buttons">
+                                                    <Link 
+                                                        href={`/jobOrder/${notification.job_order?.id}`}
+                                                        className="btn btn-details"
+                                                        onClick={() => handleJobOrderClick(notification.id)}
+                                                    >
+                                                        <i className="bi bi-arrow-right-circle me-2"></i>
+                                                        View Job Order
+                                                    </Link>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -103,11 +106,45 @@ function Notifications({ notifications }) {
     );
 }
 
-// Add some CSS for unread notifications
+// Update the styles constant
 const styles = `
+    .notification-card {
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent; /* Add transparent border by default */
+    }
+
+    /* Unread notification styles - higher specificity */
     .notification-card.unread {
-        border-left: 4px solid #007bff;
+        border-left: 4px solid #007bff !important; /* Use !important to ensure it takes precedence */
         background-color: rgba(0, 123, 255, 0.05);
+    }
+
+    /* Completed notification styles */
+    .notification-card.completed {
+        background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+        border: 1px solid #dee2e6;
+        opacity: 0.85;
+        border-left: 4px solid transparent; /* Reset left border for completed cards */
+    }
+
+    .notification-card.completed.unread {
+        border-left: 4px solid #007bff !important; /* Ensure unread border shows even on completed cards */
+    }
+
+    .notification-card.completed:hover {
+        opacity: 1;
+        background: linear-gradient(145deg, #f8f9fa, #f1f3f5);
+    }
+
+    .notification-card.completed .notification-icon-wrapper {
+        background-color: #e9ecef;
+    }
+
+    .notification-card.completed .notification-date {
+        color: #6c757d;
     }
 `;
 

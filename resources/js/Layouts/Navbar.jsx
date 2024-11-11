@@ -56,10 +56,20 @@ export default function NavBar({
     };
 
     useEffect(() => {
+        const handleNotificationUpdate = (event) => {
+            setUnreadCount(event.detail.count);
+        };
+
+        window.addEventListener('updateNotificationCount', handleNotificationUpdate);
+        
+        // Initial fetch
         fetchUnreadCount();
         const interval = setInterval(fetchUnreadCount, 30000);
         
-        return () => clearInterval(interval);
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('updateNotificationCount', handleNotificationUpdate);
+        };
     }, []);
 
     return (

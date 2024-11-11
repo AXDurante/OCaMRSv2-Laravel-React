@@ -2420,3 +2420,29 @@ input[type="checkbox"] {
     cursor: pointer;
     background: linear-gradient(145deg, #ffffff, #fff9e6);
 }
+
+/* Add these to your existing CSS */
+.text-completed {
+    color: #198754 !important;  /* Bootstrap success color */
+}
+
+.text-processing {
+    color: #0dcaf0 !important;  /* Bootstrap info color */
+}
+
+.text-pending {
+    color: #ffc107 !important;  /* Bootstrap warning color */
+}
+
+.text-cancelled {
+    color: #dc3545 !important;  /* Bootstrap danger color */
+}
+
+/* Update your existing status-badge styles */
+.status-badge {
+    padding: 0.35em 0.65em;
+    font-size: 0.85em;
+    font-weight: 600;
+    border-radius: 20px;
+    text-transform: capitalize;
+}
