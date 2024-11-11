@@ -95,13 +95,13 @@ class JobOrderController extends Controller
     {
         $jobOrderFields = $request->validate([
             'service_type' => ['required'],
-            'trans_type' => ['nullable', 'string'],
+            'trans_type' => ['nullable'],
             'dept_name' => ['required'],
             'lab' => ['required'],
             'lab_loc' => ['required'],
             'pos' => ['required'],
             'status' => ['required'],
-            'remarks' => ['nullable', 'string'],
+            'remarks' => ['required', 'string'],
         ]);
 
         // Set employeeID from authenticated user
@@ -113,12 +113,15 @@ class JobOrderController extends Controller
             'instruments' => ['required', 'array'],
             'instruments.*.instrument' => ['required'],
             'instruments.*.qty' => ['required', 'integer', 'min:1'],
-            'instruments.*.model' => ['required'],
-            'instruments.*.instrument_num' => ['required'],
-            'instruments.*.manufacturer' => ['required'],
+            'instruments.*.model' => ['required', 'string'],
+            'instruments.*.instrument_num' => ['required', 'string'],
+            'instruments.*.manufacturer' => ['required', 'string'],
         ]);
 
-        foreach ($intUnitFields['instruments'] as $instrument) {
+        // Add default values before creating
+        foreach ($intUnitFields['instruments'] as &$instrument) {
+            $instrument['model'] = $instrument['model'] ?: 'N/A';
+            $instrument['manufacturer'] = $instrument['manufacturer'] ?: 'N/A';
             $instrument['jobOrderID'] = $jobOrder->job_id;
             IntUnit::create($instrument);
         }

@@ -95,7 +95,8 @@ class TechnicianController extends Controller
                 'type' => 'status_update'
             ]);
 
-            return redirect()->back()->with('success', 'Job order updated successfully');
+            return redirect()->route('technician.showJobOrder', $jobOrder->job_id)
+                ->with('success', 'Job order updated successfully');
         } catch (\Exception $e) {
             \Log::error('Job Order Update Error:', [
                 'message' => $e->getMessage(),

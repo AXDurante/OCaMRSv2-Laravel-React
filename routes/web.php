@@ -145,7 +145,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/notifications/poll', 'poll');
         Route::get('/notifications/unread-count', 'getUnreadCount');
         Route::post('/notifications/{id}/mark-as-read', 'markAsRead');
-        Route::post('/notifications/mark-all-read', 'markAllAsRead');
+        Route::post('/notifications/mark-all-as-read', 'markAllAsRead');
     });
 
     Route::controller(FeedbackController::class)->group(function () {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import moment from 'moment';
 import Navbar from "../Layouts/Navbar";
 import axios from 'axios';
@@ -25,6 +25,33 @@ function Notifications({ notifications }) {
         await markAsRead(notificationId);
     };
 
+    // Add this new function
+    const handleMarkAllAsRead = async () => {
+        try {
+            // Get the CSRF token from the meta tag
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            
+            await axios.post('/notifications/mark-all-as-read', {}, {
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            });
+
+            // Update the notification count
+            const countResponse = await axios.get('/notifications/unread-count');
+            window.dispatchEvent(new CustomEvent('updateNotificationCount', {
+                detail: { count: countResponse.data.count }
+            }));
+
+            // Use Inertia router to refresh the page
+            router.reload();
+        } catch (error) {
+            console.error('Error marking all notifications as read:', error);
+            // Optionally show an error message to the user
+            alert('Failed to mark notifications as read. Please try again.');
+        }
+    };
+
     return (
         <div className="ps-3 pe-3">
             <div>
@@ -34,6 +61,18 @@ function Notifications({ notifications }) {
             </div>
 
             <div className="mt-3">
+                {notifications.some(notification => !notification.read_at) && (
+                    <div className="text-end mb-3 fade-in-delayed">
+                        <button
+                            onClick={handleMarkAllAsRead}
+                            className="btn btn-light mark-all-button"
+                        >
+                            <i className="bi bi-check2-all me-2"></i>
+                            Mark all as read
+                        </button>
+                    </div>
+                )}
+                
                 <div className="notifications-container neumorphic-container p-4">
                     {notifications.length > 0 ? (
                         notifications.map((notification) => (
@@ -145,6 +184,46 @@ const styles = `
 
     .notification-card.completed .notification-date {
         color: #6c757d;
+    }
+
+    .mark-all-button {
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        border: 1px solid #dee2e6;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        color: #6c757d;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .mark-all-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+        color: #495057;
+    }
+
+    .mark-all-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .fade-in-delayed {
+        animation: fadeIn 0.5s ease-out forwards;
+        animation-delay: 0.2s;
+        opacity: 0;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 `;
 
