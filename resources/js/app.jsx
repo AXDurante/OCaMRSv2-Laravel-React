@@ -20,11 +20,20 @@ createInertiaApp({
         ),
     setup({ el, App, props }) {
         const root = createRoot(el);
+        
+        // Check if the current path is admin, tech, or login
+        const currentPath = window.location.pathname;
+        const isAdminOrTech = currentPath.startsWith('/admin') || currentPath.startsWith('/tech');
+        const isLoginPage = currentPath === '/login'; // Adjust this based on your actual login route
+
+        console.log('Current path:', currentPath);
+        console.log('Is Admin or Tech:', isAdminOrTech);
+        console.log('Is Login Page:', isLoginPage);
 
         root.render(
             <>
                 <GoogleFont />
-                <TawkTo />
+                {!isAdminOrTech && !isLoginPage && <TawkTo />}
                 <App {...props} />
             </>
         );
