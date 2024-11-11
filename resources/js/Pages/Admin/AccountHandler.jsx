@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import axios from "axios";
-import { Link } from '@inertiajs/react';
+import { Link } from "@inertiajs/react";
 
 function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -106,7 +106,10 @@ function Home() {
                 console.log("Account created:", response.data);
 
                 // Add the new account to the local state immediately
-                setTechnicians((prevAccounts) => [...prevAccounts, response.data]);
+                setTechnicians((prevAccounts) => [
+                    ...prevAccounts,
+                    response.data,
+                ]);
 
                 // Close the modal
                 closeModal();
@@ -167,23 +170,26 @@ function Home() {
                         </h3>
                         <div className="row forms-bg p-5 instrumentation-accounts">
                             <div className="col-12">
-                                <div className="row">
+                                <div className="row justify-content-start flex-wrap">
                                     {technicians.map((account) => (
                                         <div
                                             key={account.id}
-                                            className="col-6 col-md-3 account-wrapper"
+                                            className="col-6 col-sm-4 col-md-3 col-lg-2 account-wrapper mb-4"
                                         >
                                             <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
                                                 <i className="bi bi-person-fill text-primary"></i>
                                             </div>
                                             <h5 className="account-name">
-                                                {account.firstName} {account.lastName}
+                                                {account.firstName}{" "}
+                                                {account.lastName}
                                             </h5>
                                             <p className="account-email">
                                                 {account.email}
                                             </p>
                                             <Link
-                                                href={route('admin.edit.tech', { id: account.id })}
+                                                href={route("admin.edit.tech", {
+                                                    id: account.id,
+                                                })}
                                                 className="btn btn-sm btn-primary mt-2"
                                             >
                                                 Edit
@@ -191,20 +197,20 @@ function Home() {
                                         </div>
                                     ))}
                                     <div
-                                        className="col-6 col-md-3 account-wrapper"
+                                        className="col-6 col-sm-4 col-md-3 col-lg-2 account-wrapper mb-4"
                                         onClick={openModal}
                                     >
                                         <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
                                             <i className="bi bi-plus text-primary"></i>
                                         </div>
                                         <h5 className="account-name">
-                                            add account
+                                            Add Account
                                         </h5>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <h3 className="mt-10 mb-3 fw-bold">Clients Accounts</h3>
                         <div className="row forms-bg p-5">
                             <div className="col-12">
@@ -226,76 +232,6 @@ function Home() {
                                         </div>
                                     ))}
                                     {/* Add user account button */}
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className="mt-10 mb-3 ">
-                            <h3 className="d-inline fw-bold">
-                                Clients Accounts
-                            </h3>
-                            <h3 className="d-inline fw-light">
-                                (For Approval)
-                            </h3>
-                        </div>
-
-                        <div className="row forms-bg p-5">
-                            <div className="col-12">
-                                <div className="row">
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-dark"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            Nino Anasco
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-dark"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            Add Account
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-dark"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-dark"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-dark"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
-
-                                    <div className="col-6 col-md-2 account-wrapper">
-                                        <div className="rounded-circle bg-secondary d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-person-fill text-dark"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            John Doe
-                                        </h5>
-                                    </div>
                                 </div>
                             </div>
                         </div>
