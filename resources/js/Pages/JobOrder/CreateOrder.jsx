@@ -25,6 +25,7 @@ function CreateOrder({
         employeeID: employeeID,
         remarks: "",
         status: "Pending",
+        priority: "Regular",
 
         // For Instrument Units
         instruments: [

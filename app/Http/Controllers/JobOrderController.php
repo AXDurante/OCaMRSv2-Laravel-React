@@ -101,6 +101,7 @@ class JobOrderController extends Controller
             'pos' => ['required'],
             'status' => ['required'],
             'remarks' => ['nullable', 'string'],
+            'priority' => ['required'], 
         ]);
 
         // Set employeeID from authenticated user

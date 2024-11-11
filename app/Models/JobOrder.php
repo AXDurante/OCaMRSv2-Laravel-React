@@ -42,6 +42,7 @@ class JobOrder extends Model
         'remarks',
         'employeeID',
         'status',
+        'priority'
     ];
 
     protected $dates = ['date_request', 'date_due'];

@@ -44,19 +44,41 @@ function ViewOrder({ jobOrder }) {
                                 {jobOrder.status}
                             </b>
                         </h4>
+                        <h4>
+                            Priority:{" "}
+                            <b
+                                className={
+                                    jobOrder.priority === "Regular"
+                                        ? "text-"
+                                        : jobOrder.priority === "High"
+                                        ? "text-high"
+                                        : jobOrder.priority === "Medium"
+                                        ? "text-medium"
+                                        : jobOrder.priority === "Low"
+                                        ? "text-low"
+                                        : ""
+                                }
+                            >
+                                {jobOrder.priority}
+                            </b>
+                        </h4>
                         {/* Add more detailed condition and debug info */}
                         {jobOrder.status === "Completed" && (
                             <>
                                 {jobOrder.feedback ? (
                                     <Link
-                                        href={route('admin.feedback.show', jobOrder.feedback.id)}
+                                        href={route(
+                                            "admin.feedback.show",
+                                            jobOrder.feedback.id
+                                        )}
                                         className="btn btn-primary"
                                     >
                                         View Feedback
                                     </Link>
                                 ) : (
                                     <span className="text-muted">
-                                        (No feedback found - ID: {jobOrder.job_id})
+                                        (No feedback found - ID:{" "}
+                                        {jobOrder.job_id})
                                     </span>
                                 )}
                             </>
@@ -126,11 +148,11 @@ function ViewOrder({ jobOrder }) {
                             />
                         </div>
                         <h6 className="w-100 fw-bold text-start"> Remarks </h6>
-                            <textarea
-                                value={jobOrder.remarks}
-                                onChange={(e) => setData('remarks', e.target.value)}
-                                readOnly
-                        />  
+                        <textarea
+                            value={jobOrder.remarks}
+                            onChange={(e) => setData("remarks", e.target.value)}
+                            readOnly
+                        />
                     </div>
                 </div>
 

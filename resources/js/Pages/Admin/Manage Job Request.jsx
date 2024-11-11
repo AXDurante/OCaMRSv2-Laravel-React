@@ -66,6 +66,9 @@ function Home({ jobOrder }) {
                                     <th class="thead-custom" scope="col">
                                         Status
                                     </th>
+                                    <th class="thead-custom" scope="col">
+                                        Priority
+                                    </th>
                                     {/* To Ask 
                                     <th class="thead-custom" scope="col">
                                         Priority
@@ -96,6 +99,7 @@ function Home({ jobOrder }) {
                                         <td>{order.service_type}</td>{" "}
                                         {/* Service Request */}
                                         <td>{order.status}</td> {/* Status */}
+                                        <td>{order.priority}</td>
                                         <td>
                                             <Link
                                                 href={`/admin/showJobOrder/${order.job_id}`}

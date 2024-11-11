@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->text('remarks');
             $table->timestamp('date_request')->nullable();
             $table->timestamp('date_due')->nullable();
+            $table->text('priority'); 
         });
     }
 
