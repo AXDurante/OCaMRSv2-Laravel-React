@@ -20,12 +20,14 @@ function ViewOrder({ jobOrder }) {
                         Status:{" "}
                         <b
                             className={
-                                jobOrder.status === "Processing"
+                                jobOrder.status === "For Approval"
                                     ? "text-warning"
                                     : jobOrder.status === "Cancelled"
                                     ? "text-danger"
                                     : jobOrder.status === "Completed" // Added condition for Completed
                                     ? "text-success" // Green text for Completed
+                                    : jobOrder.status === "Approved"
+                                    ? "text-success"
                                     : ""
                             }
                         >

@@ -19,7 +19,7 @@ function EditOrder({
         pos: "Laboratory Technician",
         employeeID: employeeID,
         remarks: jobOrder.remarks || "",
-        status: jobOrder.status || "Pending",
+        status: jobOrder.status || "",
 
         instruments: jobOrder.int_units.map(unit => ({
             instrument: unit.instrument || "",
@@ -85,8 +85,9 @@ function EditOrder({
                                 value={data.status}
                                 onChange={(e) => setData('status', e.target.value)}
                             >
-                                <option value="Pending">Pending</option>
-                                <option value="Processing">Processing</option>
+                                <option value="For Approval">For Approval</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Completed">Completed</option>
                                 <option value="Cancelled">Cancelled</option>
                             </select>
                             <hr />

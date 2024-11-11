@@ -18,9 +18,7 @@ class TechnicianController extends Controller
 
     public function index()
     {
-        $jobOrder = JobOrder::with('user')
-            ->whereIn('status', ['Processing', 'Cancelled']) // Filter by status
-            ->paginate(10);
+        $jobOrder = JobOrder::with('user')->paginate(10);
 
         return Inertia::render('Tech/Dashboard', [
             'jobOrder' => $jobOrder,
@@ -61,7 +59,7 @@ class TechnicianController extends Controller
             'service_type' => 'required',
             'trans_type' => 'required',
             'remarks' => 'nullable',
-            'status' => 'required|in:Pending,Processing,Cancelled,Completed',
+            'status' => 'required|in:For Approval,Approved,Cancelled,Completed',
             'instruments' => 'required|array',
             'instruments.*.instrument' => 'required',
             'instruments.*.qty' => 'required|integer',

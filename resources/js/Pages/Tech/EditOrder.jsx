@@ -81,10 +81,10 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                     setData("status", e.target.value)
                                 }
                             >
-                                <option value="Pending">Pending</option>
-                                <option value="Processing">Processing</option>
-                                <option value="Cancelled">Cancelled</option>
+                                <option value="For Approval">For Approval</option>
+                                <option value="Approved">Approved</option>
                                 <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
                             </select>
                             <hr />
                         </div>
