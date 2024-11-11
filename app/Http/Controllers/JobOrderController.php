@@ -11,6 +11,7 @@ use Inertia\Inertia;
 use App\Models\IntUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Notification;
 
 class JobOrderController extends Controller
 {
@@ -159,5 +160,16 @@ class JobOrderController extends Controller
     public function destroy(JobOrder $jobOrder)
     {
         //
+    }
+
+    protected function createStatusChangeNotification($jobOrder, $oldStatus)
+    {
+        Notification::create([
+            'user_id' => $jobOrder->employeeID,
+            'job_order_id' => $jobOrder->job_id,
+            'title' => 'Job Order Status Updated',
+            'message' => "Your job order #{$jobOrder->job_id} status has been changed from {$oldStatus} to {$jobOrder->status}",
+            'type' => 'status_update'
+        ]);
     }
 }

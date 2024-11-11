@@ -56,4 +56,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(JobOrder::class, 'employeeID', 'employeeID');
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id', 'employeeID');
+    }
 }

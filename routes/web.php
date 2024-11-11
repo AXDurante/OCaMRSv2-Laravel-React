@@ -14,6 +14,7 @@ use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\FeedbackControllerAdmin;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\NotificationController;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
@@ -137,6 +138,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/landingpage', function () {
         return Inertia::render('LandingPage');
     })->name('landingpage');
+
+    // New Notification Routes
+    Route::controller(NotificationController::class)->group(function () {
+        Route::get('/notifications', 'index')->name('notifications.index');
+        Route::get('/notifications/poll', 'poll');
+        Route::get('/notifications/unread-count', 'getUnreadCount');
+        Route::post('/notifications/{id}/mark-as-read', 'markAsRead');
+        Route::post('/notifications/mark-all-read', 'markAllAsRead');
+    });
 
     Route::controller(FeedbackController::class)->group(function () {
         Route::get('/feedback/create/{jobOrderId}', 'create')->name('feedback.create');
