@@ -136,7 +136,7 @@ export default function AdminNavBar({ children }) {
                                     className="a-nav-link"
                                     onClick={(e) => e.stopPropagation()}
                                 >
-                                    <i className="bi bi-file-earmark-text me-2"></i>
+                                    <i className="bi bi-file-earmark-text me-2 fs-4"></i>
                                     {!isCollapsed && "Job Request"}
                                 </Link>
                             </li>
@@ -156,7 +156,7 @@ export default function AdminNavBar({ children }) {
                                     className="a-nav-link"
                                     onClick={(e) => e.stopPropagation()}
                                 >
-                                    <i className="bi bi-person-fill me-2"></i>
+                                    <i className="bi bi-person-fill me-2 fs-4"></i>
                                     {!isCollapsed && "Manage Profile"}
                                 </Link>
                             </li>
@@ -166,7 +166,7 @@ export default function AdminNavBar({ children }) {
                                     href="/admin/view-instrument"
                                     onClick={(e) => e.stopPropagation()}
                                 >
-                                    <i className="bi bi-list me-2"></i>
+                                    <i className="bi bi-list me-2 fs-4"></i>
                                     {!isCollapsed && "Instrument List"}
                                 </Link>
                             </li>
@@ -176,7 +176,7 @@ export default function AdminNavBar({ children }) {
                                     href="#"
                                     onClick={(e) => e.stopPropagation()}
                                 >
-                                    <i className="bi bi-arrow-left me-2"></i>
+                                    <i className="bi bi-arrow-left me-2 fs-4"></i>
                                     {!isCollapsed && "Go Back"}
                                 </a>
                             </li>

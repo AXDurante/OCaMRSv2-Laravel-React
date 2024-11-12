@@ -862,6 +862,67 @@ input[type="checkbox"] {
 .instrumentation-accounts .account-icon i {
     font-size: 9rem; /* Increase the icon size */
 }
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 1200px) {
+    .instrumentation-accounts .account-icon {
+        width: 180px;
+        height: 180px;
+    }
+
+    .instrumentation-accounts .account-icon i {
+        font-size: 7rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .instrumentation-accounts .account-icon {
+        width: 150px;
+        height: 150px;
+    }
+
+    .instrumentation-accounts .account-icon i {
+        font-size: 5.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .instrumentation-accounts .account-icon {
+        width: 120px;
+        height: 120px;
+    }
+
+    .instrumentation-accounts .account-icon i {
+        font-size: 4.5rem;
+    }
+
+    .instrumentation-accounts .account-wrapper {
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .instrumentation-accounts .account-icon {
+        width: 100px;
+        height: 100px;
+    }
+
+    .instrumentation-accounts .account-icon i {
+        font-size: 3.5rem;
+    }
+
+    .instrumentation-accounts .account-wrapper {
+        margin-bottom: 1.5rem;
+    }
+}
+.instrumentation-accounts .account-email {
+    word-wrap: break-word; /* Ensure long emails wrap instead of overflowing */
+    overflow-wrap: break-word; /* Cross-browser compatibility for wrapping */
+    text-align: center; /* Center the email text */
+    margin-top: 0.5rem; /* Adjust margin to avoid overlap */
+    font-size: 0.875rem; /* Slightly smaller font size for email */
+    color: #6c757d; /* Lighter text color */
+}
 /* feedback  */
 .icon-wrapper {
     display: inline-flex;
@@ -1102,7 +1163,7 @@ input[type="checkbox"] {
     margin: 0;
 }
 
-/* overlay page for instrument add */
+/* h page for instrument add */
 .overlay {
     position: fixed;
     top: 0;
@@ -1537,9 +1598,7 @@ input[type="checkbox"] {
 .forms-bg {
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 
-        20px 20px 60px #d9d9d9,
-        -20px -20px 60px #ffffff;
+    box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
 }
 
 .profile-bg {
@@ -1558,9 +1617,8 @@ input[type="checkbox"] {
     justify-content: center;
     border-radius: 50%;
     background: rgba(255, 193, 7, 0.1);
-    box-shadow: 
-        4px 4px 8px rgba(0,0,0,0.2),
-        -4px -4px 8px rgba(255,255,255,0.05);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2),
+        -4px -4px 8px rgba(255, 255, 255, 0.05);
 }
 
 .star-rating {
@@ -1569,7 +1627,7 @@ input[type="checkbox"] {
 }
 
 .star-rating i {
-    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
     transition: transform 0.2s ease;
 }
 
@@ -1595,12 +1653,12 @@ input[type="checkbox"] {
 /* Return button hover effect */
 .return-button {
     transition: all 0.3s ease;
-    box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .return-button:hover {
     transform: translateY(-2px);
-    box-shadow: 6px 6px 12px rgba(0,0,0,0.15);
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Animation classes for framer-motion fallback */
@@ -1638,7 +1696,7 @@ input[type="checkbox"] {
         width: 60px;
         height: 60px;
     }
-    
+
     .star-rating i {
         font-size: 1.2rem;
     }
@@ -1683,12 +1741,12 @@ input[type="checkbox"] {
 
 .return-button {
     transition: all 0.3s ease;
-    box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .return-button:hover {
     transform: translateY(-2px);
-    box-shadow: 6px 6px 12px rgba(0,0,0,0.15);
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Track Order Card Styles */
@@ -1696,20 +1754,18 @@ input[type="checkbox"] {
     background: linear-gradient(145deg, #ffffff, #f8f9fa);
     border: none;
     border-radius: 15px;
-    box-shadow: 
-        8px 8px 16px #d1d1d1,
-        -8px -8px 16px #ffffff;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s ease;
+    box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        background-color 0.3s ease;
     overflow: hidden;
     position: relative;
 }
 
 .order-card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 
-        15px 15px 30px #9e9e9e,  /* Darker shadow */
-        -15px -15px 30px #ffffff;
-    background-color: #e0e0e0;  /* Darker gray on hover */
+    box-shadow: 15px 15px 30px #9e9e9e,
+        /* Darker shadow */ -15px -15px 30px #ffffff;
+    background-color: #e0e0e0; /* Darker gray on hover */
 }
 
 .service-icon-wrapper {
@@ -1720,9 +1776,7 @@ input[type="checkbox"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 
-        4px 4px 8px #d1d1d1,
-        -4px -4px 8px #ffffff;
+    box-shadow: 4px 4px 8px #d1d1d1, -4px -4px 8px #ffffff;
     padding: 15px;
 }
 
@@ -1815,7 +1869,7 @@ input[type="checkbox"] {
 .btn-give-feedback:hover,
 .btn-details:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     filter: brightness(110%);
 }
 
@@ -1845,7 +1899,7 @@ input[type="checkbox"] {
 
 /* Custom Select Styles - Yellow Theme */
 .custom-select {
-    background: #FFD600;
+    background: #ffd600;
     border: none;
     border-radius: 8px;
     padding: 0.5rem 2.5rem 0.5rem 1rem;
@@ -1862,19 +1916,19 @@ input[type="checkbox"] {
 }
 
 .custom-select:hover {
-    background: #FFE03D;
+    background: #ffe03d;
     transform: translateY(-1px);
 }
 
 .custom-select:focus {
     outline: none;
-    background: #FFE03D;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    background: #ffe03d;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Filter Label Styles */
 .filter-label {
-    background: #FFD600;
+    background: #ffd600;
     color: #202020;
     font-weight: 500;
     padding: 0.5rem 1rem;
@@ -1896,24 +1950,24 @@ input[type="checkbox"] {
     align-items: stretch;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
 }
 
 .filter-group:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transform: translateY(-1px);
 }
 
 /* Label Styles */
 .filter-label {
-    background: #FFD600;
+    background: #ffd600;
     color: #202020;
     font-weight: 500;
     padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
-    border-right: 1px solid rgba(0,0,0,0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
     min-width: fit-content;
 }
 
@@ -1941,7 +1995,7 @@ input[type="checkbox"] {
 
 /* Hover state for the entire group */
 .filter-group:hover .filter-label {
-    background: #FFE03D;
+    background: #ffe03d;
 }
 
 .filter-group:hover .filter-select {
@@ -1956,7 +2010,7 @@ input[type="checkbox"] {
 
 /* Optional: Add a subtle border to the entire group */
 .filter-group {
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Card styles */
@@ -1970,9 +2024,9 @@ input[type="checkbox"] {
 
 /* Hover effect for job order cards */
 .card.order-card:hover {
-    background-color: #f0f0f0;  /* Darker gray background */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);  /* Deeper shadow */
-    transform: translateY(-4px);  /* Slight lift effect */
+    background-color: #f0f0f0; /* Darker gray background */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+    transform: translateY(-4px); /* Slight lift effect */
 }
 
 @media (min-width: 768px) {
@@ -2022,6 +2076,189 @@ input[type="checkbox"] {
     margin-bottom: 20%;
     overflow: auto; /* Allow scrolling if content exceeds height */
     border-radius: 8px; /* Add rounded corners */
+}
+
+.input-error {
+    border: 2px solid #d43f18; /* Red border for error */
+}
+
+.error-message {
+    color: #d43f18; /* Error message color */
+    display: flex;
+    align-items: center; /* Align icon and text */
+}
+
+.error-icon {
+    margin-right: 5px; /* Space between icon and text */
+}
+/* Apply to sidebar items when collapsed */
+.collapsed-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%; /* Full width for centering */
+}
+
+.nav-item i {
+    font-size: 24px; /* Adjust icon size if needed */
+    margin: 0; /* Remove default margin */
+}
+
+@media (max-width: 768px) {
+    nav {
+        width: 60px; /* Adjust width for smaller screens */
+    }
+    .flex-grow-1 {
+        margin-left: 60px; /* Adjust margin for smaller screens */
+    }
+}
+/* ... existing styles ... */
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .vision-section h2,
+    .mission-section h2 {
+        font-size: 1.5rem; /* Smaller font size for headings */
+    }
+
+    .vision-section p,
+    .mission-section p {
+        font-size: 1rem; /* Smaller font size for paragraphs */
+        padding: 0 10px; /* Add some padding for better readability */
+    }
+
+    .landing-description {
+        font-size: 1rem; /* Adjust landing description font size */
+        padding: 0 10px; /* Add padding for better readability */
+    }
+
+    .text-overlay {
+        padding: 5%; /* Reduce padding for smaller screens */
+    }
+}
+
+/* Additional media query for very small screens */
+@media (max-width: 480px) {
+    .vision-section h2,
+    .mission-section h2 {
+        font-size: 1.2rem; /* Further reduce font size for headings */
+    }
+
+    .vision-section p,
+    .mission-section p {
+        font-size: 0.9rem; /* Further reduce font size for paragraphs */
+    }
+
+    .landing-description {
+        font-size: 0.9rem; /* Further adjust landing description font size */
+    }
+}
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    /* Update font sizes for headings and paragraphs */
+    .vision-section h2,
+    .mission-section h2 {
+        font-size: 4vw; /* Responsive font size for headings */
+    }
+
+    .vision-section p,
+    .mission-section p {
+        font-size: 2.5vw; /* Responsive font size for paragraphs */
+    }
+
+    .landing-description {
+        font-size: 2vw; /* Responsive landing description font size */
+    }
+
+    /* Adjust other text elements similarly */
+    .text-overlay {
+        padding: 5%; /* Keep padding as is or adjust as needed */
+    }
+
+    /* Example for other text elements */
+    .footer-text p {
+        font-size: 1.5vw; /* Responsive footer text size */
+    }
+
+    /* Adjust button font sizes */
+    .landing-button {
+        font-size: 2vw; /* Responsive button font size */
+    }
+}
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .responsive-heading {
+        font-size: 5vw; /* Responsive font size for headings */
+    }
+    .text-overlayhead {
+        font-size: 5vw;
+    }
+}
+
+/*Account handler*/
+.account-wrapper {
+    padding: 10px;
+    text-align: center;
+}
+
+.account-icon {
+    width: 100px; /* Base size */
+    height: 100px;
+    font-size: 24px;
+    border-radius: 50%;
+
+    /* Adjust for larger screens */
+    @media (min-width: 768px) {
+        /* Medium screens and up */
+        width: 120px;
+        height: 120px;
+        font-size: 30px;
+    }
+
+    @media (min-width: 992px) {
+        /* Large screens and up */
+        width: 150px;
+        height: 150px;
+        font-size: 36px;
+    }
+}
+
+/* Adjust the column widths for different screen sizes */
+@media (min-width: 768px) {
+    .account-wrapper {
+        flex: 0 0 25%; /* Adjust the width to 25% for medium screens */
+    }
+}
+
+@media (min-width: 992px) {
+    .account-wrapper {
+        flex: 0 0 20%; /* Adjust the width to 20% for large screens */
+    }
+}
+
+.account-name {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Responsive icon size adjustments */
+.account-icon i {
+    font-size: 70px; /* Base size for small screens */
+}
+
+/* Adjust for medium screens */
+@media (min-width: 768px) {
+    .account-icon i {
+        font-size: 80px; /* Increase size for medium screens */
+    }
+}
+
+/* Adjust for large screens */
+@media (min-width: 992px) {
+    .account-icon i {
+        font-size: 100px; /* Increase size for large screens */
+    }
 }
 
 .gradient-gray-button {

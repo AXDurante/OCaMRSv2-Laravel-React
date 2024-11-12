@@ -18,7 +18,7 @@ function ViewInstrument({ equipment }) {
     };
 
     return (
-        <div className="d-flex">
+        <div className="">
             <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
@@ -66,7 +66,7 @@ function ViewInstrument({ equipment }) {
                                             <img
                                                 src={
                                                     item.image_path ||
-                                                    "https://via.placeholder.com/100"
+                                                    "/images/Repair.png"
                                                 }
                                                 alt={item.equip_name}
                                                 className="me-3"
@@ -77,11 +77,10 @@ function ViewInstrument({ equipment }) {
                                                     borderRadius: "8px",
                                                 }}
                                             />
-                                            <div className="flex-grow-1">
-                                                <h4 className="card-title">
-                                                    {item.equip_name}
-                                                </h4>
-                                            </div>
+
+                                            <h4 className="card-title">
+                                                {item.equip_name}
+                                            </h4>
                                         </div>
                                     </div>
                                 ))}
