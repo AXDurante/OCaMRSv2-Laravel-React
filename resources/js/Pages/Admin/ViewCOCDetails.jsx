@@ -45,7 +45,7 @@ function ViewCOCDetails({ coc, auth }) {
 
                                 <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
-                                    <Link href={route('technician.viewTSRDetails', coc.tsr_id)}>
+                                    <Link href={route('admin.viewTSRDetails', coc.tsr_id)}>
                                         <button className="btn btn-light w-100 mb-2">
                                             <i className="bi bi-file-earmark-text-fill me-2"></i>
                                             Technical Service Report
