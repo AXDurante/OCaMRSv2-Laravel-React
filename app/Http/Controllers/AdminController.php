@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Equipment;
 use App\Models\JobOrder;
+use App\Models\TSR;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -222,4 +223,80 @@ class AdminController extends Controller
             return redirect()->back()->withErrors(['error' => 'An error occurred while updating the profile: ' . $e->getMessage()]);
         }
     }
+
+    public function indexTSR($id)
+    {
+        // Retrieve the latest TSR associated with the specified Job Order ID
+        $tsrs = TSR::where('job_id', $id)
+            ->orderBy('tsr_id', 'desc') // Order by tsr_id in descending order
+            ->get();
+
+        return Inertia::render('Admin/ViewTSR', [
+            'tsrs' => $tsrs,
+            'jobOrderId' => $id, // Pass the Job Order ID for reference
+        ]);
+    }
+
+    public function viewTSR($tsr_id)
+    {
+        $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
+        
+        // Generate the full URL when sending to the frontend
+        if ($tsr->tech_photo) {
+            $tsr->tech_photo = Storage::url('photos/technicianSignature/' . $tsr->tech_photo);
+        }
+
+        return Inertia::render('Admin/ViewTSRDetails', [
+            'tsr' => $tsr
+        ]);
+    }
+
+    public function editTSR($tsr_id)
+    {
+        $admin = Auth::guard('admin')->user(); // Get authenticated admin
+        $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
+
+        // Generate the full URL for the technician's photo if it exists
+        if ($tsr->tech_photo) {
+            $tsr->tech_photo_url = Storage::url('photos/technicianSignature/' . $tsr->tech_photo);
+        }
+
+        return Inertia::render('Admin/EditTSR', [
+            'tsr' => $tsr,
+            'jobOrder' => $tsr->job_order,
+            'auth' => [
+                'user' => $admin,
+                'photo' => $admin->photo // Pass the admin's photo filename
+            ]
+        ]);
+    }
+
+    public function updateTSR(Request $request, $tsr_id)
+    {
+        $tsr = TSR::findOrFail($tsr_id);
+
+        $tsrFields = $request->validate([
+            'tsr_num' => ['required'],
+            'instrument' => ['required'],
+            'model' => ['nullable', 'string'],
+            'serial_num' => ['nullable', 'string'],
+            'problemReported' => ['nullable', 'string'],
+            'diagnosis' => ['nullable', 'string'],
+            'actionTaken' => ['nullable', 'string'],
+            'recommendation' => ['required'],
+            'tsr_remarks' => ['nullable', 'string'],
+            'date_request' => ['required'],
+            'phone' => ['required'],
+            'job_id' => ['required'],
+            'admin_photo' => ['nullable', 'string'],
+            'admin_name' => ['nullable', 'string'],
+        ]);
+
+        // Update TSR with validated fields
+        $tsr->update($tsrFields);
+
+        return redirect()->route('admin.viewTSRDetails', $tsr->tsr_id)
+            ->with('message', 'TSR updated successfully');
+    }
+
 }

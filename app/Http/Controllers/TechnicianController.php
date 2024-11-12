@@ -150,9 +150,14 @@ class TechnicianController extends Controller
     {
         $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
         
-        // Generate the full URL when sending to the frontend
+        // Generate the full URLs for both technician and admin photos when they exist
         if ($tsr->tech_photo) {
             $tsr->tech_photo = Storage::url('photos/technicianSignature/' . $tsr->tech_photo);
+        }
+
+        // Add admin photo URL if it exists
+        if ($tsr->admin_photo) {
+            $tsr->admin_signature = Storage::url('photos/adminSignature/' . $tsr->admin_photo);
         }
 
         return Inertia::render('Tech/ViewTSRDetails', [
@@ -165,9 +170,14 @@ class TechnicianController extends Controller
         $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
         $user = Auth::user();
 
-        // Generate the full URL for the photo if it exists
+        // Generate the full URLs for both technician and admin photos
         if ($tsr->tech_photo) {
             $tsr->tech_photo_url = Storage::url('photos/technicianSignature/' . $tsr->tech_photo);
+        }
+
+        // Add admin signature data if it exists
+        if ($tsr->admin_photo) {
+            $tsr->admin_signature = Storage::url('photos/adminSignature/' . $tsr->admin_photo);
         }
 
         return Inertia::render('Tech/EditTSR', [

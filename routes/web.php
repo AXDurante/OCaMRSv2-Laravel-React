@@ -69,7 +69,12 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/showJobOrder/{id}', [AdminController::class, 'showJobOrder'])->name('admin.showJobOrder');
     Route::get('/admin/showJobOrder/{id}/edit', [AdminController::class, 'editJobOrder']);
     Route::put('/admin/showJobOrder/{id}', [AdminController::class, 'updateJobOrder'])->name('admin.updateJobOrder');
-    ;
+
+    // TSR
+    Route::get('/admin/TSR/{id}', [AdminController::class, 'indexTSR'])->name('admin.indexTSR');
+    Route::get('/admin/TSR/details/{tsr_id}', [AdminController::class, 'viewTSR'])->name('admin.viewTSRDetails');
+    Route::put('/admin/TSR/{tsr_id}', [AdminController::class, 'updateTSR'])->name('admin.updateTSR');
+    Route::get('/admin/TSR/edit/{tsr_id}', [AdminController::class, 'editTSR'])->name('admin.editTSR');
 
     // Instrumentation Account routes
 
