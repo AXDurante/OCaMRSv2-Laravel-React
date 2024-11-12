@@ -398,36 +398,30 @@ class AdminController extends Controller
     public function editCoC($coc_id)
     {
         $coc = COC::with(['tsr.job_order'])->findOrFail($coc_id);
-        $user = Auth::user();
+        $admin = Auth::guard('admin')->user();
         
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
         
-        // Generate full URL for current user's photo
-        $userPhotoUrl = $user->photo ? ($isProduction 
-            ? $appUrl . '/public/storage/photos/technicianSignature/' . $user->photo
-            : url('storage/photos/technicianSignature/' . $user->photo)) 
-            : null;
-
-        // Generate full URLs for existing signatures
+        // Generate full URLs for signatures
         if ($coc->tech_photo) {
             $coc->tech_photo_url = $isProduction 
                 ? $appUrl . '/public/storage/photos/technicianSignature/' . $coc->tech_photo
                 : url('storage/photos/technicianSignature/' . $coc->tech_photo);
         }
-        
-        if ($coc->admin_photo) {
-            $coc->admin_signature = $isProduction 
-                ? $appUrl . '/public/storage/photos/adminSignature/' . $coc->admin_photo
-                : url('storage/photos/adminSignature/' . $coc->admin_photo);
-        }
+
+        // Generate full URL for admin's signature
+        $adminPhotoUrl = $admin->photo ? ($isProduction 
+            ? $appUrl . '/public/storage/photos/adminSignature/' . $admin->photo
+            : url('storage/photos/adminSignature/' . $admin->photo)) 
+            : null;
 
         return Inertia::render('Admin/EditCOC', [
             'coc' => $coc,
             'tsr' => $coc->tsr,
             'auth' => [
-                'user' => $user,
-                'photo' => $userPhotoUrl
+                'user' => $admin,
+                'photo' => $adminPhotoUrl // Pass the full URL
             ]
         ]);
     }

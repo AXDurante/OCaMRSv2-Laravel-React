@@ -23,11 +23,14 @@ function EditCOC({ tsr, auth, coc }) {
         date_req: coc.date_req || tsr.job_order.date_request,
         date_cal: coc.date_cal || tsr.job_order.date_request,
         date_due: coc.date_due || tsr.job_order.date_due,
-        tech_photo: coc.tech_photo || null,
-        tech_name: coc.tech_name || null,
-        admin_name: coc.admin_name || null,
-        admin_photo: coc.admin_photo || null,
+        tech_photo: coc.tech_photo_url,
+        tech_name: coc.tech_name,
+        admin_name: coc.admin_name,
+        admin_photo: auth.photo,
     });
+
+    console.log(data.tech_name);
+    console.log(data.admin_photo);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -305,13 +308,10 @@ function EditCOC({ tsr, auth, coc }) {
                                                 tsr={tsr}
                                                 cocDetails={{
                                                     ...data,
-                                                    tech_photo: data.tech_photo,
-                                                    tech_signature: `/storage/photos/technicianSignature/${data.tech_photo}`,
-                                                    tech_id: data.tech_name,
-                                                    ...(includeSignature && {
-                                                        admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
-                                                        admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
-                                                    }),
+                                                    tech_photo: coc.tech_photo_url,
+                                                    tech_name: coc.tech_name,
+                                                    admin_photo: includeSignature ? auth.photo : null,
+                                                    admin_name: includeSignature ? `${auth.user.firstName} ${auth.user.lastName}` : null,
                                                 }}
                                             />
                                         </PDFViewer>

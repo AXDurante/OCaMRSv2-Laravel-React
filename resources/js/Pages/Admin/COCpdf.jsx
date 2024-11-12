@@ -310,6 +310,8 @@ function breakLongWords(text) {
 }
 
 function COCpdf ({tsr, cocDetails}) {
+    console.log(cocDetails.tech_photo);
+    console.log(cocDetails.admin_photo);
     return (
         <Document>
             <Page size={[8.5 * 72, 13 * 72]}>
@@ -527,7 +529,7 @@ function COCpdf ({tsr, cocDetails}) {
                             {cocDetails.tech_photo && (
                                 <>
                                     <Image
-                                        src={cocDetails.tech_signature}
+                                        src={cocDetails.tech_photo}
                                         style={{
                                             width: 75,
                                             height: 75,
@@ -543,7 +545,7 @@ function COCpdf ({tsr, cocDetails}) {
                                         top: 25,
                                         left: 60
                                     }}>
-                                        {cocDetails.tech_id}
+                                        {cocDetails.tech_name}
                                     </Text>
                                 </>
                             )}
@@ -560,10 +562,10 @@ function COCpdf ({tsr, cocDetails}) {
                             <Text style={{ fontSize: 11, fontWeight: "bold" }}>
                                 NOTED BY:
                             </Text>
-                            {cocDetails.admin_signature && (
+                            {cocDetails.admin_photo && (
                                 <>
                                     <Image
-                                        src={cocDetails.admin_signature}
+                                        src={cocDetails.admin_photo}
                                         style={{
                                             width: 75,
                                             height: 75,

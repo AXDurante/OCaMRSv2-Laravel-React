@@ -235,7 +235,7 @@ function ViewCOCDetails({ coc, auth }) {
                                                     tech_id: coc.tech_name,
                                                     tech_photo: coc.tech_photo, // This is now the full URL
                                                     tech_signature: coc.tech_photo, // This is now the full URL
-                                                    admin_signature: coc.admin_signature // This is now the full URL
+                                                    admin_photo: coc.admin_signature // This is now the full URL
                                                 }}
                                             />
                                         </PDFViewer>
