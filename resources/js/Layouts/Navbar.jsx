@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
 
 export default function NavBar({
@@ -9,8 +9,11 @@ export default function NavBar({
     email,
 }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const [isFullyExpanded, setIsFullyExpanded] = useState(true); // For handling transition timing
+    const [isFullyExpanded, setIsFullyExpanded] = useState(true);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { auth } = usePage().props;
+    const mobileMenuRef = useRef(null);
+    const burgerButtonRef = useRef(null);
 
     const handleResize = () => {
         if (window.innerWidth < 768) {
@@ -19,6 +22,7 @@ export default function NavBar({
         } else {
             setIsCollapsed(false);
             setIsFullyExpanded(true);
+            setIsMobileMenuOpen(false);
         }
     };
 
@@ -35,7 +39,7 @@ export default function NavBar({
             setIsCollapsed(false);
             setTimeout(() => {
                 setIsFullyExpanded(true);
-            }, 300); // Delay to match transition time
+            }, 300);
         } else {
             setIsFullyExpanded(false);
             setTimeout(() => {
@@ -44,10 +48,184 @@ export default function NavBar({
         }
     };
 
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                isMobileMenuOpen &&
+                mobileMenuRef.current &&
+                !mobileMenuRef.current.contains(event.target) &&
+                !burgerButtonRef.current.contains(event.target)
+            ) {
+                setIsMobileMenuOpen(false);
+            }
+        };
+
+        const handleScroll = () => {
+            if (isMobileMenuOpen) {
+                setIsMobileMenuOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("scroll", handleScroll);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("scroll", handleScroll);
+        };
+    }, [isMobileMenuOpen]);
+
+    const handleNavLinkClick = () => {
+        setIsMobileMenuOpen(false);
+    };
+
     return (
         <div className="">
+            <div className="d-md-none fixed-top bg-dark">
+                <div className="d-flex justify-content-between align-items-center p-3">
+                    <div className="mobile-header-logo">
+                        <img
+                            src="/images/lesologonav.png"
+                            alt="LESO Logo"
+                            className="mobile-logo-img"
+                        />
+                        <h4 className="text-white mb-0">LESO - ISC</h4>
+                    </div>
+                    <button
+                        ref={burgerButtonRef}
+                        className="navbar-toggler border-0"
+                        onClick={toggleMobileMenu}
+                    >
+                        <i className="bi bi-list text-white fs-2"></i>
+                    </button>
+                </div>
+
+                <div
+                    ref={mobileMenuRef}
+                    className={`mobile-menu ${isMobileMenuOpen ? "show" : ""}`}
+                >
+                    <div className="bg-dark p-3">
+                        <div className="text-center mb-2">
+                            <div
+                                className="rounded-circle bg-white d-inline-flex justify-content-center align-items-center mb-2"
+                                style={{ width: "45px", height: "45px" }}
+                            >
+                                <i
+                                    className="bi bi-person-fill text-dark"
+                                    style={{ fontSize: "24px" }}
+                                ></i>
+                            </div>
+                            <p className="text-white mb-2 small">
+                                Welcome, {auth.user.firstName}{" "}
+                                {auth.user.lastName}
+                            </p>
+                        </div>
+
+                        <ul className="nav flex-column nav-compact">
+                            <li className="nav-item">
+                                <Link
+                                    href={route("landingpage")}
+                                    className="nav-link text-white py-2"
+                                    onClick={handleNavLinkClick}
+                                >
+                                    <i className="bi bi-house me-2"></i>
+                                    <span className="small">Home</span>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link
+                                    href="/jobOrder/create"
+                                    className="nav-link text-white py-2"
+                                    onClick={handleNavLinkClick}
+                                >
+                                    <i className="bi bi-file-earmark-text me-2"></i>
+                                    <span className="small">
+                                        Create Request
+                                    </span>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link
+                                    href="/jobOrder"
+                                    className="nav-link text-white py-2"
+                                    onClick={handleNavLinkClick}
+                                >
+                                    <i className="bi bi-search me-2"></i>
+                                    <span className="small">Track Request</span>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link
+                                    href={route("manageProfile")}
+                                    className="nav-link text-white py-2"
+                                    onClick={handleNavLinkClick}
+                                >
+                                    <i className="bi bi-person-fill me-2"></i>
+                                    <span className="small">
+                                        Manage Profile
+                                    </span>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link
+                                    href="/viewInstrument"
+                                    className="nav-link text-white py-2"
+                                    onClick={handleNavLinkClick}
+                                >
+                                    <i className="bi bi-list me-2"></i>
+                                    <span className="small">
+                                        Instrument List
+                                    </span>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <a
+                                    className="nav-link text-white py-2"
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleNavLinkClick();
+                                    }}
+                                >
+                                    <i className="bi bi-bell-fill me-2"></i>
+                                    <span className="small">Notification</span>
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a
+                                    className="nav-link text-white py-2"
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleNavLinkClick();
+                                    }}
+                                >
+                                    <i className="bi bi-arrow-left me-2 icon-bold"></i>
+                                    <span className="small">Go Back</span>
+                                </a>
+                            </li>
+                            <li className="nav-item mt-3">
+                                <Link
+                                    href={route("logout")}
+                                    method="post"
+                                    as="button"
+                                    className="logout-btn w-100"
+                                >
+                                    <i className="bi bi-box-arrow-right me-2"></i>
+                                    <span className="small">Log Out</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <nav
-                className="sidebar2"
+                className="sidebar2 d-none d-md-block"
                 style={{
                     width: isCollapsed ? "80px" : "250px",
                     minWidth: isCollapsed ? "80px" : "250px",
@@ -56,7 +234,7 @@ export default function NavBar({
                     transition: "width 0.3s ease-in-out",
                     overflow: "hidden",
                 }}
-                onClick={handleCollapseToggle} // Toggle collapse on click
+                onClick={handleCollapseToggle}
             >
                 <div className="mt-4 d-flex flex-column align-items-center">
                     <h4
@@ -112,7 +290,7 @@ export default function NavBar({
                         transition: "width 0.3s ease-in-out",
                         overflow: "hidden",
                     }}
-                    onClick={handleCollapseToggle} // Toggle collapse on click
+                    onClick={handleCollapseToggle}
                 >
                     <div className="sidebar-user">
                         {!isCollapsed ? (
@@ -244,10 +422,17 @@ export default function NavBar({
                     </div>
                 </div>
             </nav>
+
             <main
                 className="flex-fill p-3"
                 style={{
-                    marginLeft: isCollapsed ? "80px" : "250px",
+                    marginLeft:
+                        window.innerWidth >= 768
+                            ? isCollapsed
+                                ? "80px"
+                                : "250px"
+                            : "0",
+                    marginTop: window.innerWidth < 768 ? "60px" : "0",
                     transition: "margin-left 0.3s ease-in-out",
                 }}
             >
