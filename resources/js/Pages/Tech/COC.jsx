@@ -260,8 +260,9 @@ function COC({ tsr, auth }) {
                                                 tsr={tsr}
                                                 cocDetails={{
                                                     ...data,
-                                                    tech_id: `${auth.user.firstName} ${auth.user.lastName}`,
+                                                    tech_id: auth.user.firstName + ' ' + auth.user.lastName,
                                                     tech_photo: auth.photo,
+                                                    tech_signature: auth.photo
                                                 }}
                                             />
                                         </PDFViewer>

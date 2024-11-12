@@ -527,7 +527,7 @@ function COCpdf ({tsr, cocDetails}) {
                             {cocDetails.tech_photo && (
                                 <>
                                     <Image
-                                        src={cocDetails.tech_signature}
+                                        src={cocDetails.tech_photo}
                                         style={{
                                             width: 75,
                                             height: 75,

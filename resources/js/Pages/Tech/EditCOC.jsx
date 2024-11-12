@@ -24,7 +24,7 @@ function EditCOC({ tsr, auth, coc }) {
         date_cal: coc.date_cal || tsr.job_order.date_request,
         date_due: coc.date_due || tsr.job_order.date_due,
         tech_name: coc.tech_name || '',
-        tech_photo: coc.tech_photo || '',
+        tech_photo: coc.tech_photo_url || '',
     });
 
     const handleInputChange = (e) => {
@@ -263,10 +263,11 @@ function EditCOC({ tsr, auth, coc }) {
                                                 cocDetails={{
                                                     ...data,
                                                     tech_id: data.tech_name,
-                                                    tech_photo: data.tech_photo,
-                                                    ...(auth.photo && {
-                                                        tech_signature: data.tech_photo,
-                                                        tech_id: data.tech_name
+                                                    tech_photo: auth.photo,
+                                                    tech_signature: auth.photo,
+                                                    ...(coc.admin_signature && {
+                                                        admin_signature: coc.admin_signature,
+                                                        admin_name: coc.admin_name
                                                     })
                                                 }}
                                             />
