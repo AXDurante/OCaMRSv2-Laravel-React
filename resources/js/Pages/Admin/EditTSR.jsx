@@ -18,6 +18,8 @@ function EditTSR({jobOrder, auth, tsr}) {
         setShowPreview(false); // Close the modal
     };
 
+    
+
     // Initialize useForm with existing TSR data
     const { data, setData, put, processing, errors } = useForm({
         tsr_num: tsr.tsr_num || '',
@@ -33,7 +35,7 @@ function EditTSR({jobOrder, auth, tsr}) {
         phone: tsr.phone || jobOrder.user.phoneNumber,
         job_id: tsr.job_id || jobOrder.job_id,
         tech_id: tsr.tech_id,
-        tech_photo: tsr.tech_photo_url,
+        tech_photo: tsr.tech_photo,
         admin_photo: tsr.admin_photo || null, // Add this field
         admin_name: tsr.admin_name || null,
     });
@@ -78,7 +80,7 @@ function EditTSR({jobOrder, auth, tsr}) {
                             ...data,
                             // Only include admin signature and name if checkbox is checked
                             ...(includeSignature && {
-                                admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
+                                admin_signature: auth.photo, // Use the full URL from auth
                                 admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
                             }),
                         }} />

@@ -32,11 +32,10 @@ function ViewTSRDetails({ tsr }) {
                         jobOrder={tsr.job_order}
                         reportDetails={{
                             ...tsr,
-                            // Only include admin signature and name if they exist in the database
-                            ...(tsr.admin_photo && {
-                                admin_signature: `/storage/photos/adminSignature/${tsr.admin_photo}`,
-                                admin_name: tsr.admin_name
-                            })
+                            // Use the full URL that was constructed in the controller
+                            tech_photo: tsr.tech_photo,  // This now contains the full URL
+                            admin_signature: tsr.admin_signature, // This now contains the full URL
+                            admin_name: tsr.admin_name
                         }} 
                     />
                 </PDFViewer>
@@ -80,12 +79,10 @@ function ViewTSRDetails({ tsr }) {
                                             </button>
                                         </Link>
                                     ) : (
-                                        <Link href='#'>
-                                            <button className="btn btn-light w-100 mb-2" disabled>
-                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                                View Certificate of Calibration
-                                            </button>
-                                        </Link>
+                                        <button className="btn btn-light w-100 mb-2" disabled>
+                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                            No Certificate of Calibration Available
+                                        </button>
                                     )}
                                 </div>
                             </div>
