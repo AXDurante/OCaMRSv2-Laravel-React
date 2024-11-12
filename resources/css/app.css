@@ -1780,9 +1780,10 @@ input[type="checkbox"] {
 }
 
 .service-icon {
-    width: 100%;
-    height: auto;
-    transition: transform 0.3s ease;
+    width: 80px; /* Set width */
+    height: 80px; /* Set height */
+    border-radius: 50%; /* Make it circular */
+    object-fit: cover; /* Ensure the image covers the area */
 }
 
 .order-card:hover .service-icon {
