@@ -248,7 +248,7 @@ class TechnicianController extends Controller
     }
 
     // CoC
-    public function COC($tsr_id)
+    public function createCoC($tsr_id)
     {
         $tsr = TSR::with(['job_order.user'])->findOrFail($tsr_id);
         $user = Auth::user();
@@ -296,7 +296,7 @@ class TechnicianController extends Controller
         ]);
     }
 
-    public function editCOC($coc_id)
+    public function editCoC($coc_id)
     {
         $coc = COC::with(['tsr.job_order'])->findOrFail($coc_id);
         $user = Auth::user();
