@@ -2277,3 +2277,101 @@ input[type="checkbox"] {
 .text-low {
     color: #8d0010;
 }
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner-icon {
+    animation: spin 2s linear infinite;
+}
+.card-container {
+    transition: all 0.3s ease;
+}
+
+.card-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    margin-bottom: 0;
+    transition: all 0.3s ease;
+}
+
+/* Remove individual card hover effects if any exist */
+.card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* Optional: Add a subtle border effect */
+.card-container {
+    border-radius: 8px;
+    padding: 1px; /* This prevents margin collapse */
+}
+/* Responsive styles */
+@media (max-width: 991.98px) {
+    .card-container {
+        margin: -1rem;
+        padding: 1rem;
+    }
+
+    .card {
+        border: none;
+    }
+
+    /* Adjust spacing for mobile */
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    /* Make badges more compact on mobile */
+    .badge {
+        padding: 0.5rem !important;
+    }
+
+    /* Adjust icon sizes for mobile */
+    .bi {
+        font-size: 1rem;
+    }
+}
+
+/* Larger screens */
+@media (min-width: 992px) {
+    .card-container {
+        transition: all 0.3s ease;
+    }
+
+    .card-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Ensure proper border radius on different screen sizes */
+@media (min-width: 992px) {
+    .rounded-lg-start {
+        border-top-left-radius: 0.375rem !important;
+        border-bottom-left-radius: 0.375rem !important;
+    }
+
+    .rounded-lg-end {
+        border-top-right-radius: 0.375rem !important;
+        border-bottom-right-radius: 0.375rem !important;
+    }
+
+    .rounded-lg-top-0 {
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+    }
+
+    .rounded-lg-bottom-0 {
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+}

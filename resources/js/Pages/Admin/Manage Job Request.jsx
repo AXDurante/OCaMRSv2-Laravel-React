@@ -1,6 +1,14 @@
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
 import { Link } from "@inertiajs/react";
+import {
+    FaCheck,
+    FaHourglassHalf,
+    FaTimesCircle,
+    FaCheckCircle,
+    FaSpinner,
+    FaClock,
+} from "react-icons/fa";
 
 function Home({ jobOrder }) {
     console.log(jobOrder);
@@ -98,15 +106,88 @@ function Home({ jobOrder }) {
                                         <td>{order.user.email} </td>
                                         <td>{order.service_type}</td>{" "}
                                         {/* Service Request */}
-                                        <td>{order.status}</td> {/* Status */}
-                                        <td>{order.priority}</td>
+                                        <td>
+                                            <span
+                                                className={`badge ${
+                                                    order.status === "Cancelled"
+                                                        ? "bg-danger"
+                                                        : order.status ===
+                                                          "Approved"
+                                                        ? "bg-success"
+                                                        : order.status ===
+                                                          "Completed"
+                                                        ? "bg-info"
+                                                        : order.status ===
+                                                          "For Approval"
+                                                        ? "bg-warning"
+                                                        : order.status ===
+                                                          "Processing"
+                                                        ? "bg-primary"
+                                                        : order.status ===
+                                                          "Pending"
+                                                        ? "bg-secondary"
+                                                        : "bg-secondary"
+                                                } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
+                                            >
+                                                {order.status ===
+                                                    "Cancelled" && (
+                                                    <FaTimesCircle />
+                                                )}
+                                                {order.status ===
+                                                    "Approved" && <FaCheck />}
+                                                {order.status ===
+                                                    "Completed" && (
+                                                    <FaCheckCircle />
+                                                )}
+                                                {order.status ===
+                                                    "For Approval" && (
+                                                    <FaHourglassHalf />
+                                                )}
+                                                {order.status ===
+                                                    "Processing" && (
+                                                    <FaSpinner className="spinner-icon" />
+                                                )}
+                                                {order.status === "Pending" && (
+                                                    <FaClock />
+                                                )}
+                                                {order.status}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                className={`badge ${
+                                                    order.priority === "High"
+                                                        ? "bg-danger"
+                                                        : order.priority ===
+                                                          "Medium"
+                                                        ? "bg-warning"
+                                                        : "bg-success"
+                                                } px-3 py-2 rounded-pill`}
+                                            >
+                                                {order.priority}
+                                            </span>
+                                        </td>
                                         <td>
                                             <Link
                                                 href={`/admin/showJobOrder/${order.job_id}`}
                                             >
                                                 <button
-                                                    className="btn btn-primary"
+                                                    className="btn text-white px-4"
                                                     id="btnSee"
+                                                    style={{
+                                                        background:
+                                                            "linear-gradient(to right, #4facfe 0%, #00f2fe 100%)",
+                                                        transition:
+                                                            "all 0.3s ease",
+                                                    }}
+                                                    onMouseOver={(e) =>
+                                                        (e.target.style.opacity =
+                                                            "0.9")
+                                                    }
+                                                    onMouseOut={(e) =>
+                                                        (e.target.style.opacity =
+                                                            "1")
+                                                    }
                                                 >
                                                     See Details
                                                 </button>
