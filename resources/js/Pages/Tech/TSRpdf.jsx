@@ -525,13 +525,25 @@ function TSRpdf({ jobOrder, reportDetails }) {
                                     SERVICE PERFORMED BY:
                                 </Text>
                                 <View style={{ position: 'relative', flex: 1, marginLeft: 5 }}>
+                                    {reportDetails.tech_photo && (
+                                        <Image
+                                            src={reportDetails.tech_photo}
+                                            style={{ 
+                                                width: 50, 
+                                                height: 50, 
+                                                position: "absolute", 
+                                                top: -25, 
+                                                left: 10
+                                            }}
+                                        />
+                                    )}
                                     <Text
                                         style={[
                                             styles.textStyle,
                                             { 
                                                 position: 'absolute',
                                                 top: -8,
-                                                left: 5,
+                                                left: 10,
                                                 zIndex: 1,
                                                 marginTop: 4,
                                             },

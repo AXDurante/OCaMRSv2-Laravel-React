@@ -26,12 +26,13 @@ function EditTSR({jobOrder, auth, tsr}) {
         problemReported: tsr.problemReported || '',
         diagnosis: tsr.diagnosis || '',
         actionTaken: tsr.actionTaken || '',
-        recommendation: tsr.recommendation || 'Test',
+        recommendation: tsr.recommendation || '',
         tsr_remarks: tsr.tsr_remarks || '',
         date_request: tsr.date_request || jobOrder.date_request,
         phone: tsr.phone || jobOrder.user.phoneNumber,
         job_id: tsr.job_id || jobOrder.job_id,
         tech_id: tsr.tech_id || `${auth.user.firstName} ${auth.user.lastName}`,
+        tech_photo: tsr.tech_photo_url || auth.photo || null,
     });
 
     // Update the input fields to use setData instead of separate state variables
@@ -42,7 +43,7 @@ function EditTSR({jobOrder, auth, tsr}) {
 
     function onSubmit(e) {
         e.preventDefault();
-        put(route('technician.update-tsr', tsr.tsr_id));
+        put(route('technician.updateTSR', tsr.tsr_id));
     }
 
     return (
@@ -61,7 +62,8 @@ function EditTSR({jobOrder, auth, tsr}) {
                         jobOrder={jobOrder}
                         reportDetails={{
                             ...data,
-                            tech_id: `${auth.user.firstName} ${auth.user.lastName}`
+                            tech_id: `${auth.user.firstName} ${auth.user.lastName}`,
+                            tech_photo: auth.photo,
                         }} />
                 </PDFViewer>
                 <button onClick={closeModal}>Close</button> {/* Close button */}
@@ -277,6 +279,7 @@ function EditTSR({jobOrder, auth, tsr}) {
                                                 value={data.recommendation}
                                                 onChange={handleInputChange}
                                             >
+                                                <option value="" disable selected> Please Select an Option </option>
                                                 <option value="For Pull-Out">For Pull-Out</option>
                                                 <option value="Forward to Supplier">Forward to Supplier</option>
                                                 <option value="For Repair">For Repair</option>

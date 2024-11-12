@@ -89,8 +89,10 @@ class TechnicianController extends Controller
 
     public function indexTSR($id)
     {
-        // Retrieve TSRs associated with the specified Job Order ID
-        $tsrs = TSR::where('job_id', $id)->get();
+        // Retrieve the latest TSR associated with the specified Job Order ID
+        $tsrs = TSR::where('job_id', $id)
+            ->orderBy('tsr_id', 'desc') // Order by tsr_id in descending order
+            ->get();
 
         return Inertia::render('Tech/ViewTSR', [
             'tsrs' => $tsrs,
@@ -101,10 +103,14 @@ class TechnicianController extends Controller
     public function createTSR($id)
     {
         $jobOrder = JobOrder::with(['int_units', 'user'])->findOrFail($id);
+        $user = Auth::user();
+        
+        // Generate the full URL only when sending to the frontend
         return Inertia::render('Tech/TSR', [
             'jobOrder' => $jobOrder,
             'auth' => [
-                'user' => Auth::user()
+                'user' => $user,
+                'photo' => $user->photo ? Storage::url('photos/technicianSignature/' . $user->photo) : null
             ]
         ]);
     }
@@ -124,20 +130,30 @@ class TechnicianController extends Controller
             'date_request' => ['required'],
             'phone' => ['required'],
             'job_id' => ['required'],
+            'tech_photo' => ['nullable', 'string'],
         ]);
 
-        // Get the authenticated user's full name
+        // Get the authenticated user's full name and photo
         $user = Auth::user();
         $tsrFields['tech_id'] = $user->firstName . ' ' . $user->lastName;
+        
+        // Store just the filename in the database
+        $tsrFields['tech_photo'] = $user->photo;
 
         TSR::create($tsrFields);
 
-        return redirect()->route('technician.dashboard');
+        // Redirect to ViewTSR with the job_id
+        return redirect()->route('technician.indexTSR', ['id' => $tsrFields['job_id']]);
     }
 
     public function viewTSR($tsr_id)
     {
         $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
+        
+        // Generate the full URL when sending to the frontend
+        if ($tsr->tech_photo) {
+            $tsr->tech_photo = Storage::url('photos/technicianSignature/' . $tsr->tech_photo);
+        }
 
         return Inertia::render('Tech/ViewTSRDetails', [
             'tsr' => $tsr
@@ -147,11 +163,19 @@ class TechnicianController extends Controller
     public function editTSR($tsr_id)
     {
         $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
+        $user = Auth::user();
+
+        // Generate the full URL for the photo if it exists
+        if ($tsr->tech_photo) {
+            $tsr->tech_photo_url = Storage::url('photos/technicianSignature/' . $tsr->tech_photo);
+        }
+
         return Inertia::render('Tech/EditTSR', [
             'tsr' => $tsr,
             'jobOrder' => $tsr->job_order,
             'auth' => [
-                'user' => Auth::user()
+                'user' => $user,
+                'photo' => $user->photo ? Storage::url('photos/technicianSignature/' . $user->photo) : null
             ]
         ]);
     }
@@ -173,9 +197,14 @@ class TechnicianController extends Controller
             'date_request' => ['required'],
             'phone' => ['required'],
             'job_id' => ['required'],
+            'tech_photo' => ['nullable', 'string'], // Changed from 'image' to 'string'
         ]);
 
-        // Update the TSR
+        // Get the authenticated user's full name and photo
+        $user = Auth::user();
+        $tsrFields['tech_id'] = $user->firstName . ' ' . $user->lastName;
+        $tsrFields['tech_photo'] = $user->photo;
+
         $tsr->update($tsrFields);
 
         return redirect()->route('technician.viewTSRDetails', $tsr->tsr_id)

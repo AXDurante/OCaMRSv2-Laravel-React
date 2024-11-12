@@ -237,21 +237,12 @@ function ViewTSRDetails({ tsr }) {
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
-                                            <select className="w-100 rounded p-2"
-                                            disabled>
-                                                <option>
-                                                    For Pull-Out
-                                                </option>
-                                                <option>
-                                                    Forward to Supplier
-                                                </option>
-                                                <option>
-                                                    For Repair
-                                                </option>
-                                                <option>
-                                                    Beyond Repair
-                                                </option>
-                                            </select>
+                                            <input
+                                                type="text"
+                                                className="form-control rounded"
+                                                value={tsr.recommendation}
+                                                disabled
+                                            />
                                         </div>
                                     </div>
                                     <div className="row">

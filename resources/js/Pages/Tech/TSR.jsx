@@ -26,12 +26,11 @@ function TSR({jobOrder, auth}) {
         problemReported: '',
         diagnosis: '',
         actionTaken: '',
-        recommendation: 'Test',
+        recommendation: '',
         tsr_remarks: '',
         date_request: jobOrder.date_request,
         phone: jobOrder.user.phoneNumber,
         job_id: jobOrder.job_id,
-        tech_id: `${auth.user.firstName} ${auth.user.lastName}`
     });
 
     // Update the input fields to use setData instead of separate state variables
@@ -42,10 +41,11 @@ function TSR({jobOrder, auth}) {
 
     function onSubmit(e) {
         e.preventDefault();
-        post(route('technician.store-tsr'));
+        post(route('technician.storeTSR'));
     }
 
-    console.log(jobOrder)
+    console.log(auth.photo);
+
     return (
         <div className="d-flex">
             {/* Modal for PDF Preview */}
@@ -62,7 +62,8 @@ function TSR({jobOrder, auth}) {
                         jobOrder={jobOrder}
                         reportDetails={{
                             ...data,
-                            tech_id: `${auth.user.firstName} ${auth.user.lastName}`
+                            tech_id: `${auth.user.firstName} ${auth.user.lastName}`,
+                            tech_photo: data.tech_photo
                         }} />
                 </PDFViewer>
                 <button onClick={closeModal}>Close</button> {/* Close button */}
@@ -278,6 +279,7 @@ function TSR({jobOrder, auth}) {
                                                 value={data.recommendation}
                                                 onChange={handleInputChange}
                                             >
+                                                <option value="" disable selected> Please Select an Option </option>
                                                 <option value="For Pull-Out">For Pull-Out</option>
                                                 <option value="Forward to Supplier">Forward to Supplier</option>
                                                 <option value="For Repair">For Repair</option>
@@ -301,8 +303,7 @@ function TSR({jobOrder, auth}) {
                                             />
                                         </div>
                                     </div>
-
-                                    <div className="row"></div>
+                                    
                                     <div className="row">
                                         <div className="col-12">
                                             <button
