@@ -29,6 +29,9 @@ class TSR extends Model
         'phone',
         'job_id',
         'tech_id',
+        'tech_photo',
+        'admin_photo',
+        'admin_name',
     ];
 
     public function job_order(): BelongsTo

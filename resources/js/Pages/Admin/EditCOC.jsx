@@ -1,41 +1,34 @@
-import React, { useState } from "react"; // Import useState
-import Navbar2 from "@/Layouts/Navbar2";
-import Navbar from "../../Layouts/Navbar";
-import TSRpdf from "./TSRpdf";
-import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
-import Modal from "react-modal"; // Import Modal
-import { Link, useForm } from "@inertiajs/react";
+import React, { useState } from "react";
+import AdminNavBar from "@/Layouts/AdminNavBar";
+import { PDFViewer } from "@react-pdf/renderer";
+import Modal from "react-modal";
+import COCpdf from "./COCpdf";
+import { usePage, useForm } from "@inertiajs/react";
 
-function EditTSR({jobOrder, auth, tsr}) {
-    const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
-    
-    const handlePreviewClick = () => {
-        setShowPreview(true); // Show the preview when the button is clicked
-    };
-    
-    const closeModal = () => {
-        setShowPreview(false); // Close the modal
-    };
-
-    // Initialize useForm with existing TSR data
+function EditCOC({ tsr, auth, coc }) {
     const { data, setData, put, processing, errors } = useForm({
-        tsr_num: tsr.tsr_num || '',
-        instrument: tsr.instrument || '',
-        model: tsr.model || '',
-        serial_num: tsr.serial_num || '',
-        problemReported: tsr.problemReported || '',
-        diagnosis: tsr.diagnosis || '',
-        actionTaken: tsr.actionTaken || '',
-        recommendation: tsr.recommendation || '',
-        tsr_remarks: tsr.tsr_remarks || '',
-        date_request: tsr.date_request || jobOrder.date_request,
-        phone: tsr.phone || jobOrder.user.phoneNumber,
-        job_id: tsr.job_id || jobOrder.job_id,
-        tech_id: tsr.tech_id,
-        tech_photo: tsr.tech_photo,
+        coc_num: coc.coc_num || '',
+        college: coc.college || tsr.job_order.dept_name,
+        lab_loc: coc.lab_loc || tsr.job_order.lab_loc,
+        equipment: coc.equipment || '',
+        model: coc.model || '',
+        serial_num: coc.serial_num || '',
+        calibration: coc.calibration || '',
+        calibration_res: coc.calibration_res || '',
+        remark: coc.remark || '',
+        tsr_num: coc.tsr_num || tsr.tsr_num,
+        tsr_id: coc.tsr_id || tsr.tsr_id,
+        manufacturer: coc.manufacturer || '',
+        standard: coc.standard || '',
+        date_req: coc.date_req || tsr.job_order.date_request,
+        date_cal: coc.date_cal || tsr.job_order.date_request,
+        date_due: coc.date_due || tsr.job_order.date_due,
+        tech_photo: coc.tech_photo || null,
+        tech_name: coc.tech_name || null,
+        admin_name: coc.admin_name || null,
+        admin_photo: coc.admin_photo || null,
     });
 
-    // Update the input fields to use setData instead of separate state variables
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setData(name, value);
@@ -43,46 +36,38 @@ function EditTSR({jobOrder, auth, tsr}) {
 
     function onSubmit(e) {
         e.preventDefault();
-        put(route('technician.updateTSR', tsr.tsr_id));
-    }
+        put(route('admin.update-coc', coc.coc_id));
+    };
+
+    const [showPreview, setShowPreview] = useState(false);
+    const [includeSignature, setIncludeSignature] = useState(false); // Add this state
+
+    // Handle checkbox change
+    const handleSignatureChange = (e) => {
+        const isChecked = e.target.checked;
+        setIncludeSignature(isChecked);
+        setData({
+            ...data,
+            admin_photo: isChecked ? auth.user.photo : null,
+            admin_name: isChecked ? `${auth.user.firstName} ${auth.user.lastName}` : null,
+        });
+    };
+
+    const handlePreviewClick = () => {
+        setShowPreview(true);
+    };
+
+    const closeModal = () => {
+        setShowPreview(false);
+    };
 
     return (
         <div className="d-flex">
-            {/* Modal for PDF Preview */}
-            <Modal isOpen={showPreview} onRequestClose={closeModal}>
-                <h5>Print Preview:</h5>
-                <PDFViewer
-                    style={{
-                        width: "100%",
-                        height: "80%",
-                        border: "none", // Optional: remove border for a cleaner look
-                    }}
-                >
-                    <TSRpdf 
-                        jobOrder={tsr.job_order}
-                        reportDetails={{
-                            ...tsr,
-                            tech_photo: auth.photo, // Pass the filename
-                            tech_signature: `/storage/photos/technicianSignature/${auth.photo}`, // Construct full URL path
-                            tech_id: data.tech_id,
-                            // Only include admin signature and name if they exist in the database
-                            ...(tsr.admin_photo && {
-                                admin_signature: `/storage/photos/adminSignature/${tsr.admin_photo}`,
-                                admin_name: tsr.admin_name
-                            })
-                        }} 
-                    />
-                </PDFViewer>
-                <button onClick={closeModal}>Close</button> {/* Close button */}
-            </Modal>
-
             <div id="content" className=" flex-fill p-3">
                 <div>
                     <div>
-                        <h1 className="d-inline">
-                            Technical Service Report |{" "}
-                        </h1>
-                        <h1 className="d-inline fw-light"> Edit </h1>
+                        <h1 class="d-inline">Certificate of Calibration | </h1>
+                        <h1 class="d-inline fw-light">Edit</h1>
                         <hr />
                     </div>
                     <div className="mt-3">
@@ -102,24 +87,17 @@ function EditTSR({jobOrder, auth, tsr}) {
                                     </h5>
                                 </div>
 
-                                {/* <h6 className="mt-4">Related Documents:</h6>
+                                <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
                                     <button className="btn btn-light w-100 mb-2">
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Technical Service Report
                                     </button>
-                                    <button className="btn btn-light w-100 mb-2">
+                                    {/* <button className="btn btn-light w-100">
                                         <i className="bi bi-file-earmark-text-fill me-2"></i>
                                         Job Request
-                                    </button>
-                                    <Link
-                                        href="">
-                                        <button className="btn btn-light w-100 mb-2">
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            Create Certificate of Calibration
-                                        </button>
-                                    </Link>
-                                </div> */}
+                                    </button> */}
+                                </div>
                             </div>
 
                             <div className="col-12 col-md-8">
@@ -127,15 +105,15 @@ function EditTSR({jobOrder, auth, tsr}) {
                                 <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                TSR Number*
+                                                Calibration No.
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="tsr_num"
-                                                value={data.tsr_num}
+                                                name="coc_num"
+                                                value={data.coc_num}
                                                 onChange={handleInputChange}
                                             />
                                         </div>
@@ -143,31 +121,33 @@ function EditTSR({jobOrder, auth, tsr}) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Instrument*
+                                                Equipment
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="instrument"
-                                                value={data.instrument}
+                                                name="equipment"
+                                                value={data.equipment}
                                                 onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
+
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Date Requested
+                                                Manufacturer
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value={jobOrder.date_request}
-                                                disabled
+                                                name="manufacturer"
+                                                value={data.manufacturer}
+                                                onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
@@ -175,23 +155,7 @@ function EditTSR({jobOrder, auth, tsr}) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Tel No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={jobOrder.user.phoneNumber}
-                                                disabled
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Model
+                                                Model No.
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
@@ -225,15 +189,15 @@ function EditTSR({jobOrder, auth, tsr}) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Problem Reported
+                                                Procedure and Traceability
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="problemReported"
-                                                value={data.problemReported}
+                                                name="calibration"
+                                                value={data.calibration}
                                                 onChange={handleInputChange}
                                             />
                                         </div>
@@ -242,15 +206,15 @@ function EditTSR({jobOrder, auth, tsr}) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Diagnosis/Observation
+                                                Standard Used
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="diagnosis"
-                                                value={data.diagnosis}
+                                                name="standard"
+                                                value={data.standard}
                                                 onChange={handleInputChange}
                                             />
                                         </div>
@@ -259,41 +223,20 @@ function EditTSR({jobOrder, auth, tsr}) {
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Action Taken
+                                                Calibration Result
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="actionTaken"
-                                                value={data.actionTaken}
+                                                name="calibration_res"
+                                                value={data.calibration_res}
                                                 onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Recommendation
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <select 
-                                                className="w-100 rounded p-2"
-                                                name="recommendation"
-                                                value={data.recommendation}
-                                                onChange={handleInputChange}
-                                            >
-                                                <option value="" disable selected> Please Select an Option </option>
-                                                <option value="For Pull-Out">For Pull-Out</option>
-                                                <option value="Forward to Supplier">Forward to Supplier</option>
-                                                <option value="For Repair">For Repair</option>
-                                                <option value="Beyond Repair">Beyond Repair</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
@@ -304,31 +247,92 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="tsr_remarks"
-                                                value={data.tsr_remarks}
+                                                name="remark"
+                                                value={data.remark}
                                                 onChange={handleInputChange}
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="row"></div>
                                     <div className="row">
-                                        <div className="col-12">
+                                        <div className="col-12 col-sm-3 mb-3">
+                                            <label className="form-label fw-bold d-block text-truncate">
+                                                Place Signature
+                                            </label>
+                                        </div>
+                                        <div className="col-12 col-sm-9 mb-3">
+                                            <div className="form-check">
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    id="includeSignature"
+                                                    checked={includeSignature}
+                                                    onChange={handleSignatureChange}
+                                                />
+                                                <label className="form-check-label" htmlFor="includeSignature">
+                                                    Include my signature in this TSR
+                                                </label>
+                                            </div>
+                                            {includeSignature && (
+                                                <div className="mt-2">
+                                                    <small className="text-muted">
+                                                        Signature file: {auth.user.photo}
+                                                    </small>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="row"></div>
+                                    <button 
+                                        className="btn btn-dark w-100 text-warning mt-2 mb-4"
+                                        onClick={onSubmit}>
+                                        Edit Certificate of Calibration
+                                    </button>
+                                    <Modal
+                                        isOpen={showPreview}
+                                        onRequestClose={closeModal}
+                                    >
+                                        <h5>Print Preview:</h5>
+                                        <PDFViewer
+                                            style={{
+                                                width: "100%",
+                                                height: "80%",
+                                                border: "none",
+                                            }}
+                                        >
+                                            <COCpdf 
+                                                tsr={tsr}
+                                                cocDetails={{
+                                                    ...data,
+                                                    tech_photo: data.tech_photo,
+                                                    tech_signature: `/storage/photos/technicianSignature/${data.tech_photo}`,
+                                                    tech_id: data.tech_name,
+                                                    ...(includeSignature && {
+                                                        admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
+                                                        admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
+                                                    }),
+                                                }}
+                                            />
+                                        </PDFViewer>
+                                        <button onClick={closeModal}>
+                                            Close
+                                        </button>{" "}
+                                        {/* Close button */}
+                                    </Modal>
+
+                                    <div
+                                        id="content"
+                                        className="main-content flex-fill p-3"
+                                    >
+                                        <div className="mt-3">
+                                            {/* Form fields for COC */}
                                             <button
-                                                type="button"
                                                 className="btn btn-primary mb-3"
                                                 onClick={handlePreviewClick} // Add click handler
                                             >
                                                 Preview PDF
                                             </button>
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary ms-3 mb-3"
-                                                onClick={onSubmit}
-                                            >
-                                                Save Document
-                                            </button>
-                                            
                                         </div>
                                     </div>
                                 </div>
@@ -341,7 +345,6 @@ function EditTSR({jobOrder, auth, tsr}) {
     );
 }
 
-// Change Home to TSR
-EditTSR.layout = (page) => <Navbar2>{page}</Navbar2>;
+EditCOC.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
-export default EditTSR;
+export default EditCOC;

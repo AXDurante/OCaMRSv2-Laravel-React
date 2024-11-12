@@ -28,19 +28,20 @@ function TSR({ jobOrder, auth }) {
 
     // Update the useForm hook to match your TSR model fields
     const { data, setData, post, processing, errors } = useForm({
-        tsr_num: "",
-        instrument: "",
-        model: "",
-        serial_num: "",
-        problemReported: "",
-        diagnosis: "",
-        actionTaken: "",
-        recommendation: "Test",
-        tsr_remarks: "",
+        tsr_num: '',
+        instrument: '',
+        model: '',
+        serial_num: '',
+        problemReported: '',
+        diagnosis: '',
+        actionTaken: '',
+        recommendation: '',
+        tsr_remarks: '',
         date_request: jobOrder.date_request,
         phone: jobOrder.user.phoneNumber,
         job_id: jobOrder.job_id,
-        tech_id: `${auth.user.firstName} ${auth.user.lastName}`,
+        tech_id: auth.user.firstName + ' ' + auth.user.lastName,
+        tech_photo: auth.photo,
     });
 
     // Update the input fields to use setData instead of separate state variables
@@ -51,10 +52,10 @@ function TSR({ jobOrder, auth }) {
 
     function onSubmit(e) {
         e.preventDefault();
-        post(route("technician.store-tsr"));
+        post(route('technician.storeTSR'));
     }
 
-    console.log(jobOrder);
+    console.log(jobOrder)
     return (
         <div className="container py-4">
             <h2 className="mb-4">
@@ -302,6 +303,7 @@ function TSR({ jobOrder, auth }) {
                                             value={data.recommendation}
                                             onChange={handleInputChange}
                                         >
+                                            <option value="" disable selected> Please Select an Option </option>
                                             <option value="For Pull-Out">
                                                 For Pull-Out
                                             </option>

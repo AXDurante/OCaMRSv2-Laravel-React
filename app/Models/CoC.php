@@ -32,6 +32,10 @@ class CoC extends Model
         'remark',
         'tsr_num',
         'tsr_id',
+        'tech_name',
+        'tech_photo',
+        'admin_name',
+        'admin_photo'
     ];
 
     public function tsr(): BelongsTo

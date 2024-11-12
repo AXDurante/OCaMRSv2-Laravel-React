@@ -13,7 +13,7 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
         pos: "Laboratory Technician",
         employeeID: employeeID,
         remarks: jobOrder.remarks || "",
-        status: jobOrder.status || "Pending",
+        status: jobOrder.status || "",
         priority: jobOrder.priority || "Regular",
         instruments: jobOrder.int_units.map((unit) => ({
             instrument: unit.instrument || "",
@@ -73,23 +73,18 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                         <div>
                             <h1 class="d-inline">Job Request | </h1>
                             <h1 class="d-inline fw-light">Update Request</h1>
-
                             <div className="container statusprio">
-                                {" "}
-                                <h5 className="d-inline"> Status: </h5>
-                                <select
-                                    className="w-25 me-3"
-                                    value={data.status}
-                                    onChange={(e) =>
-                                        setData("status", e.target.value)
-                                    }
-                                >
-                                    <option value="Pending">Pending</option>
-                                    <option value="Processing">
-                                        Processing
-                                    </option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
+                            <h4> Status </h4>
+                            <select 
+                                className="w-25" 
+                                value={data.status}
+                                onChange={(e) => setData('status', e.target.value)}
+                            >
+                                <option value="For Approval">For Approval</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
                                 <h5 className="d-inline"> Priority: </h5>
                                 <select
                                     className="w-25 "

@@ -583,11 +583,13 @@ function COCpdf ({tsr, cocDetails}) {
                                     </Text>
                                 </>
                             )}
-                            <View style={{
-                                borderBottomWidth: 1,
-                                marginVertical: 5,
-                                marginTop: 25,
-                            }} />
+                            <View
+                                style={{
+                                    borderBottomWidth: 1,
+                                    marginVertical: 5,
+                                    marginTop: 25,
+                                }}
+                            />
                             <Text style={{ fontSize: 11 }}>
                                 LESO Administrator / Date
                             </Text>

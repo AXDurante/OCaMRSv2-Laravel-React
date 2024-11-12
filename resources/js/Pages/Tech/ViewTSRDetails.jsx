@@ -30,7 +30,15 @@ function ViewTSRDetails({ tsr }) {
                 >
                     <TSRpdf 
                         jobOrder={tsr.job_order}
-                        reportDetails={tsr} />
+                        reportDetails={{
+                            ...tsr,
+                            // Only include admin signature and name if they exist in the database
+                            ...(tsr.admin_photo && {
+                                admin_signature: `/storage/photos/adminSignature/${tsr.admin_photo}`,
+                                admin_name: tsr.admin_name
+                            })
+                        }} 
+                    />
                 </PDFViewer>
                 <button onClick={closeModal}>Close</button>
             </Modal>

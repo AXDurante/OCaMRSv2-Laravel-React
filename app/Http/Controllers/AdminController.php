@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Equipment;
 use App\Models\JobOrder;
+use App\Models\TSR;
+use App\Models\CoC;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -65,11 +67,16 @@ class AdminController extends Controller
                 'user' => $admin
             ],
             'storageBaseUrl' => $isProduction 
-                ? $appUrl . '/public/storage/photos'  // Add public/ prefix for production
+                ? $appUrl . '/public/storage/photos'  // Remove duplicate adminSignature
                 : url('storage/photos'),
             'flash' => [
                 'message' => session('message')
             ],
+            'imageRequirements' => [
+                'format' => 'PNG',
+                'maxSize' => '2MB',
+                'message' => 'Please upload a PNG file for your signature. This ensures optimal quality and transparency.'
+            ]
         ]);
     }
 
@@ -128,7 +135,7 @@ class AdminController extends Controller
             'service_type' => 'required',
             'trans_type' => 'required',
             'remarks' => 'nullable',
-            'status' => 'required|in:Pending,Processing,Cancelled',
+            'status' => 'required|in:For Approval,Approved,Cancelled,Completed',
             'priority' => 'required|in:Regular,High,Medium,Low,',
             'instruments' => 'required|array',
             'instruments.*.instrument' => 'required',
@@ -166,6 +173,20 @@ class AdminController extends Controller
                 'lastName' => 'sometimes|required|string|max:255',
                 'email' => 'sometimes|nullable|email|unique:admins,email,' . $admin->id,
                 'id_number' => 'sometimes|required|string|unique:admins,id_number,' . $admin->id,
+                'photo' => [
+                    'nullable',
+                    'file',
+                    'mimes:png',
+                    'max:2048', // 2MB max size
+                    function ($attribute, $value, $fail) {
+                        if ($value) {
+                            $mimeType = $value->getMimeType();
+                            if ($mimeType !== 'image/png') {
+                                $fail('The signature must be a PNG image file. Other formats are not supported.');
+                            }
+                        }
+                    },
+                ]
             ];
 
             // Add password validation rules only if password is being updated
@@ -183,6 +204,8 @@ class AdminController extends Controller
             $customMessages = [
                 'password.confirmed' => 'The password confirmation does not match.',
                 'password.regex' => 'The password must contain at least one uppercase letter, one number, and one special character.',
+                'photo.mimes' => 'The signature must be a PNG image file. Other formats are not supported.',
+                'photo.max' => 'The signature image must not exceed 2MB in size.',
             ];
 
             $validated = $request->validate($validationRules, $customMessages);
@@ -205,14 +228,26 @@ class AdminController extends Controller
                 $updateData['password'] = bcrypt($request->password);
             }
 
-            // Only handle photo if a new file was uploaded
+            // Handle photo upload with additional validation
             if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+
+                // Additional mime type verification
+                if ($photo->getMimeType() !== 'image/png') {
+                    return redirect()->back()->withErrors([
+                        'photo' => 'The signature must be a PNG image file for optimal quality and transparency.'
+                    ]);
+                }
+
+                // Remove old photo if exists
                 if ($admin->photo) {
                     Storage::delete('public/photos/adminSignature/' . $admin->photo);
                 }
 
-                $photo = $request->file('photo');
-                $filename = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
+                // Generate unique filename
+                $filename = time() . '_' . Str::random(10) . '.png';
+                
+                // Store the new photo
                 $photo->storeAs('public/photos/adminSignature', $filename);
                 $updateData['photo'] = $filename;
             }
@@ -226,7 +261,156 @@ class AdminController extends Controller
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            return redirect()->back()->withErrors(['error' => 'An error occurred while updating the profile: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors([
+                'error' => 'An error occurred while updating the profile. Please ensure your signature is a valid PNG file and try again.'
+            ]);
         }
     }
+
+    public function indexTSR($id)
+    {
+        // Retrieve the latest TSR associated with the specified Job Order ID
+        $tsrs = TSR::where('job_id', $id)
+            ->orderBy('tsr_id', 'desc') // Order by tsr_id in descending order
+            ->get();
+
+        return Inertia::render('Admin/ViewTSR', [
+            'tsrs' => $tsrs,
+            'jobOrderId' => $id, // Pass the Job Order ID for reference
+        ]);
+    }
+
+    public function viewTSR($tsr_id)
+    {
+        $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
+        
+        // Generate the full URL when sending to the frontend
+        if ($tsr->tech_photo) {
+            $tsr->tech_photo = Storage::url('photos/technicianSignature/' . $tsr->tech_photo);
+        }
+
+        return Inertia::render('Admin/ViewTSRDetails', [
+            'tsr' => $tsr
+        ]);
+    }
+
+    public function editTSR($tsr_id)
+    {
+        $admin = Auth::guard('admin')->user(); // Get authenticated admin
+        $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
+
+        // Generate the full URL for the technician's photo if it exists
+        if ($tsr->tech_photo) {
+            $tsr->tech_photo_url = Storage::url('photos/technicianSignature/' . $tsr->tech_photo);
+        }
+
+        return Inertia::render('Admin/EditTSR', [
+            'tsr' => $tsr,
+            'jobOrder' => $tsr->job_order,
+            'auth' => [
+                'user' => $admin,
+                'photo' => $admin->photo // Pass the admin's photo filename
+            ]
+        ]);
+    }
+
+    public function updateTSR(Request $request, $tsr_id)
+    {
+        $tsr = TSR::findOrFail($tsr_id);
+
+        $tsrFields = $request->validate([
+            'tsr_num' => ['required'],
+            'instrument' => ['required'],
+            'model' => ['nullable', 'string'],
+            'serial_num' => ['nullable', 'string'],
+            'problemReported' => ['nullable', 'string'],
+            'diagnosis' => ['nullable', 'string'],
+            'actionTaken' => ['nullable', 'string'],
+            'recommendation' => ['required'],
+            'tsr_remarks' => ['nullable', 'string'],
+            'date_request' => ['required'],
+            'phone' => ['required'],
+            'job_id' => ['required'],
+            'admin_photo' => ['nullable', 'string'],
+            'admin_name' => ['nullable', 'string'],
+        ]);
+
+        // Update TSR with validated fields
+        $tsr->update($tsrFields);
+
+        return redirect()->route('admin.viewTSRDetails', $tsr->tsr_id)
+            ->with('message', 'TSR updated successfully');
+    }
+
+    public function viewCoC($coc_id)
+    {
+        $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
+        
+        // Add URLs for signatures if they exist
+        if ($coc->tech_photo) {
+            $coc->tech_signature = Storage::url('photos/technicianSignature/' . $coc->tech_photo);
+        }
+        if ($coc->admin_photo) {
+            $coc->admin_signature = Storage::url('photos/adminSignature/' . $coc->admin_photo);
+        }
+
+        return Inertia::render('Admin/ViewCOCDetails', [
+            'coc' => $coc
+        ]);
+    }
+
+    public function editCoC($coc_id)
+    {
+        $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
+        $user = Auth::user();
+
+        // Add URLs for signatures if they exist
+        if ($coc->tech_photo) {
+            $coc->tech_signature = Storage::url('photos/technicianSignature/' . $coc->tech_photo);
+        }
+        if ($coc->admin_photo) {
+            $coc->admin_signature = Storage::url('photos/adminSignature/' . $coc->admin_photo);
+        }
+
+        return Inertia::render('Admin/EditCOC', [
+            'coc' => $coc,
+            'tsr' => $coc->tsr,
+            'auth' => [
+                'user' => $user,
+                'photo' => $user->photo ? Storage::url('photos/technicianSignature/' . $user->photo) : null
+            ]
+        ]);
+    }
+
+    public function updateCoC(Request $request, $coc_id)
+    {
+        $coc = CoC::findOrFail($coc_id);
+
+        $cocFields = $request->validate([
+            'coc_num' => ['required'],
+            'college' => ['required'],
+            'lab_loc' => ['required'],
+            'equipment' => ['required'],
+            'model' => ['required'],
+            'serial_num' => ['required'],
+            'calibration' => ['required'],
+            'calibration_res' => ['required'],
+            'remark' => ['nullable', 'string'],
+            'tsr_num' => ['required'],
+            'tsr_id' => ['required'],
+            'manufacturer' => ['required'],
+            'standard' => ['required'],
+            'date_req' => ['required'],
+            'date_cal' => ['required'],
+            'date_due' => ['required'],
+            'admin_photo' => ['nullable', 'string'],
+            'admin_name' => ['nullable', 'string'],
+        ]);
+
+        $coc->update($cocFields);
+
+        return redirect()->route('admin.viewCoCDetails', $coc->coc_id)
+            ->with('message', 'Certificate of Calibration updated successfully');
+    }
+
 }

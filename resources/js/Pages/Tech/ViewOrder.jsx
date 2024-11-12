@@ -15,23 +15,27 @@ function ViewOrder({ jobOrder }) {
                     <h1 className="d-inline fw-light">
                         Job Order Request Details
                     </h1>
+                    <h4>
+                        {" "}
+                        Status:{" "}
+                        <b
+                            className={
+                                jobOrder.status === "For Approval"
+                                    ? "text-warning"
+                                    : jobOrder.status === "Cancelled"
+                                    ? "text-danger"
+                                    : jobOrder.status === "Completed" // Added condition for Completed
+                                    ? "text-success" // Green text for Completed
+                                    : jobOrder.status === "Approved"
+                                    ? "text-success"
+                                    : ""
+                            }
+                        >
+                            {" "}
+                            {jobOrder.status}{" "}
+                        </b>
+                    </h4>
                     <div className="d-flex align-items-center gap-3">
-                        <h4>
-                            Status:{" "}
-                            <b
-                                className={
-                                    jobOrder.status === "Processing"
-                                        ? "text-warning"
-                                        : jobOrder.status === "Cancelled"
-                                        ? "text-danger"
-                                        : jobOrder.status === "Completed"
-                                        ? "text-success"
-                                        : ""
-                                }
-                            >
-                                {jobOrder.status}
-                            </b>
-                        </h4>
                         <h4>
                             Priority:{" "}
                             <b

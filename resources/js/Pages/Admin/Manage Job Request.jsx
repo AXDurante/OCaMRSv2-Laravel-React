@@ -16,13 +16,23 @@ function Home({ jobOrder }) {
     const cancelledRequests = jobOrder.data.filter(
         (order) => order.status === "Cancelled"
     ).length; // Count cancelled requests
+    const forApprovalRequests = jobOrder.data.filter(
+        (order) => order.status === "For Approval"
+    ).length; // Count for approval requests
+    const approvedRequests = jobOrder.data.filter(
+        (order) => order.status === "Approved"
+    ).length; // Count approved requests
+    const completedRequests = jobOrder.data.filter(
+        (order) => order.status === "Completed"
+    ).length; // Count completed requests
+
     return (
         <div className="">
             <div id="content" className="">
                 <div>
                     <div>
-                        <h1 class="d-inline">Job Requests | </h1>
-                        <h1 class="d-inline fw-light">Manage Job Request</h1>
+                        <h1 className="d-inline">Job Requests | </h1>
+                        <h1 className="d-inline fw-light">Manage Job Request</h1>
                         <hr />
                     </div>
 
@@ -33,20 +43,19 @@ function Home({ jobOrder }) {
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>For Approval</h5>
-                            <h1>1</h1>
+                            <h1>{forApprovalRequests}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Approved</h5>
-                            <h1>1</h1>
+                            <h1>{approvedRequests}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Completed</h5>
-                            <h1>1</h1>
+                            <h1>{completedRequests}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Cancelled</h5>
-                            <h1>{cancelledRequests}</h1>{" "}
-                            {/* Updated to show cancelled requests count */}
+                            <h1>{cancelledRequests}</h1>
                         </div>
                     </div>
                     <div className="mt-3">
@@ -65,9 +74,6 @@ function Home({ jobOrder }) {
                                     <th class="thead-custom" scope="col">
                                         Email
                                     </th>
-                                    {/* <th class="thead-custom" scope="col">
-                                        Instrument
-                                    </th> */}
                                     <th class="thead-custom" scope="col">
                                         Service Requested
                                     </th>
@@ -96,9 +102,8 @@ function Home({ jobOrder }) {
                                             {new Date(
                                                 order.date_request
                                             ).toLocaleDateString()}
-                                        </td>{" "}
-                                        {/* Date Received */}
-                                        <td>{order.job_id}</td> {/* Job ID */}
+                                        </td>
+                                        <td>{order.job_id}</td>
                                         <td>
                                             {order.user.firstName}{" "}
                                             {order.user.lastName}{" "}

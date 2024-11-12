@@ -3,7 +3,7 @@ import { usePage, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-function Home({ absolute, firstName, lastName, email, theID }) {
+function Home({ absolute, firstName, lastName, email, theID, imageRequirements }) {
     const { auth, flash, storageBaseUrl } = usePage().props;
     const [showSuccess, setShowSuccess] = useState(false);
     const [showNoChanges, setShowNoChanges] = useState(false);
@@ -117,189 +117,165 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                 <div className="card shadow-lg rounded-lg overflow-hidden">
                     <div className="card-body p-0">
                         <div className="row">
-                            <div className="col-12 p-5">
-                                <form onSubmit={handleSubmitClick}>
-                                    <div className="message-container mb-4">
-                                        {showSuccess && (
-                                            <div
-                                                className="alert alert-success shadow-lg animate-message"
-                                                role="alert"
-                                            >
-                                                Your profile has been
-                                                successfully updated!
-                                            </div>
-                                        )}
-                                        {showNoChanges && (
-                                            <div
-                                                className="alert alert-warning shadow-lg animate-message"
-                                                role="alert"
-                                            >
-                                                No changes were made to your
-                                                profile.
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6 mb-4">
-                                            <label className="form-label fw-bold">
-                                                First Name
-                                            </label>
-                                            <input
-                                                name="firstName"
-                                                type="text"
-                                                className="form-control shadow-sm animate-field"
-                                                value={data.firstName}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "firstName",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </div>
-                                        <div className="col-md-6 mb-4">
-                                            <label className="form-label fw-bold">
-                                                Last Name
-                                            </label>
-                                            <input
-                                                name="lastName"
-                                                type="text"
-                                                className="form-control shadow-sm animate-field"
-                                                value={data.lastName}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "lastName",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6 mb-4">
-                                            <label className="form-label fw-bold">
-                                                Email
-                                            </label>
-                                            <input
-                                                name="email"
-                                                type="email"
-                                                className="form-control shadow-sm animate-field"
-                                                value={data.email}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "email",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </div>
-                                        <div className="col-md-6 mb-4">
-                                            <label className="form-label fw-bold">
-                                                Contact Number
-                                            </label>
-                                            <input
-                                                name="phoneNumber"
-                                                type="text"
-                                                className="form-control shadow-sm animate-field"
-                                                value={data.phoneNumber}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "phoneNumber",
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12 mb-4">
-                                            <label className="form-label fw-bold">
-                                                Signature Photo
-                                            </label>
-                                            <div className="d-flex align-items-center">
-                                                <input
-                                                    type="file"
-                                                    name="photo"
-                                                    className="form-control shadow-sm animate-field me-2"
-                                                    onChange={(e) =>
-                                                        setData(
-                                                            "photo",
-                                                            e.target.files[0]
-                                                        )
-                                                    }
-                                                />
-                                                {photoUrl && (
-                                                    <Button
-                                                        variant="outline-primary"
-                                                        onClick={
-                                                            handleShowPhoto
-                                                        }
-                                                        className="me-2"
-                                                    >
-                                                        View Current Signature
-                                                        Photo
-                                                    </Button>
-                                                )}
-                                            </div>
-                                            {errors.photo && (
-                                                <small className="text-danger mt-1">
-                                                    {errors.photo}
-                                                </small>
+                            <div className="col-12">
+                                <div className="p-5">
+                                    <form onSubmit={handleSubmitClick}>
+                                        <div className="message-container mb-4">
+                                            {showSuccess && (
+                                                <div
+                                                    className="alert alert-success shadow-lg animate-message"
+                                                    role="alert"
+                                                >
+                                                    Your profile has been
+                                                    successfully updated!
+                                                </div>
+                                            )}
+                                            {showNoChanges && (
+                                                <div
+                                                    className="alert alert-warning shadow-lg animate-message"
+                                                    role="alert"
+                                                >
+                                                    No changes were made to your
+                                                    profile.
+                                                </div>
                                             )}
                                         </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-6 mb-4">
-                                            <div className="d-flex align-items-center">
+                                        <div className="row">
+                                            <div className="col-md-6 mb-4">
                                                 <label className="form-label fw-bold">
-                                                    Password
+                                                    First Name
                                                 </label>
-                                                <small className="mb-0 ml-2 mx-2 text-danger">
-                                                    (1 uppercase letter, 1
-                                                    number, and 1 special
-                                                    character required.)
-                                                </small>
-                                            </div>
-                                            <div className="position-relative">
                                                 <input
-                                                    name="password"
-                                                    type={
-                                                        showPassword
-                                                            ? "text"
-                                                            : "password"
-                                                    }
-                                                    className={`form-control shadow-sm animate-field ${
-                                                        !passwordMatch ||
-                                                        !passwordLength
-                                                            ? "is-invalid"
-                                                            : ""
-                                                    }`}
-                                                    value={data.password}
-                                                    onChange={
-                                                        handlePasswordChange
-                                                    }
-                                                />
-                                                <button
-                                                    type="button"
-                                                    className="btn position-absolute end-0 top-50 translate-middle-y text-muted"
-                                                    onClick={() =>
-                                                        setShowPassword(
-                                                            !showPassword
+                                                    name="firstName"
+                                                    type="text"
+                                                    className="form-control shadow-sm animate-field"
+                                                    value={data.firstName}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "firstName",
+                                                            e.target.value
                                                         )
                                                     }
-                                                    style={{
-                                                        border: "none",
-                                                        background: "none",
-                                                        padding:
-                                                            "0.375rem 0.75rem",
-                                                        cursor: "pointer",
-                                                    }}
-                                                >
-                                                    {showPassword ? "👁️" : "👁️"}
-                                                </button>
+                                                />
                                             </div>
-                                            {!passwordLength &&
-                                                data.password && (
+                                            <div className="col-md-6 mb-4">
+                                                <label className="form-label fw-bold">
+                                                    Last Name
+                                                </label>
+                                                <input
+                                                    name="lastName"
+                                                    type="text"
+                                                    className="form-control shadow-sm animate-field"
+                                                    value={data.lastName}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "lastName",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-6 mb-4">
+                                                <label className="form-label fw-bold">
+                                                    Email
+                                                </label>
+                                                <input
+                                                    name="email"
+                                                    type="email"
+                                                    className="form-control shadow-sm animate-field"
+                                                    value={data.email}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "email",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="col-md-6 mb-4">
+                                                <label className="form-label fw-bold">
+                                                    Contact Number
+                                                </label>
+                                                <input
+                                                    name="phoneNumber"
+                                                    type="text"
+                                                    className="form-control shadow-sm animate-field"
+                                                    value={data.phoneNumber}
+                                                    onChange={(e) =>
+                                                        setData(
+                                                            "phoneNumber",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-12 mb-4">
+                                                <label className="form-label fw-bold">Signature Photo</label>
+                                                <div className="mb-2">
+                                                    <small className="text-muted">
+                                                        {imageRequirements?.message || 'Please upload a PNG file for your signature. This ensures optimal quality and transparency.'}
+                                                    </small>
+                                                </div>
+                                                <div className="d-flex align-items-center">
+                                                    <input
+                                                        type="file"
+                                                        name="photo"
+                                                        accept=".png"
+                                                        className="form-control shadow-sm animate-field me-2"
+                                                        onChange={e => setData('photo', e.target.files[0])}
+                                                    />
+                                                    {photoUrl && (
+                                                        <Button 
+                                                            variant="outline-primary" 
+                                                            onClick={handleShowPhoto}
+                                                            className="me-2"
+                                                        >
+                                                            View Current Signature Photo
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                                {errors.photo && <div className="text-danger mt-1">{errors.photo}</div>}
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-6 mb-4">
+                                                <div className="d-flex align-items-center">
+                                                    <label className="form-label fw-bold">
+                                                        Password
+                                                    </label>
+                                                    <small className="mb-0 ml-2 mx-2 text-danger">
+                                                        (1 uppercase letter, 1
+                                                        number, and 1 special
+                                                        character required.)
+                                                    </small>
+                                                </div>
+                                                <div className="position-relative">
+                                                    <input
+                                                        name="password"
+                                                        type={showPassword ? "text" : "password"}
+                                                        className={`form-control shadow-sm animate-field ${!passwordMatch || !passwordLength ? 'is-invalid' : ''}`}
+                                                        value={data.password}
+                                                        onChange={handlePasswordChange}
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="btn position-absolute end-0 top-50 translate-middle-y text-muted"
+                                                        onClick={() => setShowPassword(!showPassword)}
+                                                        style={{ 
+                                                            border: 'none', 
+                                                            background: 'none',
+                                                            padding: '0.375rem 0.75rem',
+                                                            cursor: 'pointer'
+                                                        }}
+                                                    >
+                                                        {showPassword ? '👁️' : '👁️'}
+                                                    </button>
+                                                </div>
+                                                {!passwordLength && data.password && (
                                                     <div className="text-danger mt-1">
                                                         Password must be at
                                                         least 8 characters.

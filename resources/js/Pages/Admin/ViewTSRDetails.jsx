@@ -1,53 +1,23 @@
-import React, { useState } from "react"; // Import useState
-import Navbar2 from "@/Layouts/Navbar2";
-import Navbar from "../../Layouts/Navbar";
+import AdminNavBar from "@/Layouts/AdminNavBar";
 import TSRpdf from "./TSRpdf";
-import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
-import Modal from "react-modal"; // Import Modal
-import { Link, useForm } from "@inertiajs/react";
+import { PDFViewer } from "@react-pdf/renderer";
+import Modal from "react-modal";
+import { Link } from "@inertiajs/react";
+import React, { useState } from "react";
 
-function EditTSR({jobOrder, auth, tsr}) {
-    const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
-    
+function ViewTSRDetails({ tsr }) {
+    const [showPreview, setShowPreview] = useState(false);
+
     const handlePreviewClick = () => {
-        setShowPreview(true); // Show the preview when the button is clicked
+        setShowPreview(true);
     };
     
     const closeModal = () => {
-        setShowPreview(false); // Close the modal
+        setShowPreview(false);
     };
-
-    // Initialize useForm with existing TSR data
-    const { data, setData, put, processing, errors } = useForm({
-        tsr_num: tsr.tsr_num || '',
-        instrument: tsr.instrument || '',
-        model: tsr.model || '',
-        serial_num: tsr.serial_num || '',
-        problemReported: tsr.problemReported || '',
-        diagnosis: tsr.diagnosis || '',
-        actionTaken: tsr.actionTaken || '',
-        recommendation: tsr.recommendation || '',
-        tsr_remarks: tsr.tsr_remarks || '',
-        date_request: tsr.date_request || jobOrder.date_request,
-        phone: tsr.phone || jobOrder.user.phoneNumber,
-        job_id: tsr.job_id || jobOrder.job_id,
-        tech_id: tsr.tech_id,
-        tech_photo: tsr.tech_photo,
-    });
-
-    // Update the input fields to use setData instead of separate state variables
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setData(name, value);
-    };
-
-    function onSubmit(e) {
-        e.preventDefault();
-        put(route('technician.updateTSR', tsr.tsr_id));
-    }
 
     return (
-        <div className="d-flex">
+        <>
             {/* Modal for PDF Preview */}
             <Modal isOpen={showPreview} onRequestClose={closeModal}>
                 <h5>Print Preview:</h5>
@@ -55,16 +25,13 @@ function EditTSR({jobOrder, auth, tsr}) {
                     style={{
                         width: "100%",
                         height: "80%",
-                        border: "none", // Optional: remove border for a cleaner look
+                        border: "none",
                     }}
                 >
                     <TSRpdf 
                         jobOrder={tsr.job_order}
                         reportDetails={{
                             ...tsr,
-                            tech_photo: auth.photo, // Pass the filename
-                            tech_signature: `/storage/photos/technicianSignature/${auth.photo}`, // Construct full URL path
-                            tech_id: data.tech_id,
                             // Only include admin signature and name if they exist in the database
                             ...(tsr.admin_photo && {
                                 admin_signature: `/storage/photos/adminSignature/${tsr.admin_photo}`,
@@ -73,26 +40,27 @@ function EditTSR({jobOrder, auth, tsr}) {
                         }} 
                     />
                 </PDFViewer>
-                <button onClick={closeModal}>Close</button> {/* Close button */}
+                <button onClick={closeModal}>Close</button>
             </Modal>
 
-            <div id="content" className=" flex-fill p-3">
+            <div id="content" className="flex-fill p-3">
                 <div>
                     <div>
                         <h1 className="d-inline">
                             Technical Service Report |{" "}
                         </h1>
-                        <h1 className="d-inline fw-light"> Edit </h1>
+                        <h1 className="d-inline fw-light">View Details</h1>
                         <hr />
                     </div>
                     <div className="mt-3">
                         <div className="row forms-bg">
                             <div className="col-12 col-md-4 profile-bg d-flex flex-column align-items-center p-3 text-white">
+                                {/* Left sidebar content */}
                                 <div className="mt-10">
                                     <i className="bi bi-person-fill fs-2 text-primary"></i>
                                 </div>
-                                <h5 className="mb-4 mt-9 ">
-                                    Analytical Balance
+                                <h5 className="mb-4 mt-9">
+                                    {tsr.instrument}
                                 </h5>
 
                                 <div className="mt-20">
@@ -102,60 +70,61 @@ function EditTSR({jobOrder, auth, tsr}) {
                                     </h5>
                                 </div>
 
-                                {/* <h6 className="mt-4">Related Documents:</h6>
+                                <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
-                                    <button className="btn btn-light w-100 mb-2">
-                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                        Technical Service Report
-                                    </button>
-                                    <button className="btn btn-light w-100 mb-2">
-                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                        Job Request
-                                    </button>
-                                    <Link
-                                        href="">
-                                        <button className="btn btn-light w-100 mb-2">
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            Create Certificate of Calibration
-                                        </button>
-                                    </Link>
-                                </div> */}
+                                    {tsr.coc ? (
+                                        <Link href={route('admin.viewCoCDetails', tsr.coc.coc_id)}>
+                                            <button className="btn btn-light w-100 mb-2">
+                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                View Certificate of Calibration
+                                            </button>
+                                        </Link>
+                                    ) : (
+                                        <Link href='#'>
+                                            <button className="btn btn-light w-100 mb-2" disabled>
+                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                View Certificate of Calibration
+                                            </button>
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="col-12 col-md-8">
                                 <div className="pt-5 pb-5 p-3">
-                                <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                TSR Number*
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="tsr_num"
-                                                value={data.tsr_num}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
+                                    {/* Form fields */}
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
-                                                Instrument*
+                                                TSR Number
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="instrument"
-                                                value={data.instrument}
-                                                onChange={handleInputChange}
+                                                value={tsr.tsr_num}
+                                                disabled
                                             />
                                         </div>
                                     </div>
+
+                                    <div className="row">
+                                        <div className="col-12 col-sm-3 mb-3">
+                                            <label className="form-label fw-bold d-block text-truncate">
+                                                Instrument
+                                            </label>
+                                        </div>
+                                        <div className="col-12 col-sm-9 mb-3">
+                                            <input
+                                                type="text"
+                                                className="form-control rounded"
+                                                value={tsr.instrument}
+                                                disabled
+                                            />
+                                        </div>
+                                    </div>
+
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
@@ -166,7 +135,7 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value={jobOrder.date_request}
+                                                value={tsr.date_request}
                                                 disabled
                                             />
                                         </div>
@@ -182,12 +151,13 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value={jobOrder.user.phoneNumber}
+                                                value={tsr.phone}
                                                 disabled
                                             />
                                         </div>
                                     </div>
 
+                                    {/* Continue with other fields */}
                                     <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
@@ -198,9 +168,8 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="model"
-                                                value={data.model}
-                                                onChange={handleInputChange}
+                                                value={tsr.model || 'N/A'}
+                                                disabled
                                             />
                                         </div>
                                     </div>
@@ -215,9 +184,8 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="serial_num"
-                                                value={data.serial_num}
-                                                onChange={handleInputChange}
+                                                value={tsr.serial_num}
+                                                disabled
                                             />
                                         </div>
                                     </div>
@@ -232,9 +200,8 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="problemReported"
-                                                value={data.problemReported}
-                                                onChange={handleInputChange}
+                                                value={tsr.problemReported}
+                                                disabled
                                             />
                                         </div>
                                     </div>
@@ -249,9 +216,8 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="diagnosis"
-                                                value={data.diagnosis}
-                                                onChange={handleInputChange}
+                                                value={tsr.diagnosis}
+                                                disabled
                                             />
                                         </div>
                                     </div>
@@ -266,9 +232,8 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="actionTaken"
-                                                value={data.actionTaken}
-                                                onChange={handleInputChange}
+                                                value={tsr.actionTaken}
+                                                disabled
                                             />
                                         </div>
                                     </div>
@@ -280,18 +245,12 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
-                                            <select 
-                                                className="w-100 rounded p-2"
-                                                name="recommendation"
-                                                value={data.recommendation}
-                                                onChange={handleInputChange}
-                                            >
-                                                <option value="" disable selected> Please Select an Option </option>
-                                                <option value="For Pull-Out">For Pull-Out</option>
-                                                <option value="Forward to Supplier">Forward to Supplier</option>
-                                                <option value="For Repair">For Repair</option>
-                                                <option value="Beyond Repair">Beyond Repair</option>
-                                            </select>
+                                            <input
+                                                type="text"
+                                                className="form-control rounded"
+                                                value={tsr.recommendation}
+                                                disabled
+                                            />
                                         </div>
                                     </div>
                                     <div className="row">
@@ -304,9 +263,8 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                name="tsr_remarks"
-                                                value={data.tsr_remarks}
-                                                onChange={handleInputChange}
+                                                value={tsr.tsr_remarks}
+                                                disabled
                                             />
                                         </div>
                                     </div>
@@ -317,17 +275,20 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <button
                                                 type="button"
                                                 className="btn btn-primary mb-3"
-                                                onClick={handlePreviewClick} // Add click handler
+                                                onClick={handlePreviewClick}
                                             >
                                                 Preview PDF
                                             </button>
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary ms-3 mb-3"
-                                                onClick={onSubmit}
-                                            >
-                                                Save Document
-                                            </button>
+                                            <Link
+                                                href={route('admin.editTSR', tsr.tsr_id)}>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-primary ms-3 mb-3"
+                                                >
+                                                    Edit Document
+                                                </button>
+                                            </Link>
+                                            
                                             
                                         </div>
                                     </div>
@@ -337,11 +298,10 @@ function EditTSR({jobOrder, auth, tsr}) {
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        </>
+    )
 }
 
-// Change Home to TSR
-EditTSR.layout = (page) => <Navbar2>{page}</Navbar2>;
+ViewTSRDetails.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
-export default EditTSR;
+export default ViewTSRDetails;

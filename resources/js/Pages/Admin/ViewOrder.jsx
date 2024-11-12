@@ -230,6 +230,13 @@ function ViewOrder({ jobOrder }) {
                     Edit
                 </Link>
 
+                <Link
+                    href={`/admin/TSR/${jobOrder.job_id}`}
+                    className="btn btn-info w-100 mt-2"
+                >
+                    View Technical Service Reports
+                </Link>
+
                 {/* Return Button */}
                 <a
                     href="/admin"

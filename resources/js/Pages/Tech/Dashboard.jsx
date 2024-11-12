@@ -14,7 +14,7 @@ function Dashboard({ jobOrder }) {
     console.log(jobOrder);
     return (
         <div className="d-flex">
-            <div id="content" className=" flex-fill p-3">
+            <div id="content" className="flex-fill p-3">
                 <div>
                     <div>
                         <h1 className="d-inline">Job Requests | </h1>
@@ -27,57 +27,51 @@ function Dashboard({ jobOrder }) {
                     <div className="bg-dark row rounded text-center d-flex justify-content-between">
                         <div className="col bg-light m-4 p-3">
                             <h5>Total Request</h5>
-                            <h1>1</h1>
+                            <h1>{jobOrder.data.length}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>For Approval</h5>
-                            <h1>1</h1>
+                            <h1>{jobOrder.data.filter(order => order.status === "For Approval").length}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Approved</h5>
-                            <h1>1</h1>
+                            <h1>{jobOrder.data.filter(order => order.status === "Approved").length}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Completed</h5>
-                            <h1>1</h1>
+                            <h1>{jobOrder.data.filter(order => order.status === "Completed").length}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Cancelled</h5>
-                            <h1>1</h1>
+                            <h1>{jobOrder.data.filter(order => order.status === "Cancelled").length}</h1>
                         </div>
                     </div>
+
                     <div className="mt-3">
-                        <table class="table text-center table-bordered table-striped">
+                        <table className="table text-center table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Date Received
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Job ID
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Client Name
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Email
                                     </th>
-                                    {/* <th class="thead-custom" scope="col">
-                                        Instrument
-                                    </th> */}
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Service Requested
                                     </th>
-                                    <th class="thead-custom" scope="col">
+                                    <th className="thead-custom" scope="col">
                                         Status
                                     </th>
                                     <th class="thead-custom" scope="col">
                                         Priority
                                     </th>
-                                    {/* To Ask 
-                                    <th class="thead-custom" scope="col">
-                                        Priority
-                                    </th> */}
                                     <th class="thead-custom" scope="col">
                                         Action
                                     </th>
@@ -165,7 +159,12 @@ function Dashboard({ jobOrder }) {
                                             </span>
                                         </td>
                                         <td>
-                                            <Link
+                                            {order.status === "For Approval" ? (
+                                                <button className="gradient-gray-button" id="btnSee" disabled>
+                                                    See Details
+                                                </button>
+                                            ) : (
+                                                <Link
                                                 href={`/technician/showJobOrder/${order.job_id}`}
                                             >
                                                 <button
@@ -189,6 +188,7 @@ function Dashboard({ jobOrder }) {
                                                     See Details
                                                 </button>
                                             </Link>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}
@@ -196,19 +196,15 @@ function Dashboard({ jobOrder }) {
                         </table>
                         <div className="text-center">
                             {jobOrder.links.map((link) => (
-                                <Link
-                                    className={`px-3 ${
-                                        link.active
-                                            ? "text-secondary"
-                                            : " text-dark "
-                                    }`}
+                                <Link 
+                                    className={`px-3 ${ link.active ? "text-secondary" : " text-dark "}`}
                                     key={link.label}
                                     href={link.url}
                                     dangerouslySetInnerHTML={{
                                         __html: link.label,
                                     }}
                                 />
-                            ))}
+                                ))}
                         </div>
                     </div>
                 </div>

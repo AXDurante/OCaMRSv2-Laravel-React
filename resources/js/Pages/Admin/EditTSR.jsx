@@ -1,5 +1,5 @@
 import React, { useState } from "react"; // Import useState
-import Navbar2 from "@/Layouts/Navbar2";
+import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
 import TSRpdf from "./TSRpdf";
 import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
@@ -8,6 +8,7 @@ import { Link, useForm } from "@inertiajs/react";
 
 function EditTSR({jobOrder, auth, tsr}) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
+    const [includeSignature, setIncludeSignature] = useState(false); // Add this state
     
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
@@ -32,7 +33,9 @@ function EditTSR({jobOrder, auth, tsr}) {
         phone: tsr.phone || jobOrder.user.phoneNumber,
         job_id: tsr.job_id || jobOrder.job_id,
         tech_id: tsr.tech_id,
-        tech_photo: tsr.tech_photo,
+        tech_photo: tsr.tech_photo_url,
+        admin_photo: tsr.admin_photo || null, // Add this field
+        admin_name: tsr.admin_name || null,
     });
 
     // Update the input fields to use setData instead of separate state variables
@@ -41,9 +44,20 @@ function EditTSR({jobOrder, auth, tsr}) {
         setData(name, value);
     };
 
+    // Handle checkbox change
+    const handleSignatureChange = (e) => {
+        const isChecked = e.target.checked;
+        setIncludeSignature(isChecked);
+        setData({
+            ...data,
+            admin_photo: isChecked ? auth.user.photo : null,
+            admin_name: isChecked ? `${auth.user.firstName} ${auth.user.lastName}` : null,
+        });
+    };
+
     function onSubmit(e) {
         e.preventDefault();
-        put(route('technician.updateTSR', tsr.tsr_id));
+        put(route('admin.updateTSR', tsr.tsr_id));
     }
 
     return (
@@ -59,19 +73,15 @@ function EditTSR({jobOrder, auth, tsr}) {
                     }}
                 >
                     <TSRpdf 
-                        jobOrder={tsr.job_order}
+                        jobOrder={jobOrder}
                         reportDetails={{
-                            ...tsr,
-                            tech_photo: auth.photo, // Pass the filename
-                            tech_signature: `/storage/photos/technicianSignature/${auth.photo}`, // Construct full URL path
-                            tech_id: data.tech_id,
-                            // Only include admin signature and name if they exist in the database
-                            ...(tsr.admin_photo && {
-                                admin_signature: `/storage/photos/adminSignature/${tsr.admin_photo}`,
-                                admin_name: tsr.admin_name
-                            })
-                        }} 
-                    />
+                            ...data,
+                            // Only include admin signature and name if checkbox is checked
+                            ...(includeSignature && {
+                                admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
+                                admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
+                            }),
+                        }} />
                 </PDFViewer>
                 <button onClick={closeModal}>Close</button> {/* Close button */}
             </Modal>
@@ -286,7 +296,6 @@ function EditTSR({jobOrder, auth, tsr}) {
                                                 value={data.recommendation}
                                                 onChange={handleInputChange}
                                             >
-                                                <option value="" disable selected> Please Select an Option </option>
                                                 <option value="For Pull-Out">For Pull-Out</option>
                                                 <option value="Forward to Supplier">Forward to Supplier</option>
                                                 <option value="For Repair">For Repair</option>
@@ -308,6 +317,34 @@ function EditTSR({jobOrder, auth, tsr}) {
                                                 value={data.tsr_remarks}
                                                 onChange={handleInputChange}
                                             />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-12 col-sm-3 mb-3">
+                                            <label className="form-label fw-bold d-block text-truncate">
+                                                Place Signature
+                                            </label>
+                                        </div>
+                                        <div className="col-12 col-sm-9 mb-3">
+                                            <div className="form-check">
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    id="includeSignature"
+                                                    checked={includeSignature}
+                                                    onChange={handleSignatureChange}
+                                                />
+                                                <label className="form-check-label" htmlFor="includeSignature">
+                                                    Include my signature in this TSR
+                                                </label>
+                                            </div>
+                                            {includeSignature && (
+                                                <div className="mt-2">
+                                                    <small className="text-muted">
+                                                        Signature file: {auth.user.photo}
+                                                    </small>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
@@ -342,6 +379,6 @@ function EditTSR({jobOrder, auth, tsr}) {
 }
 
 // Change Home to TSR
-EditTSR.layout = (page) => <Navbar2>{page}</Navbar2>;
+EditTSR.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
 
 export default EditTSR;

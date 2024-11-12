@@ -21,7 +21,6 @@ function COC({ tsr, auth }) {
         manufacturer: '',
         standard: '',
         date_req: tsr.job_order.date_request,
-        date_req: tsr.job_order.date_request,
         date_cal: tsr.job_order.date_request,
         date_due: tsr.job_order.date_due,
     });
@@ -261,6 +260,8 @@ function COC({ tsr, auth }) {
                                                 tsr={tsr}
                                                 cocDetails={{
                                                     ...data,
+                                                    tech_id: `${auth.user.firstName} ${auth.user.lastName}`,
+                                                    tech_photo: auth.photo,
                                                 }}
                                             />
                                         </PDFViewer>
