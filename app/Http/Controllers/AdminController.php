@@ -67,11 +67,16 @@ class AdminController extends Controller
                 'user' => $admin
             ],
             'storageBaseUrl' => $isProduction 
-                ? $appUrl . '/public/storage/photos'  // Add public/ prefix for production
+                ? $appUrl . '/public/storage/photos'  // Remove duplicate adminSignature
                 : url('storage/photos'),
             'flash' => [
                 'message' => session('message')
             ],
+            'imageRequirements' => [
+                'format' => 'PNG',
+                'maxSize' => '2MB',
+                'message' => 'Please upload a PNG file for your signature. This ensures optimal quality and transparency.'
+            ]
         ]);
     }
 
@@ -166,6 +171,20 @@ class AdminController extends Controller
                 'lastName' => 'sometimes|required|string|max:255',
                 'email' => 'sometimes|nullable|email|unique:admins,email,' . $admin->id,
                 'id_number' => 'sometimes|required|string|unique:admins,id_number,' . $admin->id,
+                'photo' => [
+                    'nullable',
+                    'file',
+                    'mimes:png',
+                    'max:2048', // 2MB max size
+                    function ($attribute, $value, $fail) {
+                        if ($value) {
+                            $mimeType = $value->getMimeType();
+                            if ($mimeType !== 'image/png') {
+                                $fail('The signature must be a PNG image file. Other formats are not supported.');
+                            }
+                        }
+                    },
+                ]
             ];
 
             // Add password validation rules only if password is being updated
@@ -183,6 +202,8 @@ class AdminController extends Controller
             $customMessages = [
                 'password.confirmed' => 'The password confirmation does not match.',
                 'password.regex' => 'The password must contain at least one uppercase letter, one number, and one special character.',
+                'photo.mimes' => 'The signature must be a PNG image file. Other formats are not supported.',
+                'photo.max' => 'The signature image must not exceed 2MB in size.',
             ];
 
             $validated = $request->validate($validationRules, $customMessages);
@@ -205,14 +226,26 @@ class AdminController extends Controller
                 $updateData['password'] = bcrypt($request->password);
             }
 
-            // Only handle photo if a new file was uploaded
+            // Handle photo upload with additional validation
             if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+
+                // Additional mime type verification
+                if ($photo->getMimeType() !== 'image/png') {
+                    return redirect()->back()->withErrors([
+                        'photo' => 'The signature must be a PNG image file for optimal quality and transparency.'
+                    ]);
+                }
+
+                // Remove old photo if exists
                 if ($admin->photo) {
                     Storage::delete('public/photos/adminSignature/' . $admin->photo);
                 }
 
-                $photo = $request->file('photo');
-                $filename = time() . '_' . Str::random(10) . '.' . $photo->getClientOriginalExtension();
+                // Generate unique filename
+                $filename = time() . '_' . Str::random(10) . '.png';
+                
+                // Store the new photo
                 $photo->storeAs('public/photos/adminSignature', $filename);
                 $updateData['photo'] = $filename;
             }
@@ -226,7 +259,9 @@ class AdminController extends Controller
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            return redirect()->back()->withErrors(['error' => 'An error occurred while updating the profile: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors([
+                'error' => 'An error occurred while updating the profile. Please ensure your signature is a valid PNG file and try again.'
+            ]);
         }
     }
 
