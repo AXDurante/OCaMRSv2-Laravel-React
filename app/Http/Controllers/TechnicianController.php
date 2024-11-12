@@ -271,6 +271,41 @@ class TechnicianController extends Controller
         ]);
     }
 
+    public function storeCoC(Request $request)
+    {
+        $cocFields = $request->validate([
+            'coc_num' => ['required'],
+            'college' => ['required'],
+            'lab_loc' => ['required'],
+            'equipment' => ['required'],
+            'model' => ['required'],
+            'serial_num' => ['required'],
+            'calibration' => ['required'],
+            'calibration_res' => ['required'],
+            'remark' => ['nullable', 'string'],
+            'tsr_num' => ['required'],
+            'tsr_id' => ['required'],
+            'manufacturer' => ['required'],
+            'standard' => ['required'],
+            'date_req' => ['required'],
+            'date_cal' => ['required'],
+            'date_due' => ['required'],
+            'tech_photo' => ['nullable', 'string'],
+        ]);
+
+        $user = Auth::user();
+        
+        // Add technician's information
+        $cocFields['tech_name'] = $user->firstName . ' ' . $user->lastName;
+        $cocFields['tech_photo'] = $user->photo; // Store just the filename
+
+        // Create the CoC record
+        $coc = CoC::create($cocFields);
+
+        return redirect()->route('technician.viewCoCDetails', $coc->coc_id)
+            ->with('message', 'Certificate of Calibration created successfully');
+    }
+
     public function viewCoC($coc_id)
     {
         $coc = CoC::with(['tsr.job_order'])->findOrFail($coc_id);
