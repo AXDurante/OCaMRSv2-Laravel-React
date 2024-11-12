@@ -226,10 +226,17 @@ class TechnicianController extends Controller
     {
         // Load job_order relationship and its user
         $tsr = TSR::with(['job_order', 'job_order.user'])->findOrFail($id);
+        $user = Auth::user();
+
+        // Generate the full URL for technician's signature
+        $signatureUrl = $user->photo ? Storage::url('photos/technicianSignature/' . $user->photo) : null;
+
         return Inertia::render('Tech/COC', [
             'tsr' => $tsr,
             'auth' => [
-                'user' => Auth::user()
+                'user' => $user,
+                'photo' => $signatureUrl,
+                'fullName' => $user->firstName . ' ' . $user->lastName // Add full name
             ]
         ]);
     }
@@ -253,19 +260,89 @@ class TechnicianController extends Controller
             'date_req' => ['required'],
             'date_cal' => ['required'],
             'date_due' => ['required'],
+            'tech_photo' => ['nullable', 'string'],
         ]);
 
-        CoC::create($cocFields);
+        $user = Auth::user();
+        
+        // Add technician's information
+        $cocFields['tech_name'] = $user->firstName . ' ' . $user->lastName;
+        $cocFields['tech_photo'] = $user->photo; // Store just the filename
 
-        return redirect()->route('technician.dashboard');
+        // Create the CoC record
+        $coc = CoC::create($cocFields);
+
+        return redirect()->route('technician.viewCoCDetails', $coc->coc_id)
+            ->with('message', 'Certificate of Calibration created successfully');
     }
 
     public function viewCoC($coc_id)
     {
         $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
+        
+        // Add URLs for signatures if they exist
+        if ($coc->tech_photo) {
+            $coc->tech_signature = Storage::url('photos/technicianSignature/' . $coc->tech_photo);
+        }
+        if ($coc->admin_photo) {
+            $coc->admin_signature = Storage::url('photos/adminSignature/' . $coc->admin_photo);
+        }
+
         return Inertia::render('Tech/ViewCOCDetails', [
             'coc' => $coc
         ]);
+    }
+
+    public function editCoC($coc_id)
+    {
+        $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
+        $user = Auth::user();
+
+        // Add URLs for signatures if they exist
+        if ($coc->tech_photo) {
+            $coc->tech_signature = Storage::url('photos/technicianSignature/' . $coc->tech_photo);
+        }
+        if ($coc->admin_photo) {
+            $coc->admin_signature = Storage::url('photos/adminSignature/' . $coc->admin_photo);
+        }
+
+        return Inertia::render('Tech/EditCOC', [
+            'coc' => $coc,
+            'tsr' => $coc->tsr,
+            'auth' => [
+                'user' => $user,
+                'photo' => $user->photo ? Storage::url('photos/technicianSignature/' . $user->photo) : null
+            ]
+        ]);
+    }
+
+    public function updateCoC(Request $request, $coc_id)
+    {
+        $coc = CoC::findOrFail($coc_id);
+
+        $cocFields = $request->validate([
+            'coc_num' => ['required'],
+            'college' => ['required'],
+            'lab_loc' => ['required'],
+            'equipment' => ['required'],
+            'model' => ['required'],
+            'serial_num' => ['required'],
+            'calibration' => ['required'],
+            'calibration_res' => ['required'],
+            'remark' => ['nullable', 'string'],
+            'tsr_num' => ['required'],
+            'tsr_id' => ['required'],
+            'manufacturer' => ['required'],
+            'standard' => ['required'],
+            'date_req' => ['required'],
+            'date_cal' => ['required'],
+            'date_due' => ['required'],
+        ]);
+
+        $coc->update($cocFields);
+
+        return redirect()->route('technician.viewCoCDetails', $coc->coc_id)
+            ->with('message', 'Certificate of Calibration updated successfully');
     }
 
     public function manageProfile()
@@ -332,46 +409,5 @@ class TechnicianController extends Controller
         return Inertia::render("Tech/ViewInstrument", [
             "equipment" => $equipment,
         ]);
-    }
-
-    public function editCoC($coc_id)
-    {
-        $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
-        return Inertia::render('Tech/EditCOC', [
-            'coc' => $coc,
-            'tsr' => $coc->tsr,
-            'auth' => [
-                'user' => Auth::user()
-            ]
-        ]);
-    }
-
-    public function updateCoC(Request $request, $coc_id)
-    {
-        $coc = CoC::findOrFail($coc_id);
-
-        $cocFields = $request->validate([
-            'coc_num' => ['required'],
-            'college' => ['required'],
-            'lab_loc' => ['required'],
-            'equipment' => ['required'],
-            'model' => ['required'],
-            'serial_num' => ['required'],
-            'calibration' => ['required'],
-            'calibration_res' => ['required'],
-            'remark' => ['nullable', 'string'],
-            'tsr_num' => ['required'],
-            'tsr_id' => ['required'],
-            'manufacturer' => ['required'],
-            'standard' => ['required'],
-            'date_req' => ['required'],
-            'date_cal' => ['required'],
-            'date_due' => ['required'],
-        ]);
-
-        $coc->update($cocFields);
-
-        return redirect()->route('technician.viewCoCDetails', $coc->coc_id)
-            ->with('message', 'Certificate of Calibration updated successfully');
     }
 }

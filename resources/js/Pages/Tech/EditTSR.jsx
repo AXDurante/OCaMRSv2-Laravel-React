@@ -31,8 +31,8 @@ function EditTSR({jobOrder, auth, tsr}) {
         date_request: tsr.date_request || jobOrder.date_request,
         phone: tsr.phone || jobOrder.user.phoneNumber,
         job_id: tsr.job_id || jobOrder.job_id,
-        tech_id: tsr.tech_id || `${auth.user.firstName} ${auth.user.lastName}`,
-        tech_photo: tsr.tech_photo_url || auth.photo || null,
+        tech_id: tsr.tech_id,
+        tech_photo: tsr.tech_photo,
     });
 
     // Update the input fields to use setData instead of separate state variables
@@ -62,6 +62,9 @@ function EditTSR({jobOrder, auth, tsr}) {
                         jobOrder={tsr.job_order}
                         reportDetails={{
                             ...tsr,
+                            tech_photo: auth.photo, // Pass the filename
+                            tech_signature: `/storage/photos/technicianSignature/${auth.photo}`, // Construct full URL path
+                            tech_id: data.tech_id,
                             // Only include admin signature and name if they exist in the database
                             ...(tsr.admin_photo && {
                                 admin_signature: `/storage/photos/adminSignature/${tsr.admin_photo}`,

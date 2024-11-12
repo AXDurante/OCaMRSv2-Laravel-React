@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Equipment;
 use App\Models\JobOrder;
 use App\Models\TSR;
+use App\Models\CoC;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -297,6 +298,77 @@ class AdminController extends Controller
 
         return redirect()->route('admin.viewTSRDetails', $tsr->tsr_id)
             ->with('message', 'TSR updated successfully');
+    }
+
+    public function viewCoC($coc_id)
+    {
+        $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
+        
+        // Add URLs for signatures if they exist
+        if ($coc->tech_photo) {
+            $coc->tech_signature = Storage::url('photos/technicianSignature/' . $coc->tech_photo);
+        }
+        if ($coc->admin_photo) {
+            $coc->admin_signature = Storage::url('photos/adminSignature/' . $coc->admin_photo);
+        }
+
+        return Inertia::render('Admin/ViewCOCDetails', [
+            'coc' => $coc
+        ]);
+    }
+
+    public function editCoC($coc_id)
+    {
+        $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
+        $user = Auth::user();
+
+        // Add URLs for signatures if they exist
+        if ($coc->tech_photo) {
+            $coc->tech_signature = Storage::url('photos/technicianSignature/' . $coc->tech_photo);
+        }
+        if ($coc->admin_photo) {
+            $coc->admin_signature = Storage::url('photos/adminSignature/' . $coc->admin_photo);
+        }
+
+        return Inertia::render('Admin/EditCOC', [
+            'coc' => $coc,
+            'tsr' => $coc->tsr,
+            'auth' => [
+                'user' => $user,
+                'photo' => $user->photo ? Storage::url('photos/technicianSignature/' . $user->photo) : null
+            ]
+        ]);
+    }
+
+    public function updateCoC(Request $request, $coc_id)
+    {
+        $coc = CoC::findOrFail($coc_id);
+
+        $cocFields = $request->validate([
+            'coc_num' => ['required'],
+            'college' => ['required'],
+            'lab_loc' => ['required'],
+            'equipment' => ['required'],
+            'model' => ['required'],
+            'serial_num' => ['required'],
+            'calibration' => ['required'],
+            'calibration_res' => ['required'],
+            'remark' => ['nullable', 'string'],
+            'tsr_num' => ['required'],
+            'tsr_id' => ['required'],
+            'manufacturer' => ['required'],
+            'standard' => ['required'],
+            'date_req' => ['required'],
+            'date_cal' => ['required'],
+            'date_due' => ['required'],
+            'admin_photo' => ['nullable', 'string'],
+            'admin_name' => ['nullable', 'string'],
+        ]);
+
+        $coc->update($cocFields);
+
+        return redirect()->route('admin.viewCoCDetails', $coc->coc_id)
+            ->with('message', 'Certificate of Calibration updated successfully');
     }
 
 }

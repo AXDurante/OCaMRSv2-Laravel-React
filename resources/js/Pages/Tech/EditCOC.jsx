@@ -23,6 +23,8 @@ function EditCOC({ tsr, auth, coc }) {
         date_req: coc.date_req || tsr.job_order.date_request,
         date_cal: coc.date_cal || tsr.job_order.date_request,
         date_due: coc.date_due || tsr.job_order.date_due,
+        tech_name: coc.tech_name || '',
+        tech_photo: coc.tech_photo || '',
     });
 
     const handleInputChange = (e) => {
@@ -260,6 +262,12 @@ function EditCOC({ tsr, auth, coc }) {
                                                 tsr={tsr}
                                                 cocDetails={{
                                                     ...data,
+                                                    tech_id: data.tech_name,
+                                                    tech_photo: data.tech_photo,
+                                                    ...(auth.photo && {
+                                                        tech_signature: data.tech_photo,
+                                                        tech_id: data.tech_name
+                                                    })
                                                 }}
                                             />
                                         </PDFViewer>

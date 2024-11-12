@@ -524,13 +524,34 @@ function COCpdf ({tsr, cocDetails}) {
                             <Text style={{ fontSize: 11, fontWeight: "bold" }}>
                                 CALIBRATED BY:
                             </Text>
-                            <View
-                                style={{
-                                    borderBottomWidth: 1,
-                                    marginVertical: 5,
-                                    marginTop: 25,
-                                }}
-                            />
+                            {cocDetails.tech_photo && (
+                                <>
+                                    <Image
+                                        src={cocDetails.tech_signature}
+                                        style={{
+                                            width: 75,
+                                            height: 75,
+                                            top: -5,
+                                            left: 60,
+                                            zIndex: 1,
+                                            position: 'absolute',
+                                        }}
+                                    />
+                                    <Text style={{ 
+                                        fontSize: 12,
+                                        position: 'absolute',
+                                        top: 25,
+                                        left: 60
+                                    }}>
+                                        {cocDetails.tech_id}
+                                    </Text>
+                                </>
+                            )}
+                            <View style={{
+                                borderBottomWidth: 1,
+                                marginVertical: 5,
+                                marginTop: 25,
+                            }} />
                             <Text style={{ fontSize: 11 }}>
                                 Instrumentation Technician / Date
                             </Text>
@@ -539,13 +560,34 @@ function COCpdf ({tsr, cocDetails}) {
                             <Text style={{ fontSize: 11, fontWeight: "bold" }}>
                                 NOTED BY:
                             </Text>
-                            <View
-                                style={{
-                                    borderBottomWidth: 1,
-                                    marginVertical: 5,
-                                    marginTop: 25,
-                                }}
-                            />
+                            {cocDetails.admin_signature && (
+                                <>
+                                    <Image
+                                        src={cocDetails.admin_signature}
+                                        style={{
+                                            width: 75,
+                                            height: 75,
+                                            top: -5,
+                                            left: 60,
+                                            zIndex: 1,
+                                            position: 'absolute',
+                                        }}
+                                    />
+                                    <Text style={{ 
+                                        fontSize: 12,
+                                        position: 'absolute',
+                                        top: 25,
+                                        left: 60
+                                    }}>
+                                        {cocDetails.admin_name}
+                                    </Text>
+                                </>
+                            )}
+                            <View style={{
+                                borderBottomWidth: 1,
+                                marginVertical: 5,
+                                marginTop: 25,
+                            }} />
                             <Text style={{ fontSize: 11 }}>
                                 LESO Administrator / Date
                             </Text>

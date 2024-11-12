@@ -23,7 +23,7 @@ function ViewCOCDetails({ coc, auth }) {
                 <div>
                     <div>
                         <h1 class="d-inline">Certificate of Calibration | </h1>
-                        <h1 class="d-inline fw-light">Create</h1>
+                        <h1 class="d-inline fw-light">View</h1>
                         <hr />
                     </div>
                     <div className="mt-3">
@@ -231,7 +231,8 @@ function ViewCOCDetails({ coc, auth }) {
                                                     department: coc.dept_name,
                                                     labLocation: coc.lab_loc,
                                                     dateRequested: coc.date_request,
-                                                    dueDate: coc.date_due
+                                                    dueDate: coc.date_due,
+                                                    tech_id: coc.tech_name
                                                 }}
                                             />
                                         </PDFViewer>

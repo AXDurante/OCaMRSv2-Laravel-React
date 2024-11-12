@@ -76,6 +76,11 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::put('/admin/TSR/{tsr_id}', [AdminController::class, 'updateTSR'])->name('admin.updateTSR');
     Route::get('/admin/TSR/edit/{tsr_id}', [AdminController::class, 'editTSR'])->name('admin.editTSR');
 
+    // ADMIN
+    Route::get('/admin/COC/details/{coc_id}', [AdminController::class, 'viewCoC'])->name('admin.viewCoCDetails');
+    Route::get('/admin/COC/edit/{coc_id}', [AdminController::class, 'editCoC'])->name('admin.editCoC');
+    Route::put('/admin/COC/{coc_id}', [AdminController::class, 'updateCoC'])->name('admin.update-coc');
+
     // Instrumentation Account routes
 
     Route::get('/admin/edit/technician/{id}', [InstrumentationAccountController::class, 'editTech'])->name('admin.edit.tech');
