@@ -36,6 +36,7 @@ class NotificationController extends Controller
                     'message' => $notification->message,
                     'created_at' => $notification->created_at,
                     'read_at' => $notification->read_at,
+                    'status' => $notification->status,
                     'job_order' => $jobOrder ? [
                         'id' => $jobOrder->job_id,
                         'status' => $jobOrder->status,
@@ -77,6 +78,7 @@ class NotificationController extends Controller
                     'message' => $notification->message,
                     'created_at' => $notification->created_at,
                     'read_at' => $notification->read_at,
+                    'status' => $notification->status,
                     'job_order' => $jobOrder ? [
                         'id' => $jobOrder->job_id,
                         'status' => $jobOrder->status,

@@ -91,8 +91,9 @@ class TechnicianController extends Controller
                 'user_id' => $jobOrder->employeeID,
                 'job_order_id' => $jobOrder->job_id,
                 'title' => 'Job Order Status Updated',
-                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$request->status} by technician",
-                'type' => 'status_update'
+                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$validatedData['status']} by technician",
+                'type' => 'status_update',
+                'status' => $validatedData['status']
             ]);
 
             return redirect()->route('technician.showJobOrder', $jobOrder->job_id)

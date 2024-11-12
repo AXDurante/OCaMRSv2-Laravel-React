@@ -12,7 +12,8 @@ class Notification extends Model
         'title',
         'message',
         'type',
-        'read_at'
+        'read_at',
+        'status'
     ];
 
     protected $casts = [

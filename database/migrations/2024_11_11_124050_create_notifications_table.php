@@ -21,6 +21,7 @@ return new class extends Migration
             $table->bigInteger('job_order_id');
             $table->string('title');
             $table->string('message');
+            $table->string('status')->nullable();
             $table->string('type')->default('status_change');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();

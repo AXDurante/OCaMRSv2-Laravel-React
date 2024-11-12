@@ -233,21 +233,18 @@ export default function NavBar({
                             <li className="nav-item">
                                 <Link
                                     href={route('notifications.index')}
-                                    className={`a-nav-link position-relative ${
-                                        isCollapsed ? "text-center" : ""
-                                    }`}
+                                    className="nav-link position-relative"
                                     onClick={(e) => e.stopPropagation()}
                                 >
-                                    <a className="nav-link">
-                                        <i className="bi bi-bell-fill me-2"></i>
-                                        {!isCollapsed && "Notification"}
-                                        {unreadCount > 0 && (
-                                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                                {unreadCount}
-                                                <span className="visually-hidden">unread notifications</span>
-                                            </span>
-                                        )}
-                                    </a>
+                                    <i className="bi bi-bell-fill me-2"></i>
+                                    {!isCollapsed && "Notification"}
+                                    {unreadCount > 0 && (
+                                        <span className="position-absolute badge rounded-pill bg-danger" 
+                                              style={{ top: '45%', transform: 'translateY(-50%)', right: '30px' }}>
+                                            {unreadCount}
+                                            <span className="visually-hidden">unread notifications</span>
+                                        </span>
+                                    )}
                                 </Link>
                             </li>
                             <li className="nav-item">

@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, usePage } from "@inertiajs/react";
+import axios from "axios";
 
 export default function AdminNavBar({ children }) {
     const { auth } = usePage().props;
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isFullyExpanded, setIsFullyExpanded] = useState(true);
+    const [unreadCount, setUnreadCount] = useState(0);
 
     const handleResize = () => {
         if (window.innerWidth < 768) {
@@ -39,6 +41,32 @@ export default function AdminNavBar({ children }) {
             }, 300);
         }
     };
+
+    const fetchUnreadCount = async () => {
+        try {
+            const response = await axios.get(route('admin.notifications.unread-count'));
+            setUnreadCount(response.data.count);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    };
+
+    useEffect(() => {
+        const handleNotificationUpdate = (event) => {
+            setUnreadCount(event.detail.count);
+        };
+
+        window.addEventListener('updateNotificationCount', handleNotificationUpdate);
+        
+        // Initial fetch
+        fetchUnreadCount();
+        const interval = setInterval(fetchUnreadCount, 30000); // Poll every 30 seconds
+        
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('updateNotificationCount', handleNotificationUpdate);
+        };
+    }, []);
 
     return (
         <div className="d-flex">
@@ -168,6 +196,24 @@ export default function AdminNavBar({ children }) {
                                 >
                                     <i className="bi bi-list me-2 fs-4"></i>
                                     {!isCollapsed && "Instrument List"}
+                                </Link>
+                            </li>
+                            <li className="mb-2">
+                                <Link
+                                    href={route('admin.notifications.index')}
+                                    className="a-nav-link position-relative"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <i className="bi bi-bell-fill me-2 fs-4"></i>
+                                    {!isCollapsed && "Notification"}
+                                    {unreadCount > 0 && (
+                                        <span className={`position-absolute top-0 badge rounded-pill bg-danger ${
+                                            isCollapsed ? 'start-50' : 'start-100 translate-middle ms-3'
+                                        }`}>
+                                            {unreadCount}
+                                            <span className="visually-hidden">unread notifications</span>
+                                        </span>
+                                    )}
                                 </Link>
                             </li>
                             <li className="mb-2">

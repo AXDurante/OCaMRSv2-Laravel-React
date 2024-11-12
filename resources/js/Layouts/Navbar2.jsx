@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, usePage } from "@inertiajs/react";
+import axios from "axios";
 
 export default function NavBar({
     children,
@@ -11,6 +12,7 @@ export default function NavBar({
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isFullyExpanded, setIsFullyExpanded] = useState(true); // For handling transition timing
     const { auth } = usePage().props; // Get auth from props
+    const [unreadCount, setUnreadCount] = useState(0);
 
     // Fallback for auth
     const userFirstName = auth?.user?.firstName || "Guest"; // Use "Guest" if firstName is not available
@@ -47,6 +49,32 @@ export default function NavBar({
             }, 300);
         }
     };
+
+    const fetchUnreadCount = async () => {
+        try {
+            const response = await axios.get(route('technician.notifications.unread-count'));
+            setUnreadCount(response.data.count);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    };
+
+    useEffect(() => {
+        const handleNotificationUpdate = (event) => {
+            setUnreadCount(event.detail.count);
+        };
+
+        window.addEventListener('updateNotificationCount', handleNotificationUpdate);
+        
+        // Initial fetch
+        fetchUnreadCount();
+        const interval = setInterval(fetchUnreadCount, 30000); // Poll every 30 seconds
+        
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('updateNotificationCount', handleNotificationUpdate);
+        };
+    }, []);
 
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
@@ -167,10 +195,20 @@ export default function NavBar({
                         className="a-nav-link"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <a className="nav-link" href="#">
-                            <i className="bi bi-bell-fill me-2 "></i>
+                        <Link
+                            href={route('technician.notifications.index')}
+                            className="nav-link nav-link-blue position-relative"
+                        >
+                            <i className="bi bi-bell-fill me-2"></i>
                             {!isCollapsed && "Notification"}
-                        </a>
+                            {unreadCount > 0 && (
+                                <span className="position-absolute badge rounded-pill bg-danger" 
+                                      style={{ top: '45%', transform: 'translateY(-50%)', right: '55px' }}>
+                                    {unreadCount}
+                                    <span className="visually-hidden">unread notifications</span>
+                                </span>
+                            )}
+                        </Link>
                     </li>
                     <li
                         className="a-nav-link"

@@ -12,6 +12,8 @@ use App\Models\IntUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Notification;
+use App\Http\Controllers\AdminNotificationController;
+use App\Http\Controllers\TechnicianNotificationController;
 
 class JobOrderController extends Controller
 {
@@ -126,6 +128,14 @@ class JobOrderController extends Controller
             IntUnit::create($instrument);
         }
 
+        // Notify all admins about new job order
+        AdminNotificationController::notifyAllAdmins(
+            $jobOrder,
+            'New Job Order Received',
+            "A new job order #{$jobOrder->job_id} has been submitted.",
+            'new_job_order'
+        );
+
         return redirect()->route('jobOrder.index')->with('success', 'Job Order is successfully submitted!');
     }
 
@@ -154,7 +164,33 @@ class JobOrderController extends Controller
      */
     public function update(Request $request, JobOrder $jobOrder)
     {
-        //
+        // ... existing update code ...
+
+        // If status changed, notify relevant parties
+        if ($jobOrder->isDirty('status')) {
+            $oldStatus = $jobOrder->getOriginal('status');
+            $newStatus = $jobOrder->status;
+
+            // Notify admin about status change
+            AdminNotificationController::notifyAllAdmins(
+                $jobOrder,
+                'Job Order Status Updated',
+                "Job order #{$jobOrder->job_id} status changed from {$oldStatus} to {$newStatus}",
+                'status_change'
+            );
+
+            // If assigned technician exists, notify them
+            if ($jobOrder->technician_id) {
+                TechnicianNotificationController::notifyAllTechnicians(
+                    $jobOrder,
+                    'Job Order Updated',
+                    "Job order #{$jobOrder->job_id} status has been updated to {$newStatus}",
+                    'status_change'
+                );
+            }
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -174,5 +210,60 @@ class JobOrderController extends Controller
             'message' => "Your job order #{$jobOrder->job_id} status has been changed from {$oldStatus} to {$jobOrder->status}",
             'type' => 'status_update'
         ]);
+    }
+
+    public function assignTechnician(Request $request, JobOrder $jobOrder)
+    {
+        // ... existing assignment code ...
+
+        // Notify the assigned technician
+        TechnicianNotificationController::notifyAllTechnicians(
+            $jobOrder,
+            'New Job Assignment',
+            "You have been assigned to job order #{$jobOrder->job_id}",
+            'job_assignment'
+        );
+
+        return redirect()->back();
+    }
+
+    public function cancel(JobOrder $jobOrder)
+    {
+        // ... existing cancellation code ...
+
+        // Notify admin
+        AdminNotificationController::notifyAllAdmins(
+            $jobOrder,
+            'Job Order Cancelled',
+            "Job order #{$jobOrder->job_id} has been cancelled by the client.",
+            'job_cancellation'
+        );
+
+        // If there's an assigned technician, notify them too
+        if ($jobOrder->technician_id) {
+            TechnicianNotificationController::notifyAllTechnicians(
+                $jobOrder,
+                'Job Order Cancelled',
+                "Job order #{$jobOrder->job_id} has been cancelled by the client.",
+                'job_cancellation'
+            );
+        }
+
+        return redirect()->back();
+    }
+
+    public function complete(JobOrder $jobOrder)
+    {
+        // ... existing completion code ...
+
+        // Notify admin
+        AdminNotificationController::notifyAllAdmins(
+            $jobOrder,
+            'Job Order Completed',
+            "Job order #{$jobOrder->job_id} has been marked as completed.",
+            'job_completion'
+        );
+
+        return redirect()->back();
     }
 }

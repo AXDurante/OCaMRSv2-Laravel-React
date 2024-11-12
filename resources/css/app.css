@@ -2941,3 +2941,9 @@ input[type="checkbox"] {
         -8px -8px 16px #ffffff;
     background-color: #f8f9fa;
 }
+
+/* Add this to your notification styles section */
+.collapsed .badge {
+    transform: translateX(50%) !important;  /* Move badge to overlap the bell icon */
+    margin-left: 0 !important;  /* Remove margin when collapsed */
+}

@@ -15,6 +15,7 @@ use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\FeedbackControllerAdmin;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AdminNotificationController;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
@@ -97,6 +98,16 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/manage-profile', [AdminController::class, 'updateProfile'])
         ->name('admin.updateProfile')
         ->middleware(['web']);
+
+    // Admin Notification Routes
+    Route::get('admin/notifications', [AdminNotificationController::class, 'index'])
+        ->name('admin.notifications.index');
+    Route::get('admin/notifications/unread-count', [AdminNotificationController::class, 'getUnreadCount'])
+        ->name('admin.notifications.unread-count');
+    Route::post('admin/notifications/{id}/mark-as-read', [AdminNotificationController::class, 'markAsRead'])
+        ->name('admin.notifications.mark-as-read');
+    Route::post('admin/notifications/mark-all-as-read', [AdminNotificationController::class, 'markAllAsRead'])
+        ->name('admin.notifications.mark-all-as-read');
 });
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login')->middleware('technician.auth');

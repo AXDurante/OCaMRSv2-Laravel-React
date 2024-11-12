@@ -109,8 +109,8 @@ function Notifications({ notifications }) {
                                                 <div className="message-box mb-3">
                                                     <p className="mb-0">
                                                         Your job order #{notification.job_order?.id} status has been updated to{' '}
-                                                        <span className={`fw-bold text-${notification.job_order?.status.toLowerCase()}`}>
-                                                            {notification.job_order?.status}
+                                                        <span className={`fw-bold text-${notification.status?.toLowerCase()}`}>
+                                                            {notification.status}
                                                         </span>
                                                         {notification.message.includes('by') ? ' by' + notification.message.split('by')[1] : ''}
                                                     </p>

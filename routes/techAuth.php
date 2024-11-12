@@ -11,6 +11,7 @@ use App\Http\Controllers\TechAuth\RegisteredUserController;
 use App\Http\Controllers\TechAuth\VerifyEmailController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\EquipmentController; // Import EquipmentController
+use App\Http\Controllers\TechnicianNotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -72,4 +73,14 @@ Route::middleware('auth:technicians')->group(function () {
     Route::get('technician/email/verification/check', function (Request $request) {
         return response()->json(['verified' => $request->user()->hasVerifiedEmail()]);
     })->name('technician.verification.check');
+
+    // Notification Routes
+    Route::get('technician/notifications', [TechnicianNotificationController::class, 'index'])
+        ->name('technician.notifications.index');
+    Route::get('technician/notifications/unread-count', [TechnicianNotificationController::class, 'getUnreadCount'])
+        ->name('technician.notifications.unread-count');
+    Route::post('technician/notifications/{id}/mark-as-read', [TechnicianNotificationController::class, 'markAsRead'])
+        ->name('technician.notifications.mark-as-read');
+    Route::post('technician/notifications/mark-all-as-read', [TechnicianNotificationController::class, 'markAllAsRead'])
+        ->name('technician.notifications.mark-all-as-read');
 });
