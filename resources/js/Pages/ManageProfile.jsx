@@ -403,6 +403,7 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
                 </Modal.Footer>
             </Modal>
         </div>
+    </div>
     );
 }
 
