@@ -15,13 +15,10 @@
     font-style: normal;
 }
 
-/* Update the main-content class */
 .main-content {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100vh;
-    overflow-y: auto;
+    margin-left: 250px;
+    padding: 1rem;
+    width: calc(100% - 250px);
 }
 
 /* sidebar */
@@ -2269,14 +2266,6 @@ input[type="checkbox"] {
 
 /* Notification Styles */
 .notifications-container {
-    width: 100%;
-    background: #ffffff;
-    border: none;
-    box-shadow: none;
-    margin: 0;
-}
-
-.neumorphic-container {
     background: #ffffff;
     border-radius: 15px;
     box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
@@ -2284,34 +2273,32 @@ input[type="checkbox"] {
 
 .notification-card {
     background: #ffffff;
-    border-radius: 12px;
+    border-radius: 15px;
     transition: all 0.3s ease;
-    border-left: 4px solid transparent;
-    margin-bottom: 1rem;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e6e6e6;
+    padding: 1rem;
 }
 
 .notification-card:hover {
-    transform: translateY(-3px);
-    background-color: rgba(7, 137, 231, 0.05); /* Pastel blue */
-    box-shadow: 
-        8px 8px 15px rgba(0, 0, 0, 0.1),
-        -4px -4px 10px rgba(255, 255, 255, 0.8),
-        inset 2px 2px 5px rgba(7, 137, 231, 0.05);
+    transform: translateY(-5px);
+    background: linear-gradient(145deg, #ffffff, #f0f7ff); /* Hint of pastel blue */
+    box-shadow: 8px 8px 16px #d1d1d1,
+                -8px -8px 16px #ffffff,
+                inset 1px 1px 2px rgba(135, 206, 250, 0.1); /* Subtle inner glow */
+    border: 1px solid rgba(0, 123, 255, 0.1);
 }
 
 .notification-icon-wrapper {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(7, 137, 231, 0.1);
+    width: 50px;
+    height: 50px;
+    background: rgba(13, 110, 253, 0.1); /* Changed from yellow to blue */
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.notification-icon-wrapper i {
-    color: #0789e7 !important;
+    font-size: 1.5rem;
+    color: #0d6efd;
 }
 
 .notification-title {
@@ -2328,8 +2315,8 @@ input[type="checkbox"] {
     background: #f8f9fa;
     border-radius: 10px;
     padding: 1rem;
-    border-left: 4px solid #0789e7; /* Changed from yellow to blue */
-    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+    border-left: 4px solid #0d6efd; /* Changed from yellow to blue */
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .btn-details {
@@ -2402,8 +2389,8 @@ input[type="checkbox"] {
     position: absolute;
     top: -8px;
     right: -8px;
-    background: #fbc600;
-    color: #202020;
+    background: #0d6efd; /* Changed from yellow to blue */
+    color: #ffffff; /* Changed text to white for better contrast */
     border-radius: 50%;
     padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
@@ -2422,12 +2409,13 @@ input[type="checkbox"] {
 
 .notification-bell i {
     font-size: 1.25rem;
-    color: #202020;
+    color: #0d6efd; /* Changed from black to blue */
+    transition: all 0.3s ease;
 }
 
 .notification-card.unread {
-    border-left-color: #0789e7;
-    background-color: #ffffff;
+    border-left: 4px solid #0d6efd; /* Changed from yellow to blue */
+    background: linear-gradient(145deg, #ffffff, #f8fbff);
 }
 
 .unread-indicator {
@@ -2437,7 +2425,7 @@ input[type="checkbox"] {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #0789e7;
+    background-color: #0d6efd; /* Changed from yellow to blue */
 }
 
 .notification-card.unread:hover {
@@ -2469,26 +2457,6 @@ input[type="checkbox"] {
     font-weight: 600;
     border-radius: 20px;
     text-transform: capitalize;
-}
-
-.status-pending {
-    background-color: #ffc107;
-    color: #000;
-}
-
-.status-processing {
-    background-color: #0dcaf0;
-    color: #000;
-}
-
-.status-completed {
-    background-color: #198754;
-    color: #fff;
-}
-
-.status-cancelled {
-    background-color: #dc3545;
-    color: #fff;
 }
 
 /* Add these new styles */
@@ -2985,157 +2953,20 @@ input[type="checkbox"] {
 /* Add this to your notification styles section */
 .collapsed .badge {
     transform: translateX(50%) !important;  /* Move badge to overlap the bell icon */
-    margin-left: 0 !important;  /* Remove margin when collapsed */
-}
-
-/* Notification Animations and Styles */
-.fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
-.fade-in-delayed {
-    animation: fadeIn 0.5s ease-out forwards;
-    opacity: 0;
-}
-
-.notification-card {
-    background: #ffffff;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    border-left: 4px solid transparent;
-    margin-bottom: 1rem;
-}
-
-.notification-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-}
-
-.notification-card.unread {
-    border-left-color: #0789e7; /* Changed from yellow to blue */
-    background-color: rgba(7, 137, 231, 0.02);
-}
-
-.unread-indicator {
-    width: 8px;
-    height: 8px;
-    background-color: #0789e7; /* Changed from yellow to blue */
-    border-radius: 50%;
-    margin-top: 8px;
-}
-
-.notification-icon-wrapper {
-    width: 40px;
-    height: 40px;
-    background-color: rgba(7, 137, 231, 0.1); /* Changed from yellow to blue */
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-left: -1 !important;  /* Remove margin when collapsed */
 }
 
 .mark-all-button {
-    background-color: #0789e7;
+    background: linear-gradient(145deg, #0d6efd, #0091ff);
     color: white;
+    transition: all 0.3s ease;
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 20px;
-    transition: all 0.3s ease;
+    border-radius: 8px;
 }
 
 .mark-all-button:hover {
-    background-color: #0672c3;
+    background: linear-gradient(145deg, #0091ff, #0d6efd);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(7, 137, 231, 0.2);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .notification-card {
-        padding: 0.75rem !important;
-    }
-
-    .notification-icon-wrapper {
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
-    }
-
-    .notification-title {
-        font-size: 1rem;
-    }
-
-    .message-box {
-        padding: 0.75rem !important;
-    }
-
-    .user-details {
-        font-size: 0.875rem;
-        padding: 0.5rem !important;
-    }
-
-    .notification-date {
-        font-size: 0.75rem;
-    }
-}
-
-/* Fix the overlap issue */
-.main-content {
-    padding-bottom: 2rem;
-    min-height: 100vh;
-    overflow-y: auto;
-}
-
-/* Adjust container padding */
-.notifications-container {
-    margin-bottom: 2rem;
-    padding: 1rem;
-}
-
-/* Update mark all button */
-.mark-all-button {
-    background-color: #0789e7;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.mark-all-button:hover {
-    background-color: #0672c3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(7, 137, 231, 0.2);
-}
-
-/* Adjust the bell icon color */
-.notification-icon-wrapper i {
-    color: #0789e7 !important; /* Changed from yellow to blue */
-}
-
-/* Add container max-width for better readability */
-.notifications-container {
-    max-width: none !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    .main-content {
-        padding: 0;
-    }
-    
-    .notifications-container {
-        margin: 0;
-    }
-}
-
-/* Update these styles */
-.flex-fill {
-    flex: 1;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
 }
