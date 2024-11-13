@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, usePage } from "@inertiajs/react";
+import { Link, usePage, router } from "@inertiajs/react";
 import axios from "axios";
 
 export default function AdminNavBar({ children }) {
@@ -67,6 +67,16 @@ export default function AdminNavBar({ children }) {
             window.removeEventListener('updateNotificationCount', handleNotificationUpdate);
         };
     }, []);
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        router.post(route('admin.logout'), {}, {
+            preserveScroll: true,
+            onSuccess: () => {
+                window.location.href = route('admin.login');
+            },
+        });
+    };
 
     return (
         <div className="d-flex">
@@ -229,16 +239,14 @@ export default function AdminNavBar({ children }) {
                         </ul>
                     </div>
                     <div className="p-4">
-                        <Link
-                            href={route("admin.logout")}
-                            method="post"
-                            as="button"
+                        <button
+                            onClick={handleLogout}
                             className="btn btn-dark w-100"
-                            onClick={(e) => e.stopPropagation()}
+                            type="button"
                         >
                             <i className="bi bi-box-arrow-right me-2"></i>
                             {!isCollapsed && "Log Out"}
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </nav>

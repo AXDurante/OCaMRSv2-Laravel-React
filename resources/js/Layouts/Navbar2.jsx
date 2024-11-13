@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, usePage } from "@inertiajs/react";
+import { Link, usePage, Head, router } from "@inertiajs/react";
 import axios from "axios";
 
 export default function NavBar({
@@ -13,6 +13,7 @@ export default function NavBar({
     const [isFullyExpanded, setIsFullyExpanded] = useState(true); // For handling transition timing
     const { auth } = usePage().props; // Get auth from props
     const [unreadCount, setUnreadCount] = useState(0);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     // Fallback for auth
     const userFirstName = auth?.user?.firstName || "Guest"; // Use "Guest" if firstName is not available
@@ -76,8 +77,21 @@ export default function NavBar({
         };
     }, []);
 
+    const handleLogout = (e) => {
+        e.preventDefault();
+        router.post(route('technician.logout'), {}, {
+            preserveScroll: true,
+            onSuccess: () => {
+                window.location.href = route('technician.login');
+            },
+        });
+    };
+
     return (
         <div className="wholepage d-flex" style={{ height: "100vh" }}>
+            <Head>
+                <meta name="csrf-token" content={document.querySelector('meta[name="csrf-token"]').content} />
+            </Head>
             <div
                 className="sidebar4"
                 style={{
@@ -220,17 +234,13 @@ export default function NavBar({
                         </a>
                     </li>
                     <div className="p-3">
-                        <Link
-                            href={route("technician.logout")}
-                            method="post"
-                            as="button"
+                        <button
+                            onClick={handleLogout}
                             className="btn btn-dark w-100"
-                            onClick={(e) => e.stopPropagation()}
                         >
                             <i className="bi bi-box-arrow-right me-2"></i>
-                            {!isCollapsed && "Log Out"}{" "}
-                            {/* Show 'Log Out' only when fully expanded */}
-                        </Link>
+                            {!isCollapsed && "Log Out"}
+                        </button>
                     </div>
                 </ul>
             </nav>
