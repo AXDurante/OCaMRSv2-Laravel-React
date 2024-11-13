@@ -101,13 +101,18 @@ class InstrumentationAccountController extends Controller
         
         $user = Technician::findOrFail($theID);
 
-        // Validate the request data
+        // Update validation rules
         $validatedData = $request->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
+            'firstName' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],  // Only letters and spaces
+            'lastName' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],   // Only letters and spaces
             'email' => 'required|string|email|max:255|unique:technicians,email,' . $theID,
-            'phoneNumber' => 'nullable|string|max:20',
+            'phoneNumber' => ['nullable', 'string', 'regex:/^[0-9]+$/', 'size:10'],     // Only numbers, exactly 10 digits
             'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/',
+        ], [
+            'firstName.regex' => 'The first name field must only contain letters.',
+            'lastName.regex' => 'The last name field must only contain letters.',
+            'phoneNumber.regex' => 'The phone number must only contain numbers.',
+            'phoneNumber.size' => 'The phone number must be exactly 10 digits.',
         ]);
         
         // Remove password field if it's empty

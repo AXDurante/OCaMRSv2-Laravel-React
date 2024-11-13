@@ -174,27 +174,18 @@ class AdminController extends Controller
         try {
             $admin = Auth::guard('admin')->user();
             
-            // Validate the request
+            // Update validation rules
             $validationRules = [
-                'firstName' => 'sometimes|required|string|max:255',
-                'lastName' => 'sometimes|required|string|max:255',
+                'firstName' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+                'lastName' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
                 'email' => 'sometimes|nullable|email|unique:admins,email,' . $admin->id,
                 'id_number' => 'sometimes|required|string|unique:admins,id_number,' . $admin->id,
             ];
 
-            // Add password validation rules only if password is being updated
-            if ($request->filled('password')) {
-                $validationRules['password'] = [
-                    'required',
-                    'string',
-                    'min:8',
-                    'confirmed',
-                    'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/'
-                ];
-            }
-
             // Custom error messages
             $customMessages = [
+                'firstName.regex' => 'The first name field must only contain letters.',
+                'lastName.regex' => 'The last name field must only contain letters.',
                 'password.confirmed' => 'The password confirmation does not match.',
                 'password.regex' => 'The password must contain at least one uppercase letter, one number, and one special character.',
             ];

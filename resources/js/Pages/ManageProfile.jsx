@@ -86,8 +86,12 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                 setTimeout(() => setShowSuccess(false), 5000);
                 setShowConfirmModal(false);
             },
-            onError: () => {
+            onError: (errors) => {
                 setShowConfirmModal(false);
+                if (errors.phoneNumber) {
+                    setShowNoChanges(false);
+                    setData('phoneNumberError', errors.phoneNumber);
+                }
             },
         });
     };
@@ -105,6 +109,21 @@ function Home({ absolute, firstName, lastName, email, theID }) {
     };
 
     const photoUrl = auth.user.photo ? getStorageUrl() : null;
+
+    const handleFirstNameChange = (e) => {
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow letters and spaces
+        setData('firstName', value);
+    };
+
+    const handleLastNameChange = (e) => {
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow letters and spaces
+        setData('lastName', value);
+    };
+
+    const handlePhoneNumberChange = (e) => {
+        const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10); // Only allow numbers, max 11 digits
+        setData('phoneNumber', value);
+    };
 
     return (
         <div className="d-flex">
@@ -149,12 +168,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                 type="text"
                                                 className="form-control shadow-sm animate-field"
                                                 value={data.firstName}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "firstName",
-                                                        e.target.value
-                                                    )
-                                                }
+                                                onChange={handleFirstNameChange}
                                             />
                                         </div>
                                         <div className="col-md-6 mb-4">
@@ -166,12 +180,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                 type="text"
                                                 className="form-control shadow-sm animate-field"
                                                 value={data.lastName}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "lastName",
-                                                        e.target.value
-                                                    )
-                                                }
+                                                onChange={handleLastNameChange}
                                             />
                                         </div>
                                     </div>
@@ -200,15 +209,21 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                             <input
                                                 name="phoneNumber"
                                                 type="text"
-                                                className="form-control shadow-sm animate-field"
+                                                className={`form-control shadow-sm animate-field ${
+                                                    errors.phoneNumber ? 'is-invalid' : ''
+                                                }`}
                                                 value={data.phoneNumber}
-                                                onChange={(e) =>
-                                                    setData(
-                                                        "phoneNumber",
-                                                        e.target.value
-                                                    )
-                                                }
+                                                onChange={handlePhoneNumberChange}
+                                                maxLength={10}
                                             />
+                                            {errors.phoneNumber && (
+                                                <div className="invalid-feedback d-block">
+                                                    {errors.phoneNumber}
+                                                </div>
+                                            )}
+                                            <small className="text-muted">
+                                                Phone number must be exactly 10 digits
+                                            </small>
                                         </div>
                                     </div>
                                     <div className="row">
