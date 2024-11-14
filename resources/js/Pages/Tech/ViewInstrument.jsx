@@ -44,7 +44,7 @@ function ViewInstrument({ equipment = [] }) {
 
     return (
         <div className="">
-            <div>
+            <div id="content" className=" flex-fill p-3">
                 <div>
                     <h1 className="d-inline">View Instrument | </h1>
                     <h1 className="d-inline fw-light">Supported Equipments</h1>

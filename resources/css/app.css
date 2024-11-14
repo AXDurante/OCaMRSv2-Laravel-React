@@ -2474,9 +2474,10 @@ input[type="checkbox"] {
 .gradient-gray-button {
     background: linear-gradient(
         to right,
-        #d3d3d3, /* Light gray for the background */
-        #a9a9a9  /* Darker gray for the gradient */
-    ); 
+        #d3d3d3,
+        /* Light gray for the background */ #a9a9a9
+            /* Darker gray for the gradient */
+    );
     border: none;
     color: #7d7d7d; /* Dark gray for the text */
     padding: 8px 16px; /* Reduced padding */
@@ -2654,9 +2655,10 @@ input[type="checkbox"] {
 .gradient-gray-button {
     background: linear-gradient(
         to right,
-        #d3d3d3, /* Light gray for the background */
-        #a9a9a9  /* Darker gray for the gradient */
-    ); 
+        #d3d3d3,
+        /* Light gray for the background */ #a9a9a9
+            /* Darker gray for the gradient */
+    );
     border: none;
     color: #7d7d7d; /* Dark gray for the text */
     padding: 8px 16px; /* Reduced padding */
@@ -2673,8 +2675,9 @@ input[type="checkbox"] {
 .gradient-gray-button:hover {
     background: linear-gradient(
         to right,
-        #d3d3d3, /* Light gray for the background */
-        #a9a9a9  /* Darker gray for the gradient */
+        #d3d3d3,
+        /* Light gray for the background */ #a9a9a9
+            /* Darker gray for the gradient */
     ); /* Darken on hover */
     transform: translateY(-3px); /* Slight raise on hover */
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Bigger shadow on hover */
@@ -2686,7 +2689,66 @@ input[type="checkbox"] {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduce shadow on active */
     background: linear-gradient(
         to right,
-        #d3d3d3, /* Light gray for the background */
-        #a9a9a9  /* Darker gray for the gradient */
+        #d3d3d3,
+        /* Light gray for the background */ #a9a9a9
+            /* Darker gray for the gradient */
     ); /* Darker on active press */
+}
+/* Mobile Table Styles */
+@media screen and (max-width: 767px) {
+    .mobile-table-card {
+        margin-bottom: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .mobile-table-header {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+    }
+
+    .mobile-table-body {
+        padding: 1rem;
+    }
+
+    .mobile-table-row {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .mobile-table-label {
+        font-weight: 600;
+        color: #6c757d;
+    }
+
+    .mobile-table-value {
+        text-align: right;
+    }
+
+    .mobile-table-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .mobile-action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #dee2e6;
+    }
+
+    /* Hide regular table on mobile */
+    .table-responsive {
+        display: none;
+    }
 }
