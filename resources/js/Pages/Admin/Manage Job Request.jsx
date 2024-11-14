@@ -102,32 +102,60 @@ function Home({ jobOrder }) {
                             <table className="table text-center table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="thead-custom" scope="col">
+                                        <th
+                                            className="thead-custom"
+                                            scope="col"
+                                            style={{ width: "12%" }}
+                                        >
                                             Date Received
                                         </th>
-                                        <th class="thead-custom" scope="col">
+                                        <th
+                                            className="thead-custom"
+                                            scope="col"
+                                            style={{ width: "5%" }}
+                                        >
                                             Job ID
                                         </th>
-                                        <th class="thead-custom" scope="col">
+                                        <th
+                                            className="thead-custom"
+                                            scope="col"
+                                            style={{ width: "15%" }}
+                                        >
                                             Client Name
                                         </th>
-                                        <th class="thead-custom" scope="col">
+                                        <th
+                                            className="thead-custom"
+                                            scope="col"
+                                            style={{ width: "15%" }}
+                                        >
                                             Email
                                         </th>
-                                        <th class="thead-custom" scope="col">
-                                            Service Requested
+                                        <th
+                                            className="thead-custom"
+                                            scope="col"
+                                            style={{ width: "15%" }}
+                                        >
+                                            Service
                                         </th>
-                                        <th class="thead-custom" scope="col">
+                                        <th
+                                            className="thead-custom"
+                                            scope="col"
+                                            style={{ width: "17%" }}
+                                        >
                                             Status
                                         </th>
-                                        <th class="thead-custom" scope="col">
+                                        <th
+                                            className="thead-custom"
+                                            scope="col"
+                                            style={{ width: "10%" }}
+                                        >
                                             Priority
                                         </th>
-                                        {/* To Ask 
-                                        <th class="thead-custom" scope="col">
-                                            Priority
-                                        </th> */}
-                                        <th class="thead-custom" scope="col">
+                                        <th
+                                            className="thead-custom"
+                                            scope="col"
+                                            style={{ width: "13%" }}
+                                        >
                                             Action
                                         </th>
                                     </tr>
@@ -149,12 +177,20 @@ function Home({ jobOrder }) {
                                                 {order.user.lastName}{" "}
                                             </td>
                                             <td>{order.user.email} </td>
-                                            <td>{order.service_type}</td>{" "}
-                                            {/* Service Request */}
+                                            <td
+                                                style={{
+                                                    maxWidth: "120px",
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    whiteSpace: "nowrap",
+                                                }}
+                                            >
+                                                {order.service_type}
+                                            </td>
                                             <td>
                                                 <div className="position-relative">
                                                     <select
-                                                        className={`form-select badge ${
+                                                        className={`form-select badge text-center ${
                                                             order.status ===
                                                             "Cancelled"
                                                                 ? "bg-danger"
@@ -182,6 +218,9 @@ function Home({ jobOrder }) {
                                                         style={{
                                                             paddingLeft:
                                                                 "2.5rem",
+                                                            appearance: "none",
+                                                            backgroundImage:
+                                                                "none",
                                                         }}
                                                     >
                                                         <option
@@ -189,21 +228,28 @@ function Home({ jobOrder }) {
                                                         >
                                                             {order.status}
                                                         </option>
-                                                        <option value="For Approval">
-                                                            For Approval
-                                                        </option>
-                                                        <option value="Approved">
-                                                            Approved
-                                                        </option>
-                                                        <option value="Processing">
-                                                            Processing
-                                                        </option>
-                                                        <option value="Completed">
-                                                            Completed
-                                                        </option>
-                                                        <option value="Cancelled">
-                                                            Cancelled
-                                                        </option>
+                                                        {[
+                                                            "For Approval",
+                                                            "Approved",
+                                                            "Processing",
+                                                            "Completed",
+                                                            "Cancelled",
+                                                        ]
+                                                            .filter(
+                                                                (status) =>
+                                                                    status !==
+                                                                    order.status
+                                                            )
+                                                            .map((status) => (
+                                                                <option
+                                                                    key={status}
+                                                                    value={
+                                                                        status
+                                                                    }
+                                                                >
+                                                                    {status}
+                                                                </option>
+                                                            ))}
                                                     </select>
                                                     <span
                                                         className="position-absolute"
@@ -331,7 +377,7 @@ function Home({ jobOrder }) {
                                             <span className="mobile-table-value">
                                                 <div className="position-relative">
                                                     <select
-                                                        className={`form-select badge ${
+                                                        className={`form-select badge  ${
                                                             order.status ===
                                                             "Cancelled"
                                                                 ? "bg-danger"
@@ -348,7 +394,7 @@ function Home({ jobOrder }) {
                                                                   "Processing"
                                                                 ? "bg-primary"
                                                                 : "bg-secondary"
-                                                        } px-3 py-2 rounded-pill`}
+                                                        } px-3 py-2 rounded-pill text-center`}
                                                         value={order.status}
                                                         onChange={(e) =>
                                                             handleStatusChange(
@@ -357,8 +403,6 @@ function Home({ jobOrder }) {
                                                             )
                                                         }
                                                         style={{
-                                                            paddingLeft:
-                                                                "2.5rem",
                                                             appearance: "none",
                                                             backgroundImage:
                                                                 "none",
@@ -369,21 +413,28 @@ function Home({ jobOrder }) {
                                                         >
                                                             {order.status}
                                                         </option>
-                                                        <option value="For Approval">
-                                                            For Approval
-                                                        </option>
-                                                        <option value="Approved">
-                                                            Approved
-                                                        </option>
-                                                        <option value="Processing">
-                                                            Processing
-                                                        </option>
-                                                        <option value="Completed">
-                                                            Completed
-                                                        </option>
-                                                        <option value="Cancelled">
-                                                            Cancelled
-                                                        </option>
+                                                        {[
+                                                            "For Approval",
+                                                            "Approved",
+                                                            "Processing",
+                                                            "Completed",
+                                                            "Cancelled",
+                                                        ]
+                                                            .filter(
+                                                                (status) =>
+                                                                    status !==
+                                                                    order.status
+                                                            )
+                                                            .map((status) => (
+                                                                <option
+                                                                    key={status}
+                                                                    value={
+                                                                        status
+                                                                    }
+                                                                >
+                                                                    {status}
+                                                                </option>
+                                                            ))}
                                                     </select>
                                                     <span
                                                         className="position-absolute"

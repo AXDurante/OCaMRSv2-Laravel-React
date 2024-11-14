@@ -2862,3 +2862,26 @@ input[type="checkbox"] {
 .position-absolute {
     left: 18px !important;
 }
+.form-select {
+    text-align: center !important;
+}
+
+.form-select option {
+    text-align: left !important;
+}
+.form-select option:checked {
+    text-align: center !important;
+}
+.table td {
+    vertical-align: middle;
+}
+
+.thead-custom {
+    background-color: #f8f9fa;
+    white-space: nowrap;
+}
+
+/* Add tooltip for truncated service text */
+td[title] {
+    cursor: help;
+}
