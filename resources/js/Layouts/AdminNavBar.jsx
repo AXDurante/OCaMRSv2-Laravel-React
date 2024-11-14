@@ -5,6 +5,7 @@ export default function AdminNavBar({ children }) {
     const { auth } = usePage().props;
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isFullyExpanded, setIsFullyExpanded] = useState(true);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const handleResize = () => {
         if (window.innerWidth < 768) {
@@ -13,6 +14,7 @@ export default function AdminNavBar({ children }) {
         } else {
             setIsCollapsed(false);
             setIsFullyExpanded(true);
+            setIsMobileMenuOpen(false);
         }
     };
 
@@ -24,26 +26,150 @@ export default function AdminNavBar({ children }) {
         };
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const mobileMenu = document.querySelector(".mobile-menu");
+            const navbarToggler = document.querySelector(".navbar-toggler");
+
+            if (
+                isMobileMenuOpen &&
+                mobileMenu &&
+                !mobileMenu.contains(event.target) &&
+                navbarToggler &&
+                !navbarToggler.contains(event.target)
+            ) {
+                setIsMobileMenuOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isMobileMenuOpen]);
+
     const handleCollapseToggle = () => {
-        if (isCollapsed) {
-            // Expanding the navbar
-            setIsCollapsed(false);
-            setTimeout(() => {
-                setIsFullyExpanded(true);
-            }, 300); // Delay to match transition time
+        if (window.innerWidth < 768) {
+            setIsMobileMenuOpen(!isMobileMenuOpen);
         } else {
-            // Collapsing the navbar
-            setIsFullyExpanded(false);
-            setTimeout(() => {
-                setIsCollapsed(true);
-            }, 300);
+            if (isCollapsed) {
+                setIsCollapsed(false);
+                setTimeout(() => {
+                    setIsFullyExpanded(true);
+                }, 300);
+            } else {
+                setIsFullyExpanded(false);
+                setTimeout(() => {
+                    setIsCollapsed(true);
+                }, 300);
+            }
         }
     };
 
+    const navLinks = [
+        { href: "/admin", icon: "bi-file-earmark-text", text: "Job Request" },
+        {
+            href: "/admin/account-handler",
+            icon: "bi-person-add",
+            text: "Account Handler",
+        },
+        {
+            href: "/admin/manage-profile",
+            icon: "bi-person-fill",
+            text: "Manage Profile",
+        },
+        {
+            href: "/admin/view-instrument",
+            icon: "bi-list",
+            text: "Instrument List",
+        },
+        { href: "#", icon: "bi-arrow-left", text: "Go Back" },
+    ];
+
     return (
-        <div className="d-flex">
+        <div className="">
+            <div
+                className={`d-md-none fixed-top bg-blue shadow-sm ${
+                    isMobileMenuOpen ? "d-none" : ""
+                }`}
+            >
+                <div className="d-flex justify-content-between align-items-center p-3">
+                    <div className="mobile-header-logo">
+                        <span className="text-white fs-5">LESO - ISC</span>
+                    </div>
+                    <button
+                        className="navbar-toggler border-0"
+                        onClick={handleCollapseToggle}
+                        aria-label="Toggle navigation"
+                    >
+                        <i
+                            className={`bi ${
+                                isMobileMenuOpen ? "bi-x" : "bi-list"
+                            } fs-2 text-white`}
+                        ></i>
+                    </button>
+                </div>
+            </div>
+
+            <div className={`mobile-menu ${isMobileMenuOpen ? "show" : ""}`}>
+                <div className="p-4 text-white">
+                    <div className="text-center mb-4">
+                        <div
+                            className="rounded-circle bg-dark d-flex justify-content-center align-items-center mx-auto mb-3"
+                            style={{ width: "80px", height: "80px" }}
+                        >
+                            <i
+                                className="bi bi-person-fill text-primary"
+                                style={{ fontSize: "40px" }}
+                            ></i>
+                        </div>
+                        <p className="mb-0">Welcome Back</p>
+                        <p className="fw-bold mb-0">
+                            {auth?.user?.lastName
+                                ? `Sir ${auth.user.lastName}!`
+                                : "Admin!"}
+                        </p>
+                    </div>
+
+                    <ul className="nav flex-column nav-compact">
+                        {navLinks.map((link, index) => (
+                            <li className="nav-item" key={index}>
+                                <Link
+                                    href={link.href}
+                                    className="nav-link text-white d-flex align-items-center py-3"
+                                    onClick={(e) => {
+                                        if (link.href === "#")
+                                            e.preventDefault();
+                                        setIsMobileMenuOpen(false);
+                                    }}
+                                >
+                                    <i
+                                        className={`bi ${link.icon} me-3 fs-4`}
+                                    ></i>
+                                    {link.text}
+                                </Link>
+                            </li>
+                        ))}
+                        <li className="nav-item">
+                            <Link
+                                href={route("admin.logout")}
+                                method="post"
+                                as="button"
+                                className="nav-link text-white d-flex align-items-center py-3 w-100 border-0 bg-transparent"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                <i className="bi bi-box-arrow-right me-3 fs-4"></i>
+                                Log Out
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
             <nav
-                className={`shadow ${isCollapsed ? "collapsed" : ""}`}
+                className={`shadow d-none d-md-block ${
+                    isCollapsed ? "collapsed" : ""
+                }`}
                 style={{
                     width: isCollapsed ? "80px" : "250px",
                     height: "100vh",
@@ -107,7 +233,9 @@ export default function AdminNavBar({ children }) {
                                         : "collapsed-content"
                                 }`}
                             >
-                                {isFullyExpanded && auth?.user?.lastName ? `Sir ${auth.user.lastName}!` : 'Admin!'}
+                                {isFullyExpanded && auth?.user?.lastName
+                                    ? `Sir ${auth.user.lastName}!`
+                                    : "Admin!"}
                             </p>
                         </div>
                     </div>
@@ -198,10 +326,15 @@ export default function AdminNavBar({ children }) {
             </nav>
 
             <div
-                className="flex-grow-1"
+                className="flex-fill p-3"
                 style={{
-                    marginLeft: isCollapsed ? "80px" : "250px",
-                    padding: "20px",
+                    marginLeft:
+                        window.innerWidth >= 768
+                            ? isCollapsed
+                                ? "80px"
+                                : "250px"
+                            : "0",
+                    marginTop: window.innerWidth < 768 ? "60px" : "0",
                     transition: "margin-left 0.3s ease-in-out",
                 }}
             >
