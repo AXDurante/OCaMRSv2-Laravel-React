@@ -2752,3 +2752,113 @@ input[type="checkbox"] {
         display: none;
     }
 }
+/* Add these styles for the status select */
+.status-select option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 8px;
+}
+
+.status-select option svg {
+    margin-right: 8px;
+}
+
+/* Style for the selected option */
+.status-select:focus option:checked {
+    background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+.form-select option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+}
+
+.form-select svg {
+    margin-right: 8px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.status-icon {
+    font-size: 1rem;
+}
+
+.spinning {
+    animation: spin 2s linear infinite;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+.shake {
+    animation: shake 0.5s infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-2px);
+    }
+    75% {
+        transform: translateX(2px);
+    }
+}
+
+/* Adjust the select appearance */
+.form-select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: none !important;
+}
+.status-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Adds consistent spacing between icon and text */
+    padding: 6px 16px;
+}
+
+.status-icon {
+    display: flex;
+    align-items: center;
+    font-size: 14px; /* Adjust icon size */
+}
+
+/* For the select dropdown */
+.form-select {
+    padding-left: 33px !important; /* Increase left padding */
+}
+
+/* Adjust icon position in select */
+.position-absolute {
+    left: 18px !important;
+}

@@ -457,4 +457,16 @@ class AdminController extends Controller
             ->with('message', 'Certificate of Calibration updated successfully');
     }
 
+    public function updateJobStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:For Approval,Approved,Processing,Completed,Cancelled'
+        ]);
+
+        $jobOrder = JobOrder::findOrFail($id);
+        $jobOrder->update(['status' => $request->status]);
+
+        return response()->json(['message' => 'Status updated successfully']);
+    }
+
 }

@@ -9,6 +9,7 @@ import {
     FaSpinner,
     FaClock,
 } from "react-icons/fa";
+import axios from "axios";
 
 function Home({ jobOrder }) {
     console.log(jobOrder);
@@ -25,6 +26,41 @@ function Home({ jobOrder }) {
     const completedRequests = jobOrder.data.filter(
         (order) => order.status === "Completed"
     ).length; // Count completed requests
+
+    const handleStatusChange = async (orderId, newStatus) => {
+        try {
+            await axios.patch(`/admin/updateJobStatus/${orderId}`, {
+                status: newStatus,
+            });
+            // Optionally refresh the data or update local state
+            window.location.reload();
+        } catch (error) {
+            console.error("Error updating status:", error);
+        }
+    };
+
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case "For Approval":
+                return <FaClock className="me-1 status-icon text-white" />;
+            case "Approved":
+                return <FaCheck className="me-1 status-icon text-white" />;
+            case "Processing":
+                return (
+                    <FaSpinner className="me-1 status-icon spinning text-white" />
+                );
+            case "Completed":
+                return (
+                    <FaCheckCircle className="me-1 status-icon  text-white" />
+                );
+            case "Cancelled":
+                return (
+                    <FaTimesCircle className="me-1 status-icon  text-white" />
+                );
+            default:
+                return null;
+        }
+    };
 
     return (
         <div className="">
@@ -116,55 +152,76 @@ function Home({ jobOrder }) {
                                             <td>{order.service_type}</td>{" "}
                                             {/* Service Request */}
                                             <td>
-                                                <span
-                                                    className={`badge ${
-                                                        order.status ===
-                                                        "Cancelled"
-                                                            ? "bg-danger"
-                                                            : order.status ===
-                                                              "Approved"
-                                                            ? "bg-success"
-                                                            : order.status ===
-                                                              "Completed"
-                                                            ? "bg-info"
-                                                            : order.status ===
-                                                              "For Approval"
-                                                            ? "bg-warning"
-                                                            : order.status ===
-                                                              "Processing"
-                                                            ? "bg-primary"
-                                                            : order.status ===
-                                                              "Pending"
-                                                            ? "bg-secondary"
-                                                            : "bg-secondary"
-                                                    } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
-                                                >
-                                                    {order.status ===
-                                                        "Cancelled" && (
-                                                        <FaTimesCircle />
-                                                    )}
-                                                    {order.status ===
-                                                        "Approved" && (
-                                                        <FaCheck />
-                                                    )}
-                                                    {order.status ===
-                                                        "Completed" && (
-                                                        <FaCheckCircle />
-                                                    )}
-                                                    {order.status ===
-                                                        "For Approval" && (
-                                                        <FaHourglassHalf />
-                                                    )}
-                                                    {order.status ===
-                                                        "Processing" && (
-                                                        <FaSpinner className="spinner-icon" />
-                                                    )}
-                                                    {order.status ===
-                                                        "Pending" && (
-                                                        <FaClock />
-                                                    )}
-                                                    {order.status}
-                                                </span>
+                                                <div className="position-relative">
+                                                    <select
+                                                        className={`form-select badge ${
+                                                            order.status ===
+                                                            "Cancelled"
+                                                                ? "bg-danger"
+                                                                : order.status ===
+                                                                  "Approved"
+                                                                ? "bg-success"
+                                                                : order.status ===
+                                                                  "Completed"
+                                                                ? "bg-info"
+                                                                : order.status ===
+                                                                  "For Approval"
+                                                                ? "bg-warning"
+                                                                : order.status ===
+                                                                  "Processing"
+                                                                ? "bg-primary"
+                                                                : "bg-secondary"
+                                                        } px-3 py-2 rounded-pill`}
+                                                        value={order.status}
+                                                        onChange={(e) =>
+                                                            handleStatusChange(
+                                                                order.job_id,
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        style={{
+                                                            paddingLeft:
+                                                                "2.5rem",
+                                                        }}
+                                                    >
+                                                        <option
+                                                            value={order.status}
+                                                        >
+                                                            {order.status}
+                                                        </option>
+                                                        <option value="For Approval">
+                                                            For Approval
+                                                        </option>
+                                                        <option value="Approved">
+                                                            Approved
+                                                        </option>
+                                                        <option value="Processing">
+                                                            Processing
+                                                        </option>
+                                                        <option value="Completed">
+                                                            Completed
+                                                        </option>
+                                                        <option value="Cancelled">
+                                                            Cancelled
+                                                        </option>
+                                                    </select>
+                                                    <span
+                                                        className="position-absolute"
+                                                        style={{
+                                                            left: "15px",
+                                                            top: "50%",
+                                                            transform:
+                                                                "translateY(-50%)",
+                                                            pointerEvents:
+                                                                "none",
+                                                            zIndex: 2,
+                                                        }}
+                                                    >
+                                                        {getStatusIcon(
+                                                            order.status
+                                                        )}
+                                                    </span>
+                                                </div>
                                             </td>
                                             <td>
                                                 <span
@@ -272,52 +329,79 @@ function Home({ jobOrder }) {
                                                 Status:
                                             </span>
                                             <span className="mobile-table-value">
-                                                <span
-                                                    className={`badge ${
-                                                        order.status ===
-                                                        "Cancelled"
-                                                            ? "bg-danger"
-                                                            : order.status ===
-                                                              "Approved"
-                                                            ? "bg-success"
-                                                            : order.status ===
-                                                              "Completed"
-                                                            ? "bg-info"
-                                                            : order.status ===
-                                                              "For Approval"
-                                                            ? "bg-warning"
-                                                            : order.status ===
-                                                              "Processing"
-                                                            ? "bg-primary"
-                                                            : "bg-secondary"
-                                                    } px-2 py-1 rounded-pill d-inline-flex align-items-center gap-1`}
-                                                >
-                                                    {order.status ===
-                                                        "Cancelled" && (
-                                                        <FaTimesCircle />
-                                                    )}
-                                                    {order.status ===
-                                                        "Approved" && (
-                                                        <FaCheck />
-                                                    )}
-                                                    {order.status ===
-                                                        "Completed" && (
-                                                        <FaCheckCircle />
-                                                    )}
-                                                    {order.status ===
-                                                        "For Approval" && (
-                                                        <FaHourglassHalf />
-                                                    )}
-                                                    {order.status ===
-                                                        "Processing" && (
-                                                        <FaSpinner className="spinner-icon" />
-                                                    )}
-                                                    {order.status ===
-                                                        "Pending" && (
-                                                        <FaClock />
-                                                    )}
-                                                    {order.status}
-                                                </span>
+                                                <div className="position-relative">
+                                                    <select
+                                                        className={`form-select badge ${
+                                                            order.status ===
+                                                            "Cancelled"
+                                                                ? "bg-danger"
+                                                                : order.status ===
+                                                                  "Approved"
+                                                                ? "bg-success"
+                                                                : order.status ===
+                                                                  "Completed"
+                                                                ? "bg-info"
+                                                                : order.status ===
+                                                                  "For Approval"
+                                                                ? "bg-warning"
+                                                                : order.status ===
+                                                                  "Processing"
+                                                                ? "bg-primary"
+                                                                : "bg-secondary"
+                                                        } px-3 py-2 rounded-pill`}
+                                                        value={order.status}
+                                                        onChange={(e) =>
+                                                            handleStatusChange(
+                                                                order.job_id,
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                        style={{
+                                                            paddingLeft:
+                                                                "2.5rem",
+                                                            appearance: "none",
+                                                            backgroundImage:
+                                                                "none",
+                                                        }}
+                                                    >
+                                                        <option
+                                                            value={order.status}
+                                                        >
+                                                            {order.status}
+                                                        </option>
+                                                        <option value="For Approval">
+                                                            For Approval
+                                                        </option>
+                                                        <option value="Approved">
+                                                            Approved
+                                                        </option>
+                                                        <option value="Processing">
+                                                            Processing
+                                                        </option>
+                                                        <option value="Completed">
+                                                            Completed
+                                                        </option>
+                                                        <option value="Cancelled">
+                                                            Cancelled
+                                                        </option>
+                                                    </select>
+                                                    <span
+                                                        className="position-absolute"
+                                                        style={{
+                                                            left: "15px",
+                                                            top: "50%",
+                                                            transform:
+                                                                "translateY(-50%)",
+                                                            pointerEvents:
+                                                                "none",
+                                                            zIndex: 2,
+                                                        }}
+                                                    >
+                                                        {getStatusIcon(
+                                                            order.status
+                                                        )}
+                                                    </span>
+                                                </div>
                                             </span>
                                         </div>
 

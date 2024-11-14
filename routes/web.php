@@ -106,6 +106,9 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::post('/admin/manage-profile', [AdminController::class, 'updateProfile'])
         ->name('admin.updateProfile')
         ->middleware(['web']);
+
+    Route::patch('/admin/updateJobStatus/{id}', [AdminController::class, 'updateJobStatus'])
+        ->name('admin.updateJobStatus');
 });
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login')->middleware('technician.auth');
