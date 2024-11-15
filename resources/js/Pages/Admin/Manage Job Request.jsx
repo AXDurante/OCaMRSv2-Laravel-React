@@ -173,10 +173,9 @@ function Home({ jobOrder }) {
                                             </td>
                                             <td>{order.job_id}</td>
                                             <td>
-                                                {order.user.firstName}{" "}
-                                                {order.user.lastName}{" "}
+                                                {order.user ? `${order.user.firstName} ${order.user.lastName}` : 'N/A'}
                                             </td>
-                                            <td>{order.user.email} </td>
+                                            <td>{order.user ? order.user.email : 'N/A'}</td>
                                             <td
                                                 style={{
                                                     maxWidth: "120px",
@@ -347,8 +346,7 @@ function Home({ jobOrder }) {
                                                 Client:
                                             </span>
                                             <span className="mobile-table-value">
-                                                {order.user.firstName}{" "}
-                                                {order.user.lastName}
+                                                {order.user ? `${order.user.firstName} ${order.user.lastName}` : 'N/A'}
                                             </span>
                                         </div>
 
@@ -357,7 +355,7 @@ function Home({ jobOrder }) {
                                                 Email:
                                             </span>
                                             <span className="mobile-table-value">
-                                                {order.user.email}
+                                                {order.user ? order.user.email : 'N/A'}
                                             </span>
                                         </div>
 
