@@ -138,6 +138,16 @@ function Home() {
         validatePasswords(data.password, confirmation);
     };
 
+    const handleFirstNameChange = (e) => {
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow letters and spaces
+        setData('firstName', value);
+    };
+
+    const handleLastNameChange = (e) => {
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow letters and spaces
+        setData('lastName', value);
+    };
+
     return (
         <div className="d-flex">
             <div className="container">
@@ -167,22 +177,30 @@ function Home() {
                                                 <input
                                                     name="firstName"
                                                     type="text"
-                                                    className="form-control shadow-sm animate-field"
+                                                    className={`form-control shadow-sm animate-field ${errors.firstName ? 'is-invalid' : ''}`}
                                                     value={data.firstName}
-                                                    onChange={e => setData('firstName', e.target.value)}
+                                                    onChange={handleFirstNameChange}
                                                 />
-                                                {errors.firstName && <div className="text-danger">{errors.firstName}</div>}
+                                                {errors.firstName && (
+                                                    <div className="invalid-feedback">
+                                                        {errors.firstName}
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="col-md-6 mb-4">
                                                 <label className="form-label fw-bold">Last Name</label>
                                                 <input
                                                     name="lastName"
                                                     type="text"
-                                                    className="form-control shadow-sm animate-field"
+                                                    className={`form-control shadow-sm animate-field ${errors.lastName ? 'is-invalid' : ''}`}
                                                     value={data.lastName}
-                                                    onChange={e => setData('lastName', e.target.value)}
+                                                    onChange={handleLastNameChange}
                                                 />
-                                                {errors.lastName && <div className="text-danger">{errors.lastName}</div>}
+                                                {errors.lastName && (
+                                                    <div className="invalid-feedback">
+                                                        {errors.lastName}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
 

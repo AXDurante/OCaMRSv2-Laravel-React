@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Equipment;
 use App\Models\JobOrder;
+use App\Models\Notification;
+use App\Http\Controllers\TechnicianNotificationController;
 use App\Models\TSR;
 use App\Models\CoC;
 use Illuminate\Http\Request;
@@ -129,37 +131,49 @@ class AdminController extends Controller
 
     public function updateJobOrder(Request $request, $id)
     {
-        $jobOrder = JobOrder::findOrFail($id);
+        try {
+            $jobOrder = JobOrder::findOrFail($id);
+            $oldStatus = $jobOrder->status;
+            
+            // Update job order
+            $jobOrder->update($request->all());
 
-        $validatedData = $request->validate([
-            'service_type' => 'required',
-            'trans_type' => 'required',
-            'remarks' => 'nullable',
-            'status' => 'required|in:For Approval,Approved,Cancelled,Completed',
-            'priority' => 'required|in:Regular,High,Medium,Low,',
-            'instruments' => 'required|array',
-            'instruments.*.instrument' => 'required',
-            'instruments.*.qty' => 'required|integer',
-            'instruments.*.model' => 'nullable',
-            'instruments.*.instrument_num' => 'required',
-            'instruments.*.manufacturer' => 'nullable',
-        ]);
+            // If status has changed to Processing, notify all technicians
+            if ($oldStatus !== 'Processing' && $jobOrder->status === 'Processing') {
+                \Log::info('Creating notifications for all technicians', [
+                    'job_order_id' => $jobOrder->job_id,
+                    'old_status' => $oldStatus,
+                    'new_status' => $jobOrder->status
+                ]);
+                
+                TechnicianNotificationController::notifyAllTechnicians(
+                    $jobOrder,
+                    'New Job Order Available',
+                    "Job order #{$jobOrder->job_id} is now available for processing",
+                    'new_job_order'
+                );
+            }
 
-        $jobOrder->update([
-            'service_type' => $validatedData['service_type'],
-            'trans_type' => $validatedData['trans_type'],
-            'remarks' => $validatedData['remarks'],
-            'status' => $validatedData['status'],
-            'priority' => $validatedData['priority'],
-        ]);
+            // Create client notification
+            Notification::create([
+                'user_id' => $jobOrder->employeeID,
+                'job_order_id' => $jobOrder->job_id,
+                'title' => 'Job Order Status Updated',
+                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$jobOrder->status} by admin",
+                'type' => 'status_update',
+                'status' => $jobOrder->status
+            ]);
 
-        // Update or create instrument units
-        $jobOrder->int_units()->delete(); // Remove existing units
-        foreach ($validatedData['instruments'] as $instrumentData) {
-            $jobOrder->int_units()->create($instrumentData);
+            return redirect()->route('admin.showJobOrder', $jobOrder->job_id)
+                ->with('success', 'Job order updated successfully');
+
+        } catch (\Exception $e) {
+            \Log::error('Job Order Update Error:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->with('error', 'Error updating job order: ' . $e->getMessage());
         }
-
-        return redirect()->route('admin.showJobOrder', $jobOrder->job_id);
     }
 
     public function updateProfile(Request $request)
@@ -167,10 +181,10 @@ class AdminController extends Controller
         try {
             $admin = Auth::guard('admin')->user();
             
-            // Validate the request
+            // Update validation rules
             $validationRules = [
-                'firstName' => 'sometimes|required|string|max:255',
-                'lastName' => 'sometimes|required|string|max:255',
+                'firstName' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+                'lastName' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
                 'email' => 'sometimes|nullable|email|unique:admins,email,' . $admin->id,
                 'id_number' => 'sometimes|required|string|unique:admins,id_number,' . $admin->id,
                 'photo' => [
@@ -189,19 +203,10 @@ class AdminController extends Controller
                 ]
             ];
 
-            // Add password validation rules only if password is being updated
-            if ($request->filled('password')) {
-                $validationRules['password'] = [
-                    'required',
-                    'string',
-                    'min:8',
-                    'confirmed',
-                    'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/'
-                ];
-            }
-
             // Custom error messages
             $customMessages = [
+                'firstName.regex' => 'The first name field must only contain letters.',
+                'lastName.regex' => 'The last name field must only contain letters.',
                 'password.confirmed' => 'The password confirmation does not match.',
                 'password.regex' => 'The password must contain at least one uppercase letter, one number, and one special character.',
                 'photo.mimes' => 'The signature must be a PNG image file. Other formats are not supported.',

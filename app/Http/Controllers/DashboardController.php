@@ -74,33 +74,11 @@ class DashboardController extends Controller
                 'removePhoto' => 'boolean',
             ];
 
-            // Add password validation rules only if password is being updated
-            if ($request->filled('password')) {
-                $validationRules['password'] = [
-                    'required',
-                    'string',
-                    'min:8',
-                    'confirmed',
-                    'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/'
-                ];
-            }
-
-            // Custom error messages
-            $customMessages = [
-                'password.confirmed' => 'The password confirmation does not match.',
-                'password.regex' => 'The password must contain at least one uppercase letter, one number, and one special character.',
-                'photo.mimes' => 'The signature must be a PNG image file. Other formats are not supported.',
-                'photo.max' => 'The signature image must not exceed 2MB in size.',
-            ];
-
-            $validated = $request->validate($validationRules, $customMessages);
-
-            // Handle password
-            if (empty($validated['password'])) {
-                unset($validated['password']);
-            } else {
-                $validated['password'] = bcrypt($validated['password']);
-            }
+        if (empty($validatedData['password'])) {
+            unset($validatedData['password']);
+        } else {
+            $validatedData['password'] = bcrypt($validatedData['password']);
+        }
 
             // Handle photo upload
             if ($request->hasFile('photo')) {
