@@ -31,8 +31,8 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
+            'firstName' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+            'lastName' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => 'required|string|email|max:255|unique:users',
             'password' => [
                 'required',
@@ -40,13 +40,17 @@ class RegisteredUserController extends Controller
                 'min:8',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[@$!%*?&]/',
+                'regex:/[@$!%*?&_]/',
             ],
             'employeeID' => 'required|string|max:255|unique:users',
-            'phoneNumber' => 'required|string|max:255|unique:users',
+            'phoneNumber' => ['required', 'string', 'max:255', 'unique:users', 'regex:/^[0-9]+$/', 'size:11'],
             'college' => 'required|string|max:255',
             'labLoc' => 'required|string|max:255',
         ], [
+            'firstName.regex' => 'The first name field must only contain letters.',
+            'lastName.regex' => 'The last name field must only contain letters.',
+            'phoneNumber.regex' => 'The phone number must only contain numbers.',
+            'phoneNumber.size' => 'The phone number must be exactly 11 digits.',
             'password.min' => 'The password must be at least 8 characters.',
             'password.regex' => 'The password must include at least one uppercase letter, one number, and one special character.',
         ]);

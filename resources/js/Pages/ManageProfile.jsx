@@ -86,8 +86,12 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
                 setTimeout(() => setShowSuccess(false), 5000);
                 setShowConfirmModal(false);
             },
-            onError: () => {
+            onError: (errors) => {
                 setShowConfirmModal(false);
+                if (errors.phoneNumber) {
+                    setShowNoChanges(false);
+                    setData('phoneNumberError', errors.phoneNumber);
+                }
             },
         });
     };
@@ -105,6 +109,21 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
     };
 
     const photoUrl = auth.user.photo ? getStorageUrl() : null;
+
+    const handleFirstNameChange = (e) => {
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow letters and spaces
+        setData('firstName', value);
+    };
+
+    const handleLastNameChange = (e) => {
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow letters and spaces
+        setData('lastName', value);
+    };
+
+    const handlePhoneNumberChange = (e) => {
+        const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10); // Only allow numbers, max 11 digits
+        setData('phoneNumber', value);
+    };
 
     return (
         <div className="d-flex">

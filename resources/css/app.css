@@ -1,3 +1,13 @@
+/* Add these color variables at the top */
+:root {
+    --ust-yellow: #FBC600;
+    --ust-yellow-light: #FFE066;
+    --ust-yellow-dark: #E6B800;
+    --ust-black: #202020;
+    --ust-gray: #4A4A4A;
+    --ust-light-gray: #F8F8F8;
+}
+
 * {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -7,7 +17,8 @@
 
 .main-content {
     margin-left: 250px;
-    padding: 20px;
+    padding: 1rem;
+    width: calc(100% - 250px);
 }
 
 /* sidebar */
@@ -1702,13 +1713,6 @@ input[type="checkbox"] {
     }
 }
 
-.hover-scale {
-    transition: transform 0.2s ease;
-}
-
-.hover-scale:hover {
-    transform: scale(1.02);
-}
 
 .fade-in {
     animation: fadeIn 0.5s ease-out forwards;
@@ -2260,6 +2264,713 @@ input[type="checkbox"] {
     .account-icon i {
         font-size: 100px; /* Increase size for large screens */
     }
+}
+
+/* Notification Styles */
+.notifications-container {
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
+}
+
+.notification-card {
+    background: #ffffff;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e6e6e6;
+    padding: 1rem;
+}
+
+.notification-card:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(145deg, #ffffff, #f0f7ff); /* Hint of pastel blue */
+    box-shadow: 8px 8px 16px #d1d1d1,
+                -8px -8px 16px #ffffff,
+                inset 1px 1px 2px rgba(135, 206, 250, 0.1); /* Subtle inner glow */
+    border: 1px solid rgba(0, 123, 255, 0.1);
+}
+
+.notification-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    background: rgba(13, 110, 253, 0.1); /* Changed from yellow to blue */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #0d6efd;
+}
+
+.notification-title {
+    color: #202020;
+    font-weight: 600;
+}
+
+.notification-date {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.message-box {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1rem;
+    border-left: 4px solid #0d6efd; /* Changed from yellow to blue */
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.btn-details {
+    background: linear-gradient(145deg, #fbc600, #ffd700);
+    color: #202020;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-details:hover {
+    background: linear-gradient(145deg, #ffd700, #fbc600);
+    transform: translateX(5px);
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #997404;
+}
+
+.status-progress {
+    background-color: #cff4fc;
+    color: #055160;
+}
+
+.status-completed {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-cancelled {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #0d6efd; /* Changed from yellow to blue */
+    color: #ffffff; /* Changed text to white for better contrast */
+    border-radius: 50%;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-bell {
+    position: relative;
+    cursor: pointer;
+}
+
+.notification-bell i {
+    font-size: 1.25rem;
+    color: #0d6efd; /* Changed from black to blue */
+    transition: all 0.3s ease;
+}
+
+.notification-card.unread {
+    border-left: 4px solid #0d6efd; /* Changed from yellow to blue */
+    background: linear-gradient(145deg, #ffffff, #f8fbff);
+}
+
+.unread-indicator {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #0d6efd; /* Changed from yellow to blue */
+}
+
+.notification-card.unread:hover {
+    cursor: pointer;
+    background: linear-gradient(145deg, #ffffff, #fff9e6);
+}
+
+/* Add these to your existing CSS */
+.text-completed {
+    color: #198754 !important;  /* Bootstrap success color */
+}
+
+.text-processing {
+    color: #0dcaf0 !important;  /* Bootstrap info color */
+}
+
+.text-pending {
+    color: #ffc107 !important;  /* Bootstrap warning color */
+}
+
+.text-cancelled {
+    color: #dc3545 !important;  /* Bootstrap danger color */
+}
+
+/* Update your existing status-badge styles */
+.status-badge {
+    padding: 0.35em 0.65em;
+    font-size: 0.85em;
+    font-weight: 600;
+    border-radius: 20px;
+    text-transform: capitalize;
+}
+
+/* Add these new styles */
+.job-request-form {
+    max-width: 100%; /* Changed from 1200px to 100% */
+    margin: 0;       /* Remove auto margins */
+    padding: 1rem;   /* Reduced padding */
+}
+
+/* Update the form section styles */
+.form-section {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.form-section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12),
+                0 4px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(251, 198, 0, 0.2);
+}
+
+/* Add a subtle background to create more depth */
+.job-request-form {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 16px;
+}
+
+.form-section:hover {
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08),
+                -6px -6px 12px rgba(255, 255, 255, 0.95),
+                inset 1px 1px 1px rgba(0, 0, 0, 0.02);
+    transform: translateY(-2px);
+    border: 1px solid rgba(0, 0, 0, 0.12); /* Slightly darker border on hover */
+}
+
+.required-field::after {
+    content: '*';
+    color: #dc3545;
+    margin-left: 4px;
+}
+
+.form-input {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75rem;
+    width: 100%;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+}
+
+.form-input:focus {
+    border-color: #3490dc;
+    box-shadow: 0 0 0 3px rgba(52, 144, 220, 0.25);
+    outline: none;
+}
+
+.form-input.input-error {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.item-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e2e8f0;
+    animation: slideIn 0.3s ease-out;
+}
+
+.delete-button {
+    background: #fff;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+.add-item-button {
+    background: transparent;
+    border: 2px dashed #e2e8f0;
+    color: #64748b;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.add-item-button:hover {
+    border-color: var(--ust-yellow);
+    color: var(--ust-yellow-dark);
+    background: #fff;
+}
+
+.add-item-button:disabled {
+    border-color: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.section-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .job-request-form {
+        padding: 0.5rem;
+    }
+
+    .form-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .row {
+        margin: 0;
+    }
+
+    .col-12 {
+        padding: 0.5rem;
+    }
+}
+
+/* System Information Section Styles */
+.system-info-section {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 2rem;
+}
+
+.disabled-input {
+    background-color: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #64748b !important;
+    cursor: not-allowed;
+    opacity: 0.8;
+    box-shadow: none !important;
+}
+
+.disabled-input:hover, .disabled-input:focus {
+    border-color: #e2e8f0 !important;
+    box-shadow: none !important;
+}
+
+/* Subtle separator between sections */
+.request-info-section {
+    position: relative;
+    padding-top: 1rem;
+}
+
+.request-info-section::before {
+    content: '';
+    position: absolute;
+    top: -1rem;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .system-info-section {
+        padding: 1rem;
+    }
+    
+    .col-md-6 {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Section Titles and Numbering */
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ust-black);
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--ust-yellow);
+}
+
+.section-number {
+    background: linear-gradient(145deg, var(--ust-yellow), var(--ust-yellow-dark));
+    color: var(--ust-black);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    margin-right: 0.75rem;
+    font-weight: 600;
+}
+
+/* System Information Section */
+.system-info-section {
+    background: var(--ust-light-gray);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.system-info-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--ust-yellow), var(--ust-yellow-dark));
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+/* Instrument Cards */
+.item-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e2e8f0;
+    animation: slideIn 0.3s ease-out;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.item-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.instrument-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.instrument-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+}
+
+.instrument-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--ust-yellow);
+    border-radius: 50%;
+    margin-right: 0.75rem;
+}
+
+/* Form Section Updates */
+.form-section {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.form-section:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Submit Job Order Button Styles */
+.submit-job-order-button {
+    background: linear-gradient(145deg, var(--ust-yellow), var(--ust-yellow-dark));
+    color: var(--ust-black);
+    border: none;
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    margin: 1rem 0;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 6px rgba(251, 198, 0, 0.2);
+}
+
+.submit-job-order-button:hover {
+    background: linear-gradient(145deg, var(--ust-yellow-dark), var(--ust-yellow));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(251, 198, 0, 0.3);
+}
+
+.submit-job-order-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(251, 198, 0, 0.2);
+}
+
+.submit-job-order-button:disabled {
+    background: #e2e8f0;
+    color: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Loading state */
+.submit-job-order-button .loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--ust-black);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Update the form section container */
+.form-section {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+    overflow: visible;  /* Added overflow visible */
+}
+
+/* Update the job request form container */
+.job-request-form {
+    max-width: 100%;
+    margin: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;  /* Added min-height */
+    overflow: visible;  /* Added overflow visible */
+}
+
+/* Add this specific style for the Open Request text */
+.text-2xl .text-gray-400.font-light {
+    font-weight: 300 !important; /* Using !important to ensure override */
+    color: #9CA3AF !important;   /* A slightly lighter gray */
+}
+
+/* Add this specific style for the Open Request text */
+.text-2xl .subtitle-span {
+    font-weight: 300 !important; /* Light font weight */
+    color: var(--ust-black) !important; /* Using the UST black variable */
+}
+
+/* Add these styles for ViewOrder */
+.view-order-form {
+    max-width: 100%;
+    margin: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa;
+    border-radius: 16px;
+}
+
+.view-section {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.view-section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12),
+                0 4px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(251, 198, 0, 0.2);
+}
+
+/* Style for read-only inputs */
+.view-input {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75rem;
+    width: 100%;
+    color: #4a5568;
+    cursor: default;
+}
+
+/* Style for section labels */
+.view-label {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+/* Style for instrument cards in view mode */
+.view-instrument-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.view-instrument-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Update the form section styles with the TrackOrder hover effect */
+.form-section {
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 4px 4px 8px #d1d1d1, -4px -4px 8px #ffffff;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        background-color 0.3s ease;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1; /* Add z-index to manage stacking context */
+}
+
+.form-section:hover {
+    transform: translateY(-4px) scale(1.01); /* Reduced scale effect */
+    box-shadow: 8px 8px 16px #d1d1d1,
+        -8px -8px 16px #ffffff;
+    background-color: #f8f9fa;
+}
+
+/* Add this to your notification styles section */
+.collapsed .badge {
+    transform: translateX(50%) !important;  /* Move badge to overlap the bell icon */
+    margin-left: -1 !important;  /* Remove margin when collapsed */
+}
+
+.mark-all-button {
+    background: linear-gradient(145deg, #0d6efd, #0091ff);
+    color: white;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}
+
+.mark-all-button:hover {
+    background: linear-gradient(145deg, #0091ff, #0d6efd);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
 }
 .statusprio {
     background-color: #1e1e1e !important;

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
+import axios from "axios";
 
 export default function NavBar({
     children,
@@ -14,6 +15,7 @@ export default function NavBar({
     const { auth } = usePage().props;
     const mobileMenuRef = useRef(null);
     const burgerButtonRef = useRef(null);
+    const [unreadCount, setUnreadCount] = useState(0);
 
     const handleResize = () => {
         if (window.innerWidth < 768) {
@@ -82,6 +84,32 @@ export default function NavBar({
     const handleNavLinkClick = () => {
         setIsMobileMenuOpen(false);
     };
+
+    const fetchUnreadCount = async () => {
+        try {
+            const response = await axios.get('/notifications/unread-count');
+            setUnreadCount(response.data.count);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    };
+
+    useEffect(() => {
+        const handleNotificationUpdate = (event) => {
+            setUnreadCount(event.detail.count);
+        };
+
+        window.addEventListener('updateNotificationCount', handleNotificationUpdate);
+        
+        // Initial fetch
+        fetchUnreadCount();
+        const interval = setInterval(fetchUnreadCount, 30000);
+        
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('updateNotificationCount', handleNotificationUpdate);
+        };
+    }, []);
 
     return (
         <div className="">
@@ -381,16 +409,21 @@ export default function NavBar({
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <a
-                                    className={`nav-link ${
-                                        isCollapsed ? "text-center" : ""
-                                    }`}
-                                    href="#"
+                                <Link
+                                    href={route('notifications.index')}
+                                    className="nav-link position-relative"
                                     onClick={(e) => e.stopPropagation()}
                                 >
-                                    <i className="bi bi-bell-fill me-2 "></i>
+                                    <i className="bi bi-bell-fill me-2"></i>
                                     {!isCollapsed && "Notification"}
-                                </a>
+                                    {unreadCount > 0 && (
+                                        <span className="position-absolute badge rounded-pill bg-danger" 
+                                              style={{ top: '45%', transform: 'translateY(-50%)', right: '30px' }}>
+                                            {unreadCount}
+                                            <span className="visually-hidden">unread notifications</span>
+                                        </span>
+                                    )}
+                                </Link>
                             </li>
                             <li className="nav-item">
                                 <a

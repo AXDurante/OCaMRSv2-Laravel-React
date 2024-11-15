@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\JobOrder;
 use Illuminate\Support\Str;
 use App\Models\CoC;
+use App\Models\Notification;
 
 class TechnicianController extends Controller
 {
@@ -53,37 +54,57 @@ class TechnicianController extends Controller
 
     public function updateJobOrder(Request $request, $id)
     {
-        $jobOrder = JobOrder::findOrFail($id);
+        try {
+            $jobOrder = JobOrder::findOrFail($id);
+            $oldStatus = $jobOrder->status;
 
-        $validatedData = $request->validate([
-            'service_type' => 'required',
-            'trans_type' => 'required',
-            'remarks' => 'nullable',
-            'status' => 'required|in:For Approval,Approved,Cancelled,Completed',
-            'priority' => 'required|in:Regular,High,Medium,Low',
-            'instruments' => 'required|array',
-            'instruments.*.instrument' => 'required',
-            'instruments.*.qty' => 'required|integer',
-            'instruments.*.model' => 'nullable',
-            'instruments.*.instrument_num' => 'required',
-            'instruments.*.manufacturer' => 'nullable',
+            $validatedData = $request->validate([
+                'service_type' => 'required',
+                'trans_type' => 'required',
+                'remarks' => 'nullable',
+                'status' => 'required|in:For Approval,Approved,Cancelled,Completed',
+                'priority' => 'required|in:Regular,High,Medium,Low',
+                'instruments' => 'required|array',
+                'instruments.*.instrument' => 'required',
+                'instruments.*.qty' => 'required|integer',
+                'instruments.*.model' => 'nullable',
+                'instruments.*.instrument_num' => 'required',
+                'instruments.*.manufacturer' => 'nullable',
+            ]);
+
+            $jobOrder->update([
+                'service_type' => $validatedData['service_type'],
+                'trans_type' => $validatedData['trans_type'],
+                'remarks' => $validatedData['remarks'],
+                'status' => $validatedData['status'],
+                'priority' => $validatedData['priority'],
         ]);
 
-        $jobOrder->update([
-            'service_type' => $validatedData['service_type'],
-            'trans_type' => $validatedData['trans_type'],
-            'remarks' => $validatedData['remarks'],
-            'status' => $validatedData['status'],
-            'priority' => $validatedData['priority'],
-        ]);
+            // Update or create instrument units
+            $jobOrder->int_units()->delete(); // Remove existing units
+            foreach ($validatedData['instruments'] as $instrumentData) {
+                $jobOrder->int_units()->create($instrumentData);
+            }
 
-        // Update or create instrument units
-        $jobOrder->int_units()->delete(); // Remove existing units
-        foreach ($validatedData['instruments'] as $instrumentData) {
-            $jobOrder->int_units()->create($instrumentData);
+            // Create notification
+            Notification::create([
+                'user_id' => $jobOrder->employeeID,
+                'job_order_id' => $jobOrder->job_id,
+                'title' => 'Job Order Status Updated',
+                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$validatedData['status']} by technician",
+                'type' => 'status_update',
+                'status' => $validatedData['status']
+            ]);
+
+            return redirect()->route('technician.showJobOrder', $jobOrder->job_id)
+                ->with('success', 'Job order updated successfully');
+        } catch (\Exception $e) {
+            \Log::error('Job Order Update Error:', [
+                'message' => $e->getMessage(),
+                'job_id' => $id
+            ]);
+            return redirect()->back()->withErrors(['error' => 'An error occurred while updating the job order.']);
         }
-
-        return redirect()->route('technician.showJobOrder', $jobOrder->job_id);
     }
 
 

@@ -14,6 +14,8 @@ use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\TechnicianController;
 use App\Http\Controllers\FeedbackControllerAdmin;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AdminNotificationController;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
@@ -107,6 +109,16 @@ Route::middleware(['auth:admin'])->group(function () {
         ->name('admin.updateProfile')
         ->middleware(['web']);
 
+    // Admin Notification Routes
+    Route::get('admin/notifications', [AdminNotificationController::class, 'index'])
+        ->name('admin.notifications.index');
+    Route::get('admin/notifications/unread-count', [AdminNotificationController::class, 'getUnreadCount'])
+        ->name('admin.notifications.unread-count');
+    Route::post('admin/notifications/{id}/mark-as-read', [AdminNotificationController::class, 'markAsRead'])
+        ->name('admin.notifications.mark-as-read');
+    Route::post('admin/notifications/mark-all-as-read', [AdminNotificationController::class, 'markAllAsRead'])
+        ->name('admin.notifications.mark-all-as-read');
+
     Route::patch('/admin/updateJobStatus/{id}', [AdminController::class, 'updateJobStatus'])
         ->name('admin.updateJobStatus');
 });
@@ -150,6 +162,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/landingpage', function () {
         return Inertia::render('LandingPage');
     })->name('landingpage');
+
+    // New Notification Routes
+    Route::controller(NotificationController::class)->group(function () {
+        Route::get('/notifications', 'index')->name('notifications.index');
+        Route::get('/notifications/poll', 'poll');
+        Route::get('/notifications/unread-count', 'getUnreadCount');
+        Route::post('/notifications/{id}/mark-as-read', 'markAsRead');
+        Route::post('/notifications/mark-all-as-read', 'markAllAsRead');
+    });
 
     Route::controller(FeedbackController::class)->group(function () {
         Route::get('/feedback/create/{jobOrderId}', 'create')->name('feedback.create');

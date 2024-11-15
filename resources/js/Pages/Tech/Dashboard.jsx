@@ -137,10 +137,9 @@ function Dashboard({ jobOrder }) {
                                             <td>{order.job_id}</td>{" "}
                                             {/* Job ID */}
                                             <td>
-                                                {order.user.firstName}{" "}
-                                                {order.user.lastName}{" "}
+                                                {order.user ? `${order.user.firstName} ${order.user.lastName}` : 'N/A'}
                                             </td>
-                                            <td>{order.user.email} </td>
+                                            <td>{order.user ? order.user.email : 'N/A'}</td>
                                             <td>{order.service_type}</td>{" "}
                                             {/* Service Request */}
                                             <td>
@@ -299,8 +298,7 @@ function Dashboard({ jobOrder }) {
                                                 Client:
                                             </span>
                                             <span className="mobile-table-value">
-                                                {order.user.firstName}{" "}
-                                                {order.user.lastName}
+                                                {order.user ? `${order.user.firstName} ${order.user.lastName}` : 'N/A'}
                                             </span>
                                         </div>
 
@@ -309,7 +307,7 @@ function Dashboard({ jobOrder }) {
                                                 Email:
                                             </span>
                                             <span className="mobile-table-value">
-                                                {order.user.email}
+                                                {order.user ? order.user.email : 'N/A'}
                                             </span>
                                         </div>
 

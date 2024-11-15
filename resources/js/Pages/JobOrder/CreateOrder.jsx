@@ -13,6 +13,8 @@ function CreateOrder({
     const equipmentName = equipment?.map((item) => item.equip_name) || [];
     const [remarksError, setRemarksError] = useState("");
     const [errors, setErrors] = useState({}); // State for all errors
+    const [instrumentCount, setInstrumentCount] = useState(1); // Start with 1 instrument
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { data, setData, post, processing } = useForm({
         // For Job Order
@@ -40,23 +42,35 @@ function CreateOrder({
     });
 
     const addInstrument = () => {
+        if (data.instruments.length >= 5) {
+            // Optionally show an error message or toast notification
+            return;
+        }
         setData("instruments", [
             ...data.instruments,
             {
                 instrument: "",
-                qty: "",
+                qty: 1,
                 model: "N/A",
                 instrument_num: "",
                 manufacturer: "N/A",
             },
         ]);
+        setInstrumentCount(prev => prev + 1);
     };
 
     const removeInstrument = (index) => {
+        // Prevent removing the last instrument
+        if (data.instruments.length <= 1) {
+            alert("You must have at least one instrument.");
+            return;
+        }
+        
         const updatedInstruments = data.instruments.filter(
             (_, i) => i !== index
         );
         setData("instruments", updatedInstruments);
+        setInstrumentCount(prev => prev - 1);
     };
 
     const handleInputChange = (index, event) => {
@@ -67,332 +81,319 @@ function CreateOrder({
         setData("instruments", updatedInstruments);
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        setErrors({}); // Clear previous errors
-        setRemarksError(""); // Clear remarks error
+        
+        // Prevent double submission
+        if (isSubmitting || processing) return;
+        
+        // Clear all previous errors first
+        setErrors({});
+        setRemarksError("");
+        
+        // Validate all fields first
+        let validationErrors = {};
+        let hasErrors = false;
 
-        // Validate remarks
+        // Check for instruments
+        if (data.instruments.length === 0) {
+            validationErrors.instruments = "At least one instrument is required.";
+            alert("Please add at least one instrument before submitting.");
+            hasErrors = true;
+        }
+
+        // Service type validation
+        if (!data.service_type) {
+            validationErrors.service_type = "Please select a service type.";
+            hasErrors = true;
+        }
+
+        // Remarks validation
         if (!data.remarks.trim()) {
-            setRemarksError("Remarks should not be empty.");
+            setRemarksError("Remarks field is required.");
+            hasErrors = true;
         }
 
-        // Collect errors
-        const newErrors = {};
-        if (data.service_type === "") {
-            newErrors.service_type = "Please select a service type.";
-        }
+        // Instrument validation
         data.instruments.forEach((instrument, index) => {
-            if (instrument.instrument === "") {
-                newErrors[`instrument_${index}`] =
-                    "Please select an equipment for all items.";
+            if (!instrument.instrument) {
+                validationErrors[`instrument_${index}`] = "Please select an equipment.";
+                hasErrors = true;
             }
-            if (instrument.instrument_num === "") {
-                newErrors[`serialNumber_${index}`] =
-                    "Serial Number is required.";
+            if (!instrument.instrument_num) {
+                validationErrors[`serialNumber_${index}`] = "Serial Number is required.";
+                hasErrors = true;
             }
-            if (instrument.qty === "") {
-                newErrors[`quantity_${index}`] = "Quantity is required.";
+            if (!instrument.qty || instrument.qty < 1) {
+                validationErrors[`quantity_${index}`] = "Quantity must be at least 1.";
+                hasErrors = true;
             }
         });
 
-        // Set errors if any
-        if (Object.keys(newErrors).length > 0 || remarksError) {
-            setErrors(newErrors);
-            return; // Prevent form submission
+        // If there are validation errors, set them and return
+        if (hasErrors) {
+            setErrors(validationErrors);
+            return;
         }
 
-        post("/jobOrder");
+        // If we get here, all validation passed
+        try {
+            setIsSubmitting(true);
+
+            await post(route('jobOrder.store'), {
+                onSuccess: () => {
+                    // Handle successful submission
+                    setIsSubmitting(false);
+                },
+                onError: (errors) => {
+                    setErrors(errors);
+                    setIsSubmitting(false);
+                },
+            });
+        } catch (error) {
+            console.error('Submission error:', error);
+            setIsSubmitting(false);
+        }
     };
 
     return (
-        <>
-            <div className="d-flex">
-                <div id="content" className="flex-fill p-3">
-                    <div>
-                        <div>
-                            <h1 className="d-inline">Job Request | </h1>
-                            <h1 className="d-inline fw-light">Open Request</h1>
-                            <hr />
+        <div className="job-request-form">
+            <div className="form-section fade-in">
+                <h1 className="text-2xl mb-4">
+                    Job Request <span className="text-black font-light subtitle-span">| Open Request</span>
+                </h1>
+                <hr className="mb-4 border-gray-200" />
+
+                {/* System Information Section */}
+                <div className="system-info-section mb-4">
+                    <h4 className="section-title">
+                        <span className="section-number">1</span>
+                        Your Information
+                    </h4>
+                    <div className="row g-3">
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">Laboratory</label>
+                            <input
+                                type="text"
+                                className="form-input disabled-input"
+                                value={data.lab}
+                                disabled
+                            />
                         </div>
-                        <div className="mt3">
-                            <h4>Information</h4>{" "}
-                            <p> Please fill in important* fields</p>
-                            <div className="row forms-bg p-3">
-                                <div className="col d-flex flex-column  p-3">
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Service Requested*
-                                    </h6>
-                                    <select
-                                        className={`d-flex flex-column align-items-center w-100 rounded ${
-                                            errors.service_type
-                                                ? "input-error"
-                                                : ""
-                                        }`}
-                                        value={data.service_type}
-                                        onChange={(e) =>
-                                            setData(
-                                                "service_type",
-                                                e.target.value
-                                            )
-                                        }
-                                    >
-                                        <option value="" disabled>
-                                            Select an Option
-                                        </option>
-                                        <option value="Repair">Repair</option>
-                                        <option value="Calibration/Maintenance">
-                                            Calibration/Maintenance
-                                        </option>
-                                    </select>
-                                    {errors.service_type && (
-                                        <div className="error-message  align-items-start  mt-2 w-100">
-                                            <i className="bi bi-exclamation-diamond-fill m-1"></i>
-                                            {errors.service_type}
-                                        </div>
-                                    )}
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Laboratory
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.lab}
-                                        onChange={(e) =>
-                                            setData("lab", e.target.value)
-                                        }
-                                        readOnly
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        College/ Faculty / Office
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.dept_name}
-                                        onChange={(e) =>
-                                            setData("dept_name", e.target.value)
-                                        }
-                                        readOnly
-                                    />
-                                </div>
-                                <div className="col d-flex flex-column align-items-center  p-3">
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Instrumentation Transportation
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.trans_type}
-                                        onChange={(e) =>
-                                            setData(
-                                                "trans_type",
-                                                e.target.value
-                                            )
-                                        }
-                                        placeholder="Please indicate if there is any, or type None if otherwise"
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Laboratory Location
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.lab_loc}
-                                        onChange={(e) =>
-                                            setData("lab_loc", e.target.value)
-                                        }
-                                        readOnly
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start  fw-bold mt-2 w-100">
-                                        Position
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.pos}
-                                        onChange={(e) =>
-                                            setData("pos", e.target.value)
-                                        }
-                                        readOnly
-                                    />
-                                </div>
-                                <h6 className="w-100 fw-bold text-start">
-                                    {" "}
-                                    Remarks{" "}
-                                </h6>
-                                <textarea
-                                    className={`w-100 ${
-                                        remarksError ? "input-error" : ""
-                                    }`}
-                                    value={data.remarks}
-                                    onChange={(e) =>
-                                        setData("remarks", e.target.value)
-                                    }
-                                />
-                                {remarksError && (
-                                    <div className="error-message">
-                                        <i class="bi bi-exclamation-diamond-fill m-1">
-                                            {" "}
-                                        </i>
-                                        {remarksError}
-                                    </div>
-                                )}
-                            </div>
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">Laboratory Location</label>
+                            <input
+                                type="text"
+                                className="form-input disabled-input"
+                                value={data.lab_loc}
+                                disabled
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">College/Faculty/Office</label>
+                            <input
+                                type="text"
+                                className="form-input disabled-input"
+                                value={data.dept_name}
+                                disabled
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">Position</label>
+                            <input
+                                type="text"
+                                className="form-input disabled-input"
+                                value={data.pos}
+                                disabled
+                            />
                         </div>
                     </div>
+                </div>
 
-                    <div>
-                        {data.instruments.map((instrument, index) => (
-                            <div key={index} className="">
-                                <h4 className="mt-4">Item No. {index + 1}</h4>
-                                <div className="row forms-bg p-3">
-                                    <div className="col-12 col-md-5 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Equipment*
-                                        </h6>
-                                        <select
-                                            className={`w-100 mb-2 rounded ${
-                                                errors[`instrument_${index}`]
-                                                    ? "input-error"
-                                                    : ""
-                                            }`}
-                                            name="instrument"
-                                            value={instrument.instrument}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                        >
-                                            <option value="">
-                                                Select an equipment
-                                            </option>
-                                            {equipmentName.map((name, i) => (
-                                                <option key={i} value={name}>
-                                                    {name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        {errors[`instrument_${index}`] && (
-                                            <div className="error-message">
-                                                <i className="bi bi-exclamation-diamond-fill m-1"></i>
-                                                {errors[`instrument_${index}`]}
-                                            </div>
-                                        )}
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Model
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                            name="model"
-                                            value={instrument.model}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                            placeholder="Please indicate if there is any, or type N/A if otherwise"
-                                        />
-                                    </div>
-
-                                    <div className="col-12 col-md-3 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Quantity*
-                                        </h6>
-                                        <input
-                                            type="number"
-                                            className={`w-50 mb-2 justify-content-start rounded ${
-                                                errors[`quantity_${index}`]
-                                                    ? "input-error"
-                                                    : ""
-                                            }`}
-                                            name="qty"
-                                            value={instrument.qty}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                            required
-                                        />
-                                        {errors[`quantity_${index}`] && (
-                                            <div className="error-message">
-                                                <i className="bi bi-exclamation-diamond-fill m-1"></i>
-                                                {errors[`quantity_${index}`]}
-                                            </div>
-                                        )}
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Manufacturer
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                            name="manufacturer"
-                                            value={instrument.manufacturer}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                            placeholder="Please indicate if there is any, or type N/A if otherwise"
-                                        />
-                                    </div>
-
-                                    <div className="col-12 col-md-4 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            {" "}
-                                            Serial Number/Property Number*{" "}
-                                        </h6>
-                                        <input
-                                            type="number"
-                                            className={`w-100 mb-2 rounded ${
-                                                errors[`serialNumber_${index}`]
-                                                    ? "input-error"
-                                                    : ""
-                                            }`}
-                                            name="instrument_num"
-                                            value={instrument.instrument_num}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                        />
-                                        {errors[`serialNumber_${index}`] && (
-                                            <div className="error-message">
-                                                <i className="bi bi-exclamation-diamond-fill m-1"></i>
-                                                {
-                                                    errors[
-                                                        `serialNumber_${index}`
-                                                    ]
-                                                }
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="col-12 d-flex flex-row-reverse">
-                                        <button
-                                            className="btn btn-danger"
-                                            onClick={() =>
-                                                removeInstrument(index)
-                                            }
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
+                {/* Request Information Section */}
+                <div className="request-info-section">
+                    <h4 className="section-title">
+                        <span className="section-number">2</span>
+                        Request Details
+                    </h4>
+                    <div className="row g-3">
+                        {/* Service Type */}
+                        <div className="col-12 col-md-6">
+                            <label className="form-label required-field">Service Requested</label>
+                            <select 
+                                className={`form-input ${errors.service_type ? 'input-error' : ''}`}
+                                value={data.service_type}
+                                onChange={(e) => setData("service_type", e.target.value)}
+                            >
+                                <option value="">Select Service Type</option>
+                                <option value="Repair">Repair</option>
+                                <option value="Calibration">Calibration</option>
+                            </select>
+                            {errors.service_type && (
+                                <div className="error-message">
+                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                    {errors.service_type}
                                 </div>
-                            </div>
-                        ))}
+                            )}
+                        </div>
 
-                        <button
-                            className="jb-btn-add mt-3 mb-2"
-                            onClick={addInstrument}
-                        >
-                            Add More Instrument
-                        </button>
-                        <hr />
-                        <button
-                            className="jb-btn-submit w-100 mt-3"
-                            onClick={onSubmit}
-                        >
-                            {" "}
-                            Submit Job Order
-                        </button>
+                        {/* Transportation */}
+                        <div className="col-12 col-md-6">
+                            <label className="form-label">Transportation</label>
+                            <input
+                                type="text"
+                                className="form-input"
+                                value={data.trans_type}
+                                onChange={(e) => setData("trans_type", e.target.value)}
+                                placeholder="Please indicate if there is any, or type None if otherwise"
+                            />
+                        </div>
+
+                        {/* Remarks */}
+                        <div className="col-12">
+                            <label className="form-label required-field">Remarks</label>
+                            <textarea
+                                className={`form-input ${remarksError ? 'input-error' : ''}`}
+                                value={data.remarks}
+                                onChange={(e) => setData("remarks", e.target.value)}
+                                placeholder="Please provide details about your request"
+                                rows="4"
+                            />
+                            {remarksError && (
+                                <div className="error-message">
+                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                    {remarksError}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
-        </>
+
+            {/* Instruments Section */}
+            <div className="form-section fade-in-delayed">
+                <div className="section-header d-flex justify-content-between align-items-center mb-3">
+                    <h3>Instruments ({instrumentCount}/5)</h3>
+                </div>
+                {data.instruments.map((instrument, index) => (
+                    <div key={index} className="item-card">
+                        <div className="instrument-header">
+                            <h5 className="instrument-title">Instrument {index + 1}</h5>
+                        </div>
+                        <div className="row g-3">
+                            {/* Equipment Selection */}
+                            <div className="col-12 col-md-6">
+                                <label className="form-label required-field">Equipment</label>
+                                <select
+                                    className={`form-input ${errors[`instrument_${index}`] ? 'input-error' : ''}`}
+                                    name="instrument"
+                                    value={instrument.instrument}
+                                    onChange={(e) => handleInputChange(index, e)}
+                                >
+                                    <option value="">Select Equipment</option>
+                                    {equipmentName.map((name, i) => (
+                                        <option key={i} value={name}>{name}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Serial Number */}
+                            <div className="col-12 col-md-6">
+                                <label className="form-label required-field">Serial Number/Property Number</label>
+                                <input
+                                    type="text"
+                                    className={`form-input ${errors[`serialNumber_${index}`] ? 'input-error' : ''}`}
+                                    name="instrument_num"
+                                    value={instrument.instrument_num}
+                                    onChange={(e) => handleInputChange(index, e)}
+                                    placeholder="Enter serial number or property number"
+                                />
+                            </div>
+
+                            {/* Model */}
+                            <div className="col-12 col-md-4">
+                                <label className="form-label">Model</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    name="model"
+                                    value={instrument.model}
+                                    onChange={(e) => handleInputChange(index, e)}
+                                    placeholder="Enter model (N/A if not applicable)"
+                                />
+                            </div>
+
+                            {/* Manufacturer */}
+                            <div className="col-12 col-md-4">
+                                <label className="form-label">Manufacturer</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    name="manufacturer"
+                                    value={instrument.manufacturer}
+                                    onChange={(e) => handleInputChange(index, e)}
+                                    placeholder="Enter manufacturer (N/A if not applicable)"
+                                />
+                            </div>
+
+                            {/* Quantity */}
+                            <div className="col-12 col-md-4">
+                                <label className="form-label required-field">Quantity</label>
+                                <input
+                                    type="number"
+                                    className="form-input"
+                                    name="qty"
+                                    value={instrument.qty}
+                                    onChange={(e) => handleInputChange(index, e)}
+                                    min="1"
+                                />
+                            </div>
+
+                            {/* Delete Button */}
+                            <div className="col-12 text-end">
+                                <button
+                                    type="button"
+                                    className="delete-button"
+                                    onClick={() => removeInstrument(index)}
+                                >
+                                    <i className="bi bi-trash me-2"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+
+                {instrumentCount < 5 && (
+                    <button
+                        type="button"
+                        className="add-item-button"
+                        onClick={addInstrument}
+                    >
+                        <i className="bi bi-plus-lg me-2"></i>
+                        Add More Instrument ({instrumentCount}/5)
+                    </button>
+                )}
+            </div>
+
+            <div className="form-section">
+                <button
+                    type="submit"
+                    className="submit-job-order-button"
+                    onClick={onSubmit}
+                    disabled={processing || isSubmitting}
+                >
+                    {(processing || isSubmitting) ? (
+                        <span className="loading"></span>
+                    ) : (
+                        <>
+                            <i className="bi bi-send-fill"></i>
+                            <span>Submit Job Order</span>
+                        </>
+                    )}
+                </button>
+            </div>
+        </div>
     );
 }
 
