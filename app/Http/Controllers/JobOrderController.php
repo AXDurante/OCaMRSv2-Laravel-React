@@ -103,7 +103,7 @@ class JobOrderController extends Controller
             'lab_loc' => ['required'],
             'pos' => ['required'],
             'status' => ['required'],
-            'remarks' => ['required', 'string'],
+            'remarks' => ['nullable', 'string'],
             'priority' => ['required'], 
         ]);
 
