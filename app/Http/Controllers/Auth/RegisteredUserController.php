@@ -40,10 +40,10 @@ class RegisteredUserController extends Controller
                 'min:8',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
-                'regex:/[@$!%*?&]/',
+                'regex:/[@$!%*?&_]/',
             ],
             'employeeID' => 'required|string|max:255|unique:users',
-            'phoneNumber' => ['required', 'string', 'max:255', 'unique:users', 'regex:/^[0-9]+$/', 'size:10'],
+            'phoneNumber' => ['required', 'string', 'max:255', 'unique:users', 'regex:/^[0-9]+$/', 'size:11'],
             'college' => 'required|string|max:255',
             'labLoc' => 'required|string|max:255',
         ], [
