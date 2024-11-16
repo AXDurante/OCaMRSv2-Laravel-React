@@ -1825,12 +1825,20 @@ input[type="checkbox"] {
 }
 
 .status-for-approval {
-    background: linear-gradient(145deg, #ffc107, #fd7e14); /* Reusing pending style */
+    background: linear-gradient(
+        145deg,
+        #ffc107,
+        #fd7e14
+    ); /* Reusing pending style */
     color: white;
 }
 
 .status-approved {
-    background: linear-gradient(145deg, #17a2b8, #0dcaf0); /* Reusing processing style */
+    background: linear-gradient(
+        145deg,
+        #17a2b8,
+        #0dcaf0
+    ); /* Reusing processing style */
     color: white;
 }
 
@@ -3597,10 +3605,6 @@ input[type="checkbox"] {
     padding-left: 33px !important; /* Increase left padding */
 }
 
-/* Adjust icon position in select */
-.position-absolute {
-    left: 18px !important;
-}
 .form-select {
     text-align: center !important;
 }
@@ -3777,7 +3781,8 @@ td[title] {
 }
 
 /* Add this additional class to handle the hyphenated version */
-.text-for-approval, .text-for-approval {
+.text-for-approval,
+.text-for-approval {
     color: #ffc107; /* Orange color for For Approval */
     font-weight: 600;
 }

@@ -81,43 +81,57 @@ function Dashboard({ jobOrder }) {
                                         <th
                                             className="thead-custom"
                                             scope="col"
+                                            style={{ width: "12%" }}
                                         >
                                             Date Received
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
+                                            style={{ width: "5%" }}
                                         >
                                             Job ID
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
+                                            style={{ width: "15%" }}
                                         >
                                             Client Name
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
+                                            style={{ width: "15%" }}
                                         >
                                             Email
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
+                                            style={{ width: "15%" }}
                                         >
-                                            Service Requested
+                                            Service
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
+                                            style={{ width: "17%" }}
                                         >
                                             Status
                                         </th>
-                                        <th class="thead-custom" scope="col">
+                                        <th
+                                            class="thead-custom"
+                                            scope="col"
+                                            style={{ width: "10%" }}
+                                        >
                                             Priority
                                         </th>
-                                        <th class="thead-custom" scope="col">
+                                        <th
+                                            class="thead-custom"
+                                            scope="col"
+                                            style={{ width: "13%" }}
+                                        >
                                             Action
                                         </th>
                                     </tr>
@@ -137,10 +151,25 @@ function Dashboard({ jobOrder }) {
                                             <td>{order.job_id}</td>{" "}
                                             {/* Job ID */}
                                             <td>
-                                                {order.user ? `${order.user.firstName} ${order.user.lastName}` : 'N/A'}
+                                                {order.user
+                                                    ? `${order.user.firstName} ${order.user.lastName}`
+                                                    : "N/A"}
                                             </td>
-                                            <td>{order.user ? order.user.email : 'N/A'}</td>
-                                            <td>{order.service_type}</td>{" "}
+                                            <td>
+                                                {order.user
+                                                    ? order.user.email
+                                                    : "N/A"}
+                                            </td>
+                                            <td
+                                                style={{
+                                                    maxWidth: "120px",
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    whiteSpace: "nowrap",
+                                                }}
+                                            >
+                                                {order.service_type}
+                                            </td>{" "}
                                             {/* Service Request */}
                                             <td>
                                                 <span
@@ -298,7 +327,9 @@ function Dashboard({ jobOrder }) {
                                                 Client:
                                             </span>
                                             <span className="mobile-table-value">
-                                                {order.user ? `${order.user.firstName} ${order.user.lastName}` : 'N/A'}
+                                                {order.user
+                                                    ? `${order.user.firstName} ${order.user.lastName}`
+                                                    : "N/A"}
                                             </span>
                                         </div>
 
@@ -307,7 +338,9 @@ function Dashboard({ jobOrder }) {
                                                 Email:
                                             </span>
                                             <span className="mobile-table-value">
-                                                {order.user ? order.user.email : 'N/A'}
+                                                {order.user
+                                                    ? order.user.email
+                                                    : "N/A"}
                                             </span>
                                         </div>
 
