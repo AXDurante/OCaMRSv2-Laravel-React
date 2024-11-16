@@ -11,7 +11,7 @@ export default function VerifyEmail({ status }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("verification.send"));
+        post(route("technician.verification.send"));
     };
 
     useEffect(() => {
@@ -29,25 +29,33 @@ export default function VerifyEmail({ status }) {
                 });
         };
 
-        // Check immediately on mount
-        checkVerification();
+        const interval = setInterval(checkVerification, 5000);
 
-        // Poll every 3 seconds
-        const interval = setInterval(checkVerification, 3000);
+        checkVerification(); // Check immediately on mount
 
         return () => clearInterval(interval);
     }, []);
 
     const attemptToCloseOrRedirect = () => {
-        // Redirect to dashboard
-        window.location.href = route("dashboard");
+        // Attempt to close the window
+        window.close();
+
+        // If the window didn't close (which is likely), redirect after a short delay
+        setTimeout(() => {
+            if (!window.closed) {
+                window.location.href = route("dashboard");
+            }
+        }, 300);
     };
 
     if (isVerified) {
         return (
             <div className="centered">
-                <h1 className="mb-4">Email Verified Successfully</h1>
-                <p>Redirecting to dashboard...</p>
+                <h1 className="mb-4">Email Verified</h1>
+                <p>
+                    Your email has been verified. This page will close or
+                    redirect shortly.
+                </p>
             </div>
         );
     }
