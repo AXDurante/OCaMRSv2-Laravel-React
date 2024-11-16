@@ -1,11 +1,11 @@
 /* Add these color variables at the top */
 :root {
-    --ust-yellow: #FBC600;
-    --ust-yellow-light: #FFE066;
-    --ust-yellow-dark: #E6B800;
+    --ust-yellow: #fbc600;
+    --ust-yellow-light: #ffe066;
+    --ust-yellow-dark: #e6b800;
     --ust-black: #202020;
-    --ust-gray: #4A4A4A;
-    --ust-light-gray: #F8F8F8;
+    --ust-gray: #4a4a4a;
+    --ust-light-gray: #f8f8f8;
 }
 
 * {
@@ -1713,7 +1713,6 @@ input[type="checkbox"] {
     }
 }
 
-
 .fade-in {
     animation: fadeIn 0.5s ease-out forwards;
 }
@@ -2284,10 +2283,13 @@ input[type="checkbox"] {
 
 .notification-card:hover {
     transform: translateY(-5px);
-    background: linear-gradient(145deg, #ffffff, #f0f7ff); /* Hint of pastel blue */
-    box-shadow: 8px 8px 16px #d1d1d1,
-                -8px -8px 16px #ffffff,
-                inset 1px 1px 2px rgba(135, 206, 250, 0.1); /* Subtle inner glow */
+    background: linear-gradient(
+        145deg,
+        #ffffff,
+        #f0f7ff
+    ); /* Hint of pastel blue */
+    box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff,
+        inset 1px 1px 2px rgba(135, 206, 250, 0.1); /* Subtle inner glow */
     border: 1px solid rgba(0, 123, 255, 0.1);
 }
 
@@ -2384,7 +2386,7 @@ input[type="checkbox"] {
 
 .hover-lift:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .notification-badge {
@@ -2437,19 +2439,19 @@ input[type="checkbox"] {
 
 /* Add these to your existing CSS */
 .text-completed {
-    color: #198754 !important;  /* Bootstrap success color */
+    color: #198754 !important; /* Bootstrap success color */
 }
 
 .text-processing {
-    color: #0dcaf0 !important;  /* Bootstrap info color */
+    color: #0dcaf0 !important; /* Bootstrap info color */
 }
 
 .text-pending {
-    color: #ffc107 !important;  /* Bootstrap warning color */
+    color: #ffc107 !important; /* Bootstrap warning color */
 }
 
 .text-cancelled {
-    color: #dc3545 !important;  /* Bootstrap danger color */
+    color: #dc3545 !important; /* Bootstrap danger color */
 }
 
 /* Update your existing status-badge styles */
@@ -2464,8 +2466,8 @@ input[type="checkbox"] {
 /* Add these new styles */
 .job-request-form {
     max-width: 100%; /* Changed from 1200px to 100% */
-    margin: 0;       /* Remove auto margins */
-    padding: 1rem;   /* Reduced padding */
+    margin: 0; /* Remove auto margins */
+    padding: 1rem; /* Reduced padding */
 }
 
 /* Update the form section styles */
@@ -2481,8 +2483,7 @@ input[type="checkbox"] {
 
 .form-section:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12),
-                0 4px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
     border: 1px solid rgba(251, 198, 0, 0.2);
 }
 
@@ -2495,14 +2496,14 @@ input[type="checkbox"] {
 
 .form-section:hover {
     box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08),
-                -6px -6px 12px rgba(255, 255, 255, 0.95),
-                inset 1px 1px 1px rgba(0, 0, 0, 0.02);
+        -6px -6px 12px rgba(255, 255, 255, 0.95),
+        inset 1px 1px 1px rgba(0, 0, 0, 0.02);
     transform: translateY(-2px);
     border: 1px solid rgba(0, 0, 0, 0.12); /* Slightly darker border on hover */
 }
 
 .required-field::after {
-    content: '*';
+    content: "*";
     color: #dc3545;
     margin-left: 4px;
 }
@@ -2641,7 +2642,8 @@ input[type="checkbox"] {
     box-shadow: none !important;
 }
 
-.disabled-input:hover, .disabled-input:focus {
+.disabled-input:hover,
+.disabled-input:focus {
     border-color: #e2e8f0 !important;
     box-shadow: none !important;
 }
@@ -2653,7 +2655,7 @@ input[type="checkbox"] {
 }
 
 .request-info-section::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -1rem;
     left: 0;
@@ -2667,7 +2669,7 @@ input[type="checkbox"] {
     .system-info-section {
         padding: 1rem;
     }
-    
+
     .col-md-6 {
         margin-bottom: 1rem;
     }
@@ -2686,7 +2688,11 @@ input[type="checkbox"] {
 }
 
 .section-number {
-    background: linear-gradient(145deg, var(--ust-yellow), var(--ust-yellow-dark));
+    background: linear-gradient(
+        145deg,
+        var(--ust-yellow),
+        var(--ust-yellow-dark)
+    );
     color: var(--ust-black);
     width: 28px;
     height: 28px;
@@ -2711,13 +2717,17 @@ input[type="checkbox"] {
 }
 
 .system-info-section::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 4px;
     height: 100%;
-    background: linear-gradient(to bottom, var(--ust-yellow), var(--ust-yellow-dark));
+    background: linear-gradient(
+        to bottom,
+        var(--ust-yellow),
+        var(--ust-yellow-dark)
+    );
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
 }
@@ -2754,7 +2764,7 @@ input[type="checkbox"] {
 }
 
 .instrument-title::before {
-    content: '';
+    content: "";
     display: inline-block;
     width: 8px;
     height: 8px;
@@ -2780,7 +2790,11 @@ input[type="checkbox"] {
 
 /* Submit Job Order Button Styles */
 .submit-job-order-button {
-    background: linear-gradient(145deg, var(--ust-yellow), var(--ust-yellow-dark));
+    background: linear-gradient(
+        145deg,
+        var(--ust-yellow),
+        var(--ust-yellow-dark)
+    );
     color: var(--ust-black);
     border: none;
     width: 100%;
@@ -2798,7 +2812,11 @@ input[type="checkbox"] {
 }
 
 .submit-job-order-button:hover {
-    background: linear-gradient(145deg, var(--ust-yellow-dark), var(--ust-yellow));
+    background: linear-gradient(
+        145deg,
+        var(--ust-yellow-dark),
+        var(--ust-yellow)
+    );
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(251, 198, 0, 0.3);
 }
@@ -2842,7 +2860,7 @@ input[type="checkbox"] {
     margin-bottom: 2rem;
     transition: all 0.3s ease;
     border: 1px solid #e2e8f0;
-    overflow: visible;  /* Added overflow visible */
+    overflow: visible; /* Added overflow visible */
 }
 
 /* Update the job request form container */
@@ -2852,14 +2870,14 @@ input[type="checkbox"] {
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    min-height: 0;  /* Added min-height */
-    overflow: visible;  /* Added overflow visible */
+    min-height: 0; /* Added min-height */
+    overflow: visible; /* Added overflow visible */
 }
 
 /* Add this specific style for the Open Request text */
 .text-2xl .text-gray-400.font-light {
     font-weight: 300 !important; /* Using !important to ensure override */
-    color: #9CA3AF !important;   /* A slightly lighter gray */
+    color: #9ca3af !important; /* A slightly lighter gray */
 }
 
 /* Add this specific style for the Open Request text */
@@ -2891,8 +2909,7 @@ input[type="checkbox"] {
 
 .view-section:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12),
-                0 4px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
     border: 1px solid rgba(251, 198, 0, 0.2);
 }
 
@@ -2947,15 +2964,16 @@ input[type="checkbox"] {
 
 .form-section:hover {
     transform: translateY(-4px) scale(1.01); /* Reduced scale effect */
-    box-shadow: 8px 8px 16px #d1d1d1,
-        -8px -8px 16px #ffffff;
+    box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
     background-color: #f8f9fa;
 }
 
 /* Add this to your notification styles section */
 .collapsed .badge {
-    transform: translateX(50%) !important;  /* Move badge to overlap the bell icon */
-    margin-left: -1 !important;  /* Remove margin when collapsed */
+    transform: translateX(
+        50%
+    ) !important; /* Move badge to overlap the bell icon */
+    margin-left: -1 !important; /* Remove margin when collapsed */
 }
 
 .mark-all-button {
@@ -3595,4 +3613,89 @@ input[type="checkbox"] {
 /* Add tooltip for truncated service text */
 td[title] {
     cursor: help;
+}
+/* Custom Dropdown Styles */
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+}
+
+.custom-dropdown-select {
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.custom-dropdown-select:hover {
+    border-color: #fbc600;
+    transform: translateY(-1px);
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.custom-dropdown-select:focus {
+    outline: none;
+    border-color: #fbc600;
+    box-shadow: 0 0 0 3px rgba(251, 198, 0, 0.2);
+}
+
+.custom-dropdown-arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.custom-dropdown-arrow i {
+    color: #666;
+    font-size: 14px;
+}
+
+.custom-dropdown:hover .custom-dropdown-arrow {
+    transform: translateY(-50%) translateX(3px);
+}
+
+.custom-dropdown-select:focus + .custom-dropdown-arrow i {
+    color: #fbc600;
+}
+
+/* Style for the options */
+.custom-dropdown-select option {
+    padding: 12px;
+    font-size: 15px;
+    background-color: white;
+    color: #333;
+}
+
+.custom-dropdown-select option:hover {
+    background-color: #f8f9fa;
+}
+
+/* Animation for the dropdown */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-dropdown-select[size] {
+    animation: slideDown 0.3s ease;
 }

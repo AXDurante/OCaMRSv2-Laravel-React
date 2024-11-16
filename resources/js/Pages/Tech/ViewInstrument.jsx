@@ -152,22 +152,27 @@ function ViewInstrument({ equipment = [] }) {
 
                 {/* Dropdown to select category */}
                 <div className="mt-3">
-                    <select
-                        className="form-select"
-                        onChange={handleDropdownChange}
-                        value={selectedCategory || ""}
-                    >
-                        <option value="">Select a category</option>
-                        {[
-                            ...new Set(
-                                equipment.map((item) => item.equip_category)
-                            ),
-                        ].map((category, index) => (
-                            <option key={index} value={category}>
-                                {category}
-                            </option>
-                        ))}
-                    </select>
+                    <div className="custom-dropdown">
+                        <select
+                            className="custom-dropdown-select"
+                            onChange={handleDropdownChange}
+                            value={selectedCategory || ""}
+                        >
+                            <option value="">Select a category</option>
+                            {[
+                                ...new Set(
+                                    equipment.map((item) => item.equip_category)
+                                ),
+                            ].map((category, index) => (
+                                <option key={index} value={category}>
+                                    {category}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="custom-dropdown-arrow">
+                            <i className="bi bi-chevron-down"></i>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Display filtered equipments */}
