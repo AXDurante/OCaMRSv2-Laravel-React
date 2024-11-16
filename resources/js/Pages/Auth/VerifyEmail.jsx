@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import GuestLayout from "@/Layouts/GuestLayout";
+import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, Link, useForm } from "@inertiajs/react";
 import LoginButton from "@/Components/LoginButton";
 import axios from "axios";
@@ -6,52 +8,62 @@ import axios from "axios";
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm({});
     const [isVerified, setIsVerified] = useState(false);
-    const [redirectUrl, setRedirectUrl] = useState(null);
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("verification.send"));
+        post(route("technician.verification.send"));
     };
 
     useEffect(() => {
-        const checkVerification = async () => {
-            try {
-                const response = await axios.get(
-                    route("verification.check.status")
-                );
-                if (response.data.verified) {
-                    setIsVerified(true);
-                    setRedirectUrl(response.data.redirect);
-                    setTimeout(() => {
-                        window.location.href = response.data.redirect;
-                    }, 2000);
-                }
-            } catch (error) {
-                console.error("Error checking verification status:", error);
-            }
+        const checkVerification = () => {
+            axios
+                .get(route("verification.check"))
+                .then((response) => {
+                    if (response.data.verified) {
+                        setIsVerified(true);
+                        attemptToCloseOrRedirect();
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error checking verification status:", error);
+                });
         };
 
-        // Check immediately on mount
-        checkVerification();
+        const interval = setInterval(checkVerification, 5000);
 
-        // Poll every 3 seconds
-        const interval = setInterval(checkVerification, 3000);
+        checkVerification(); // Check immediately on mount
 
         return () => clearInterval(interval);
     }, []);
 
+    const attemptToCloseOrRedirect = () => {
+        // Attempt to close the window
+        window.close();
+
+        // If the window didn't close (which is likely), redirect after a short delay
+        setTimeout(() => {
+            if (!window.closed) {
+                window.location.href = route("dashboard");
+            }
+        }, 300);
+    };
+
     if (isVerified) {
         return (
             <div className="centered">
-                <h1 className="mb-4">Email Verified Successfully!</h1>
-                <p>Redirecting you to the dashboard...</p>
+                <h1 className="mb-4">Email Verified</h1>
+                <p>
+                    Your email has been verified. This page will close or
+                    redirect shortly.
+                </p>
             </div>
         );
     }
 
     return (
         <div className="centered">
-            <h1 className="mb-4">Email Verification</h1>
+            <h1 className="mb-4">Client Email Verification</h1>
+
             <div className="mb-4 text-sm text-gray-600">
                 Thanks for signing up! Before getting started, could you verify
                 your email address by clicking on the link we just emailed to
@@ -61,7 +73,8 @@ export default function VerifyEmail({ status }) {
 
             {status === "verification-link-sent" && (
                 <div className="mb-4 font-medium text-sm text-green-600">
-                    A new verification link has been sent to your email address.
+                    A new verification link has been sent to the email address
+                    you provided during registration.
                 </div>
             )}
 
@@ -79,7 +92,7 @@ export default function VerifyEmail({ status }) {
                         method="post"
                         as="button"
                     >
-                        Log Out
+                        Go Back
                     </Link>
                 </div>
             </form>
