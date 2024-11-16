@@ -21,12 +21,14 @@ function Feedback({ jobOrderId, jobOrder }) {
             <i
                 key={index}
                 className={`bi bi-star-fill fs-4 ${
-                    index < (hoveredRating || data.rating) ? 'text-warning' : 'text-secondary'
+                    index < (hoveredRating || data.rating)
+                        ? "text-warning"
+                        : "text-secondary"
                 } hover-scale`}
                 onMouseEnter={() => setHoveredRating(index + 1)}
                 onMouseLeave={() => setHoveredRating(0)}
                 onClick={() => setData("rating", index + 1)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
             />
         ));
     };
@@ -58,20 +60,26 @@ function Feedback({ jobOrderId, jobOrder }) {
                                             <label className="form-label fw-bold mb-0 me-3">
                                                 Job Order ID:
                                             </label>
-                                            <span className="text-muted">#{jobOrderId}</span>
+                                            <span className="text-muted">
+                                                #{jobOrderId}
+                                            </span>
                                         </div>
                                         <div className="d-flex align-items-center mb-2">
                                             <label className="form-label fw-bold mb-0 me-3">
                                                 Service Type:
                                             </label>
-                                            <span className="text-muted">{jobOrder?.service_type}</span>
+                                            <span className="text-muted">
+                                                {jobOrder?.service_type}
+                                            </span>
                                         </div>
                                         <div className="d-flex align-items-center">
                                             <label className="form-label fw-bold mb-0 me-3">
                                                 Date Requested:
                                             </label>
                                             <span className="text-muted">
-                                                {new Date(jobOrder?.date_request).toLocaleDateString()}
+                                                {new Date(
+                                                    jobOrder?.date_request
+                                                ).toLocaleDateString()}
                                             </span>
                                         </div>
                                     </div>
@@ -81,13 +89,20 @@ function Feedback({ jobOrderId, jobOrder }) {
                                     <div className="row mb-4 hover-scale">
                                         <div className="col-12">
                                             <label className="form-label fw-bold mb-3">
-                                                Rate our service
+                                                Rate our service{" "}
+                                                <span
+                                                    style={{ color: "#dc3545" }}
+                                                >
+                                                    *
+                                                </span>
                                             </label>
                                             <div className="star-rating d-flex gap-2">
                                                 {renderStars()}
                                             </div>
                                             {errors.rating && (
-                                                <div className="text-danger mt-1">{errors.rating}</div>
+                                                <div className="text-danger mt-1">
+                                                    {errors.rating}
+                                                </div>
                                             )}
                                         </div>
                                     </div>
@@ -95,7 +110,12 @@ function Feedback({ jobOrderId, jobOrder }) {
                                     <div className="row hover-scale">
                                         <div className="col-12">
                                             <label className="form-label fw-bold mb-3">
-                                                Share your experience
+                                                Share your experience{" "}
+                                                <span
+                                                    style={{ color: "#dc3545" }}
+                                                >
+                                                    *
+                                                </span>
                                             </label>
                                             <div className="comment-box">
                                                 <textarea
@@ -103,13 +123,18 @@ function Feedback({ jobOrderId, jobOrder }) {
                                                     rows="4"
                                                     value={data.comment}
                                                     onChange={(e) =>
-                                                        setData("comment", e.target.value)
+                                                        setData(
+                                                            "comment",
+                                                            e.target.value
+                                                        )
                                                     }
                                                     placeholder="Tell us what you think..."
                                                 ></textarea>
                                             </div>
                                             {errors.comment && (
-                                                <div className="text-danger mt-1">{errors.comment}</div>
+                                                <div className="text-danger mt-1">
+                                                    {errors.comment}
+                                                </div>
                                             )}
                                         </div>
                                     </div>
