@@ -96,15 +96,16 @@ class JobOrderController extends Controller
     public function store(Request $request)
     {
         $jobOrderFields = $request->validate([
-            'service_type' => ['required'],
-            'trans_type' => ['nullable'],
-            'dept_name' => ['required'],
-            'lab' => ['required'],
-            'lab_loc' => ['required'],
-            'pos' => ['required'],
-            'status' => ['required'],
-            'remarks' => ['nullable', 'string'],
-            'priority' => ['required'], 
+            'service_type' => 'required',
+            'trans_type' => 'required',
+            'dept_name' => 'required',
+            'lab' => 'required',
+            'lab_loc' => 'required',
+            'pos' => 'required',
+            'employeeID' => 'required',
+            'remarks' => 'nullable',
+            'status' => ['required', 'in:For Approval,Approved,Cancelled,Completed'],
+            'priority' => ['required', 'in:Regular,High,Medium,Low'],
         ]);
 
         // Set employeeID from authenticated user
@@ -187,6 +188,15 @@ class JobOrderController extends Controller
                     'Job Order Updated',
                     "Job order #{$jobOrder->job_id} status has been updated to {$newStatus}",
                     'status_change'
+                );
+            }
+
+            if ($oldStatus !== 'Approved' && $newStatus === 'Approved') {
+                TechnicianNotificationController::notifyAllTechnicians(
+                    $jobOrder,
+                    'New Job Order Available',
+                    "Job order #{$jobOrder->job_id} is now available for processing",
+                    'new_job_order'
                 );
             }
         }

@@ -96,8 +96,8 @@ function NotificationsTechnician({ notifications }) {
                                                                 </div>
                                                                 <div>
                                                                     <strong>Status:</strong>{' '}
-                                                                    <span className={`status-badge status-${notification.job_order.status.toLowerCase()}`}>
-                                                                        {notification.job_order.status}
+                                                                    <span className={`status-badge status-${notification.job_order?.status.toLowerCase().replace(' ', '-')}`}>
+                                                                        {notification.job_order?.status}
                                                                     </span>
                                                                 </div>
                                                             </div>

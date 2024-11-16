@@ -156,11 +156,21 @@ function TrackOrder({
                                                 Service Request #
                                                 {jobOrder.job_id}
                                                 <span
-                                                    className={`status-badge status-${jobOrder.status.toLowerCase()}`}
+                                                    className={`status-badge status-${jobOrder.status.toLowerCase().replace(' ', '-')}`}
                                                 >
-                                                    {jobOrder.status}
+                                                    <span className={`status-text-${jobOrder.status.toLowerCase().replace(' ', '-')}`}>
+                                                        {jobOrder.status}
+                                                    </span>
                                                 </span>
                                             </h5>
+
+                                            <p>
+                                                Your job order #{jobOrder.job_id} status has been updated to{" "}
+                                                <span className={`fw-bold text-${jobOrder.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                                                    {jobOrder.status}
+                                                </span>
+                                                {" "}by admin
+                                            </p>
 
                                             <div className="order-info">
                                                 <div className="info-item">

@@ -1824,6 +1824,16 @@ input[type="checkbox"] {
     color: white;
 }
 
+.status-for-approval {
+    background: linear-gradient(145deg, #ffc107, #fd7e14); /* Reusing pending style */
+    color: white;
+}
+
+.status-approved {
+    background: linear-gradient(145deg, #17a2b8, #0dcaf0); /* Reusing processing style */
+    color: white;
+}
+
 .order-info {
     display: flex;
     gap: 2rem;
@@ -3758,4 +3768,31 @@ td[title] {
     .custom-tooltip::after {
         left: 10px; /* Align arrow with left side on mobile */
     }
+}
+
+/* Status text styles for notifications */
+.text-for-approval {
+    color: #ffc107; /* Orange color for For Approval */
+    font-weight: 600;
+}
+
+/* Add this additional class to handle the hyphenated version */
+.text-for-approval, .text-for-approval {
+    color: #ffc107; /* Orange color for For Approval */
+    font-weight: 600;
+}
+
+.text-approved {
+    color: #17a2b8; /* Blue color for Approved */
+    font-weight: 600;
+}
+
+.text-completed {
+    color: #198754; /* Green color for Completed */
+    font-weight: 600;
+}
+
+.text-cancelled {
+    color: #dc3545; /* Red color for Cancelled */
+    font-weight: 600;
 }

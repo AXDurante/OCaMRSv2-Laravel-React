@@ -89,7 +89,7 @@ function NotificationsAdmin({ notifications }) {
 
                                                     <div className="d-flex align-items-center mb-3">
                                                         <span className="me-2">Current Status:</span>
-                                                        <span className={`status-badge status-${notification.job_order?.status.toLowerCase()}`}>
+                                                        <span className={`status-badge status-${notification.job_order?.status.toLowerCase().replace(' ', '-')}`}>
                                                             {notification.job_order?.status}
                                                         </span>
                                                     </div>

@@ -135,11 +135,26 @@ class AdminController extends Controller
             $jobOrder = JobOrder::findOrFail($id);
             $oldStatus = $jobOrder->status;
             
+            // Update validation to include new status
+            $validatedData = $request->validate([
+                'service_type' => 'required',
+                'trans_type' => 'required',
+                'remarks' => 'nullable',
+                'status' => ['required', 'in:For Approval,Approved,Cancelled,Completed'],
+                'priority' => 'required|in:Regular,High,Medium,Low',
+                'instruments' => 'required|array',
+                'instruments.*.instrument' => 'required',
+                'instruments.*.qty' => 'required|integer',
+                'instruments.*.model' => 'nullable',
+                'instruments.*.instrument_num' => 'required',
+                'instruments.*.manufacturer' => 'nullable',
+            ]);
+
             // Update job order
             $jobOrder->update($request->all());
 
-            // If status has changed to Processing, notify all technicians
-            if ($oldStatus !== 'Processing' && $jobOrder->status === 'Processing') {
+            // If status has changed from For Approval to Approved
+            if ($oldStatus === 'For Approval' && $jobOrder->status === 'Approved') {
                 \Log::info('Creating notifications for all technicians', [
                     'job_order_id' => $jobOrder->job_id,
                     'old_status' => $oldStatus,
@@ -465,7 +480,7 @@ class AdminController extends Controller
     public function updateJobStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:For Approval,Approved,Processing,Completed,Cancelled'
+            'status' => 'required|in:For Approval,Approved,Cancelled,Completed'
         ]);
 
         $jobOrder = JobOrder::findOrFail($id);

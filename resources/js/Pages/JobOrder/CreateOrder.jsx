@@ -26,7 +26,7 @@ function CreateOrder({
         pos: "Laboratory Technician",
         employeeID: employeeID,
         remarks: "",
-        status: "Pending",
+        status: "For Approval",
         priority: "Regular",
 
         // For Instrument Units
@@ -42,10 +42,6 @@ function CreateOrder({
     });
 
     const addInstrument = () => {
-        if (data.instruments.length >= 5) {
-            // Optionally show an error message or toast notification
-            return;
-        }
         setData("instruments", [
             ...data.instruments,
             {
@@ -273,7 +269,7 @@ function CreateOrder({
             {/* Instruments Section */}
             <div className="form-section fade-in-delayed">
                 <div className="section-header d-flex justify-content-between align-items-center mb-3">
-                    <h3>Instruments ({instrumentCount}/5)</h3>
+                    <h3>Instruments ({instrumentCount})</h3>
                 </div>
                 {data.instruments.map((instrument, index) => (
                     <div key={index} className="item-card">
@@ -364,16 +360,14 @@ function CreateOrder({
                     </div>
                 ))}
 
-                {instrumentCount < 5 && (
-                    <button
-                        type="button"
-                        className="add-item-button"
-                        onClick={addInstrument}
-                    >
-                        <i className="bi bi-plus-lg me-2"></i>
-                        Add More Instrument ({instrumentCount}/5)
-                    </button>
-                )}
+                <button
+                    type="button"
+                    className="add-item-button"
+                    onClick={addInstrument}
+                >
+                    <i className="bi bi-plus-lg me-2"></i>
+                    Add More Instrument ({instrumentCount})
+                </button>
             </div>
 
             <div className="form-section">
