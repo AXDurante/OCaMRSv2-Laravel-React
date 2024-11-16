@@ -8,15 +8,18 @@ function ViewOrder({ jobOrder }) {
     const instruments = jobOrder?.int_units || []; // Use int_units instead of instruments
     console.log(instruments);
     return (
-        <div className="d-flex">
-            <div id="content" className="flex-fill p-3">
-                <div>
-                    <h1 className="d-inline">Track Request | </h1>
-                    <h1 className="d-inline fw-light">
-                        Job Order Request Details
-                    </h1>
+        <div className="job-request-form">
+            <div className="form-section fade-in">
+                <h1 className="text-2xl mb-4">
+                    Track Request{" "}
+                    <span className="text-black font-light subtitle-span">
+                        | Job Order Details
+                    </span>
+                </h1>
+                <hr className="mb-4 border-gray-200" />
+
+                <div className="d-flex align-items-center gap-3 mb-4">
                     <h4>
-                        {" "}
                         Status:{" "}
                         <b
                             className={
@@ -76,139 +79,171 @@ function ViewOrder({ jobOrder }) {
                             </>
                         )}
                     </div>
-                    <hr />
                 </div>
-                <div className="mt-3">
-                    <h4>Information</h4>
-                    <div className="row forms-bg p-3">
-                        <div className="col d-flex flex-column align-items-center p-3">
-                            <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+
+                <div className="system-info-section-b mb-4">
+                    <h4 className="section-title-b">
+                        <span
+                            className="section-number-blue"
+                            style={{ backgroundColor: "#0095FF" }}
+                        >
+                            1
+                        </span>
+                        Request Information
+                    </h4>
+                    <div className="row g-3">
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
                                 Service Requested
-                            </h6>
+                            </label>
                             <input
                                 type="text"
-                                className="d-flex flex-column align-items-center w-100 rounded"
+                                className="form-input disabled-input"
                                 value={jobOrder?.service_type || ""}
                                 readOnly
                             />
-                            <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
                                 Laboratory
-                            </h6>
+                            </label>
                             <input
                                 type="text"
-                                className="d-flex flex-column align-items-center w-100 rounded"
+                                className="form-input disabled-input"
                                 value={jobOrder?.lab || ""}
                                 readOnly
                                 disabled
                             />
-                            <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
                                 College/ Faculty / Office
-                            </h6>
+                            </label>
                             <input
                                 type="text"
-                                className="d-flex flex-column align-items-center w-100 rounded"
+                                className="form-input disabled-input"
                                 value={jobOrder?.dept_name || ""}
                                 readOnly
                                 disabled
                             />
                         </div>
-                        <div className="col d-flex flex-column align-items-center p-3">
-                            <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
                                 Instrumentation Transportation
-                            </h6>
+                            </label>
                             <input
                                 type="text"
-                                className="d-flex flex-column align-items-center w-100 rounded"
+                                className="form-input disabled-input"
                                 value={jobOrder?.trans_type || ""}
                                 readOnly
                             />
-                            <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
                                 Laboratory Location
-                            </h6>
+                            </label>
                             <input
                                 type="text"
-                                className="d-flex flex-column align-items-center w-100 rounded"
+                                className="form-input disabled-input"
                                 value={jobOrder?.lab_loc || ""}
                                 readOnly
                                 disabled
                             />
-                            <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
                                 Position
-                            </h6>
+                            </label>
                             <input
                                 type="text"
-                                className="d-flex flex-column align-items-center w-100 rounded"
+                                className="form-input disabled-input"
                                 value={jobOrder?.pos || ""}
                                 readOnly
                                 disabled
                             />
                         </div>
-                        <h6 className="w-100 fw-bold text-start"> Remarks </h6>
-                        <textarea
-                            value={jobOrder.remarks}
-                            onChange={(e) => setData("remarks", e.target.value)}
-                            readOnly
-                            disabled
-                        />
+                        <div className="col-12">
+                            <label className="form-label text-muted">
+                                Remarks
+                            </label>
+                            <textarea
+                                className="form-input disabled-input"
+                                value={jobOrder.remarks}
+                                onChange={(e) =>
+                                    setData("remarks", e.target.value)
+                                }
+                                readOnly
+                                disabled
+                            />
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <h4 className="mt-4">Instruments</h4>
+                <div className="form-section fade-in-delayed">
+                    <h4 className="section-title-b">
+                        <span
+                            className="section-number-blue"
+                            style={{ backgroundColor: "#0095FF" }}
+                        >
+                            2
+                        </span>
+                        Instruments ({instruments.length})
+                    </h4>
                     {instruments.length > 0 ? (
                         instruments.map((instrument, index) => (
-                            <div key={index} className="">
-                                <h4 className="mt-4">Item No. {index + 1}</h4>
-                                <div className="row forms-bg p-3">
-                                    <div className="col-12 col-md-5 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
+                            <div key={index} className="item-card">
+                                <div className="row g-3">
+                                    <div className="col-md-6">
+                                        <label className="form-label text-muted">
                                             Instrument
-                                        </h6>
+                                        </label>
                                         <input
                                             type="text"
-                                            className="w-100 mb-2 rounded"
+                                            className="form-input disabled-input"
                                             value={instrument.instrument}
                                             readOnly
                                         />
-                                        <h6 className="w-100 fw-bold text-start">
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label text-muted">
                                             Model
-                                        </h6>
+                                        </label>
                                         <input
                                             type="text"
-                                            className="w-100 mb-2 rounded"
+                                            className="form-input disabled-input"
                                             value={instrument.model}
                                             readOnly
                                         />
                                     </div>
-
-                                    <div className="col-12 col-md-3 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
+                                    <div className="col-md-6">
+                                        <label className="form-label text-muted">
                                             Quantity
-                                        </h6>
+                                        </label>
                                         <input
                                             type="number"
-                                            className="w-50 mb-2 justify-content-start rounded"
+                                            className="form-input disabled-input"
                                             value={instrument.qty}
                                             readOnly
                                         />
-                                        <h6 className="w-100 fw-bold text-start">
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label text-muted">
                                             Manufacturer
-                                        </h6>
+                                        </label>
                                         <input
                                             type="text"
-                                            className="w-100 mb-2 rounded"
+                                            className="form-input disabled-input"
                                             value={instrument.manufacturer}
                                             readOnly
                                         />
                                     </div>
-
-                                    <div className="col-12 col-md-4 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
+                                    <div className="col-md-6">
+                                        <label className="form-label text-muted">
                                             Serial Number/Property Number
-                                        </h6>
+                                        </label>
                                         <input
                                             type="number"
-                                            className="w-100 mb-2 rounded"
+                                            className="form-input disabled-input"
                                             value={instrument.instrument_num}
                                             readOnly
                                         />
@@ -217,30 +252,83 @@ function ViewOrder({ jobOrder }) {
                             </div>
                         ))
                     ) : (
-                        <p>No instruments available.</p>
+                        <p className="text-muted">No instruments available.</p>
                     )}
                 </div>
-                <Link
-                    href={`/technician/showJobOrder/${jobOrder.job_id}/edit`}
-                    className="btn btn-success w-100"
-                >
-                    Edit
-                </Link>
 
-                <Link
-                    href={`/technician/TSR/${jobOrder.job_id}`}
-                    className="btn btn-info w-100 mt-2"
-                >
-                    View Technical Service Reports
-                </Link>
+                <div className="form-section">
+                    <div
+                        className="action-buttons-container"
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "12px",
+                        }}
+                    >
+                        <Link
+                            href={`/technician/showJobOrder/${jobOrder.job_id}/edit`}
+                            className="action-button primary"
+                            style={{
+                                padding: "12px 24px",
+                                borderRadius: "6px",
+                                backgroundColor: "#0095FF",
+                                color: "white",
+                                textDecoration: "none",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                border: "none",
+                                fontWeight: "500",
+                                transition: "background-color 0.2s ease",
+                            }}
+                        >
+                            <i className="bi bi-pencil-fill me-2"></i>
+                            Edit Job Order
+                        </Link>
 
-                {/* Return Button */}
-                <a
-                    href="/admin"
-                    className="btn btn-dark w-100 text-warning mt-2 mb-4"
-                >
-                    Return
-                </a>
+                        <Link
+                            href={`/technician/TSR/${jobOrder.job_id}`}
+                            className="action-button secondary"
+                            style={{
+                                padding: "12px 24px",
+                                borderRadius: "6px",
+                                backgroundColor: "#6C757D",
+                                color: "white",
+                                textDecoration: "none",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                border: "none",
+                                fontWeight: "500",
+                                transition: "background-color 0.2s ease",
+                            }}
+                        >
+                            <i className="bi bi-file-earmark-text-fill me-2"></i>
+                            View Technical Service Reports
+                        </Link>
+
+                        <a
+                            href="/admin"
+                            className="action-button tertiary"
+                            style={{
+                                padding: "12px 24px",
+                                borderRadius: "6px",
+                                backgroundColor: "#343A40",
+                                color: "white",
+                                textDecoration: "none",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                border: "none",
+                                fontWeight: "500",
+                                transition: "background-color 0.2s ease",
+                            }}
+                        >
+                            <i className="bi bi-arrow-left-circle-fill me-2"></i>
+                            Return
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     );

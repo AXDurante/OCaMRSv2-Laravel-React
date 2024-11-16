@@ -67,274 +67,317 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
     }
 
     return (
-        <>
-            <div className="d-flex">
-                <div id="content" className=" flex-fill p-3">
-                    <div>
-                        <div>
-                            <h1 class="d-inline">Job Request | </h1>
-                            <h1 class="d-inline fw-light">Update Request</h1>
-                            <div className="container statusprio">
-                                {" "}
-                                <h5 className="d-inline"> Status: </h5>
-                                <select
-                                    className="w-25 me-3"
-                                    value={data.status}
-                                    onChange={(e) =>
-                                        setData("status", e.target.value)
-                                    }
-                                >
-                                    <option value="For Approval">For Approval</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                                <h5 className="d-inline"> Priority: </h5>
-                                <select
-                                    className="w-25 "
-                                    value={data.priority}
-                                    onChange={(e) =>
-                                        setData("priority", e.target.value)
-                                    }
-                                >
-                                    <option value="Regular">Regular</option>
-                                    <option value="High">High</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="Low">Low</option>
-                                </select>
-                            </div>
-                            <hr />
-                        </div>
-                        <div className="mt3">
-                            <h4>Information</h4>{" "}
-                            <p> Important* fields must be filled </p>
-                            <div className="row forms-bg p-3">
-                                <div className="col d-flex flex-column align-items-center p-3">
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Service Requested*
-                                    </h6>
-                                    <select
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.service_type}
-                                        onChange={(e) =>
-                                            setData(
-                                                "service_type",
-                                                e.target.value
-                                            )
-                                        }
-                                    >
-                                        <option value="" disabled>
-                                            {" "}
-                                            Select an Option{" "}
-                                        </option>
-                                        <option value="Repair"> Repair </option>
-                                        <option value="Calibration/Maintenance">
-                                            {" "}
-                                            Calibration/Maintenance{" "}
-                                        </option>
-                                    </select>
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Laboratory
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.lab}
-                                        onChange={(e) =>
-                                            setData("lab", e.target.value)
-                                        }
-                                        readOnly
-                                        disabled
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        College/ Faculty / Office
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.dept_name}
-                                        onChange={(e) =>
-                                            setData("dept_name", e.target.value)
-                                        }
-                                        readOnly
-                                        disabled
-                                    />
-                                </div>
-                                <div className="col d-flex flex-column align-items-center  p-3">
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Instrumentation Transportation
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.trans_type}
-                                        onChange={(e) =>
-                                            setData(
-                                                "trans_type",
-                                                e.target.value
-                                            )
-                                        }
-                                        placeholder="Please indicate if there is any, or type None if otherwise"
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start fw-bold mt-2 w-100">
-                                        Laboratory Location
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.lab_loc}
-                                        onChange={(e) =>
-                                            setData("lab_loc", e.target.value)
-                                        }
-                                        readOnly
-                                        disabled
-                                    />
-                                    <h6 className="d-flex flex-column align-items-start  fw-bold mt-2 w-100">
-                                        Position
-                                    </h6>
-                                    <input
-                                        type="text"
-                                        className="d-flex flex-column align-items-center w-100 rounded"
-                                        value={data.pos}
-                                        onChange={(e) =>
-                                            setData("pos", e.target.value)
-                                        }
-                                        readOnly
-                                        disabled
-                                    />
-                                </div>
-                                <h6 className="w-100 fw-bold text-start">
-                                    {" "}
-                                    Remarks{" "}
-                                </h6>
-                                <textarea
-                                    value={data.remarks}
-                                    onChange={(e) =>
-                                        setData("remarks", e.target.value)
-                                    }
-                                    readOnly
-                                    disabled
-                                />
-                            </div>
-                        </div>
-                    </div>
+        <div className="job-request-form">
+            {/* Header Section */}
+            <div className="form-section fade-in">
+                <h1 className="text-2xl mb-4">
+                    Job Request{" "}
+                    <span className="text-black font-light subtitle-span">
+                        | Update Request
+                    </span>
+                </h1>
+                <hr className="mb-4 border-gray-200" />
 
-                    <div>
-                        {data.instruments.map((instrument, index) => (
-                            <div key={index} className="">
-                                <h4 className="mt-4">Item No. {index + 1}</h4>
-                                <div className="row forms-bg p-3">
-                                    <div className="col-12 col-md-5 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Equipment*
-                                        </h6>
-                                        <select
-                                            className="w-100 mb-2 rounded form-control"
-                                            name="instrument"
-                                            value={instrument.instrument}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                        >
-                                            <option value="">
-                                                Select an equipment
-                                            </option>
-                                            {equipmentName.map((name, i) => (
-                                                <option key={i} value={name}>
-                                                    {name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Model
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                            name="model"
-                                            value={instrument.model}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                            placeholder="Please indicate if there is any, or type N/A if otherwise"
-                                        />
-                                    </div>
-
-                                    <div className="col-12 col-md-3 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Quantity*
-                                        </h6>
-                                        <input
-                                            type="number"
-                                            className="w-50 mb-2 justify-content-start rounded"
-                                            name="qty"
-                                            value={instrument.qty}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                        />
-                                        <h6 className="w-100 fw-bold text-start">
-                                            Manufacturer
-                                        </h6>
-                                        <input
-                                            type="text"
-                                            className="w-100 mb-2 rounded"
-                                            name="manufacturer"
-                                            value={instrument.manufacturer}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                            placeholder="Please indicate if there is any, or type N/A if otherwise"
-                                        />
-                                    </div>
-
-                                    <div className="col-12 col-md-4 d-flex flex-column p-3">
-                                        <h6 className="w-100 fw-bold text-start">
-                                            {" "}
-                                            Serial Number/Property Number*{" "}
-                                        </h6>
-                                        <input
-                                            type="number"
-                                            className="w-100 mb-2 rounded"
-                                            name="instrument_num"
-                                            value={instrument.instrument_num}
-                                            onChange={(e) =>
-                                                handleInputChange(index, e)
-                                            }
-                                        />
-                                    </div>
-                                    <div className="col-12 d-flex flex-row-reverse">
-                                        <button
-                                            className="btn btn-danger"
-                                            onClick={() =>
-                                                removeInstrument(index)
-                                            }
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-
-                        <button
-                            className="jb-btn-add mt-3 mb-2"
-                            onClick={addInstrument}
+                {/* Status and Priority Section - Updated styling */}
+                <div className="d-flex align-items-center gap-3 mb-4">
+                    <h4>
+                        Status:{" "}
+                        <select
+                            className="form-select d-inline-block w-auto"
+                            value={data.status}
+                            onChange={(e) => setData("status", e.target.value)}
                         >
-                            Add More Instrument
-                        </button>
-                        <hr />
-                        <button
-                            className="jb-btn-submit w-100 mt-3"
-                            onClick={onSubmit}
+                            <option value="For Approval">For Approval</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </h4>
+                    <h4>
+                        Priority:{" "}
+                        <select
+                            className="form-select d-inline-block w-auto"
+                            value={data.priority}
+                            onChange={(e) =>
+                                setData("priority", e.target.value)
+                            }
                         >
-                            {" "}
-                            Update Job Order
-                        </button>
+                            <option value="Regular">Regular</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </h4>
+                </div>
+
+                {/* Information Section */}
+                <div className="system-info-section-b mb-4">
+                    <h4 className="section-title-b">
+                        <span
+                            className="section-number-blue"
+                            style={{ backgroundColor: "#0095FF" }}
+                        >
+                            1
+                        </span>
+                        Request Information
+                    </h4>
+                    <div className="row g-3">
+                        {/* Service Type */}
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
+                                Service Requested*
+                            </label>
+                            <select
+                                className="form-select"
+                                value={data.service_type}
+                                onChange={(e) =>
+                                    setData("service_type", e.target.value)
+                                }
+                            >
+                                <option value="" disabled>
+                                    Select an Option
+                                </option>
+                                <option value="Repair">Repair</option>
+                                <option value="Calibration/Maintenance">
+                                    Calibration/Maintenance
+                                </option>
+                            </select>
+                        </div>
+
+                        {/* Transportation */}
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
+                                Instrumentation Transportation
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={data.trans_type}
+                                onChange={(e) =>
+                                    setData("trans_type", e.target.value)
+                                }
+                                placeholder="Please indicate if there is any, or type None if otherwise"
+                            />
+                        </div>
+
+                        {/* Laboratory */}
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
+                                Laboratory
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={data.lab}
+                                onChange={(e) => setData("lab", e.target.value)}
+                                readOnly
+                            />
+                        </div>
+
+                        {/* Laboratory Location */}
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
+                                Laboratory Location
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={data.lab_loc}
+                                onChange={(e) =>
+                                    setData("lab_loc", e.target.value)
+                                }
+                                readOnly
+                            />
+                        </div>
+
+                        {/* College/Faculty/Office */}
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
+                                College/Faculty/Office
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={data.dept_name}
+                                onChange={(e) =>
+                                    setData("dept_name", e.target.value)
+                                }
+                                readOnly
+                            />
+                        </div>
+
+                        {/* Position */}
+                        <div className="col-md-6">
+                            <label className="form-label text-muted">
+                                Position
+                            </label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={data.pos}
+                                onChange={(e) => setData("pos", e.target.value)}
+                                readOnly
+                            />
+                        </div>
+
+                        {/* Remarks */}
+                        <div className="col-12">
+                            <label className="form-label text-muted">
+                                Remarks
+                            </label>
+                            <textarea
+                                className="form-control"
+                                value={data.remarks}
+                                onChange={(e) =>
+                                    setData("remarks", e.target.value)
+                                }
+                                rows="4"
+                                readOnly
+                            />
+                        </div>
                     </div>
                 </div>
+
+                {/* Instruments Section */}
+                <div className="form-section fade-in-delayed">
+                    <h4 className="section-title-b">
+                        <span
+                            className="section-number-blue"
+                            style={{ backgroundColor: "#0095FF" }}
+                        >
+                            2
+                        </span>
+                        Instruments ({data.instruments.length})
+                    </h4>
+
+                    {data.instruments.map((instrument, index) => (
+                        <div key={index} className="item-card mb-4">
+                            <div className="instrument-header d-flex justify-content-between align-items-center">
+                                <h5 className="instrument-title-b">
+                                    Instrument {index + 1}
+                                </h5>
+                                <button
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => removeInstrument(index)}
+                                >
+                                    <i className="bi bi-trash me-1"></i>
+                                    Delete
+                                </button>
+                            </div>
+                            <div className="row g-3">
+                                {/* Equipment */}
+                                <div className="col-12 col-md-6">
+                                    <label className="form-label text-muted">
+                                        Equipment*
+                                    </label>
+                                    <select
+                                        className="form-select"
+                                        name="instrument"
+                                        value={instrument.instrument}
+                                        onChange={(e) =>
+                                            handleInputChange(index, e)
+                                        }
+                                    >
+                                        <option value="">
+                                            Select an equipment
+                                        </option>
+                                        {equipmentName.map((name, i) => (
+                                            <option key={i} value={name}>
+                                                {name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Serial Number */}
+                                <div className="col-12 col-md-6">
+                                    <label className="form-label text-muted">
+                                        Serial Number/Property Number*
+                                    </label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        name="instrument_num"
+                                        value={instrument.instrument_num}
+                                        onChange={(e) =>
+                                            handleInputChange(index, e)
+                                        }
+                                    />
+                                </div>
+
+                                {/* Model */}
+                                <div className="col-12 col-md-4">
+                                    <label className="form-label text-muted">
+                                        Model
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="model"
+                                        value={instrument.model}
+                                        onChange={(e) =>
+                                            handleInputChange(index, e)
+                                        }
+                                        placeholder="Please indicate if there is any, or type N/A if otherwise"
+                                    />
+                                </div>
+
+                                {/* Manufacturer */}
+                                <div className="col-12 col-md-4">
+                                    <label className="form-label text-muted">
+                                        Manufacturer
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="manufacturer"
+                                        value={instrument.manufacturer}
+                                        onChange={(e) =>
+                                            handleInputChange(index, e)
+                                        }
+                                        placeholder="Please indicate if there is any, or type N/A if otherwise"
+                                    />
+                                </div>
+
+                                {/* Quantity */}
+                                <div className="col-12 col-md-4">
+                                    <label className="form-label text-muted">
+                                        Quantity*
+                                    </label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        name="qty"
+                                        value={instrument.qty}
+                                        onChange={(e) =>
+                                            handleInputChange(index, e)
+                                        }
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+
+                    {/* Action Buttons */}
+                    <button
+                        className="btn btn-outline-primary w-100 mb-4"
+                        onClick={addInstrument}
+                    >
+                        <i className="bi bi-plus-circle me-2"></i>
+                        Add More Instrument
+                    </button>
+
+                    <button
+                        className="btn btn-primary w-100"
+                        onClick={onSubmit}
+                        disabled={processing}
+                    >
+                        <i className="bi bi-check-circle me-2"></i>
+                        Update Job Order
+                    </button>
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 
