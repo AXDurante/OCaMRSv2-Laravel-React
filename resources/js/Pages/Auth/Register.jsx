@@ -6,11 +6,13 @@ import TextInput from "@/Components/TextInput";
 import TextInput2 from "@/Components/TextInput2";
 import LoginButton from "@/Components/LoginButton";
 import PhoneNumberInput from "@/Components/PhoneNumberInput";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
+import { FaEye, FaEyeSlash, FaInfoCircle } from "react-icons/fa"; // Import eye icons
 import Modal from "@/Components/Modal"; // Import your modal component
 
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import * as bootstrap from "bootstrap";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -173,10 +175,26 @@ export default function Register() {
                                         />
                                     </div>
                                     <div className="mt-4">
-                                        <InputLabel
-                                            htmlFor="phoneNumber"
-                                            value="Phone Number"
-                                        />
+                                        <div className="d-flex align-items-center">
+                                            <InputLabel
+                                                htmlFor="phoneNumber"
+                                                value="Phone Number"
+                                            />
+                                            <div
+                                                className="ms-2 tooltip-container"
+                                                style={{ position: "relative" }}
+                                            >
+                                                <FaInfoCircle
+                                                    className="text-primary"
+                                                    style={{ cursor: "help" }}
+                                                />
+                                                <span className="custom-tooltip">
+                                                    Please enter 11 digits
+                                                    starting with 09 (Format:
+                                                    09XXXXXXXXX)
+                                                </span>
+                                            </div>
+                                        </div>
                                         <TextInput2
                                             id="phoneNumber"
                                             name="phoneNumber"
@@ -196,7 +214,9 @@ export default function Register() {
                                                 );
                                             }}
                                             required
-                                            pattern="[0-9]{10}"
+                                            pattern="[0-9]{11}"
+                                            maxLength="11"
+                                            placeholder="09XXXXXXXXX"
                                         />
                                         <InputError
                                             message={errors.phoneNumber}
@@ -393,12 +413,20 @@ export default function Register() {
                                                 htmlFor="password"
                                                 value="Password"
                                             />
-                                            <small className="mb-0 ml-2 mx-2 text-danger">
-                                                {" "}
-                                                (1 uppercase letter, 1 number,
-                                                and 1 special character
-                                                required.)
-                                            </small>
+                                            <div
+                                                className="ms-2 tooltip-container"
+                                                style={{ position: "relative" }}
+                                            >
+                                                <FaInfoCircle
+                                                    className="text-primary"
+                                                    style={{ cursor: "help" }}
+                                                />
+                                                <span className="custom-tooltip">
+                                                    Minimum 8 Characters with 1
+                                                    uppercase letter, 1 number
+                                                    and 1 special character
+                                                </span>
+                                            </div>
                                         </div>
                                         <div
                                             className="password-input-wrapper"

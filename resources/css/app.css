@@ -3699,3 +3699,63 @@ td[title] {
 .custom-dropdown-select[size] {
     animation: slideDown 0.3s ease;
 }
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-tooltip {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: normal; /* Changed from nowrap to normal */
+    max-width: 200px; /* Add max-width */
+    width: max-content; /* Allow content to determine width up to max-width */
+    word-wrap: break-word; /* Enable word wrapping */
+}
+@media screen and (max-width: 768px) {
+    .custom-tooltip {
+        max-width: 150px; /* Smaller max-width for mobile */
+        font-size: 11px; /* Slightly smaller font */
+        left: 0; /* Align to left on mobile */
+        transform: none; /* Remove horizontal centering */
+    }
+}
+
+/* Ensure tooltip stays in viewport */
+@media screen and (max-width: 480px) {
+    .custom-tooltip {
+        max-width: 120px;
+        left: auto; /* Reset left positioning */
+        right: 0; /* Align to right side */
+    }
+}
+.tooltip-container:hover .custom-tooltip {
+    visibility: visible;
+}
+
+/* Add arrow to tooltip */
+.custom-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+@media screen and (max-width: 768px) {
+    .custom-tooltip::after {
+        left: 10px; /* Align arrow with left side on mobile */
+    }
+}
