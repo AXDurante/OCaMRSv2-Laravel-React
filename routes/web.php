@@ -16,6 +16,7 @@ use App\Http\Controllers\FeedbackControllerAdmin;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AdminNotificationController;
+use Illuminate\Http\Request;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
@@ -208,6 +209,12 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/verification/check-status', function (Request $request) {
+    return response()->json([
+        'verified' => $request->user()->hasVerifiedEmail(),
+        'redirect' => route('dashboard')
+    ]);
+})->name('verification.check.status');
 
 //needs routings
 

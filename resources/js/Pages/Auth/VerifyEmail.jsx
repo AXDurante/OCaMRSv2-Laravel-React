@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import GuestLayout from "@/Layouts/GuestLayout";
-import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, Link, useForm } from "@inertiajs/react";
 import LoginButton from "@/Components/LoginButton";
 import axios from "axios";
@@ -8,6 +6,7 @@ import axios from "axios";
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm({});
     const [isVerified, setIsVerified] = useState(false);
+    const [redirectUrl, setRedirectUrl] = useState(null);
 
     const submit = (e) => {
         e.preventDefault();
@@ -15,18 +14,21 @@ export default function VerifyEmail({ status }) {
     };
 
     useEffect(() => {
-        const checkVerification = () => {
-            axios
-                .get(route("verification.check"))
-                .then((response) => {
-                    if (response.data.verified) {
-                        setIsVerified(true);
-                        attemptToCloseOrRedirect();
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error checking verification status:", error);
-                });
+        const checkVerification = async () => {
+            try {
+                const response = await axios.get(
+                    route("verification.check.status")
+                );
+                if (response.data.verified) {
+                    setIsVerified(true);
+                    setRedirectUrl(response.data.redirect);
+                    setTimeout(() => {
+                        window.location.href = response.data.redirect;
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error("Error checking verification status:", error);
+            }
         };
 
         // Check immediately on mount
@@ -38,24 +40,18 @@ export default function VerifyEmail({ status }) {
         return () => clearInterval(interval);
     }, []);
 
-    const attemptToCloseOrRedirect = () => {
-        // Redirect to dashboard
-        window.location.href = route("dashboard");
-    };
-
     if (isVerified) {
         return (
             <div className="centered">
-                <h1 className="mb-4">Email Verified Successfully</h1>
-                <p>Redirecting to dashboard...</p>
+                <h1 className="mb-4">Email Verified Successfully!</h1>
+                <p>Redirecting you to the dashboard...</p>
             </div>
         );
     }
 
     return (
         <div className="centered">
-            <h1 className="mb-4">Client Email Verification</h1>
-
+            <h1 className="mb-4">Email Verification</h1>
             <div className="mb-4 text-sm text-gray-600">
                 Thanks for signing up! Before getting started, could you verify
                 your email address by clicking on the link we just emailed to
@@ -65,8 +61,7 @@ export default function VerifyEmail({ status }) {
 
             {status === "verification-link-sent" && (
                 <div className="mb-4 font-medium text-sm text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                    A new verification link has been sent to your email address.
                 </div>
             )}
 
@@ -84,7 +79,7 @@ export default function VerifyEmail({ status }) {
                         method="post"
                         as="button"
                     >
-                        Go Back
+                        Log Out
                     </Link>
                 </div>
             </form>
