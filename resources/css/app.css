@@ -2704,6 +2704,16 @@ input[type="checkbox"] {
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--ust-yellow);
 }
+.section-title-b {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ust-black);
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #0095ff; /* Changed to blue */
+}
 
 .section-number {
     background: linear-gradient(
@@ -2712,6 +2722,19 @@ input[type="checkbox"] {
         var(--ust-yellow-dark)
     );
     color: var(--ust-black);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    margin-right: 0.75rem;
+    font-weight: 600;
+}
+.section-number-blue {
+    background: linear-gradient(145deg, #0095ff, #0077cc);
+    color: white; /* Changed to white for better contrast */
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -2745,6 +2768,21 @@ input[type="checkbox"] {
         to bottom,
         var(--ust-yellow),
         var(--ust-yellow-dark)
+    );
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+.system-info-section-b::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        #0095ff,
+        /* Light blue */ #0077cc /* Darker blue */
     );
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
@@ -2787,6 +2825,15 @@ input[type="checkbox"] {
     width: 8px;
     height: 8px;
     background: var(--ust-yellow);
+    border-radius: 50%;
+    margin-right: 0.75rem;
+}
+.instrument-title-b::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #0095ff; /* Changed to blue */
     border-radius: 50%;
     margin-right: 0.75rem;
 }
@@ -3800,4 +3847,35 @@ td[title] {
 .text-cancelled {
     color: #dc3545; /* Red color for Cancelled */
     font-weight: 600;
+}
+.action-button.primary:hover {
+    background-color: #007acc !important;
+}
+
+.action-button.secondary:hover {
+    background-color: #f0f7ff !important;
+}
+
+.action-button.tertiary:hover {
+    background-color: #1a202c !important; /* Even darker on hover */
+}
+.technician-icon {
+    animation: rotate 3s infinite linear;
+    color: #4a5568; /* You can change this color to match your theme */
+}
+
+.technician-icon-jump {
+    color: #4a5568;
+    animation: jump 1s ease-in-out infinite;
+    transform-origin: bottom;
+}
+
+@keyframes jump {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-15px) scale(1.1);
+    }
 }

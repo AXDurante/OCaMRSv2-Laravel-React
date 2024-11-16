@@ -4,6 +4,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import LoginButton from "@/Components/LoginButton";
+import { FaWrench } from "react-icons/fa";
 import TextInput from "@/Components/TextInput";
 import TextInput2 from "@/Components/TextInput2";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -42,7 +43,8 @@ export default function Login({ status, canResetPassword }) {
                 <div class="centered2">
                     <form onSubmit={submit}>
                         <div>
-                            <h1 className="text-center titleLogin mb-5">
+                            <h1 className="text-center titleLogin mb-5 d-flex align-items-center justify-content-center gap-2">
+                                <FaWrench className="technician-icon-jump" />
                                 Technician Login
                             </h1>
                             <InputLabel
@@ -129,8 +131,6 @@ export default function Login({ status, canResetPassword }) {
                                     Forgot your password?
                                 </Link>
                             </div>
-
-                          
                         </div>
 
                         <div className="pt-3">
