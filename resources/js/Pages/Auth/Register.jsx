@@ -25,6 +25,7 @@ export default function Register() {
         phoneNumber: "",
         college: "",
         labLoc: "",
+        position: "",
     });
 
     const [switchForm, setSwitchForm] = useState(1);
@@ -327,6 +328,7 @@ export default function Register() {
                                                 RCNAS{" "}
                                             </option>
                                             <option value="LESO"> LESO </option>
+                                            <option value="Others"> Others </option>
                                         </select>
                                         <InputError
                                             message={errors.college}
@@ -356,6 +358,32 @@ export default function Register() {
                                         />
                                         <InputError
                                             message={errors.labLoc}
+                                            className="mt-2 text-danger"
+                                        />
+                                    </div>
+
+                                    <div className="mt-4">
+                                        <InputLabel
+                                            htmlFor="position"
+                                            value="Position"
+                                        />
+                                        <TextInput2
+                                            id="position"
+                                            name="position"
+                                            value={data.position}
+                                            className="mt-1 block w-full"
+                                            autoComplete="labLoc"
+                                            isFocused={true}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "position",
+                                                    e.target.value
+                                                )
+                                            }
+                                            required
+                                        />
+                                        <InputError
+                                            message={errors.position}
                                             className="mt-2 text-danger"
                                         />
                                     </div>

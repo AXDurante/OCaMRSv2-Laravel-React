@@ -46,6 +46,7 @@ class RegisteredUserController extends Controller
             'phoneNumber' => ['required', 'string', 'max:255', 'unique:users', 'regex:/^[0-9]+$/', 'size:11'],
             'college' => 'required|string|max:255',
             'labLoc' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
         ], [
             'firstName.regex' => 'The first name field must only contain letters.',
             'lastName.regex' => 'The last name field must only contain letters.',
@@ -54,7 +55,7 @@ class RegisteredUserController extends Controller
             'password.min' => 'The password must be at least 8 characters.',
             'password.regex' => 'The password must include at least one uppercase letter, one number, and one special character.',
         ]);
-        
+
 
         $user = User::create([
             'firstName' => $request->firstName,
@@ -65,6 +66,7 @@ class RegisteredUserController extends Controller
             'phoneNumber' => $request->phoneNumber,
             'college' => $request->college,
             'labLoc' => $request->labLoc,
+            'position' => $request->position,
         ]);
 
         event(new Registered($user));
