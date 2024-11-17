@@ -101,7 +101,9 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                     if (errors.error) {
                         alert(errors.error);
                     } else {
-                        alert("An error occurred while updating the job order.");
+                        alert(
+                            "An error occurred while updating the job order."
+                        );
                     }
                 },
             });
@@ -151,10 +153,8 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                     setData("priority", e.target.value)
                                 }
                             >
-                                <option value="Regular">Regular</option>
-                                <option value="High">High</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Low">Low</option>
+                                <option value="Urgent">Regular</option>
+                                <option value="Regular">Urgent</option>
                             </select>
                         </div>
                     </h4>

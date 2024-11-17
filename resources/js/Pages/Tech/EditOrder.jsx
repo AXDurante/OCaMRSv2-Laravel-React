@@ -1,6 +1,6 @@
 import { useForm } from "@inertiajs/react";
 import Navbar2 from "@/Layouts/Navbar2";
-import { useState } from 'react';
+import { useState } from "react";
 
 function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
     const [validationError, setValidationError] = useState("");
@@ -145,10 +145,8 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                     setData("priority", e.target.value)
                                 }
                             >
-                                <option value="Regular">Regular</option>
-                                <option value="High">High</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Low">Low</option>
+                                <option value="Urgent">Regular</option>
+                                <option value="Regular">High</option>
                             </select>
                         </div>
                     </h4>
