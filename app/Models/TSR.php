@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TSR extends Model
@@ -39,9 +40,9 @@ class TSR extends Model
         return $this->belongsTo(JobOrder::class, 'job_id', 'job_id');
     }
 
-    public function coc(): HasOne
+    public function coc(): HasMany
     {
-        return $this->hasOne(CoC::class, 'tsr_num', 'tsr_num');
+        return $this->hasMany(CoC::class, 'tsr_num', 'tsr_num');
     }
 
     public function technician(): BelongsTo

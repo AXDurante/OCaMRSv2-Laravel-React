@@ -67,7 +67,6 @@ class TechnicianController extends Controller
                 'trans_type' => 'required',
                 'remarks' => 'nullable',
                 'status' => 'required|in:For Approval,Approved,Cancelled,Completed',
-                'priority' => 'required|in:Regular,High,Medium,Low',
                 'instruments' => 'required|array',
                 'instruments.*.instrument' => 'required',
                 'instruments.*.qty' => 'required|integer',
@@ -81,8 +80,7 @@ class TechnicianController extends Controller
                 'trans_type' => $validatedData['trans_type'],
                 'remarks' => $validatedData['remarks'],
                 'status' => $validatedData['status'],
-                'priority' => $validatedData['priority'],
-        ]);
+            ]);
 
             // Update or create instrument units
             $jobOrder->int_units()->delete(); // Remove existing units
@@ -127,16 +125,29 @@ class TechnicianController extends Controller
         ]);
     }
 
+    public function indexCOC($tsr_id)
+    {
+        // Retrieve all COCs associated with the specified TSR ID
+        $cocs = COC::where('tsr_id', $tsr_id)
+            ->orderBy('coc_id', 'desc') // Order by coc_id in descending order
+            ->get();
+
+        return Inertia::render('Tech/ViewCOC', [
+            'cocs' => $cocs, // Pass the COCs to the view
+            'tsr_id' => $tsr_id, // Pass the TSR ID for reference
+        ]);
+    }
+
     public function createTSR($id)
     {
         $jobOrder = JobOrder::with(['int_units', 'user'])->findOrFail($id);
         $user = Auth::user();
-        
+
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
-        $photoUrl = $user->photo ? ($isProduction 
+        $photoUrl = $user->photo ? ($isProduction
             ? $appUrl . '/public/storage/photos/technicianSignature/' . $user->photo
-            : url('storage/photos/technicianSignature/' . $user->photo)) 
+            : url('storage/photos/technicianSignature/' . $user->photo))
             : null;
 
         return Inertia::render('Tech/TSR', [
@@ -168,7 +179,7 @@ class TechnicianController extends Controller
 
         $user = Auth::user();
         $tsrFields['tech_id'] = $user->firstName . ' ' . $user->lastName;
-        
+
         // Store just the filename in the database
         $tsrFields['tech_photo'] = $user->photo;
 
@@ -180,20 +191,20 @@ class TechnicianController extends Controller
     public function viewTSR($tsr_id)
     {
         $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
-        
+
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
-        
+
         // Generate the full URLs for both technician and admin photos when they exist
         if ($tsr->tech_photo) {
-            $tsr->tech_photo = $isProduction 
+            $tsr->tech_photo = $isProduction
                 ? $appUrl . '/public/storage/photos/technicianSignature/' . $tsr->tech_photo
                 : url('storage/photos/technicianSignature/' . $tsr->tech_photo);
         }
 
         // Add admin photo URL if it exists
         if ($tsr->admin_photo) {
-            $tsr->admin_signature = $isProduction 
+            $tsr->admin_signature = $isProduction
                 ? $appUrl . '/public/storage/photos/adminSignature/' . $tsr->admin_photo
                 : url('storage/photos/adminSignature/' . $tsr->admin_photo);
         }
@@ -207,26 +218,26 @@ class TechnicianController extends Controller
     {
         $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
         $user = Auth::user();
-        
+
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
 
         // Generate the full URLs for technician photo
-        $userPhotoUrl = $user->photo ? ($isProduction 
+        $userPhotoUrl = $user->photo ? ($isProduction
             ? $appUrl . '/public/storage/photos/technicianSignature/' . $user->photo
-            : url('storage/photos/technicianSignature/' . $user->photo)) 
+            : url('storage/photos/technicianSignature/' . $user->photo))
             : null;
 
         // Generate the full URLs for both technician and admin photos
         if ($tsr->tech_photo) {
-            $tsr->tech_photo_url = $isProduction 
+            $tsr->tech_photo_url = $isProduction
                 ? $appUrl . '/public/storage/photos/technicianSignature/' . $tsr->tech_photo
                 : url('storage/photos/technicianSignature/' . $tsr->tech_photo);
         }
 
         // Add admin signature data if it exists
         if ($tsr->admin_photo) {
-            $tsr->admin_signature = $isProduction 
+            $tsr->admin_signature = $isProduction
                 ? $appUrl . '/public/storage/photos/adminSignature/' . $tsr->admin_photo
                 : url('storage/photos/adminSignature/' . $tsr->admin_photo);
         }
@@ -277,14 +288,14 @@ class TechnicianController extends Controller
     {
         $tsr = TSR::with(['job_order.user'])->findOrFail($tsr_id);
         $user = Auth::user();
-        
+
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
-        
+
         // Generate the full URL for technician photo
-        $photoUrl = $user->photo ? ($isProduction 
+        $photoUrl = $user->photo ? ($isProduction
             ? $appUrl . '/public/storage/photos/technicianSignature/' . $user->photo
-            : url('storage/photos/technicianSignature/' . $user->photo)) 
+            : url('storage/photos/technicianSignature/' . $user->photo))
             : null;
 
         return Inertia::render('Tech/COC', [
@@ -319,7 +330,7 @@ class TechnicianController extends Controller
         ]);
 
         $user = Auth::user();
-        
+
         // Add technician's information
         $cocFields['tech_name'] = $user->firstName . ' ' . $user->lastName;
         $cocFields['tech_photo'] = $user->photo; // Store just the filename
@@ -334,19 +345,19 @@ class TechnicianController extends Controller
     public function viewCoC($coc_id)
     {
         $coc = CoC::with(['tsr.job_order'])->findOrFail($coc_id);
-        
+
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
-        
+
         // Generate full URLs for both technician and admin signatures
         if ($coc->tech_photo) {
-            $coc->tech_photo = $isProduction 
+            $coc->tech_photo = $isProduction
                 ? $appUrl . '/public/storage/photos/technicianSignature/' . $coc->tech_photo
                 : url('storage/photos/technicianSignature/' . $coc->tech_photo);
         }
-        
+
         if ($coc->admin_photo) {
-            $coc->admin_signature = $isProduction 
+            $coc->admin_signature = $isProduction
                 ? $appUrl . '/public/storage/photos/adminSignature/' . $coc->admin_photo
                 : url('storage/photos/adminSignature/' . $coc->admin_photo);
         }
@@ -360,25 +371,25 @@ class TechnicianController extends Controller
     {
         $coc = COC::with(['tsr.job_order'])->findOrFail($coc_id);
         $user = Auth::user();
-        
+
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
-        
+
         // Generate full URL for current user's photo
-        $userPhotoUrl = $user->photo ? ($isProduction 
+        $userPhotoUrl = $user->photo ? ($isProduction
             ? $appUrl . '/public/storage/photos/technicianSignature/' . $user->photo
-            : url('storage/photos/technicianSignature/' . $user->photo)) 
+            : url('storage/photos/technicianSignature/' . $user->photo))
             : null;
 
         // Generate full URLs for existing signatures
         if ($coc->tech_photo) {
-            $coc->tech_photo_url = $isProduction 
+            $coc->tech_photo_url = $isProduction
                 ? $appUrl . '/public/storage/photos/technicianSignature/' . $coc->tech_photo
                 : url('storage/photos/technicianSignature/' . $coc->tech_photo);
         }
-        
+
         if ($coc->admin_photo) {
-            $coc->admin_signature = $isProduction 
+            $coc->admin_signature = $isProduction
                 ? $appUrl . '/public/storage/photos/adminSignature/' . $coc->admin_photo
                 : url('storage/photos/adminSignature/' . $coc->admin_photo);
         }
@@ -430,7 +441,7 @@ class TechnicianController extends Controller
 
         return Inertia::render('Tech/ManageProfile', [
             'user' => $user,
-            'storageBaseUrl' => $isProduction 
+            'storageBaseUrl' => $isProduction
                 ? $appUrl . '/public/storage/photos'
                 : url('storage/photos'),
             'imageRequirements' => [
@@ -513,7 +524,7 @@ class TechnicianController extends Controller
 
                 // Generate unique filename
                 $filename = time() . '_' . Str::random(10) . '.png';
-                
+
                 // Store new photo
                 $photo->storeAs('public/photos/technicianSignature', $filename);
                 $validated['photo'] = $filename;

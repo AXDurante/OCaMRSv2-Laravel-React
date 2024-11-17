@@ -77,19 +77,6 @@ function ViewTSRDetails({ tsr }) {
                                 </div>
 
                                 <div className="mt-4">
-                                    {tsr.coc && tsr.coc.coc_id ? (
-                                        <Link
-                                            href={route(
-                                                "technician.viewCoCDetails",
-                                                tsr.coc.coc_id
-                                            )}
-                                        >
-                                            <button className="btn btn-light w-100 mb-2">
-                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                                View Certificate of Calibration
-                                            </button>
-                                        </Link>
-                                    ) : (
                                         <Link
                                             href={route(
                                                 "technician.COC",
@@ -102,7 +89,12 @@ function ViewTSRDetails({ tsr }) {
                                                 Calibration
                                             </button>
                                         </Link>
-                                    )}
+                                    <Link href={route('technician.indexCOC', { tsr_id: tsr.tsr_id })}>
+                                                    <button className="btn btn-light w-100 mb-2">
+                                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                        View Certificates of Calibration
+                                                    </button>
+                                                </Link>
                                 </div>
                             </div>
                         </div>
