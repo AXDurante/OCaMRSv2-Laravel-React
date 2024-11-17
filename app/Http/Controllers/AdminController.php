@@ -489,14 +489,46 @@ class AdminController extends Controller
 
     public function updateJobStatus(Request $request, $id)
     {
-        $request->validate([
-            'status' => 'required|in:For Approval,Approved,Cancelled,Completed'
-        ]);
+        try {
+            $request->validate([
+                'status' => 'required|in:For Approval,Approved,Cancelled,Completed'
+            ]);
 
-        $jobOrder = JobOrder::findOrFail($id);
-        $jobOrder->update(['status' => $request->status]);
+            $jobOrder = JobOrder::findOrFail($id);
+            $oldStatus = $jobOrder->status;
+            
+            // Update the status
+            $jobOrder->update(['status' => $request->status]);
 
-        return response()->json(['message' => 'Status updated successfully']);
+            // If status has changed from For Approval to Approved
+            if ($oldStatus === 'For Approval' && $request->status === 'Approved') {
+                TechnicianNotificationController::notifyAllTechnicians(
+                    $jobOrder,
+                    'New Job Order Available',
+                    "Job order #{$jobOrder->job_id} is now available for processing",
+                    'new_job_order'
+                );
+            }
+
+            // Create notification for status change
+            Notification::create([
+                'user_id' => $jobOrder->employeeID,
+                'job_order_id' => $jobOrder->job_id,
+                'title' => 'Job Order Status Updated',
+                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$request->status} by admin",
+                'type' => 'status_update',
+                'status' => $request->status
+            ]);
+
+            return response()->json([
+                'message' => 'Status updated successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while updating the status.'
+            ], 500);
+        }
     }
 
 }
