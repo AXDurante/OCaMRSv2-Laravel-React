@@ -19,7 +19,7 @@ function ViewOrder({ jobOrder = {} }) {
         <div className="view-order-form">
             <div className="view-section fade-in">
                 <h1 className="text-2xl mb-4">
-                    Job Request <span className="text-black font-light subtitle-span">| Request Details</span>
+                    Job Request <span className="text-black font-light subtitle-span">| Request Details #{jobOrder.job_id}</span>
                 </h1>
                 <hr className="mb-4 border-gray-200" />
 
