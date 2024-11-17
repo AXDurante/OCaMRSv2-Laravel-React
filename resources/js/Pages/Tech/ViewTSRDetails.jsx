@@ -75,6 +75,35 @@ function ViewTSRDetails({ tsr }) {
                                         <span>{tsr.date_request}</span>
                                     </div>
                                 </div>
+
+                                <div className="mt-4">
+                                    {tsr.coc && tsr.coc.coc_id ? (
+                                        <Link
+                                            href={route(
+                                                "technician.viewCoCDetails",
+                                                tsr.coc.coc_id
+                                            )}
+                                        >
+                                            <button className="btn btn-light w-100 mb-2">
+                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                View Certificate of Calibration
+                                            </button>
+                                        </Link>
+                                    ) : (
+                                        <Link
+                                            href={route(
+                                                "technician.COC",
+                                                tsr.tsr_id
+                                            )}
+                                        >
+                                            <button className="btn btn-light w-100 mb-2">
+                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                Create Certificate of
+                                                Calibration
+                                            </button>
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
