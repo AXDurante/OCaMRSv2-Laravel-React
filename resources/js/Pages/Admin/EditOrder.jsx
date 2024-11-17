@@ -144,7 +144,7 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                         </div>
                     </h4>
                     <h4>
-                        Priorityy:{" "}
+                        Priority:{" "}
                         <div className="dropdown d-inline-block">
                             <select
                                 className="btn btn-primary dropdown-toggle"
