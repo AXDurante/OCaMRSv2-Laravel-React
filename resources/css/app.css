@@ -946,7 +946,7 @@ input[type="checkbox"] {
 }
 
 .icon-wrapper .bi {
-    color: rgb(53, 53, 53); /* Icon color */
+    color: rgb(255, 255, 255); /* Icon color */
 }
 
 .text-yellow1 {
@@ -1627,7 +1627,7 @@ input[type="checkbox"] {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(255, 193, 7, 0.1);
+    background: rgba(255, 193, 7, 0.884);
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2),
         -4px -4px 8px rgba(255, 255, 255, 0.05);
 }
@@ -3878,4 +3878,231 @@ td[title] {
     50% {
         transform: translateY(-15px) scale(1.1);
     }
+}
+/* Admin-specific styles for Manage Job Request */
+/* Admin Filter Group Styles */
+.admin-filter-group {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 8px;
+    background: #0789e7;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: max-content;
+    z-index: 1;
+}
+/* Add specific z-index classes for each control */
+.sort-filter {
+    z-index: 30;
+}
+
+.status-filter {
+    z-index: 20;
+}
+
+.priority-filter {
+    z-index: 10;
+}
+.admin-filter-group-status {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 8px;
+    background: #0789e7;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: max-content;
+    z-index: 0;
+}
+.admin-filter-group:hover {
+    background: #0873c3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.admin-filter-group-status:hover {
+    background: #0873c3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Admin Filter Label */
+.admin-filter-label {
+    color: white;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-filter-label::after {
+    content: "";
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    margin-left: 8px;
+    transition: transform 0.2s ease;
+}
+
+.admin-filter-group[data-open="true"] .admin-filter-label::after {
+    transform: rotate(-135deg);
+}
+.admin-filter-group-status[data-open="true"] .admin-filter-label::after {
+    transform: rotate(-135deg);
+}
+/* Admin Search Styles */
+.admin-search-container {
+    position: relative;
+}
+
+.admin-search-input {
+    border: 1px solid rgba(7, 137, 231, 0.2);
+    border-radius: 8px 0 0 8px !important;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.admin-search-input:focus {
+    border-color: #0789e7;
+    box-shadow: 0 0 0 0.2rem rgba(7, 137, 231, 0.25);
+    outline: none;
+}
+
+.admin-search-button {
+    background: #0789e7 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 0 8px 8px 0 !important;
+    padding: 0.5rem 1.5rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.admin-search-button:hover {
+    background: #0873c3 !important;
+    transform: translateY(-1px);
+}
+
+/* Dropdown Menu */
+.admin-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    min-width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    animation: dropdownFadeIn 0.2s ease;
+}
+.admin-dropdown-menu-status {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    min-width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    overflow: hidden;
+    animation: dropdownFadeIn 0.2s ease;
+}
+
+.admin-dropdown-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    color: #333;
+}
+
+.admin-dropdown-item:hover {
+    background: #f8f9fa;
+    color: #0789e7;
+}
+
+.admin-dropdown-item.active {
+    background: #e9ecef;
+    color: #0789e7;
+    font-weight: 500;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .mobile-filter-group {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .mobile-dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 5px;
+        max-height: 200px;
+        overflow-y: auto;
+        animation: slideDown 0.2s ease-out;
+    }
+    .mobile-dropdown-menu2 {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 5px;
+        max-height: 200px;
+        overflow-y: auto;
+        animation: slideDown 0.2s ease-out;
+    }
+
+    .justify-content-md-end {
+        justify-content: flex-start !important;
+    }
+}
+
+/* Animations */
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.sort-filter .admin-dropdown-menu {
+    z-index: 30;
+}
+
+.status-filter .admin-dropdown-menu {
+    z-index: 20;
+}
+
+.priority-filter .admin-dropdown-menu {
+    z-index: 10;
 }

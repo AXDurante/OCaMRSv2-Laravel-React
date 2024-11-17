@@ -141,7 +141,7 @@ class AdminController extends Controller
                 'trans_type' => 'required',
                 'remarks' => 'nullable',
                 'status' => ['required', 'in:For Approval,Approved,Cancelled,Completed'],
-                'priority' => 'required|in:Regular,High,Medium,Low',
+                'priority' => 'required|in:Regular,Urgent',
                 'instruments' => 'required|array',
                 'instruments.*.instrument' => 'required',
                 'instruments.*.qty' => 'required|integer',

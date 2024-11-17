@@ -53,14 +53,8 @@ function ViewOrder({ jobOrder }) {
                         <b
                             className={
                                 jobOrder.priority === "Regular"
-                                    ? "text-"
-                                    : jobOrder.priority === "High"
-                                    ? "text-high"
-                                    : jobOrder.priority === "Medium"
-                                    ? "text-medium"
-                                    : jobOrder.priority === "Low"
-                                    ? "text-low"
-                                    : ""
+                                    ? "text-success"
+                                    : "text-danger"
                             }
                         >
                             {jobOrder.priority}

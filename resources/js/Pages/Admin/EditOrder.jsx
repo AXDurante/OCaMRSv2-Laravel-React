@@ -102,9 +102,7 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                             }
                         >
                             <option value="Regular">Regular</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
+                            <option value="Urgent">Urgent</option>
                         </select>
                     </h4>
                 </div>
