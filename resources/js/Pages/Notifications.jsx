@@ -28,14 +28,8 @@ function Notifications({ notifications }) {
     // Add this new function
     const handleMarkAllAsRead = async () => {
         try {
-            // Get the CSRF token from the meta tag
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            
-            await axios.post('/notifications/mark-all-as-read', {}, {
-                headers: {
-                    'X-CSRF-TOKEN': token
-                }
-            });
+            // Use Axios defaults instead of manually getting the CSRF token
+            await axios.post('/notifications/mark-all-as-read');
 
             // Update the notification count
             const countResponse = await axios.get('/notifications/unread-count');
@@ -47,7 +41,6 @@ function Notifications({ notifications }) {
             router.reload();
         } catch (error) {
             console.error('Error marking all notifications as read:', error);
-            // Optionally show an error message to the user
             alert('Failed to mark notifications as read. Please try again.');
         }
     };

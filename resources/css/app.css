@@ -3853,7 +3853,7 @@ td[title] {
 }
 
 .action-button.secondary:hover {
-    background-color: #f0f7ff !important;
+    background-color: #404040 !important;
 }
 
 .action-button.tertiary:hover {
@@ -4107,7 +4107,6 @@ td[title] {
     z-index: 10;
 }
 
-
 .alert {
     position: relative;
     padding: 1rem;
@@ -4171,7 +4170,7 @@ td[title] {
     width: 100%;
     pointer-events: auto;
     background-color: #fff;
-    border: 1px solid rgba(0,0,0,.2);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 0.5rem;
     outline: 0;
 }
