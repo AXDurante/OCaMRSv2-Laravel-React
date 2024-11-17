@@ -37,7 +37,7 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
             ...data.instruments,
             {
                 instrument: "",
-                qty: "",
+                qty: 1,
                 model: "N/A",
                 instrument_num: "",
                 manufacturer: "N/A",
@@ -60,9 +60,52 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
         setData("instruments", updatedInstruments);
     };
 
+    const validateForm = () => {
+        if (!data.service_type) {
+            alert("Please select a Service Type");
+            return false;
+        }
+
+        if (!data.instruments.length) {
+            alert("Please add at least one instrument");
+            return false;
+        }
+
+        for (let i = 0; i < data.instruments.length; i++) {
+            const inst = data.instruments[i];
+            if (!inst.instrument) {
+                alert(`Please select an equipment for Instrument ${i + 1}`);
+                return false;
+            }
+            if (!inst.instrument_num) {
+                alert(`Please enter a Serial Number for Instrument ${i + 1}`);
+                return false;
+            }
+            if (!inst.qty || inst.qty < 1) {
+                alert(`Please enter a valid quantity for Instrument ${i + 1}`);
+                return false;
+            }
+        }
+
+        return true;
+    };
+
     function onSubmit(e) {
         e.preventDefault();
-        put(route("admin.updateJobOrder", jobOrder.job_id));
+        if (validateForm()) {
+            put(route("admin.updateJobOrder", jobOrder.job_id), {
+                onSuccess: () => {
+                    // Success handling is managed by the redirect with flash message
+                },
+                onError: (errors) => {
+                    if (errors.error) {
+                        alert(errors.error);
+                    } else {
+                        alert("An error occurred while updating the job order.");
+                    }
+                },
+            });
+        }
     }
 
     return (

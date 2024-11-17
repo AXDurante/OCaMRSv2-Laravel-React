@@ -95,20 +95,14 @@ class AdminController extends Controller
     }
     public function showJobOrder($id)
     {
-        // Add debug logging to see what's being loaded
-        \Log::info('Loading Job Order:', ['id' => $id]);
-        
-        $jobOrder = JobOrder::with(['int_units', 'feedback', 'user'])->findOrFail($id);
-        
-        // Debug log the loaded data
-        \Log::info('Job Order Data:', [
-            'job_id' => $jobOrder->job_id,
-            'has_feedback' => $jobOrder->feedback ? 'yes' : 'no',
-            'feedback_data' => $jobOrder->feedback
-        ]);
+        $jobOrder = JobOrder::with('int_units')->findOrFail($id);
 
         return Inertia::render('Admin/ViewOrder', [
             'jobOrder' => $jobOrder,
+            'flash' => [
+                'success' => session('success'),
+                'error' => session('error')
+            ],
         ]);
     }
 
@@ -135,32 +129,48 @@ class AdminController extends Controller
             $jobOrder = JobOrder::findOrFail($id);
             $oldStatus = $jobOrder->status;
             
-            // Update validation to include new status
+            // Validate the request data
             $validatedData = $request->validate([
-                'service_type' => 'required',
-                'trans_type' => 'required',
-                'remarks' => 'nullable',
-                'status' => ['required', 'in:For Approval,Approved,Cancelled,Completed'],
+                'service_type' => 'required|string',
+                'trans_type' => 'required|string',
+                'dept_name' => 'required|string',
+                'lab' => 'required|string',
+                'lab_loc' => 'required|string',
+                'pos' => 'required|string',
+                'employeeID' => 'required',
+                'remarks' => 'nullable|string',
+                'status' => 'required|in:For Approval,Approved,Cancelled,Completed',
                 'priority' => 'required|in:Regular,Urgent',
-                'instruments' => 'required|array',
-                'instruments.*.instrument' => 'required',
-                'instruments.*.qty' => 'required|integer',
-                'instruments.*.model' => 'nullable',
-                'instruments.*.instrument_num' => 'required',
-                'instruments.*.manufacturer' => 'nullable',
+                'instruments' => 'required|array|min:1',
+                'instruments.*.instrument' => 'required|string',
+                'instruments.*.qty' => 'required|integer|min:1',
+                'instruments.*.model' => 'nullable|string',
+                'instruments.*.instrument_num' => 'required|string',
+                'instruments.*.manufacturer' => 'nullable|string',
             ]);
 
             // Update job order
-            $jobOrder->update($request->all());
+            $jobOrder->update([
+                'service_type' => $validatedData['service_type'],
+                'trans_type' => $validatedData['trans_type'],
+                'dept_name' => $validatedData['dept_name'],
+                'lab' => $validatedData['lab'],
+                'lab_loc' => $validatedData['lab_loc'],
+                'pos' => $validatedData['pos'],
+                'employeeID' => $validatedData['employeeID'],
+                'remarks' => $validatedData['remarks'],
+                'status' => $validatedData['status'],
+                'priority' => $validatedData['priority'],
+            ]);
+
+            // Update or create instrument units
+            $jobOrder->int_units()->delete(); // Remove existing units
+            foreach ($validatedData['instruments'] as $instrumentData) {
+                $jobOrder->int_units()->create($instrumentData);
+            }
 
             // If status has changed from For Approval to Approved
-            if ($oldStatus === 'For Approval' && $jobOrder->status === 'Approved') {
-                \Log::info('Creating notifications for all technicians', [
-                    'job_order_id' => $jobOrder->job_id,
-                    'old_status' => $oldStatus,
-                    'new_status' => $jobOrder->status
-                ]);
-                
+            if ($oldStatus === 'For Approval' && $validatedData['status'] === 'Approved') {
                 TechnicianNotificationController::notifyAllTechnicians(
                     $jobOrder,
                     'New Job Order Available',
@@ -169,25 +179,25 @@ class AdminController extends Controller
                 );
             }
 
-            // Create client notification
+            // Create notification for status change
             Notification::create([
                 'user_id' => $jobOrder->employeeID,
                 'job_order_id' => $jobOrder->job_id,
                 'title' => 'Job Order Status Updated',
-                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$jobOrder->status} by admin",
+                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$validatedData['status']} by admin",
                 'type' => 'status_update',
-                'status' => $jobOrder->status
+                'status' => $validatedData['status']
             ]);
 
             return redirect()->route('admin.showJobOrder', $jobOrder->job_id)
-                ->with('success', 'Job order updated successfully');
+                ->with('success', 'Job order has been updated successfully!');
 
         } catch (\Exception $e) {
             \Log::error('Job Order Update Error:', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            return redirect()->back()->with('error', 'Error updating job order: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'An error occurred while updating the job order.']);
         }
     }
 
