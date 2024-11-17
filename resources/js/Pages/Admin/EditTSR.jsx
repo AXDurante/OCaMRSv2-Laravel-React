@@ -6,31 +6,29 @@ import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
 import Modal from "react-modal"; // Import Modal
 import { Link, useForm } from "@inertiajs/react";
 
-function EditTSR({jobOrder, auth, tsr}) {
+function EditTSR({ jobOrder, auth, tsr }) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
     const [includeSignature, setIncludeSignature] = useState(false); // Add this state
-    
+
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
     };
-    
+
     const closeModal = () => {
         setShowPreview(false); // Close the modal
     };
 
-    
-
     // Initialize useForm with existing TSR data
     const { data, setData, put, processing, errors } = useForm({
-        tsr_num: tsr.tsr_num || '',
-        instrument: tsr.instrument || '',
-        model: tsr.model || '',
-        serial_num: tsr.serial_num || '',
-        problemReported: tsr.problemReported || '',
-        diagnosis: tsr.diagnosis || '',
-        actionTaken: tsr.actionTaken || '',
-        recommendation: tsr.recommendation || '',
-        tsr_remarks: tsr.tsr_remarks || '',
+        tsr_num: tsr.tsr_num || "",
+        instrument: tsr.instrument || "",
+        model: tsr.model || "",
+        serial_num: tsr.serial_num || "",
+        problemReported: tsr.problemReported || "",
+        diagnosis: tsr.diagnosis || "",
+        actionTaken: tsr.actionTaken || "",
+        recommendation: tsr.recommendation || "",
+        tsr_remarks: tsr.tsr_remarks || "",
         date_request: tsr.date_request || jobOrder.date_request,
         phone: tsr.phone || jobOrder.user.phoneNumber,
         job_id: tsr.job_id || jobOrder.job_id,
@@ -53,13 +51,15 @@ function EditTSR({jobOrder, auth, tsr}) {
         setData({
             ...data,
             admin_photo: isChecked ? auth.user.photo : null,
-            admin_name: isChecked ? `${auth.user.firstName} ${auth.user.lastName}` : null,
+            admin_name: isChecked
+                ? `${auth.user.firstName} ${auth.user.lastName}`
+                : null,
         });
     };
 
     function onSubmit(e) {
         e.preventDefault();
-        put(route('admin.updateTSR', tsr.tsr_id));
+        put(route("admin.updateTSR", tsr.tsr_id));
     }
 
     return (
@@ -74,7 +74,7 @@ function EditTSR({jobOrder, auth, tsr}) {
                         border: "none", // Optional: remove border for a cleaner look
                     }}
                 >
-                    <TSRpdf 
+                    <TSRpdf
                         jobOrder={jobOrder}
                         reportDetails={{
                             ...data,
@@ -83,7 +83,8 @@ function EditTSR({jobOrder, auth, tsr}) {
                                 admin_signature: auth.photo, // Use the full URL from auth
                                 admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
                             }),
-                        }} />
+                        }}
+                    />
                 </PDFViewer>
                 <button onClick={closeModal}>Close</button> {/* Close button */}
             </Modal>
@@ -136,7 +137,7 @@ function EditTSR({jobOrder, auth, tsr}) {
 
                             <div className="col-12 col-md-8">
                                 <div className="pt-5 pb-5 p-3">
-                                <div className="row">
+                                    <div className="row">
                                         <div className="col-12 col-sm-3 mb-3">
                                             <label className="form-label fw-bold d-block text-truncate">
                                                 TSR Number*
@@ -194,7 +195,9 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             <input
                                                 type="text"
                                                 className="form-control rounded"
-                                                value={jobOrder.user.phoneNumber}
+                                                value={
+                                                    jobOrder.user.phoneNumber
+                                                }
                                                 disabled
                                             />
                                         </div>
@@ -292,16 +295,24 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             </label>
                                         </div>
                                         <div className="col-12 col-sm-9 mb-3">
-                                            <select 
+                                            <select
                                                 className="w-100 rounded p-2"
                                                 name="recommendation"
                                                 value={data.recommendation}
                                                 onChange={handleInputChange}
                                             >
-                                                <option value="For Pull-Out">For Pull-Out</option>
-                                                <option value="Forward to Supplier">Forward to Supplier</option>
-                                                <option value="For Repair">For Repair</option>
-                                                <option value="Beyond Repair">Beyond Repair</option>
+                                                <option value="For Pull-Out">
+                                                    For Pull-Out
+                                                </option>
+                                                <option value="Forward to Supplier">
+                                                    Forward to Supplier
+                                                </option>
+                                                <option value="For Repair">
+                                                    For Repair
+                                                </option>
+                                                <option value="Beyond Repair">
+                                                    Beyond Repair
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -334,16 +345,23 @@ function EditTSR({jobOrder, auth, tsr}) {
                                                     className="form-check-input"
                                                     id="includeSignature"
                                                     checked={includeSignature}
-                                                    onChange={handleSignatureChange}
+                                                    onChange={
+                                                        handleSignatureChange
+                                                    }
                                                 />
-                                                <label className="form-check-label" htmlFor="includeSignature">
-                                                    Include my signature in this TSR
+                                                <label
+                                                    className="form-check-label"
+                                                    htmlFor="includeSignature"
+                                                >
+                                                    Include my signature in this
+                                                    TSR
                                                 </label>
                                             </div>
                                             {includeSignature && (
                                                 <div className="mt-2">
                                                     <small className="text-muted">
-                                                        Signature file: {auth.user.photo}
+                                                        Signature file:{" "}
+                                                        {auth.user.photo}
                                                     </small>
                                                 </div>
                                             )}
@@ -367,7 +385,6 @@ function EditTSR({jobOrder, auth, tsr}) {
                                             >
                                                 Save Document
                                             </button>
-                                            
                                         </div>
                                     </div>
                                 </div>

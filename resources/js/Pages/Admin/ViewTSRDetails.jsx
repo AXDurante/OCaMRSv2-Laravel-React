@@ -11,283 +11,267 @@ function ViewTSRDetails({ tsr }) {
     const handlePreviewClick = () => {
         setShowPreview(true);
     };
-    
+
     const closeModal = () => {
         setShowPreview(false);
     };
 
     return (
-        <>
-            {/* Modal for PDF Preview */}
-            <Modal isOpen={showPreview} onRequestClose={closeModal}>
-                <h5>Print Preview:</h5>
-                <PDFViewer
-                    style={{
-                        width: "100%",
-                        height: "80%",
-                        border: "none",
-                    }}
-                >
-                    <TSRpdf 
-                        jobOrder={tsr.job_order}
-                        reportDetails={{
-                            ...tsr,
-                            // Use the full URL that was constructed in the controller
-                            tech_photo: tsr.tech_photo,  // This now contains the full URL
-                            admin_signature: tsr.admin_signature, // This now contains the full URL
-                            admin_name: tsr.admin_name
-                        }} 
-                    />
-                </PDFViewer>
-                <button onClick={closeModal}>Close</button>
-            </Modal>
+        <div className="container py-4">
+            <h2 className="mb-4">
+                Technical Service Report{" "}
+                <span className="text-muted fw-light">| View Details</span>
+            </h2>
 
-            <div id="content" className="flex-fill p-3">
-                <div>
-                    <div>
-                        <h1 className="d-inline">
-                            Technical Service Report |{" "}
-                        </h1>
-                        <h1 className="d-inline fw-light">View Details</h1>
-                        <hr />
-                    </div>
-                    <div className="mt-3">
-                        <div className="row forms-bg">
-                            <div className="col-12 col-md-4 profile-bg d-flex flex-column align-items-center p-3 text-white">
-                                {/* Left sidebar content */}
-                                <div className="mt-10">
-                                    <i className="bi bi-person-fill fs-2 text-primary"></i>
+            <div className="card-container">
+                <div className="row g-0">
+                    {/* Left Sidebar */}
+                    <div className="col-12 col-md-3">
+                        <div className="card bg-dark text-white h-100 rounded-0 rounded-start rounded-bottom-md-start rounded-end-md-0">
+                            <div className="card-body d-flex flex-column justify-content-center align-items-center">
+                                <div className="mb-4">
+                                    <i className="bi bi-file-text-fill fs-1"></i>
                                 </div>
-                                <h5 className="mb-4 mt-9">
-                                    {tsr.instrument}
-                                </h5>
+                                <h3 className="mb-3">TSR-{tsr.tsr_num}</h3>
 
-                                <div className="mt-20">
-                                    <h5 className="d-inline">Priority: </h5>
-                                    <h5 className="d-inline fw-light text-warning">
-                                        Regular
-                                    </h5>
+                                {/* Status Section */}
+                                <div className="mb-4 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Status
+                                    </small>
+                                    <span className="badge bg-success px-3 py-2 rounded-pill">
+                                        {tsr.job_order.status}
+                                    </span>
+                                </div>
+
+                                {/* Priority Section */}
+                                <div className="mb-4 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Priority
+                                    </small>
+                                    <span className="badge bg-warning px-3 py-2 rounded-pill">
+                                        {tsr.job_order.priority}
+                                    </span>
+                                </div>
+
+                                {/* Technician Info */}
+                                <div className="mt-2 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Technician
+                                    </small>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <i className="bi bi-person-circle"></i>
+                                        <span>{tsr.tech_id}</span>
+                                    </div>
+                                </div>
+
+                                {/* Date Info */}
+                                <div className="mt-4 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Created On
+                                    </small>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <i className="bi bi-calendar3"></i>
+                                        <span>{tsr.date_request}</span>
+                                    </div>
                                 </div>
 
                                 <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
                                     {tsr.coc ? (
-                                         <Link href={route('admin.indexCOC', { tsr_id: tsr.tsr_id })}>
+                                        <Link
+                                            href={route("admin.indexCOC", {
+                                                tsr_id: tsr.tsr_id,
+                                            })}
+                                        >
                                             <button className="btn btn-light w-100 mb-2">
                                                 <i className="bi bi-file-earmark-text-fill me-2"></i>
                                                 View Certificates of Calibration
                                             </button>
                                         </Link>
                                     ) : (
-                                        <button className="btn btn-light w-100 mb-2" disabled>
+                                        <button
+                                            className="btn btn-light w-100 mb-2"
+                                            disabled
+                                        >
                                             <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            No Certificate of Calibration Available
+                                            No Certificate of Calibration
+                                            Available
                                         </button>
                                     )}
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-                            <div className="col-12 col-md-8">
-                                <div className="pt-5 pb-5 p-3">
-                                    {/* Form fields */}
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                TSR Number
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.tsr_num}
-                                                disabled
-                                            />
-                                        </div>
+                    {/* Main Content */}
+                    <div className="col-12 col-md-9">
+                        <div className="card shadow-sm h-100 rounded-0 rounded-end rounded-top-md-end rounded-bottom-md-end mt-3 mt-md-0">
+                            <div className="card-body">
+                                <div className="row g-3">
+                                    {/* First Row */}
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            TSR Number*
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={tsr.tsr_num}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Instrument
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.instrument}
-                                                disabled
-                                            />
-                                        </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Date Requested
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control bg-light"
+                                            value={tsr.date_request}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Date Requested
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.date_request}
-                                                disabled
-                                            />
-                                        </div>
+                                    {/* Second Row */}
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Instrument*
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={tsr.instrument}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Tel No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.phone}
-                                                disabled
-                                            />
-                                        </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Tel No.
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control bg-light"
+                                            value={tsr.phone}
+                                            disabled
+                                        />
                                     </div>
 
-                                    {/* Continue with other fields */}
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Model
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.model || 'N/A'}
-                                                disabled
-                                            />
-                                        </div>
+                                    {/* Third Row */}
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Model
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={tsr.model}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Serial No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.serial_num}
-                                                disabled
-                                            />
-                                        </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Serial No.
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={tsr.serial_num}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Problem Reported
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.problemReported}
-                                                disabled
-                                            />
-                                        </div>
+                                    {/* Fourth Row */}
+                                    <div className="col-12">
+                                        <label className="form-label fw-bold">
+                                            Problem Reported
+                                        </label>
+                                        <textarea
+                                            className="form-control"
+                                            rows="4"
+                                            value={tsr.problemReported}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Diagnosis/Observation
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.diagnosis}
-                                                disabled
-                                            />
-                                        </div>
+                                    {/* Fifth Row */}
+                                    <div className="col-12">
+                                        <label className="form-label fw-bold">
+                                            Diagnosis/Observation
+                                        </label>
+                                        <textarea
+                                            className="form-control"
+                                            rows="4"
+                                            value={tsr.diagnosis}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Action Taken
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.actionTaken}
-                                                disabled
-                                            />
-                                        </div>
+                                    {/* Sixth Row */}
+                                    <div className="col-12">
+                                        <label className="form-label fw-bold">
+                                            Action Taken
+                                        </label>
+                                        <textarea
+                                            className="form-control"
+                                            rows="4"
+                                            value={tsr.actionTaken}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Recommendation
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.recommendation}
-                                                disabled
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Remarks
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={tsr.tsr_remarks}
-                                                disabled
-                                            />
-                                        </div>
+                                    {/* Seventh Row */}
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Recommendation
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={tsr.recommendation}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row"></div>
-                                    <div className="row">
-                                        <div className="col-12">
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Remarks
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={tsr.tsr_remarks}
+                                            disabled
+                                        />
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="col-12 mt-4">
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-primary me-2"
+                                            onClick={handlePreviewClick}
+                                        >
+                                            <i className="bi bi-file-pdf me-1"></i>
+                                            Preview PDF
+                                        </button>
+                                        <Link
+                                            href={route(
+                                                "admin.editTSR",
+                                                tsr.tsr_id
+                                            )}
+                                        >
                                             <button
                                                 type="button"
-                                                className="btn btn-primary mb-3"
-                                                onClick={handlePreviewClick}
+                                                className="btn btn-primary"
                                             >
-                                                Preview PDF
+                                                <i className="bi bi-pencil me-1"></i>
+                                                Edit Document
                                             </button>
-                                            <Link
-                                                href={route('admin.editTSR', tsr.tsr_id)}>
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-primary ms-3 mb-3"
-                                                >
-                                                    Edit Document
-                                                </button>
-                                            </Link>
-                                            
-                                            
-                                        </div>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -295,8 +279,73 @@ function ViewTSRDetails({ tsr }) {
                     </div>
                 </div>
             </div>
-        </>
-    )
+
+            {/* PDF Preview Modal - using the same styling as TSR */}
+            <Modal
+                isOpen={showPreview}
+                onRequestClose={closeModal}
+                className="modal-lg"
+                overlayClassName="modal-overlay"
+                style={{
+                    content: {
+                        width: "90%",
+                        height: "90%",
+                        margin: "auto",
+                        backgroundColor: "white",
+                        borderRadius: "12px",
+                        padding: "0",
+                        border: "none",
+                        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                        overflow: "hidden",
+                    },
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        zIndex: 1000,
+                    },
+                }}
+            >
+                {/* Modal content similar to TSR */}
+                <div className="modal-header d-flex justify-content-between align-items-center px-4 py-3">
+                    <div className="d-flex align-items-center gap-2">
+                        <i className="bi bi-file-pdf text-primary"></i>
+                        <span className="modal-title">Preview Document</span>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={closeModal}
+                        className="close-button"
+                        aria-label="Close"
+                    >
+                        <i className="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div
+                    className="modal-body"
+                    style={{ height: "calc(100% - 60px)" }}
+                >
+                    <PDFViewer
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            border: "none",
+                        }}
+                    >
+                        <TSRpdf
+                            jobOrder={tsr.job_order}
+                            reportDetails={{
+                                ...tsr,
+                                tech_photo: tsr.tech_photo,
+                                ...(tsr.admin_signature && {
+                                    admin_signature: tsr.admin_signature,
+                                    admin_name: tsr.admin_name,
+                                }),
+                            }}
+                        />
+                    </PDFViewer>
+                </div>
+            </Modal>
+        </div>
+    );
 }
 
 ViewTSRDetails.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
