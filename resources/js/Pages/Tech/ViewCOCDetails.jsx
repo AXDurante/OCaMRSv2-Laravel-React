@@ -5,10 +5,21 @@ import Modal from "react-modal";
 import COCpdf from "./COCpdf";
 import { usePage, useForm } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
-import { FaCheckCircle, FaFlag, FaEdit } from "react-icons/fa"; // Import icons
+import {
+    FaCheckCircle,
+    FaFlag,
+    FaEdit,
+    FaTimesCircle,
+    FaHourglassHalf,
+    FaSpinner,
+    FaClock,
+} from "react-icons/fa"; // Import icons
 
 function ViewCOCDetails({ coc, auth }) {
     const [showPreview, setShowPreview] = useState(false); // Define showPreview state
+
+    // Ensure tsr is accessed correctly
+    const tsr = coc.tsr; // Assuming tsr is a property of coc
 
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
@@ -44,10 +55,45 @@ function ViewCOCDetails({ coc, auth }) {
                                         Status
                                     </small>
                                     <span
-                                        className={`badge bg-success px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
+                                        className={`badge ${
+                                            tsr.job_order.status === "Cancelled"
+                                                ? "bg-danger"
+                                                : tsr.job_order.status ===
+                                                  "Approved"
+                                                ? "bg-success"
+                                                : tsr.job_order.status ===
+                                                  "Completed"
+                                                ? "bg-info"
+                                                : tsr.job_order.status ===
+                                                  "For Approval"
+                                                ? "bg-warning"
+                                                : tsr.job_order.status ===
+                                                  "Processing"
+                                                ? "bg-primary"
+                                                : tsr.job_order.status ===
+                                                  "Pending"
+                                                ? "bg-secondary"
+                                                : "bg-secondary"
+                                        } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
                                     >
-                                        <FaCheckCircle />
-                                        Completed
+                                        {tsr.job_order.status ===
+                                            "Cancelled" && <FaTimesCircle />}
+                                        {tsr.job_order.status ===
+                                            "Approved" && <FaCheckCircle />}
+                                        {tsr.job_order.status ===
+                                            "Completed" && <FaCheckCircle />}
+                                        {tsr.job_order.status ===
+                                            "For Approval" && (
+                                            <FaHourglassHalf />
+                                        )}
+                                        {tsr.job_order.status ===
+                                            "Processing" && (
+                                            <FaSpinner className="spinner-icon" />
+                                        )}
+                                        {tsr.job_order.status === "Pending" && (
+                                            <FaClock />
+                                        )}
+                                        {tsr.job_order.status}
                                     </span>
                                 </div>
 
@@ -57,10 +103,17 @@ function ViewCOCDetails({ coc, auth }) {
                                         Priority
                                     </small>
                                     <span
-                                        className={`badge bg-warning px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
+                                        className={`badge ${
+                                            tsr.job_order.priority === "High"
+                                                ? "bg-danger"
+                                                : tsr.job_order.priority ===
+                                                  "Medium"
+                                                ? "bg-warning"
+                                                : "bg-success"
+                                        } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
                                     >
                                         <FaFlag />
-                                        Medium
+                                        {tsr.job_order.priority}
                                     </span>
                                 </div>
 

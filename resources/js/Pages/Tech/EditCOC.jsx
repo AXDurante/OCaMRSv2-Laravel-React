@@ -78,64 +78,69 @@ function EditCOC({ tsr, auth, coc }) {
 
                                 {/* Status Section */}
                                 <div className="mb-4 text-center">
-                                    <small className="text-muted d-block mb-1">
+                                    <small className="text-white d-block mb-1">
                                         Status
                                     </small>
                                     <span
                                         className={`badge ${
-                                            coc.status === "Cancelled"
+                                            tsr.job_order.status === "Cancelled"
                                                 ? "bg-danger"
-                                                : coc.status === "Approved"
+                                                : tsr.job_order.status ===
+                                                  "Approved"
                                                 ? "bg-success"
-                                                : coc.status === "Completed"
+                                                : tsr.job_order.status ===
+                                                  "Completed"
                                                 ? "bg-info"
-                                                : coc.status === "For Approval"
+                                                : tsr.job_order.status ===
+                                                  "For Approval"
                                                 ? "bg-warning"
-                                                : coc.status === "Processing"
+                                                : tsr.job_order.status ===
+                                                  "Processing"
                                                 ? "bg-primary"
-                                                : coc.status === "Pending"
+                                                : tsr.job_order.status ===
+                                                  "Pending"
                                                 ? "bg-secondary"
                                                 : "bg-secondary"
                                         } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
                                     >
-                                        {coc.status === "Cancelled" && (
-                                            <FaTimesCircle />
-                                        )}
-                                        {coc.status === "Approved" && (
-                                            <FaCheckCircle />
-                                        )}
-                                        {coc.status === "Completed" && (
-                                            <FaCheckCircle />
-                                        )}
-                                        {coc.status === "For Approval" && (
+                                        {tsr.job_order.status ===
+                                            "Cancelled" && <FaTimesCircle />}
+                                        {tsr.job_order.status ===
+                                            "Approved" && <FaCheckCircle />}
+                                        {tsr.job_order.status ===
+                                            "Completed" && <FaCheckCircle />}
+                                        {tsr.job_order.status ===
+                                            "For Approval" && (
                                             <FaHourglassHalf />
                                         )}
-                                        {coc.status === "Processing" && (
+                                        {tsr.job_order.status ===
+                                            "Processing" && (
                                             <FaSpinner className="spinner-icon" />
                                         )}
-                                        {coc.status === "Pending" && (
+                                        {tsr.job_order.status === "Pending" && (
                                             <FaClock />
                                         )}
-                                        {coc.status}
+                                        {tsr.job_order.status}
                                     </span>
                                 </div>
 
                                 {/* Priority Section */}
                                 <div className="mb-4 text-center">
-                                    <small className="text-muted d-block mb-1">
+                                    <small className="text-white d-block mb-1">
                                         Priority
                                     </small>
                                     <span
                                         className={`badge ${
-                                            coc.priority === "High"
+                                            tsr.job_order.priority === "High"
                                                 ? "bg-danger"
-                                                : coc.priority === "Medium"
+                                                : tsr.job_order.priority ===
+                                                  "Medium"
                                                 ? "bg-warning"
                                                 : "bg-success"
                                         } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
                                     >
                                         <FaFlag />
-                                        {coc.priority}
+                                        {tsr.job_order.priority}
                                     </span>
                                 </div>
 
