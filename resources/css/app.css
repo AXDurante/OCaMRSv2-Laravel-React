@@ -4258,3 +4258,59 @@ td[title] {
         color: #000;
     }
 }
+.card {
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-body small.text-muted {
+    font-size: 0.8rem;
+}
+
+.card-body div:not(.mb-2) {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .btn {
+        padding: 0.6rem;
+    }
+}
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+}
+
+/* Add smooth scrolling for better mobile experience */
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Ensure table cells don't wrap content */
+.table td,
+.table th {
+    white-space: nowrap;
+    min-width: 100px; /* Minimum width for columns */
+}
+
+/* Make action column slightly wider for buttons */
+.table th:last-child,
+.table td:last-child {
+    min-width: 120px;
+}
