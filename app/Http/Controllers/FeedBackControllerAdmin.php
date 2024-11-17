@@ -21,10 +21,16 @@ class FeedbackControllerAdmin extends Controller
         ]);
     }
 
-    public function show(Feedback $feedback)
+    public function show($id)
     {
-        $feedback->load(['user', 'jobOrder']);
-        
+        $feedback = Feedback::where('job_order_id', $id)
+            ->with(['user', 'jobOrder'])
+            ->first();
+
+        if (!$feedback) {
+            return redirect()->back()->with('error', 'No feedback found for this job order.');
+        }
+
         return Inertia::render('viewFeedBackAdmin', [
             'feedback' => [
                 'id' => $feedback->id,

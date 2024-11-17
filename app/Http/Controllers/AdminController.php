@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\Feedback;
 
 class AdminController extends Controller
 {
@@ -95,7 +96,12 @@ class AdminController extends Controller
     }
     public function showJobOrder($id)
     {
-        $jobOrder = JobOrder::with('int_units')->findOrFail($id);
+        $jobOrder = JobOrder::with('int_units')
+            ->select('job_orders.*')
+            ->leftJoin('feedbacks', 'job_orders.job_id', '=', 'feedbacks.job_order_id')
+            ->selectRaw('CASE WHEN feedbacks.id IS NOT NULL THEN true ELSE false END as has_feedback')
+            ->where('job_orders.job_id', $id)
+            ->firstOrFail();
 
         return Inertia::render('Admin/ViewOrder', [
             'jobOrder' => $jobOrder,
@@ -529,6 +535,22 @@ class AdminController extends Controller
                 'error' => 'An error occurred while updating the status.'
             ], 500);
         }
+    }
+
+    public function viewFeedback($jobOrderId)
+    {
+        $feedback = Feedback::where('job_order_id', $jobOrderId)
+            ->with('user')
+            ->first();
+
+        if (!$feedback) {
+            return redirect()->back()->with('error', 'No feedback found for this job order.');
+        }
+
+        return Inertia::render('Admin/ViewFeedback', [
+            'feedback' => $feedback,
+            'jobOrder' => $feedback->jobOrder
+        ]);
     }
 
 }
