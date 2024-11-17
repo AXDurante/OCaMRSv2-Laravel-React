@@ -1,7 +1,11 @@
 import { useForm } from "@inertiajs/react";
 import Navbar2 from "@/Layouts/Navbar2";
+import { useState } from 'react';
 
 function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
+    const [validationError, setValidationError] = useState("");
+    const [showModal, setShowModal] = useState(false);
+
     const equipmentName = equipment?.map((item) => item.equip_name) || [];
 
     const { data, setData, put, errors, processing } = useForm({
@@ -38,7 +42,7 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
             ...data.instruments,
             {
                 instrument: "",
-                qty: "",
+                qty: 1,
                 model: "N/A",
                 instrument_num: "",
                 manufacturer: "N/A",
@@ -61,9 +65,41 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
         setData("instruments", updatedInstruments);
     };
 
+    const validateForm = () => {
+        if (!data.service_type) {
+            alert("Please select a Service Type");
+            return false;
+        }
+
+        if (!data.instruments.length) {
+            alert("Please add at least one instrument");
+            return false;
+        }
+
+        for (let i = 0; i < data.instruments.length; i++) {
+            const inst = data.instruments[i];
+            if (!inst.instrument) {
+                alert(`Please select an equipment for Instrument ${i + 1}`);
+                return false;
+            }
+            if (!inst.instrument_num) {
+                alert(`Please enter a Serial Number for Instrument ${i + 1}`);
+                return false;
+            }
+            if (!inst.qty || inst.qty < 1) {
+                alert(`Please enter a valid quantity for Instrument ${i + 1}`);
+                return false;
+            }
+        }
+
+        return true;
+    };
+
     function onSubmit(e) {
         e.preventDefault();
-        put(route("technician.updateJobOrder", jobOrder.job_id));
+        if (validateForm()) {
+            put(route("technician.updateJobOrder", jobOrder.job_id));
+        }
     }
 
     return (
