@@ -101,7 +101,7 @@ Route::middleware(['auth:admin'])->group(function () {
     // Admin Feedback routes
     Route::controller(FeedbackControllerAdmin::class)->group(function () {
         Route::get('/admin/feedback', 'index')->name('admin.feedback.index');
-        Route::get('/admin/feedback/{feedback}', 'show')->name('admin.feedback.show');
+        Route::get('/admin/feedback/{id}', 'show')->name('admin.feedback.show');
         Route::delete('/admin/feedback/{feedback}', 'destroy')->name('admin.feedback.destroy');
     });
 
