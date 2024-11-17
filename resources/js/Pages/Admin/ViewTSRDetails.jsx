@@ -72,10 +72,10 @@ function ViewTSRDetails({ tsr }) {
                                 <h6 className="mt-4">Related Documents:</h6>
                                 <div className="mt-1 w-100">
                                     {tsr.coc ? (
-                                        <Link href={route('admin.viewCoCDetails', tsr.coc.coc_id)}>
+                                         <Link href={route('admin.indexCOC', { tsr_id: tsr.tsr_id })}>
                                             <button className="btn btn-light w-100 mb-2">
                                                 <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                                View Certificate of Calibration
+                                                View Certificates of Calibration
                                             </button>
                                         </Link>
                                     ) : (

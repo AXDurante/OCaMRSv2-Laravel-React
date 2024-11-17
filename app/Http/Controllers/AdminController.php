@@ -69,7 +69,7 @@ class AdminController extends Controller
             'auth' => [
                 'user' => $admin
             ],
-            'storageBaseUrl' => $isProduction 
+            'storageBaseUrl' => $isProduction
                 ? $appUrl . '/public/storage/photos'  // Remove duplicate adminSignature
                 : url('storage/photos'),
             'flash' => [
@@ -134,7 +134,7 @@ class AdminController extends Controller
         try {
             $jobOrder = JobOrder::findOrFail($id);
             $oldStatus = $jobOrder->status;
-            
+
             // Validate the request data
             $validatedData = $request->validate([
                 'service_type' => 'required|string',
@@ -211,7 +211,7 @@ class AdminController extends Controller
     {
         try {
             $admin = Auth::guard('admin')->user();
-            
+
             // Update validation rules
             $validationRules = [
                 'firstName' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
@@ -282,7 +282,7 @@ class AdminController extends Controller
 
                 // Generate unique filename
                 $filename = time() . '_' . Str::random(10) . '.png';
-                
+
                 // Store the new photo
                 $photo->storeAs('public/photos/adminSignature', $filename);
                 $updateData['photo'] = $filename;
@@ -316,22 +316,35 @@ class AdminController extends Controller
         ]);
     }
 
+    public function indexCOC($tsr_id)
+    {
+        // Retrieve all COCs associated with the specified TSR ID
+        $cocs = COC::where('tsr_id', $tsr_id)
+            ->orderBy('coc_id', 'desc') // Order by coc_id in descending order
+            ->get();
+
+        return Inertia::render('Admin/ViewCOC', [
+            'cocs' => $cocs, // Pass the COCs to the view
+            'tsr_id' => $tsr_id, // Pass the TSR ID for reference
+        ]);
+    }
+
     public function viewTSR($tsr_id)
     {
         $tsr = TSR::with(['job_order.user', 'coc'])->findOrFail($tsr_id);
-        
+
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
-        
+
         // Generate full URLs for technician and admin signatures using the same logic as AppServiceProvider
         if ($tsr->tech_photo) {
-            $tsr->tech_photo = $isProduction 
+            $tsr->tech_photo = $isProduction
                 ? $appUrl . '/public/storage/photos/technicianSignature/' . $tsr->tech_photo
                 : url('storage/photos/technicianSignature/' . $tsr->tech_photo);
         }
-        
+
         if ($tsr->admin_photo) {
-            $tsr->admin_signature = $isProduction 
+            $tsr->admin_signature = $isProduction
                 ? $appUrl . '/public/storage/photos/adminSignature/' . $tsr->admin_photo
                 : url('storage/photos/adminSignature/' . $tsr->admin_photo);
         }
@@ -354,18 +367,18 @@ class AdminController extends Controller
 
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
-        
+
         // Generate full URLs for technician and admin signatures
         if ($tsr->tech_photo) {
-            $tsr->tech_photo = $isProduction 
+            $tsr->tech_photo = $isProduction
                 ? $appUrl . '/public/storage/photos/technicianSignature/' . $tsr->tech_photo
                 : url('storage/photos/technicianSignature/' . $tsr->tech_photo);
         }
-        
+
         // Generate full URL for admin's signature
-        $adminPhotoUrl = $admin->photo ? ($isProduction 
+        $adminPhotoUrl = $admin->photo ? ($isProduction
             ? $appUrl . '/public/storage/photos/adminSignature/' . $admin->photo
-            : url('storage/photos/adminSignature/' . $admin->photo)) 
+            : url('storage/photos/adminSignature/' . $admin->photo))
             : null;
 
         return Inertia::render('Admin/EditTSR', [
@@ -409,19 +422,19 @@ class AdminController extends Controller
     public function viewCoC($coc_id)
     {
         $coc = CoC::with(['tsr.job_order.user'])->findOrFail($coc_id);
-        
+
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
-        
+
         // Generate full URLs for technician and admin signatures
         if ($coc->tech_photo) {
-            $coc->tech_photo = $isProduction 
+            $coc->tech_photo = $isProduction
                 ? $appUrl . '/public/storage/photos/technicianSignature/' . $coc->tech_photo
                 : url('storage/photos/technicianSignature/' . $coc->tech_photo);
         }
-        
+
         if ($coc->admin_photo) {
-            $coc->admin_signature = $isProduction 
+            $coc->admin_signature = $isProduction
                 ? $appUrl . '/public/storage/photos/adminSignature/' . $coc->admin_photo
                 : url('storage/photos/adminSignature/' . $coc->admin_photo);
         }
@@ -435,21 +448,21 @@ class AdminController extends Controller
     {
         $coc = COC::with(['tsr.job_order'])->findOrFail($coc_id);
         $admin = Auth::guard('admin')->user();
-        
+
         $isProduction = app()->environment('production');
         $appUrl = config('app.url');
-        
+
         // Generate full URLs for signatures
         if ($coc->tech_photo) {
-            $coc->tech_photo_url = $isProduction 
+            $coc->tech_photo_url = $isProduction
                 ? $appUrl . '/public/storage/photos/technicianSignature/' . $coc->tech_photo
                 : url('storage/photos/technicianSignature/' . $coc->tech_photo);
         }
 
         // Generate full URL for admin's signature
-        $adminPhotoUrl = $admin->photo ? ($isProduction 
+        $adminPhotoUrl = $admin->photo ? ($isProduction
             ? $appUrl . '/public/storage/photos/adminSignature/' . $admin->photo
-            : url('storage/photos/adminSignature/' . $admin->photo)) 
+            : url('storage/photos/adminSignature/' . $admin->photo))
             : null;
 
         return Inertia::render('Admin/EditCOC', [
@@ -502,7 +515,7 @@ class AdminController extends Controller
 
             $jobOrder = JobOrder::findOrFail($id);
             $oldStatus = $jobOrder->status;
-            
+
             // Update the status
             $jobOrder->update(['status' => $request->status]);
 
