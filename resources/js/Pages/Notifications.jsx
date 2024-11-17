@@ -54,7 +54,7 @@ function Notifications({ notifications }) {
             </div>
 
             <div className="mt-3">
-                {notifications.some(notification => !notification.read_at) && (
+                {notifications.data.some(notification => !notification.read_at) && (
                     <div className="text-end mb-3 fade-in-delayed">
                         <button
                             onClick={handleMarkAllAsRead}
@@ -67,64 +67,87 @@ function Notifications({ notifications }) {
                 )}
                 
                 <div className="notifications-container neumorphic-container p-4">
-                    {notifications.length > 0 ? (
-                        notifications.map((notification) => (
-                            <div key={notification.id} 
-                                className={`notification-card fade-in hover-lift mb-4 ${!notification.read_at ? 'unread' : ''} ${notification.job_order?.status.toLowerCase() === 'completed' ? 'completed' : ''}`}
-                            >
-                                <div className="card-body p-4">
-                                    <div className="row align-items-center">
-                                        <div className="col-auto">
-                                            <div className="notification-icon-wrapper">
-                                                <i className="bi bi-bell-fill text-warning"></i>
+                    {notifications.data.length > 0 ? (
+                        <>
+                            {notifications.data.map((notification) => (
+                                <div key={notification.id} 
+                                    className={`notification-card fade-in hover-lift mb-4 ${!notification.read_at ? 'unread' : ''} ${notification.job_order?.status.toLowerCase() === 'completed' ? 'completed' : ''}`}
+                                >
+                                    <div className="card-body p-4">
+                                        <div className="row align-items-center">
+                                            <div className="col-auto">
+                                                <div className="notification-icon-wrapper">
+                                                    <i className="bi bi-bell-fill text-warning"></i>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div className="col">
-                                            <div className="notification-details">
-                                                <div className="d-flex justify-content-between align-items-center mb-2">
-                                                    <h5 className="notification-title mb-0">
-                                                        Job Order #{notification.job_order?.id}
-                                                    </h5>
-                                                    <span className="notification-date">
-                                                        <i className="bi bi-calendar3 me-2"></i>
-                                                        {moment(notification.created_at).fromNow()}
-                                                    </span>
-                                                </div>
-
-                                                <div className="d-flex align-items-center mb-3">
-                                                    <span className="me-2">Current Status:</span>
-                                                    <span className={`status-badge status-${notification.job_order?.status.toLowerCase()}`}>
-                                                        {notification.job_order?.status}
-                                                    </span>
-                                                </div>
-
-                                                <div className="message-box mb-3">
-                                                    <p className="mb-0">
-                                                        Your job order #{notification.job_order?.id} status has been updated to{' '}
-                                                        <span className={`fw-bold text-${notification.status?.toLowerCase().replace(/\s+/g, '-')}`}>
-                                                            {notification.status}
+                                            <div className="col">
+                                                <div className="notification-details">
+                                                    <div className="d-flex justify-content-between align-items-center mb-2">
+                                                        <h5 className="notification-title mb-0">
+                                                            Job Order #{notification.job_order?.id}
+                                                        </h5>
+                                                        <span className="notification-date">
+                                                            <i className="bi bi-calendar3 me-2"></i>
+                                                            {moment(notification.created_at).fromNow()}
                                                         </span>
-                                                        {notification.message.includes('by') ? ' by' + notification.message.split('by')[1] : ''}
-                                                    </p>
-                                                </div>
+                                                    </div>
 
-                                                <div className="action-buttons">
-                                                    <Link 
-                                                        href={`/jobOrder/${notification.job_order?.id}`}
-                                                        className="btn btn-details"
-                                                        onClick={() => handleJobOrderClick(notification.id)}
-                                                    >
-                                                        <i className="bi bi-arrow-right-circle me-2"></i>
-                                                        View Job Order
-                                                    </Link>
+                                                    <div className="d-flex align-items-center mb-3">
+                                                        <span className="me-2">Current Status:</span>
+                                                        <span className={`status-badge status-${notification.job_order?.status.toLowerCase()}`}>
+                                                            {notification.job_order?.status}
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="message-box mb-3">
+                                                        <p className="mb-0">
+                                                            Your job order #{notification.job_order?.id} status has been updated to{' '}
+                                                            <span className={`fw-bold text-${notification.status?.toLowerCase().replace(/\s+/g, '-')}`}>
+                                                                {notification.status}
+                                                            </span>
+                                                            {notification.message.includes('by') ? ' by' + notification.message.split('by')[1] : ''}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="action-buttons">
+                                                        <Link 
+                                                            href={`/jobOrder/${notification.job_order?.id}`}
+                                                            className="btn btn-details"
+                                                            onClick={() => handleJobOrderClick(notification.id)}
+                                                        >
+                                                            <i className="bi bi-arrow-right-circle me-2"></i>
+                                                            View Job Order
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            ))}
+
+                            <div className="d-flex justify-content-center mt-4">
+                                <nav aria-label="Notification navigation" className="w-100">
+                                    <ul className="pagination">
+                                        {notifications.links && notifications.links.map((link, index) => (
+                                            <li 
+                                                key={index} 
+                                                className={`page-item ${link.active ? 'active' : ''} ${!link.url ? 'disabled' : ''}`}
+                                            >
+                                                <Link
+                                                    href={link.url || '#'}
+                                                    className="page-link"
+                                                    preserveScroll
+                                                    preserveState
+                                                    dangerouslySetInnerHTML={{ __html: link.label }}
+                                                />
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </nav>
                             </div>
-                        ))
+                        </>
                     ) : (
                         <div className="empty-state text-center p-5 fade-in">
                             <i className="bi bi-bell-slash text-warning fs-1 mb-3"></i>

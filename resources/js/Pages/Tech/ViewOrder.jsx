@@ -17,7 +17,7 @@ function ViewOrder({ jobOrder, flash }) {
                 <h1 className="text-2xl mb-4">
                     Track Request{" "}
                     <span className="text-black font-light subtitle-span">
-                        | Job Order Details
+                        | Job Order Details #{jobOrder.job_id}
                     </span>
                 </h1>
                 <hr className="mb-4 border-gray-200" />
