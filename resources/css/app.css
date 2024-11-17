@@ -3855,6 +3855,9 @@ td[title] {
 .action-button.secondary:hover {
     background-color: #404040 !important;
 }
+.action-button.secondary.admin:hover {
+    background-color: #d0d0d0 !important;
+}
 
 .action-button.tertiary:hover {
     background-color: #1a202c !important; /* Even darker on hover */

@@ -54,7 +54,7 @@ function Notifications({ notifications }) {
             </div>
 
             <div className="mt-3">
-                {notifications.some(notification => !notification.read_at) && (
+                {notifications.data.some(notification => !notification.read_at) && (
                     <div className="text-end mb-3 fade-in-delayed">
                         <button
                             onClick={handleMarkAllAsRead}
@@ -67,8 +67,8 @@ function Notifications({ notifications }) {
                 )}
                 
                 <div className="notifications-container neumorphic-container p-4">
-                    {notifications.length > 0 ? (
-                        notifications.map((notification) => (
+                    {notifications.data.length > 0 ? (
+                        notifications.data.map((notification) => (
                             <div key={notification.id} 
                                 className={`notification-card fade-in hover-lift mb-4 ${!notification.read_at ? 'unread' : ''} ${notification.job_order?.status.toLowerCase() === 'completed' ? 'completed' : ''}`}
                             >
@@ -84,7 +84,7 @@ function Notifications({ notifications }) {
                                             <div className="notification-details">
                                                 <div className="d-flex justify-content-between align-items-center mb-2">
                                                     <h5 className="notification-title mb-0">
-                                                        Job Order #{notification.job_order?.id}
+                                                        Job Order #{notification.job_order_id}
                                                     </h5>
                                                     <span className="notification-date">
                                                         <i className="bi bi-calendar3 me-2"></i>
@@ -101,7 +101,7 @@ function Notifications({ notifications }) {
 
                                                 <div className="message-box mb-3">
                                                     <p className="mb-0">
-                                                        Your job order #{notification.job_order?.id} status has been updated to{' '}
+                                                        Your job order #{notification.job_order_id} status has been updated to{' '}
                                                         <span className={`fw-bold text-${notification.status?.toLowerCase().replace(/\s+/g, '-')}`}>
                                                             {notification.status}
                                                         </span>
@@ -111,7 +111,7 @@ function Notifications({ notifications }) {
 
                                                 <div className="action-buttons">
                                                     <Link 
-                                                        href={`/jobOrder/${notification.job_order?.id}`}
+                                                        href={route('jobOrder.show', { jobOrder: notification.job_order_id })}
                                                         className="btn btn-details"
                                                         onClick={() => handleJobOrderClick(notification.id)}
                                                     >
@@ -133,6 +133,43 @@ function Notifications({ notifications }) {
                         </div>
                     )}
                 </div>
+
+                {notifications.data.length > 0 && (
+                    <div className="pagination-container mt-5 mb-4">
+                        <nav aria-label="Page navigation">
+                            <ul className="pagination justify-content-center">
+                                {notifications.links.map((link, index) => {
+                                    if (link.label.includes("...")) {
+                                        return (
+                                            <li key={index} className="page-item disabled">
+                                                <span className="page-link">...</span>
+                                            </li>
+                                        );
+                                    }
+
+                                    return (
+                                        <li 
+                                            key={index} 
+                                            className={`page-item ${link.active ? 'active' : ''} ${
+                                                link.url === null ? 'disabled' : ''
+                                            }`}
+                                        >
+                                            <Link
+                                                className="page-link"
+                                                href={link.url || '#'}
+                                                preserveScroll
+                                                preserveState
+                                                dangerouslySetInnerHTML={{
+                                                    __html: link.label,
+                                                }}
+                                            />
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </nav>
+                    </div>
+                )}
             </div>
         </div>
     );
