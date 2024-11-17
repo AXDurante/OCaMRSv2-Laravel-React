@@ -10,13 +10,62 @@ import {
     FaClock,
 } from "react-icons/fa";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-function Dashboard({ jobOrder }) {
-    const [sortBy, setSortBy] = useState("newest");
-    const [filterStatus, setFilterStatus] = useState("all");
-    const [searchQuery, setSearchQuery] = useState("");
-    const [filterPriority, setFilterPriority] = useState("all");
+function Dashboard({ jobOrder, totalCounts, filters }) {
+    // Initialize filters with default values to prevent undefined errors
+    const initialFilters = {
+        sort: filters?.sort || "newest",
+        status: filters?.status || "all",
+        priority: filters?.priority || "all",
+        search: filters?.search || "",
+    };
+
+    const { get } = useForm();
+    const [sortBy, setSortBy] = useState(initialFilters.sort);
+    const [filterStatus, setFilterStatus] = useState(initialFilters.status);
+    const [searchQuery, setSearchQuery] = useState(initialFilters.search);
+    const [filterPriority, setFilterPriority] = useState(
+        initialFilters.priority
+    );
     const [openDropdown, setOpenDropdown] = useState(null);
+
+    // Debounced search effect
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            get(
+                route("technician.dashboard", {
+                    search: searchQuery,
+                    status: filterStatus,
+                    priority: filterPriority,
+                    sort: sortBy,
+                }),
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    replace: true,
+                }
+            );
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [searchQuery, filterStatus, filterPriority, sortBy]);
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const handleStatusChange = (status) => {
+        setFilterStatus(status);
+    };
+
+    const handlePriorityChange = (priority) => {
+        setFilterPriority(priority);
+    };
+
+    const handleSortChange = (sort) => {
+        setSortBy(sort);
+    };
 
     // Filter and sort the job orders
     const filteredAndSortedOrders = jobOrder.data
@@ -61,11 +110,6 @@ function Dashboard({ jobOrder }) {
             return sortBy === "newest" ? dateB - dateA : dateA - dateB;
         });
 
-    // Handle search input change
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
     // Add click handler for dropdowns
     const handleDropdownClick = (dropdownName) => {
         setOpenDropdown(openDropdown === dropdownName ? null : dropdownName);
@@ -84,7 +128,7 @@ function Dashboard({ jobOrder }) {
     }, []);
 
     return (
-        <div className="">
+        <div className="content">
             <div id="content" className="flex-fill p-3">
                 <div>
                     <div>
@@ -98,48 +142,23 @@ function Dashboard({ jobOrder }) {
                     <div className="bg-dark row rounded text-center justify-content-between">
                         <div className="col bg-light m-4 p-3">
                             <h5>Total Request</h5>
-                            <h1>{jobOrder.data.length}</h1>
+                            <h1>{totalCounts.total}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>For Approval</h5>
-                            <h1>
-                                {
-                                    jobOrder.data.filter(
-                                        (order) =>
-                                            order.status === "For Approval"
-                                    ).length
-                                }
-                            </h1>
+                            <h1>{totalCounts.forApproval}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Approved</h5>
-                            <h1>
-                                {
-                                    jobOrder.data.filter(
-                                        (order) => order.status === "Approved"
-                                    ).length
-                                }
-                            </h1>
+                            <h1>{totalCounts.approved}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Completed</h5>
-                            <h1>
-                                {
-                                    jobOrder.data.filter(
-                                        (order) => order.status === "Completed"
-                                    ).length
-                                }
-                            </h1>
+                            <h1>{totalCounts.completed}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Cancelled</h5>
-                            <h1>
-                                {
-                                    jobOrder.data.filter(
-                                        (order) => order.status === "Cancelled"
-                                    ).length
-                                }
-                            </h1>
+                            <h1>{totalCounts.cancelled}</h1>
                         </div>
                     </div>
 
@@ -299,7 +318,7 @@ function Dashboard({ jobOrder }) {
                                                 >
                                                     All
                                                 </div>
-                                                {["Urgent", "Normal"].map(
+                                                {["Urgent", "Regular"].map(
                                                     (priority) => (
                                                         <div
                                                             key={priority}
@@ -343,56 +362,48 @@ function Dashboard({ jobOrder }) {
                                         <th
                                             className="thead-custom"
                                             scope="col"
-                                            style={{ width: "12%" }}
                                         >
                                             Date Received
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
-                                            style={{ width: "5%" }}
                                         >
                                             Job ID
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
-                                            style={{ width: "15%" }}
                                         >
                                             Client Name
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
-                                            style={{ width: "15%" }}
                                         >
                                             Email
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
-                                            style={{ width: "15%" }}
                                         >
                                             Service
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
-                                            style={{ width: "17%" }}
                                         >
                                             Status
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
-                                            style={{ width: "10%" }}
                                         >
                                             Priority
                                         </th>
                                         <th
                                             className="thead-custom"
                                             scope="col"
-                                            style={{ width: "13%" }}
                                         >
                                             Action
                                         </th>
@@ -401,18 +412,13 @@ function Dashboard({ jobOrder }) {
                                 <tbody>
                                     {filteredAndSortedOrders.map(
                                         (order, index) => (
-                                            <tr
-                                                key={index}
-                                                className="text-center align-middle"
-                                            >
-                                                <td scope="row">
+                                            <tr key={index}>
+                                                <td>
                                                     {new Date(
                                                         order.date_request
                                                     ).toLocaleDateString()}
-                                                </td>{" "}
-                                                {/* Date Received */}
-                                                <td>{order.job_id}</td>{" "}
-                                                {/* Job ID */}
+                                                </td>
+                                                <td>{order.job_id}</td>
                                                 <td>
                                                     {order.user
                                                         ? `${order.user.firstName} ${order.user.lastName}`
@@ -433,8 +439,7 @@ function Dashboard({ jobOrder }) {
                                                     }}
                                                 >
                                                     {order.service_type}
-                                                </td>{" "}
-                                                {/* Service Request */}
+                                                </td>
                                                 <td>
                                                     <span
                                                         className={`badge ${
@@ -723,20 +728,41 @@ function Dashboard({ jobOrder }) {
 
                         {/* Pagination */}
                         <div className="text-center">
-                            {jobOrder.links.map((link) => (
-                                <Link
-                                    className={`px-3 ${
-                                        link.active
-                                            ? "text-secondary"
-                                            : " text-dark "
-                                    }`}
-                                    key={link.label}
-                                    href={link.url}
-                                    dangerouslySetInnerHTML={{
-                                        __html: link.label,
-                                    }}
-                                />
-                            ))}
+                            <nav>
+                                <ul className="pagination">
+                                    {jobOrder.links.map((link, index) => (
+                                        <li
+                                            key={index}
+                                            className={`page-item ${
+                                                link.active ? "active" : ""
+                                            }`}
+                                        >
+                                            {link.url ? (
+                                                <Link
+                                                    href={link.url}
+                                                    className="page-link"
+                                                    preserveScroll
+                                                    preserveState
+                                                >
+                                                    <span
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: link.label,
+                                                        }}
+                                                    />
+                                                </Link>
+                                            ) : (
+                                                <span className="page-link">
+                                                    <span
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: link.label,
+                                                        }}
+                                                    />
+                                                </span>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -746,5 +772,25 @@ function Dashboard({ jobOrder }) {
 }
 
 Dashboard.layout = (page) => <Navbar2>{page}</Navbar2>;
+
+Dashboard.propTypes = {
+    jobOrder: PropTypes.shape({
+        data: PropTypes.array.isRequired,
+        links: PropTypes.array.isRequired,
+    }).isRequired,
+    totalCounts: PropTypes.shape({
+        total: PropTypes.number.isRequired,
+        forApproval: PropTypes.number.isRequired,
+        approved: PropTypes.number.isRequired,
+        completed: PropTypes.number.isRequired,
+        cancelled: PropTypes.number.isRequired,
+    }).isRequired,
+    filters: PropTypes.shape({
+        sort: PropTypes.string,
+        status: PropTypes.string,
+        priority: PropTypes.string,
+        search: PropTypes.string,
+    }),
+};
 
 export default Dashboard;
