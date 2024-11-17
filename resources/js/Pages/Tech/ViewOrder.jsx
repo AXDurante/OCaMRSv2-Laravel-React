@@ -1,12 +1,16 @@
 import Navbar2 from "../../Layouts/Navbar2";
 import { Link } from "@inertiajs/react";
+import { useState } from 'react';
 
-function ViewOrder({ jobOrder }) {
+function ViewOrder({ jobOrder, flash }) {
+    const [showAlert, setShowAlert] = useState(!!flash?.success);
+
     console.log("Job Order Data:", jobOrder); // Debugging: Check the jobOrder structure
 
     // Check if jobOrder is defined and has instruments
     const instruments = jobOrder?.int_units || []; // Use int_units instead of instruments
     console.log(instruments);
+
     return (
         <div className="job-request-form">
             <div className="form-section fade-in">
@@ -18,67 +22,37 @@ function ViewOrder({ jobOrder }) {
                 </h1>
                 <hr className="mb-4 border-gray-200" />
 
-                <div className="d-flex align-items-center gap-3 mb-4">
-                    <h4>
-                        Status:{" "}
-                        <b
-                            className={
-                                jobOrder.status === "For Approval"
-                                    ? "text-warning"
-                                    : jobOrder.status === "Cancelled"
-                                    ? "text-danger"
-                                    : jobOrder.status === "Completed" // Added condition for Completed
-                                    ? "text-success" // Green text for Completed
-                                    : jobOrder.status === "Approved"
-                                    ? "text-success"
-                                    : ""
-                            }
-                        >
-                            {" "}
-                            {jobOrder.status}{" "}
-                        </b>
-                    </h4>
+                <div className="d-flex flex-column gap-3 mb-4">
                     <div className="d-flex align-items-center gap-3">
                         <h4>
-                            Priority:{" "}
-                            <b
-                                className={
-                                    jobOrder.priority === "Regular"
-                                        ? "text-"
-                                        : jobOrder.priority === "High"
-                                        ? "text-high"
-                                        : jobOrder.priority === "Medium"
-                                        ? "text-medium"
-                                        : jobOrder.priority === "Low"
-                                        ? "text-low"
-                                        : ""
-                                }
-                            >
-                                {jobOrder.priority}
-                            </b>
+                            Status:{" "}
+                            <span className={`text-${jobOrder.status === "Approved" ? "success" : 
+                                              jobOrder.status === "For Approval" ? "warning" :
+                                              jobOrder.status === "Completed" ? "info" : 
+                                              jobOrder.status === "Cancelled" ? "danger" : ""}`}>
+                                {jobOrder.status}
+                            </span>
                         </h4>
-                        {/* Add more detailed condition and debug info */}
-                        {jobOrder.status === "Completed" && (
-                            <>
-                                {jobOrder.feedback ? (
-                                    <Link
-                                        href={route(
-                                            "admin.feedback.show",
-                                            jobOrder.feedback.id
-                                        )}
-                                        className="btn btn-primary"
-                                    >
-                                        View Feedback
-                                    </Link>
-                                ) : (
-                                    <span className="text-muted">
-                                        (No feedback found - ID:{" "}
-                                        {jobOrder.job_id})
-                                    </span>
-                                )}
-                            </>
-                        )}
+                        <h4>
+                            Priority:{" "}
+                            <span className={jobOrder.priority === "Regular" ? "text-success" : "text-danger"}>
+                                {jobOrder.priority}
+                            </span>
+                        </h4>
                     </div>
+
+                    {showAlert && flash?.success && (
+                        <div className="alert alert-success alert-dismissible fade show" role="alert">
+                            <i className="bi bi-check-circle me-2"></i>
+                            {flash.success}
+                            <button 
+                                type="button" 
+                                className="btn-close" 
+                                onClick={() => setShowAlert(false)}
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="system-info-section-b mb-4">

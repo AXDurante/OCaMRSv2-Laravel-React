@@ -28,10 +28,14 @@ class TechnicianController extends Controller
 
     public function showJobOrder($id)
     {
-        $jobOrder = JobOrder::with('int_units')->findOrFail($id); // Adjust as necessary based on your relationships
+        $jobOrder = JobOrder::with('int_units')->findOrFail($id);
 
         return Inertia::render('Tech/ViewOrder', [
             'jobOrder' => $jobOrder,
+            'flash' => [
+                'success' => session('success'),
+                'error' => session('error')
+            ],
         ]);
     }
 
@@ -97,7 +101,7 @@ class TechnicianController extends Controller
             ]);
 
             return redirect()->route('technician.showJobOrder', $jobOrder->job_id)
-                ->with('success', 'Job order updated successfully');
+                ->with('success', 'Job order has been updated successfully!');
         } catch (\Exception $e) {
             \Log::error('Job Order Update Error:', [
                 'message' => $e->getMessage(),
