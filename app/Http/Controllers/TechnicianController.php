@@ -19,7 +19,9 @@ class TechnicianController extends Controller
 
     public function index()
     {
-        $jobOrder = JobOrder::with('user')->paginate(10);
+        $jobOrder = JobOrder::with('user')
+            ->orderBy('job_id', 'desc')
+            ->paginate(10);
 
         return Inertia::render('Tech/Dashboard', [
             'jobOrder' => $jobOrder,

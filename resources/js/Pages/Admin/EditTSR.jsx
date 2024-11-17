@@ -12,6 +12,7 @@ import {
     FaSpinner,
     FaClock,
     FaFlag,
+    FaCheck,
 } from "react-icons/fa";
 
 function EditTSR({ jobOrder, auth, tsr }) {

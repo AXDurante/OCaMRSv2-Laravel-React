@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -25,10 +26,11 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notifications = Notification::where('user_id', auth()->user()->employeeID)
+        $user = Auth::user();
+        $notifications = $user->notifications()
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($notification) {
+            ->paginate(10)
+            ->through(function ($notification) {
                 $jobOrder = $notification->getJobOrder();
                 return [
                     'id' => $notification->id,
@@ -45,7 +47,10 @@ class NotificationController extends Controller
             });
 
         return Inertia::render('Notifications', [
-            'notifications' => $notifications
+            'notifications' => $notifications,
+            'firstName' => $user->firstName,
+            'lastName' => $user->lastName,
+            'email' => $user->email,
         ]);
     }
 
