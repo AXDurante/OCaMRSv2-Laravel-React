@@ -54,13 +54,7 @@ function TrackOrder({
     };
 
     // Filter job orders based on status
-    const filteredJobOrders =
-        filterStatus === "all"
-            ? jobOrder
-            : jobOrder.filter(
-                  (order) =>
-                      order.status.toLowerCase() === filterStatus.toLowerCase()
-              );
+    const filteredJobOrders = jobOrder.data;
 
     console.log("Job Order props:", { jobOrder, firstName, lastName, email });
 
@@ -109,10 +103,10 @@ function TrackOrder({
                             onChange={(e) => setFilterStatus(e.target.value)}
                         >
                             <option value="all">All Orders</option>
-                            <option value="pending">Pending</option>
-                            <option value="processing">Processing</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancelled">Cancelled</option>
+                            <option value="For Approval">For Approval</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
                         </select>
                     </div>
                 </div>
@@ -182,12 +176,9 @@ function TrackOrder({
                                         </div>
 
                                         <div className="action-buttons mt-3">
-                                            {jobOrder.status ===
-                                                "Completed" && (
+                                            {jobOrder.status === "Completed" && (
                                                 <>
-                                                    {Boolean(
-                                                        jobOrder.has_feedback
-                                                    ) ? (
+                                                    {Boolean(jobOrder.has_feedback) ? (
                                                         <Link
                                                             href={`/feedback/${jobOrder.feedback_id}`}
                                                             className="me-2"
@@ -199,13 +190,9 @@ function TrackOrder({
                                                         </Link>
                                                     ) : (
                                                         <Link
-                                                            href={route(
-                                                                "feedback.create",
-                                                                {
-                                                                    jobOrderId:
-                                                                        jobOrder.job_id,
-                                                                }
-                                                            )}
+                                                            href={route("feedback.create", {
+                                                                jobOrderId: jobOrder.job_id,
+                                                            })}
                                                             className="me-2"
                                                         >
                                                             <button className="btn btn-give-feedback">
@@ -235,6 +222,67 @@ function TrackOrder({
                 {filteredJobOrders.length === 0 && (
                     <div className="alert alert-info mt-4 fade-in">
                         No job orders found for the selected status.
+                    </div>
+                )}
+
+                {filteredJobOrders.length > 0 && (
+                    <div className="d-flex justify-content-center mt-4 mb-4">
+                        <nav aria-label="Page navigation" className="w-100">
+                            <ul className="pagination">
+                                {/* Always show Previous button */}
+                                {jobOrder.links[0] && (
+                                    <li className={`page-item ${!jobOrder.links[0].url ? 'disabled' : ''}`}>
+                                        <Link
+                                            href={jobOrder.links[0].url || '#'}
+                                            className="page-link"
+                                            preserveScroll
+                                            preserveState
+                                        >
+                                            Prev
+                                        </Link>
+                                    </li>
+                                )}
+
+                                {/* Show current page and adjacent pages */}
+                                {jobOrder.links.slice(1, -1).map((link, index) => {
+                                    // On mobile, only show current and adjacent pages
+                                    if (window.innerWidth <= 768 && !link.active && 
+                                        index !== 0 && index !== jobOrder.links.length - 3) {
+                                        return null;
+                                    }
+
+                                    return (
+                                        <li 
+                                            key={index} 
+                                            className={`page-item ${link.active ? 'active' : ''}`}
+                                        >
+                                            <Link
+                                                href={link.url || '#'}
+                                                className="page-link"
+                                                preserveScroll
+                                                preserveState
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        </li>
+                                    );
+                                })}
+
+                                {/* Always show Next button */}
+                                {jobOrder.links[jobOrder.links.length - 1] && (
+                                    <li className={`page-item ${!jobOrder.links[jobOrder.links.length - 1].url ? 'disabled' : ''}`}>
+                                        <Link
+                                            href={jobOrder.links[jobOrder.links.length - 1].url || '#'}
+                                            className="page-link"
+                                            preserveScroll
+                                            preserveState
+                                        >
+                                            Next
+                                        </Link>
+                                    </li>
+                                )}
+                            </ul>
+                        </nav>
                     </div>
                 )}
             </div>

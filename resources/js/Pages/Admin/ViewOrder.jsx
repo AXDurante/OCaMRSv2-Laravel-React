@@ -231,13 +231,13 @@ function ViewOrder({ jobOrder, flash }) {
 
                 {/* Action Buttons */}
                 <div className="form-section">
-                    <div 
-                        className="action-buttons-container" 
+                    <div
+                        className="action-buttons-container"
                         style={{
                             display: "flex",
                             flexDirection: "column",
                             gap: "12px",
-                            marginTop: "2rem"
+                            marginTop: "2rem",
                         }}
                     >
                         <Link
@@ -260,10 +260,13 @@ function ViewOrder({ jobOrder, flash }) {
                             <i className="bi bi-pencil-fill me-2"></i>
                             Edit Job Order
                         </Link>
-                    
-                        {jobOrder.has_feedback && (
+
+                        {jobOrder.has_feedback ? (
                             <Link
-                                href={route('admin.feedback.show', jobOrder.job_id)}
+                                href={route(
+                                    "admin.feedback.show",
+                                    jobOrder.job_id
+                                )}
                                 className="action-button secondary"
                                 style={{
                                     padding: "12px 24px",
@@ -282,7 +285,7 @@ function ViewOrder({ jobOrder, flash }) {
                                 <i className="bi bi-chat-square-text-fill me-2"></i>
                                 View Feedback
                             </Link>
-                        )}
+                        ) : null}
 
                         <Link
                             href={`/admin/TSR/${jobOrder.job_id}`}
