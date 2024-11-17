@@ -11,20 +11,24 @@ class Notification extends Model
         'job_order_id',
         'title',
         'message',
-        'read_at',
         'type',
+        'read_at',
         'status'
     ];
 
-    protected $dates = [
-        'created_at',
-        'updated_at',
-        'read_at'
+    protected $casts = [
+        'read_at' => 'datetime',
     ];
 
-    public function job_order()
+    // Helper methods to get related data
+    public function getUser()
     {
-        return $this->belongsTo(JobOrder::class, 'job_order_id', 'job_id');
+        return User::where('employeeID', $this->user_id)->first();
+    }
+
+    public function getJobOrder()
+    {
+        return JobOrder::where('job_id', $this->job_order_id)->first();
     }
 
     public function scopeUnread($query)
@@ -34,7 +38,6 @@ class Notification extends Model
 
     public function markAsRead()
     {
-        $this->read_at = now();
-        $this->save();
+        $this->update(['read_at' => now()]);
     }
 }

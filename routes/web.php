@@ -180,9 +180,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/feedback/{feedback}', 'destroy')->name('feedback.destroy');
         Route::get('/feedback/{feedback}/edit', 'edit')->name('feedback.edit');
     });
-
-    // Job Order routes
-    Route::get('/jobOrder/{jobOrder}', [JobOrderController::class, 'show'])->name('jobOrder.show');
 });
 
 Route::get('/instrumentation/login', [InstrumentationAuthController::class, 'showLoginForm'])->name('instrumentation.login');

@@ -24,11 +24,20 @@ class JobOrderController extends Controller
     {
         $sort = $request->input('sort', 'newest');
         $filter = $request->input('filter', 'all');
-        $search = $request->input('search');
-        $page = $request->input('page', 1);
+        $search = $request->input('search', '');
 
-        $jobOrders = JobOrder::query();
-        
+        $jobOrders = JobOrder::select('job_orders.*')
+            ->leftJoin('feedbacks', function ($join) {
+                $join->on('job_orders.job_id', '=', 'feedbacks.job_order_id')
+                    ->where('feedbacks.user_id', '=', auth()->id());
+            })
+            ->selectRaw('
+                job_orders.*, 
+                CASE WHEN feedbacks.id IS NOT NULL THEN true ELSE false END as has_feedback,
+                feedbacks.id as feedback_id
+            ')
+            ->where('job_orders.employeeID', auth()->user()->employeeID);
+
         // Apply search if provided
         if ($search) {
             $jobOrders->where(function($query) use ($search) {
@@ -54,22 +63,17 @@ class JobOrderController extends Controller
             $jobOrders = $jobOrders->orderBy('job_orders.date_request', 'desc');
         }
 
-        $paginatedOrders = $jobOrders->paginate(10)->withQueryString();
+        $jobOrders = $jobOrders->get();
 
-        // Get the authenticated user
-        $user = Auth::user();
-
-        // Return Inertia response with flash messages
         return Inertia::render('JobOrder/TrackOrder', [
-            'jobOrder' => $paginatedOrders,
-            'firstName' => $user->firstName,
-            'lastName' => $user->lastName,
-            'email' => $user->email,
+            'jobOrder' => $jobOrders,
+            'firstName' => auth()->user()->firstName,
+            'lastName' => auth()->user()->lastName,
+            'email' => auth()->user()->email,
             'currentSort' => $sort,
             'currentFilter' => $filter,
             'flash' => [
-                'success' => session('success'),
-                'error' => session('error')
+                'success' => session('success'), // Pass the success message from the session
             ],
         ]);
     }
@@ -156,14 +160,10 @@ class JobOrderController extends Controller
      */
     public function show(JobOrder $jobOrder)
     {
-        // Eager load the int_units relationship and any other needed relationships
-        $jobOrder->load(['int_units', 'user']);
-        
-        return Inertia::render('JobOrder/ViewOrder', [
-            'jobOrder' => $jobOrder,
-            'firstName' => Auth::user()->firstName,
-            'lastName' => Auth::user()->lastName,
-            'email' => Auth::user()->email,
+        // Eager load the int_units relationship
+        $jobOrder->load('int_units');
+        return inertia('JobOrder/ViewOrder', [
+            'jobOrder' => $jobOrder
         ]);
     }
 
