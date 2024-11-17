@@ -4177,3 +4177,84 @@ td[title] {
     border-radius: 0.5rem;
     outline: 0;
 }
+
+/* Pagination Mobile Styles */
+@media (max-width: 768px) {
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 0;
+        margin: 1rem 0;
+        overflow-x: auto; /* Enable horizontal scroll if needed */
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Hide scrollbar for Firefox */
+        -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+    }
+
+    /* Hide scrollbar for Chrome/Safari */
+    .pagination::-webkit-scrollbar {
+        display: none;
+    }
+
+    .pagination .page-item {
+        display: inline-block;
+        margin: 0;
+    }
+
+    .pagination .page-link {
+        padding: 8px 12px;
+        font-size: 14px;
+        min-width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        color: #333;
+    }
+
+    /* Style for active page */
+    .pagination .page-item.active .page-link {
+        background-color: #ffd600;
+        border-color: #ffd600;
+        color: #000;
+        font-weight: 600;
+    }
+
+    /* Style for disabled items */
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        pointer-events: none;
+    }
+}
+
+/* Desktop Pagination Styles */
+@media (min-width: 769px) {
+    .pagination {
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .pagination .page-link {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #ffd600;
+        border-color: #ffd600;
+        color: #000;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #ffe03d;
+        border-color: #ffe03d;
+        color: #000;
+    }
+}

@@ -22,58 +22,62 @@ class JobOrderController extends Controller
      */
     public function index(Request $request)
     {
-        $sort = $request->input('sort', 'newest');
-        $filter = $request->input('filter', 'all');
-        $search = $request->input('search', '');
+        $query = JobOrder::query();
+        
+        // Apply status filter
+        if ($request->filter && $request->filter !== 'all') {
+            $query->where('status', $request->filter);
+        }
 
-        $jobOrders = JobOrder::select('job_orders.*')
-            ->leftJoin('feedbacks', function ($join) {
-                $join->on('job_orders.job_id', '=', 'feedbacks.job_order_id')
-                    ->where('feedbacks.user_id', '=', auth()->id());
-            })
-            ->selectRaw('
-                job_orders.*, 
-                CASE WHEN feedbacks.id IS NOT NULL THEN true ELSE false END as has_feedback,
-                feedbacks.id as feedback_id
-            ')
-            ->where('job_orders.employeeID', auth()->user()->employeeID);
-
-        // Apply search if provided
-        if ($search) {
-            $jobOrders->where(function($query) use ($search) {
-                $query->where('job_orders.job_id', 'LIKE', "%{$search}%")
-                    ->orWhere('job_orders.service_type', 'LIKE', "%{$search}%")
-                    ->orWhere('job_orders.trans_type', 'LIKE', "%{$search}%")
-                    ->orWhere('job_orders.dept_name', 'LIKE', "%{$search}%")
-                    ->orWhere('job_orders.lab', 'LIKE', "%{$search}%")
-                    ->orWhere('job_orders.lab_loc', 'LIKE', "%{$search}%")
-                    ->orWhere('job_orders.status', 'LIKE', "%{$search}%");
+        // Apply search
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('job_id', 'like', "%{$request->search}%")
+                  ->orWhere('service_type', 'like', "%{$request->search}%")
+                  ->orWhere('dept_name', 'like', "%{$request->search}%");
             });
         }
 
-        // Apply status filter
-        if ($filter !== 'all') {
-            $jobOrders = $jobOrders->where('job_orders.status', ucfirst($filter));
-        }
+        // Apply sorting using date_request
+        $query->orderBy('date_request', $request->sort === 'oldest' ? 'asc' : 'desc');
 
-        // Apply sorting
-        if ($sort === 'oldest') {
-            $jobOrders = $jobOrders->orderBy('job_orders.date_request', 'asc');
-        } else {
-            $jobOrders = $jobOrders->orderBy('job_orders.date_request', 'desc');
-        }
+        // Get the authenticated user's employee ID
+        $employeeID = Auth::user()->employeeID;
 
-        $jobOrders = $jobOrders->get();
+        // Filter by employee ID
+        $query->where('employeeID', $employeeID);
+
+        // Load feedback relationship
+        $query->with('feedback');
+
+        // Paginate results with Bootstrap styling
+        $jobOrders = $query->paginate(10)->withQueryString()->through(function ($order) {
+            // Get feedback information
+            $feedback = $order->feedback()->first();
+            
+            return [
+                'job_id' => $order->job_id,
+                'status' => $order->status,
+                'date_request' => $order->date_request,
+                'date_due' => $order->date_due,
+                'has_feedback' => !is_null($feedback),
+                'feedback_id' => $feedback ? $feedback->id : null,
+                'service_type' => $order->service_type,
+                'department' => $order->dept_name,
+            ];
+        });
+
+        $user = Auth::user();
 
         return Inertia::render('JobOrder/TrackOrder', [
             'jobOrder' => $jobOrders,
-            'firstName' => auth()->user()->firstName,
-            'lastName' => auth()->user()->lastName,
-            'email' => auth()->user()->email,
-            'currentSort' => $sort,
-            'currentFilter' => $filter,
+            'currentSort' => $request->sort ?? 'newest',
+            'currentFilter' => $request->filter ?? 'all',
+            'firstName' => $user->firstName,
+            'lastName' => $user->lastName,
+            'email' => $user->email,
             'flash' => [
-                'success' => session('success'), // Pass the success message from the session
+                'success' => session('success')
             ],
         ]);
     }
