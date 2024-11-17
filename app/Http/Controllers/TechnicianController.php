@@ -67,7 +67,6 @@ class TechnicianController extends Controller
                 'trans_type' => 'required',
                 'remarks' => 'nullable',
                 'status' => 'required|in:For Approval,Approved,Cancelled,Completed',
-                'priority' => 'required|in:Regular,High,Medium,Low',
                 'instruments' => 'required|array',
                 'instruments.*.instrument' => 'required',
                 'instruments.*.qty' => 'required|integer',
@@ -81,7 +80,6 @@ class TechnicianController extends Controller
                 'trans_type' => $validatedData['trans_type'],
                 'remarks' => $validatedData['remarks'],
                 'status' => $validatedData['status'],
-                'priority' => $validatedData['priority'],
             ]);
 
             // Update or create instrument units
