@@ -156,7 +156,7 @@ function CreateOrder({
         <div className="job-request-form">
             <div className="form-section fade-in">
                 <h1 className="text-2xl mb-4">
-                    Job Request <span className="text-black font-light subtitle-span">| Open Request</span>
+                    Job Request <span className="text-black font-light subtitle-span">| Open Request #{lastID}</span>
                 </h1>
                 <hr className="mb-4 border-gray-200" />
 
