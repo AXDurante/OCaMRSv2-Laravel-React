@@ -25,8 +25,8 @@ class AdminNotificationController extends Controller
         $notifications = StaffNotification::where('recipient_type', 'admin')
             ->where('recipient_id', auth()->guard('admin')->id())
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($notification) {
+            ->paginate(10)
+            ->through(function ($notification) {
                 $jobOrder = JobOrder::with('user')->find($notification->job_order_id);
                 return [
                     'id' => $notification->id,

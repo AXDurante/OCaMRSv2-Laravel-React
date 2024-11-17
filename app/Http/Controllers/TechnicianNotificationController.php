@@ -28,8 +28,8 @@ class TechnicianNotificationController extends Controller
         $notifications = StaffNotification::where('recipient_type', 'technician')
             ->where('recipient_id', $techId)
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($notification) {
+            ->paginate(10)
+            ->through(function ($notification) {
                 $jobOrder = JobOrder::with('user')->find($notification->job_order_id);
                 return [
                     'id' => $notification->id,
