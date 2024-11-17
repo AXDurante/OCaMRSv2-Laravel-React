@@ -13,6 +13,7 @@ function TrackOrder({
 }) {
     const [sortBy, setSortBy] = useState(currentSort || "newest");
     const [filterStatus, setFilterStatus] = useState(currentFilter || "all");
+    const [searchQuery, setSearchQuery] = useState("");
     const { get } = useForm();
     const [successMessage, setSuccessMessage] = useState("");
 
@@ -31,19 +32,26 @@ function TrackOrder({
     }, [flash]);
 
     useEffect(() => {
-        if (currentSort !== sortBy || currentFilter !== filterStatus) {
+        const debounceTimer = setTimeout(() => {
             get(
                 route("jobOrder.index", {
                     sort: sortBy,
                     filter: filterStatus,
+                    search: searchQuery,
                 }),
                 {
                     preserveState: true,
                     preserveScroll: true,
                 }
             );
-        }
-    }, [sortBy, filterStatus]);
+        }, 300);
+
+        return () => clearTimeout(debounceTimer);
+    }, [sortBy, filterStatus, searchQuery]);
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+    };
 
     // Filter job orders based on status
     const filteredJobOrders =
@@ -72,17 +80,11 @@ function TrackOrder({
                         <input
                             type="text"
                             className="form-control"
-                            placeholder="Search..."
+                            placeholder="Search by ID, service type, department..."
                             aria-label="Search"
-                            aria-describedby="search-button"
+                            value={searchQuery}
+                            onChange={handleSearch}
                         />
-                        <button
-                            className="btn btn-primary"
-                            type="button"
-                            id="search-button"
-                        >
-                            Search
-                        </button>
                     </div>
                 </div>
 

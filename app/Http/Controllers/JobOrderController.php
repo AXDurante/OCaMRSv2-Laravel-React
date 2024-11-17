@@ -24,6 +24,7 @@ class JobOrderController extends Controller
     {
         $sort = $request->input('sort', 'newest');
         $filter = $request->input('filter', 'all');
+        $search = $request->input('search', '');
 
         $jobOrders = JobOrder::select('job_orders.*')
             ->leftJoin('feedbacks', function ($join) {
@@ -36,6 +37,19 @@ class JobOrderController extends Controller
                 feedbacks.id as feedback_id
             ')
             ->where('job_orders.employeeID', auth()->user()->employeeID);
+
+        // Apply search if provided
+        if ($search) {
+            $jobOrders->where(function($query) use ($search) {
+                $query->where('job_orders.job_id', 'LIKE', "%{$search}%")
+                    ->orWhere('job_orders.service_type', 'LIKE', "%{$search}%")
+                    ->orWhere('job_orders.trans_type', 'LIKE', "%{$search}%")
+                    ->orWhere('job_orders.dept_name', 'LIKE', "%{$search}%")
+                    ->orWhere('job_orders.lab', 'LIKE', "%{$search}%")
+                    ->orWhere('job_orders.lab_loc', 'LIKE', "%{$search}%")
+                    ->orWhere('job_orders.status', 'LIKE', "%{$search}%");
+            });
+        }
 
         // Apply status filter
         if ($filter !== 'all') {

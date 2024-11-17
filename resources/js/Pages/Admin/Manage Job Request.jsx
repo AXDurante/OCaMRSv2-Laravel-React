@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { useState, useEffect } from "react";
 
+
 function Home({ jobOrder }) {
     const [sortBy, setSortBy] = useState("newest");
     const [filterStatus, setFilterStatus] = useState("all");
@@ -83,14 +84,26 @@ function Home({ jobOrder }) {
     ).length; // Count completed requests
 
     const handleStatusChange = async (orderId, newStatus) => {
-        try {
-            await axios.patch(`/admin/updateJobStatus/${orderId}`, {
-                status: newStatus,
-            });
-            // Optionally refresh the data or update local state
-            window.location.reload();
-        } catch (error) {
-            console.error("Error updating status:", error);
+        // Show confirmation dialog using native browser confirm
+        const isConfirmed = confirm(`Are you sure you want to change the status to ${newStatus}?`);
+
+        if (isConfirmed) {
+            try {
+                const response = await axios.patch(`/admin/updateJobStatus/${orderId}`, {
+                    status: newStatus
+                });
+
+                // Show success message using native browser alert
+                alert('Status updated successfully');
+
+                // Refresh the page to show updated data
+                window.location.reload();
+            } catch (error) {
+                console.error("Error updating status:", error);
+                
+                // Show error message using native browser alert
+                alert(error.response?.data?.error || 'An error occurred while updating the status.');
+            }
         }
     };
 
