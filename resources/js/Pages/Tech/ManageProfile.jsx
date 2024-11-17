@@ -124,7 +124,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
     };
 
     const handlePhoneNumberChange = (e) => {
-        const value = e.target.value.replace(/[^0-9]/g, "").slice(0, 10); // Only allow numbers, max 11 digits
+        const value = e.target.value.replace(/[^0-9]/g, "").slice(0, 11); // Only allow numbers, max 11 digits
         setData("phoneNumber", value);
     };
 
@@ -244,7 +244,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                     onChange={
                                                         handlePhoneNumberChange
                                                     }
-                                                    maxLength={10}
+                                                    maxLength={11}
                                                 />
                                                 {errors.phoneNumber && (
                                                     <div className="invalid-feedback">
@@ -253,7 +253,7 @@ function Home({ absolute, firstName, lastName, email, theID }) {
                                                 )}
                                                 <small className="text-muted">
                                                     Phone number must be exactly
-                                                    10 digits
+                                                    11 digits
                                                 </small>
                                             </div>
                                         </div>

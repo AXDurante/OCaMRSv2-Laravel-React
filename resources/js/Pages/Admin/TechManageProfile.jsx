@@ -56,7 +56,7 @@ function Home({ theUser }) {
     };
 
     const handlePhoneNumberChange = (e) => {
-        const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10); // Only allow numbers, max 10 digits
+        const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 11); // Only allow numbers, max 11 digits
         setData('phoneNumber', value);
     };
 
@@ -143,7 +143,7 @@ function Home({ theUser }) {
                                                         className={`form-control shadow-sm animate-field ${errors.phoneNumber ? 'is-invalid' : ''}`}
                                                         value={data.phoneNumber}
                                                         onChange={handlePhoneNumberChange}
-                                                        maxLength={10}
+                                                        maxLength={11}
                                                     />
                                                     {errors.phoneNumber && (
                                                         <div className="invalid-feedback">
@@ -151,7 +151,7 @@ function Home({ theUser }) {
                                                         </div>
                                                     )}
                                                     <small className="text-muted">
-                                                        Phone number must be exactly 10 digits
+                                                        Phone number must be exactly 11 digits
                                                     </small>
                                                 </div>
                                             </div>

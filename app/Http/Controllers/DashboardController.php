@@ -52,16 +52,17 @@ class DashboardController extends Controller
             $theID = $request->input('userID');
             $user = User::findOrFail($theID);
 
+            // Define validation rules
             $validationRules = [
                 'firstName' => 'required|string|max:255',
                 'lastName' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users,email,' . $theID,
-                'phoneNumber' => 'nullable|string|max:20',
+                'phoneNumber' => 'nullable|string|size:11|regex:/^[0-9]+$/',
                 'photo' => [
                     'nullable',
                     'file',
                     'mimes:png',
-                    'max:2048', // 2MB max size
+                    'max:2048',
                     function ($attribute, $value, $fail) {
                         if ($value) {
                             $mimeType = $value->getMimeType();
@@ -74,11 +75,20 @@ class DashboardController extends Controller
                 'removePhoto' => 'boolean',
             ];
 
-        if (empty($validatedData['password'])) {
-            unset($validatedData['password']);
-        } else {
-            $validatedData['password'] = bcrypt($validatedData['password']);
-        }
+            // Add password validation if provided
+            if ($request->filled('password')) {
+                $validationRules['password'] = 'required|min:8|confirmed';
+            }
+
+            // Validate the request
+            $validated = $request->validate($validationRules);
+
+            // Handle password if provided
+            if (!empty($validated['password'])) {
+                $validated['password'] = bcrypt($validated['password']);
+            } else {
+                unset($validated['password']);
+            }
 
             // Handle photo upload
             if ($request->hasFile('photo')) {
@@ -115,7 +125,7 @@ class DashboardController extends Controller
 
             $user->update($validated);
 
-            return redirect()->route('manageProfile')->with('message', 'Profile updated successfully');
+            return redirect()->back()->with('message', 'Profile updated successfully');
         } catch (\Exception $e) {
             \Log::error('Update Profile Error:', [
                 'message' => $e->getMessage(),
