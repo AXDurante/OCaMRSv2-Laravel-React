@@ -153,8 +153,8 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                     setData("priority", e.target.value)
                                 }
                             >
-                                <option value="Urgent">Regular</option>
-                                <option value="Regular">Urgent</option>
+                                <option value="Regular">Regular</option>
+                                <option value="Urgent">Urgent</option>
                             </select>
                         </div>
                     </h4>

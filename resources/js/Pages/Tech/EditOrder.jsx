@@ -18,7 +18,6 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
         employeeID: employeeID,
         remarks: jobOrder.remarks || "",
         status: jobOrder.status || "Pending",
-        priority: jobOrder.priority || "Regular",
 
         instruments: jobOrder.int_units.map((unit) => ({
             instrument: unit.instrument || "",
@@ -132,21 +131,6 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                 <option value="Approved">Approved</option>
                                 <option value="Completed">Completed</option>
                                 <option value="Cancelled">Cancelled</option>
-                            </select>
-                        </div>
-                    </h4>
-                    <h4>
-                        Priority:{" "}
-                        <div className="dropdown d-inline-block">
-                            <select
-                                className="btn btn-light dropdown-toggle"
-                                value={data.priority}
-                                onChange={(e) =>
-                                    setData("priority", e.target.value)
-                                }
-                            >
-                                <option value="Urgent">Regular</option>
-                                <option value="Regular">High</option>
                             </select>
                         </div>
                     </h4>
