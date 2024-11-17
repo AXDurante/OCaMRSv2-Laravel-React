@@ -307,6 +307,9 @@ function TSR({ jobOrder, auth }) {
                                                 <option value="" disabled>
                                                     Please Select an Option
                                                 </option>
+                                                <option value="None">
+                                                    None
+                                                </option>
                                                 <option value="For Pull-Out">
                                                     For Pull-Out
                                                 </option>
