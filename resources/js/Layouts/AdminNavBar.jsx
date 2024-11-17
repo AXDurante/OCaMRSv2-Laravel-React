@@ -70,10 +70,12 @@ export default function AdminNavBar({ children }) {
 
     const fetchUnreadCount = async () => {
         try {
-            const response = await axios.get(route('admin.notifications.unread-count'));
+            const response = await axios.get(
+                route("admin.notifications.unread-count")
+            );
             setUnreadCount(response.data.count);
         } catch (error) {
-            console.error('Error fetching notifications:', error);
+            console.error("Error fetching notifications:", error);
         }
     };
 
@@ -82,26 +84,36 @@ export default function AdminNavBar({ children }) {
             setUnreadCount(event.detail.count);
         };
 
-        window.addEventListener('updateNotificationCount', handleNotificationUpdate);
-        
+        window.addEventListener(
+            "updateNotificationCount",
+            handleNotificationUpdate
+        );
+
         // Initial fetch
         fetchUnreadCount();
         const interval = setInterval(fetchUnreadCount, 30000); // Poll every 30 seconds
-        
+
         return () => {
             clearInterval(interval);
-            window.removeEventListener('updateNotificationCount', handleNotificationUpdate);
+            window.removeEventListener(
+                "updateNotificationCount",
+                handleNotificationUpdate
+            );
         };
     }, []);
 
     const handleLogout = (e) => {
         e.preventDefault();
-        router.post(route('admin.logout'), {}, {
-            preserveScroll: true,
-            onSuccess: () => {
-                window.location.href = route('admin.login');
-            },
-        });
+        router.post(
+            route("admin.logout"),
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    window.location.href = route("admin.login");
+                },
+            }
+        );
     };
 
     const navLinks = [
@@ -121,7 +133,11 @@ export default function AdminNavBar({ children }) {
             icon: "bi-list",
             text: "Instrument List",
         },
-        { href: "#", icon: "bi-arrow-left", text: "Go Back" },
+        {
+            href: route("admin.notifications.index"),
+            icon: "bi-bell-fill",
+            text: "Notification",
+        },
     ];
 
     return (
@@ -174,7 +190,7 @@ export default function AdminNavBar({ children }) {
                             <li className="nav-item" key={index}>
                                 <Link
                                     href={link.href}
-                                    className="nav-link text-white d-flex align-items-center py-3"
+                                    className="nav-link text-white d-flex align-items-center py-3 position-relative"
                                     onClick={(e) => {
                                         if (link.href === "#")
                                             e.preventDefault();
@@ -185,6 +201,21 @@ export default function AdminNavBar({ children }) {
                                         className={`bi ${link.icon} me-3 fs-4`}
                                     ></i>
                                     {link.text}
+                                    {link.icon === "bi-bell-fill" &&
+                                        unreadCount > 0 && (
+                                            <span
+                                                className="position-absolute badge rounded-pill bg-danger"
+                                                style={{
+                                                    top: "30%",
+                                                    right: "15px",
+                                                }}
+                                            >
+                                                {unreadCount}
+                                                <span className="visually-hidden">
+                                                    unread notifications
+                                                </span>
+                                            </span>
+                                        )}
                                 </Link>
                             </li>
                         ))}
@@ -338,31 +369,27 @@ export default function AdminNavBar({ children }) {
                             </li>
                             <li className="mb-2">
                                 <Link
-                                    href={route('admin.notifications.index')}
+                                    href={route("admin.notifications.index")}
                                     className="a-nav-link position-relative"
                                     onClick={(e) => e.stopPropagation()}
                                 >
                                     <i className="bi bi-bell-fill me-2 fs-4"></i>
                                     {!isCollapsed && "Notification"}
                                     {unreadCount > 0 && (
-                                        <span className={`position-absolute top-0 badge rounded-pill bg-danger ${
-                                            isCollapsed ? 'start-50' : 'start-100 translate-middle ms-3'
-                                        }`}>
+                                        <span
+                                            className={`position-absolute top-0 badge rounded-pill bg-danger ${
+                                                isCollapsed
+                                                    ? "start-50"
+                                                    : "start-100 translate-middle ms-3"
+                                            }`}
+                                        >
                                             {unreadCount}
-                                            <span className="visually-hidden">unread notifications</span>
+                                            <span className="visually-hidden">
+                                                unread notifications
+                                            </span>
                                         </span>
                                     )}
                                 </Link>
-                            </li>
-                            <li className="mb-2">
-                                <a
-                                    className="a-nav-link"
-                                    href="#"
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    <i className="bi bi-arrow-left me-2 fs-4"></i>
-                                    {!isCollapsed && "Go Back"}
-                                </a>
                             </li>
                         </ul>
                     </div>
