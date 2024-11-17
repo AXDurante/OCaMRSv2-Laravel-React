@@ -8,7 +8,7 @@
         <title inertia>{{ config('app.name', 'Leso') }}</title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ asset('images/LesoTitle.png') }}">
+        <link rel="icon" type="image/png" href="{{ asset('storage/photos/LESOLogo/LesoTitle.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
