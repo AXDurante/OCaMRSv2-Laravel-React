@@ -124,29 +124,39 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                 <div className="d-flex align-items-center gap-3 mb-4">
                     <h4>
                         Status:{" "}
-                        <select
-                            className="form-select d-inline-block w-auto"
-                            value={data.status}
-                            onChange={(e) => setData("status", e.target.value)}
-                        >
-                            <option value="For Approval">For Approval</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Cancelled">Cancelled</option>
-                        </select>
+                        <div className="dropdown d-inline-block">
+                            <select
+                                className="btn btn-primary dropdown-toggle"
+                                value={data.status}
+                                onChange={(e) =>
+                                    setData("status", e.target.value)
+                                }
+                            >
+                                <option value="For Approval">
+                                    For Approval
+                                </option>
+                                <option value="Approved">Approved</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
                     </h4>
                     <h4>
                         Priority:{" "}
-                        <select
-                            className="form-select d-inline-block w-auto"
-                            value={data.priority}
-                            onChange={(e) =>
-                                setData("priority", e.target.value)
-                            }
-                        >
-                            <option value="Regular">Regular</option>
-                            <option value="Urgent">Urgent</option>
-                        </select>
+                        <div className="dropdown d-inline-block">
+                            <select
+                                className="btn btn-primary dropdown-toggle"
+                                value={data.priority}
+                                onChange={(e) =>
+                                    setData("priority", e.target.value)
+                                }
+                            >
+                                <option value="Regular">Regular</option>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
                     </h4>
                 </div>
 
@@ -166,21 +176,23 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                             <label className="form-label text-muted">
                                 Service Requested*
                             </label>
-                            <select
-                                className="form-select"
-                                value={data.service_type}
-                                onChange={(e) =>
-                                    setData("service_type", e.target.value)
-                                }
-                            >
-                                <option value="" disabled>
-                                    Select an Option
-                                </option>
-                                <option value="Repair">Repair</option>
-                                <option value="Calibration/Maintenance">
-                                    Calibration/Maintenance
-                                </option>
-                            </select>
+                            <div className="dropdown">
+                                <select
+                                    className="btn btn-light dropdown-toggle w-100"
+                                    value={data.service_type}
+                                    onChange={(e) =>
+                                        setData("service_type", e.target.value)
+                                    }
+                                >
+                                    <option value="" disabled>
+                                        Select an Option
+                                    </option>
+                                    <option value="Repair">Repair</option>
+                                    <option value="Calibration/Maintenance">
+                                        Calibration/Maintenance
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                         <div className="col-md-6">
                             <label className="form-label text-muted">
@@ -296,24 +308,27 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                     <label className="form-label text-muted">
                                         Equipment*
                                     </label>
-                                    <select
-                                        className="form-select"
-                                        name="instrument"
-                                        value={instrument.instrument}
-                                        onChange={(e) =>
-                                            handleInputChange(index, e)
-                                        }
-                                    >
-                                        <option value="">
-                                            Select an equipment
-                                        </option>
-                                        {equipmentName.map((name, i) => (
-                                            <option key={i} value={name}>
-                                                {name}
+                                    <div className="dropdown">
+                                        <select
+                                            className="btn btn-light dropdown-toggle w-100"
+                                            name="instrument"
+                                            value={instrument.instrument}
+                                            onChange={(e) =>
+                                                handleInputChange(index, e)
+                                            }
+                                        >
+                                            <option value="">
+                                                Select an equipment
                                             </option>
-                                        ))}
-                                    </select>
+                                            {equipmentName.map((name, i) => (
+                                                <option key={i} value={name}>
+                                                    {name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
                                 </div>
+
                                 <div className="col-12 col-md-6">
                                     <label className="form-label text-muted">
                                         Serial Number/Property Number*
