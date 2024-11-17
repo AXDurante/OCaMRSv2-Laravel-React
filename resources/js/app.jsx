@@ -9,7 +9,7 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { useEffect } from "react";
 import TawkTo from "./Components/TawkTo";
 
-const appName = import.meta.env.VITE_APP_NAME || "Laravel";
+const appName = import.meta.env.VITE_APP_NAME || "LESO-ISC";
 
 createInertiaApp({
     title: (title) => `${appName}`,
