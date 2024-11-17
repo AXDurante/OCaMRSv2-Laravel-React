@@ -28,19 +28,19 @@ function TSR({ jobOrder, auth }) {
 
     // Update the useForm hook to match your TSR model fields
     const { data, setData, post, processing, errors } = useForm({
-        tsr_num: '',
-        instrument: '',
-        model: '',
-        serial_num: '',
-        problemReported: '',
-        diagnosis: '',
-        actionTaken: '',
-        recommendation: '',
-        tsr_remarks: '',
+        tsr_num: "",
+        instrument: "",
+        model: "",
+        serial_num: "",
+        problemReported: "",
+        diagnosis: "",
+        actionTaken: "",
+        recommendation: "",
+        tsr_remarks: "",
         date_request: jobOrder.date_request,
         phone: jobOrder.user.phoneNumber,
         job_id: jobOrder.job_id,
-        tech_id: auth.user.firstName + ' ' + auth.user.lastName,
+        tech_id: auth.user.firstName + " " + auth.user.lastName,
         tech_photo: auth.photo,
     });
 
@@ -52,10 +52,10 @@ function TSR({ jobOrder, auth }) {
 
     function onSubmit(e) {
         e.preventDefault();
-        post(route('technician.storeTSR'));
+        post(route("technician.storeTSR"));
     }
 
-    console.log(jobOrder)
+    console.log(jobOrder);
     return (
         <div className="container py-4">
             <h2 className="mb-4">
@@ -297,26 +297,30 @@ function TSR({ jobOrder, auth }) {
                                         <label className="form-label fw-bold">
                                             Recommendation
                                         </label>
-                                        <select
-                                            className="form-select"
-                                            name="recommendation"
-                                            value={data.recommendation}
-                                            onChange={handleInputChange}
-                                        >
-                                            <option value="" disable selected> Please Select an Option </option>
-                                            <option value="For Pull-Out">
-                                                For Pull-Out
-                                            </option>
-                                            <option value="Forward to Supplier">
-                                                Forward to Supplier
-                                            </option>
-                                            <option value="For Repair">
-                                                For Repair
-                                            </option>
-                                            <option value="Beyond Repair">
-                                                Beyond Repair
-                                            </option>
-                                        </select>
+                                        <div>
+                                            <select
+                                                className="btn btn-light border border-secondary dropdown-toggle w-100"
+                                                name="recommendation"
+                                                value={data.recommendation}
+                                                onChange={handleInputChange}
+                                            >
+                                                <option value="" disabled>
+                                                    Please Select an Option
+                                                </option>
+                                                <option value="For Pull-Out">
+                                                    For Pull-Out
+                                                </option>
+                                                <option value="Forward to Supplier">
+                                                    Forward to Supplier
+                                                </option>
+                                                <option value="For Repair">
+                                                    For Repair
+                                                </option>
+                                                <option value="Beyond Repair">
+                                                    Beyond Repair
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div className="col-md-6">

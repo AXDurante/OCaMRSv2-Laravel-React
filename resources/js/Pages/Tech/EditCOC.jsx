@@ -4,27 +4,36 @@ import { PDFViewer } from "@react-pdf/renderer";
 import Modal from "react-modal";
 import COCpdf from "./COCpdf";
 import { usePage, useForm } from "@inertiajs/react";
+import {
+    FaEdit,
+    FaFlag,
+    FaCheckCircle,
+    FaTimesCircle,
+    FaHourglassHalf,
+    FaSpinner,
+    FaClock,
+} from "react-icons/fa";
 
 function EditCOC({ tsr, auth, coc }) {
     const { data, setData, put, processing, errors } = useForm({
-        coc_num: coc.coc_num || '',
+        coc_num: coc.coc_num || "",
         college: coc.college || tsr.job_order.dept_name,
         lab_loc: coc.lab_loc || tsr.job_order.lab_loc,
-        equipment: coc.equipment || '',
-        model: coc.model || '',
-        serial_num: coc.serial_num || '',
-        calibration: coc.calibration || '',
-        calibration_res: coc.calibration_res || '',
-        remark: coc.remark || '',
+        equipment: coc.equipment || "",
+        model: coc.model || "",
+        serial_num: coc.serial_num || "",
+        calibration: coc.calibration || "",
+        calibration_res: coc.calibration_res || "",
+        remark: coc.remark || "",
         tsr_num: coc.tsr_num || tsr.tsr_num,
         tsr_id: coc.tsr_id || tsr.tsr_id,
-        manufacturer: coc.manufacturer || '',
-        standard: coc.standard || '',
+        manufacturer: coc.manufacturer || "",
+        standard: coc.standard || "",
         date_req: coc.date_req || tsr.job_order.date_request,
         date_cal: coc.date_cal || tsr.job_order.date_request,
         date_due: coc.date_due || tsr.job_order.date_due,
-        tech_name: coc.tech_name || '',
-        tech_photo: coc.tech_photo_url || '',
+        tech_name: coc.tech_name || "",
+        tech_photo: coc.tech_photo_url || "",
     });
 
     const handleInputChange = (e) => {
@@ -34,8 +43,8 @@ function EditCOC({ tsr, auth, coc }) {
 
     function onSubmit(e) {
         e.preventDefault();
-        put(route('technician.update-coc', coc.coc_id));
-    };
+        put(route("technician.update-coc", coc.coc_id));
+    }
 
     const [showPreview, setShowPreview] = useState(false);
 
@@ -48,256 +57,350 @@ function EditCOC({ tsr, auth, coc }) {
     };
 
     return (
-        <div className="d-flex">
-            <div id="content" className=" flex-fill p-3">
-                <div>
-                    <div>
-                        <h1 class="d-inline">Certificate of Calibration | </h1>
-                        <h1 class="d-inline fw-light">Edit</h1>
-                        <hr />
-                    </div>
-                    <div className="mt-3">
-                        <div className="row forms-bg">
-                            <div className="col-12 col-md-4 profile-bg d-flex flex-column align-items-center p-3 text-white">
-                                <div className="mt-10">
-                                    <i className="bi bi-person-fill fs-2 text-primary"></i>
+        <div className="container py-4">
+            <h2 className="mb-4">
+                Certificate of Calibration{" "}
+                <span className="text-muted fw-light">| Edit</span>
+            </h2>
+
+            <div className="card-container">
+                <div className="row g-0">
+                    {/* Left Sidebar - matches ViewCOCDetails style */}
+                    <div className="col-12 col-md-3">
+                        <div className="card bg-dark text-white h-100 rounded-0 rounded-start rounded-bottom-md-start rounded-end-md-0">
+                            <div className="card-body d-flex flex-column justify-content-center align-items-center">
+                                <div className="mb-4">
+                                    <i className="bi bi-file-text-fill fs-1"></i>
                                 </div>
-                                <h5 className="mb-4 mt-9 ">
-                                    Analytical Balance
-                                </h5>
+                                <h3 className="mb-3">
+                                    COC-{data.coc_num || "000"}
+                                </h3>
 
-                                <div className="mt-20">
-                                    <h5 className="d-inline">Priority: </h5>
-                                    <h5 className="d-inline fw-light text-warning">
-                                        Regular
-                                    </h5>
-                                </div>
-
-                                <h6 className="mt-4">Related Documents:</h6>
-                                <div className="mt-1 w-100">
-                                    <button className="btn btn-light w-100 mb-2">
-                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                        Technical Service Report
-                                    </button>
-                                    {/* <button className="btn btn-light w-100">
-                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                        Job Request
-                                    </button> */}
-                                </div>
-                            </div>
-
-                            <div className="col-12 col-md-8">
-                                <div className="pt-5 pb-5 p-3">
-                                <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Calibration No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="coc_num"
-                                                value={data.coc_num}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Equipment
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="equipment"
-                                                value={data.equipment}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Manufacturer
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="manufacturer"
-                                                value={data.manufacturer}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Model No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="model"
-                                                value={data.model}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Serial No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="serial_num"
-                                                value={data.serial_num}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Procedure and Traceability
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="calibration"
-                                                value={data.calibration}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Standard Used
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="standard"
-                                                value={data.standard}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Calibration Result
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="calibration_res"
-                                                value={data.calibration_res}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Remarks
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="remark"
-                                                value={data.remark}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="row"></div>
-                                    <button 
-                                        className="btn btn-dark w-100 text-warning mt-2 mb-4"
-                                        onClick={onSubmit}>
-                                        Edit Certificate of Calibration
-                                    </button>
-                                    <Modal
-                                        isOpen={showPreview}
-                                        onRequestClose={closeModal}
+                                {/* Status Section */}
+                                <div className="mb-4 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Status
+                                    </small>
+                                    <span
+                                        className={`badge ${
+                                            coc.status === "Cancelled"
+                                                ? "bg-danger"
+                                                : coc.status === "Approved"
+                                                ? "bg-success"
+                                                : coc.status === "Completed"
+                                                ? "bg-info"
+                                                : coc.status === "For Approval"
+                                                ? "bg-warning"
+                                                : coc.status === "Processing"
+                                                ? "bg-primary"
+                                                : coc.status === "Pending"
+                                                ? "bg-secondary"
+                                                : "bg-secondary"
+                                        } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
                                     >
-                                        <h5>Print Preview:</h5>
-                                        <PDFViewer
-                                            style={{
-                                                width: "100%",
-                                                height: "80%",
-                                                border: "none", // Optional: remove border for a cleaner look
-                                            }}
-                                        >
-                                            <COCpdf 
-                                                tsr={tsr}
-                                                cocDetails={{
-                                                    ...data,
-                                                    tech_id: data.tech_name,
-                                                    tech_photo: auth.photo,
-                                                    tech_signature: auth.photo,
-                                                    ...(coc.admin_signature && {
-                                                        admin_signature: coc.admin_signature,
-                                                        admin_name: coc.admin_name
-                                                    })
-                                                }}
-                                            />
-                                        </PDFViewer>
-                                        <button onClick={closeModal}>
-                                            Close
-                                        </button>{" "}
-                                        {/* Close button */}
-                                    </Modal>
+                                        {coc.status === "Cancelled" && (
+                                            <FaTimesCircle />
+                                        )}
+                                        {coc.status === "Approved" && (
+                                            <FaCheckCircle />
+                                        )}
+                                        {coc.status === "Completed" && (
+                                            <FaCheckCircle />
+                                        )}
+                                        {coc.status === "For Approval" && (
+                                            <FaHourglassHalf />
+                                        )}
+                                        {coc.status === "Processing" && (
+                                            <FaSpinner className="spinner-icon" />
+                                        )}
+                                        {coc.status === "Pending" && (
+                                            <FaClock />
+                                        )}
+                                        {coc.status}
+                                    </span>
+                                </div>
 
-                                    <div
-                                        id="content"
-                                        className="main-content flex-fill p-3"
+                                {/* Priority Section */}
+                                <div className="mb-4 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Priority
+                                    </small>
+                                    <span
+                                        className={`badge ${
+                                            coc.priority === "High"
+                                                ? "bg-danger"
+                                                : coc.priority === "Medium"
+                                                ? "bg-warning"
+                                                : "bg-success"
+                                        } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
                                     >
-                                        <div className="mt-3">
-                                            {/* Form fields for COC */}
-                                            <button
-                                                className="btn btn-primary mb-3"
-                                                onClick={handlePreviewClick} // Add click handler
-                                            >
-                                                Preview PDF
-                                            </button>
-                                        </div>
+                                        <FaFlag />
+                                        {coc.priority}
+                                    </span>
+                                </div>
+
+                                {/* Technician Info */}
+                                <div className="mt-2 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Technician
+                                    </small>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <i className="bi bi-person-circle"></i>
+                                        <span>
+                                            {auth.user.firstName}{" "}
+                                            {auth.user.lastName}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Created On Date */}
+                                <div className="mt-4 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Created On
+                                    </small>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <i className="bi bi-calendar3"></i>
+                                        <span>
+                                            {new Date().toLocaleDateString()}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    {/* Main Form */}
+                    <div className="col-12 col-md-9">
+                        <div className="card shadow-sm h-100 rounded-0 rounded-end rounded-top-md-end rounded-bottom-md-end mt-3 mt-md-0">
+                            <div className="card-body">
+                                <form onSubmit={onSubmit}>
+                                    <div className="row g-3">
+                                        <div className="col-md-6">
+                                            <label className="form-label fw-bold">
+                                                Calibration No.
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control ${
+                                                    errors.coc_num
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
+                                                name="coc_num"
+                                                value={data.coc_num}
+                                                onChange={handleInputChange}
+                                            />
+                                            {errors.coc_num && (
+                                                <div className="invalid-feedback">
+                                                    {errors.coc_num}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <label className="form-label fw-bold">
+                                                Equipment
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control ${
+                                                    errors.equipment
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
+                                                name="equipment"
+                                                value={data.equipment}
+                                                onChange={handleInputChange}
+                                            />
+                                            {errors.equipment && (
+                                                <div className="invalid-feedback">
+                                                    {errors.equipment}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <label className="form-label fw-bold">
+                                                Manufacturer
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control ${
+                                                    errors.manufacturer
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
+                                                name="manufacturer"
+                                                value={data.manufacturer}
+                                                onChange={handleInputChange}
+                                            />
+                                            {errors.manufacturer && (
+                                                <div className="invalid-feedback">
+                                                    {errors.manufacturer}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <label className="form-label fw-bold">
+                                                Model No.
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control ${
+                                                    errors.model
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
+                                                name="model"
+                                                value={data.model}
+                                                onChange={handleInputChange}
+                                            />
+                                            {errors.model && (
+                                                <div className="invalid-feedback">
+                                                    {errors.model}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <label className="form-label fw-bold">
+                                                Serial No.
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control ${
+                                                    errors.serial_num
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
+                                                name="serial_num"
+                                                value={data.serial_num}
+                                                onChange={handleInputChange}
+                                            />
+                                            {errors.serial_num && (
+                                                <div className="invalid-feedback">
+                                                    {errors.serial_num}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <label className="form-label fw-bold">
+                                                Procedure and Traceability
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control ${
+                                                    errors.calibration
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
+                                                name="calibration"
+                                                value={data.calibration}
+                                                onChange={handleInputChange}
+                                            />
+                                            {errors.calibration && (
+                                                <div className="invalid-feedback">
+                                                    {errors.calibration}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <label className="form-label fw-bold">
+                                                Standard Used
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control ${
+                                                    errors.standard
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
+                                                name="standard"
+                                                value={data.standard}
+                                                onChange={handleInputChange}
+                                            />
+                                            {errors.standard && (
+                                                <div className="invalid-feedback">
+                                                    {errors.standard}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <label className="form-label fw-bold">
+                                                Calibration Result
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control ${
+                                                    errors.calibration_res
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
+                                                name="calibration_res"
+                                                value={data.calibration_res}
+                                                onChange={handleInputChange}
+                                            />
+                                            {errors.calibration_res && (
+                                                <div className="invalid-feedback">
+                                                    {errors.calibration_res}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="col-md-6">
+                                            <label className="form-label fw-bold">
+                                                Remarks
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`form-control ${
+                                                    errors.remark
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
+                                                name="remark"
+                                                value={data.remark}
+                                                onChange={handleInputChange}
+                                            />
+                                            {errors.remark && (
+                                                <div className="invalid-feedback">
+                                                    {errors.remark}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Action Buttons */}
+                                        <div className="col-12 mt-4 d-flex gap-2">
+                                            <button
+                                                type="button"
+                                                className="btn btn-outline-primary"
+                                                onClick={handlePreviewClick}
+                                            >
+                                                <i className="bi bi-eye me-1"></i>
+                                                Preview PDF
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                className="btn btn-primary"
+                                                disabled={processing}
+                                            >
+                                                <i className="bi bi-save me-1"></i>
+                                                Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            {/* Modal component remains the same */}
         </div>
     );
 }
