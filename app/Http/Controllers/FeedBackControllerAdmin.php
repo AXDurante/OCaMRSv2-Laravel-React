@@ -51,7 +51,7 @@ class FeedbackControllerAdmin extends Controller
             ]
         ]);
     }
-
+// test
     public function destroy(Feedback $feedback)
     {
         $feedback->delete();
