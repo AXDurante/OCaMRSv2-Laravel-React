@@ -3,7 +3,7 @@ import AdminNavBar from "@/Layouts/AdminNavBar";
 import { PDFViewer } from "@react-pdf/renderer";
 import Modal from "react-modal";
 import COCpdf from "./COCpdf";
-import { usePage, useForm } from "@inertiajs/react";
+import { usePage, useForm, Link } from "@inertiajs/react";
 import {
     FaCheckCircle,
     FaTimesCircle,
