@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
+import TawkTo from "../../Components/TawkTo";
 
 function TrackOrder({
     jobOrder,
@@ -56,10 +57,9 @@ function TrackOrder({
     // Filter job orders based on status
     const filteredJobOrders = jobOrder.data;
 
-    console.log("Job Order props:", { jobOrder, firstName, lastName, email });
-
     return (
         <div className="">
+            <TawkTo />
             <div id="content" className="flex-fill p-3">
                 <div>
                     <h1 className="d-inline">Track Request | </h1>
@@ -122,12 +122,6 @@ function TrackOrder({
                 )}
 
                 {filteredJobOrders.map((jobOrder) => {
-                    console.log("Job Order feedback status:", {
-                        id: jobOrder.job_id,
-                        has_feedback: jobOrder.has_feedback,
-                        feedback_id: jobOrder.feedback_id,
-                    });
-
                     return (
                         <div
                             className="card mt-4 order-card fade-in hover-lift"

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import axios from "axios";
+import { cleanupTawkTo } from '@/Components/TawkTo'; // Add this import at the top
+import TawkTo from "../Components/TawkTo";
 
 export default function NavBar({
     children,
@@ -26,6 +28,10 @@ export default function NavBar({
             setIsFullyExpanded(true);
             setIsMobileMenuOpen(false);
         }
+    };
+
+    const handleLogout = (e) => {
+        cleanupTawkTo();
     };
 
     useEffect(() => {
@@ -119,6 +125,7 @@ export default function NavBar({
 
     return (
         <div className="">
+            <TawkTo />
             <div className="d-md-none fixed-top bg-dark">
                 <div className="d-flex justify-content-between align-items-center p-3">
                     <div className="mobile-header-logo">
@@ -246,6 +253,7 @@ export default function NavBar({
                                     method="post"
                                     as="button"
                                     className="logout-btn w-100"
+                                    onClick={handleLogout}
                                 >
                                     <i className="bi bi-box-arrow-right me-2"></i>
                                     <span className="small">Log Out</span>
@@ -445,6 +453,7 @@ export default function NavBar({
                                     className={`logout-btn ${
                                         isCollapsed ? "collapsed" : ""
                                     }`}
+                                    onClick={handleLogout}
                                 >
                                     <i className="bi bi-box-arrow-right me-2"></i>
                                     {!isCollapsed && "Log Out"}{" "}

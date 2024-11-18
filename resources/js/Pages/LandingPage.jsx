@@ -2,12 +2,13 @@ import Navbar from "../Layouts/Navbar";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa"; // Import social media icons
 import { Link } from "@inertiajs/react"; // Import Link for navigation
 import logo from "/public/images/lesog2.png"; // Import logo image
-
+import TawkTo from "../Components/TawkTo";
 function LandingPage() {
     const isMobile = window.innerWidth < 768; // Adjust the breakpoint as needed
 
     return (
         <div id="app">
+            <TawkTo />
             {" "}
             {/* Main app container */}
             <div className="flex-grow">

@@ -3,6 +3,7 @@ import { Link, router } from '@inertiajs/react';
 import moment from 'moment';
 import Navbar from "../Layouts/Navbar";
 import axios from 'axios';
+import TawkTo from '../Components/TawkTo';
 
 function Notifications({ notifications }) {
     // Function to mark a notification as read and update the count
@@ -47,6 +48,7 @@ function Notifications({ notifications }) {
 
     return (
         <div className="ps-3 pe-3">
+            <TawkTo />
             <div>
                 <h1 className="d-inline">Notifications | </h1>
                 <h1 className="d-inline fw-light">Job Order Updates</h1>
