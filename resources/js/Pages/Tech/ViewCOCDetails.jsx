@@ -29,6 +29,7 @@ function ViewCOCDetails({ coc, auth }) {
         setShowPreview(false); // Close the modal
     };
 
+    console.log(coc);
     return (
         <div className="container py-4">
             <h2 className="mb-4">
@@ -351,9 +352,9 @@ function ViewCOCDetails({ coc, auth }) {
                             tsr={coc.tsr}
                             cocDetails={{
                                 ...coc,
-                                tech_id: `${auth.user.firstName} ${auth.user.lastName}`,
-                                tech_photo: auth.photo,
-                                tech_signature: auth.photo,
+                                tech_id: coc.tech_name,
+                                tech_photo: coc.tech_photo,
+                                admin_signature: coc.admin_photo,
                             }}
                         />
                     </PDFViewer>

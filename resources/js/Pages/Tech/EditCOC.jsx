@@ -56,6 +56,7 @@ function EditCOC({ tsr, auth, coc }) {
         setShowPreview(false);
     };
 
+    console.log(coc);
     return (
         <div className="container py-4">
             <h2 className="mb-4">
@@ -406,6 +407,68 @@ function EditCOC({ tsr, auth, coc }) {
             </div>
 
             {/* Modal component remains the same */}
+            {/* PDF Preview Modal */}
+            <Modal
+                isOpen={showPreview}
+                onRequestClose={closeModal}
+                className="modal-lg"
+                overlayClassName="modal-overlay"
+                style={{
+                    content: {
+                        width: "90%",
+                        height: "90%",
+                        margin: "auto",
+                        backgroundColor: "white",
+                        borderRadius: "12px",
+                        padding: "0",
+                        border: "none",
+                        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                        overflow: "hidden", // Prevents content from breaking the border radius
+                    },
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        zIndex: 1000,
+                    },
+                }}
+            >
+                <div className="modal-header d-flex justify-content-between align-items-center px-4 py-3">
+                    <div className="d-flex align-items-center gap-2">
+                        <i className="bi bi-file-pdf text-primary"></i>
+                        <span className="modal-title">Preview Document</span>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={closeModal}
+                        className="close-button"
+                        aria-label="Close"
+                    >
+                        <i className="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div
+                    className="modal-body"
+                    style={{ height: "calc(100% - 60px)" }}
+                >
+                    <PDFViewer
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            border: "none",
+                        }}
+                    >
+                        <COCpdf
+                            tsr={coc.tsr}
+                            cocDetails={{
+                                ...coc,
+                                tech_id: `${auth.user.firstName} ${auth.user.lastName}`,
+                                tech_photo: auth.photo,
+                                tech_signature: auth.photo,
+                                admin_signature: coc.admin_photo,
+                            }}
+                        />
+                    </PDFViewer>
+                </div>
+            </Modal>
         </div>
     );
 }
