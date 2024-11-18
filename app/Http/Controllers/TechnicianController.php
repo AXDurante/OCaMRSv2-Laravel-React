@@ -17,12 +17,58 @@ use App\Models\Notification;
 class TechnicianController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $jobOrder = JobOrder::with('user')->paginate(10);
+        // Get total counts using separate queries
+        $totalCounts = [
+            'total' => JobOrder::count(),
+            'forApproval' => JobOrder::where('status', 'For Approval')->count(),
+            'approved' => JobOrder::where('status', 'Approved')->count(),
+            'completed' => JobOrder::where('status', 'Completed')->count(),
+            'cancelled' => JobOrder::where('status', 'Cancelled')->count(),
+        ];
+
+        // Start a new query for the paginated results
+        $query = JobOrder::with('user');
+
+        // Apply existing filters
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->whereHas('user', function($userQuery) use ($request) {
+                    $userQuery->where('firstName', 'LIKE', "%{$request->search}%")
+                        ->orWhere('lastName', 'LIKE', "%{$request->search}%")
+                        ->orWhere('email', 'LIKE', "%{$request->search}%");
+                })
+                ->orWhere('job_id', 'LIKE', "%{$request->search}%")
+                ->orWhere('service_type', 'LIKE', "%{$request->search}%");
+            });
+        }
+
+        // Apply status filter
+        if ($request->status && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        // Apply priority filter
+        if ($request->priority && $request->priority !== 'all') {
+            $query->where('priority', $request->priority);
+        }
+
+        // Apply sorting
+        $query->orderBy('date_request', $request->sort === 'oldest' ? 'asc' : 'desc');
+
+        // Paginate results
+        $jobOrders = $query->paginate(10)->withQueryString();
 
         return Inertia::render('Tech/Dashboard', [
-            'jobOrder' => $jobOrder,
+            'jobOrder' => $jobOrders,
+            'totalCounts' => $totalCounts,
+            'filters' => [
+                'search' => $request->search ?? '',
+                'status' => $request->status ?? 'all',
+                'priority' => $request->priority ?? 'all',
+                'sort' => $request->sort ?? 'newest',
+            ]
         ]);
     }
 

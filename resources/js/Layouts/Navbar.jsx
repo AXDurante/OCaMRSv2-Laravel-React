@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import axios from "axios";
+import TawkTo from "@/Components/TawkTo";
 
 export default function NavBar({
     children,
@@ -119,6 +120,7 @@ export default function NavBar({
 
     return (
         <div className="">
+            <TawkTo />
             <div className="d-md-none fixed-top bg-dark">
                 <div className="d-flex justify-content-between align-items-center p-3">
                     <div className="mobile-header-logo">
