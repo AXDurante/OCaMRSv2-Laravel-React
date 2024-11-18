@@ -20,6 +20,10 @@ function Home() {
     const [idNumberError, setIdNumberError] = useState(null);
     const [phoneNumberError, setPhoneNumberError] = useState(null);
     const [emailError, setEmailError] = useState(null);
+    const [firstNameError, setFirstNameError] = useState(null);
+    const [lastNameError, setLastNameError] = useState(null);
+    const [passwordError, setPasswordError] = useState(null);
+    const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 
     useEffect(() => {
         fetchAccounts();
@@ -61,9 +65,22 @@ function Home() {
         const isIdValid = validateIdNumber(idNumber);
         const isPhoneValid = validatePhoneNumber(phoneNumber);
         const isEmailValid = validateEmail(accountEmail);
+        const isFirstNameValid = validateFirstName(firstName);
+        const isLastNameValid = validateLastName(lastName);
+        const isPasswordValid = validatePassword(accountPassword);
+        const isConfirmPasswordValid =
+            validateConfirmPassword(passwordConfirmation);
 
         // If any validation fails, stop form submission
-        if (!isIdValid || !isPhoneValid || !isEmailValid) {
+        if (
+            !isIdValid ||
+            !isPhoneValid ||
+            !isEmailValid ||
+            !isFirstNameValid ||
+            !isLastNameValid ||
+            !isPasswordValid ||
+            !isConfirmPasswordValid
+        ) {
             return;
         }
 
@@ -196,6 +213,68 @@ function Home() {
             return false;
         }
         setEmailError(null);
+        return true;
+    };
+
+    const validateFirstName = (value) => {
+        if (!value) {
+            setFirstNameError("First Name is required");
+            return false;
+        }
+        if (!/^[A-Za-z\s]+$/.test(value)) {
+            setFirstNameError("First Name should only contain letters");
+            return false;
+        }
+        setFirstNameError(null);
+        return true;
+    };
+
+    const validateLastName = (value) => {
+        if (!value) {
+            setLastNameError("Last Name is required");
+            return false;
+        }
+        if (!/^[A-Za-z\s]+$/.test(value)) {
+            setLastNameError("Last Name should only contain letters");
+            return false;
+        }
+        setLastNameError(null);
+        return true;
+    };
+
+    const validatePassword = (value) => {
+        if (!value) {
+            setPasswordError("Password is required");
+            return false;
+        }
+        if (value.length < 6) {
+            setPasswordError("Password must be at least 6 characters long");
+            return false;
+        }
+        if (!/\d/.test(value)) {
+            setPasswordError("Password must contain at least one number");
+            return false;
+        }
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+            setPasswordError(
+                "Password must contain at least one special character"
+            );
+            return false;
+        }
+        setPasswordError(null);
+        return true;
+    };
+
+    const validateConfirmPassword = (value) => {
+        if (!value) {
+            setConfirmPasswordError("Please confirm your password");
+            return false;
+        }
+        if (value !== accountPassword) {
+            setConfirmPasswordError("Passwords do not match");
+            return false;
+        }
+        setConfirmPasswordError(null);
         return true;
     };
 
@@ -349,16 +428,36 @@ function Home() {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    className="form-control rounded"
+                                                    className={`form-control rounded ${
+                                                        firstNameError
+                                                            ? "border-danger"
+                                                            : ""
+                                                    }`}
                                                     value={firstName}
-                                                    onChange={(e) =>
-                                                        setFirstName(
-                                                            e.target.value
-                                                        )
-                                                    }
+                                                    onChange={(e) => {
+                                                        const value =
+                                                            e.target.value.replace(
+                                                                /[^A-Za-z\s]/g,
+                                                                ""
+                                                            ); // Only allow letters and spaces
+                                                        setFirstName(value);
+                                                        validateFirstName(
+                                                            value
+                                                        );
+                                                    }}
                                                     placeholder="Juan"
                                                     required
                                                 />
+                                                {firstNameError && (
+                                                    <div className="alert-ah">
+                                                        <div className="alert-ah__title">
+                                                            Invalid Input
+                                                        </div>
+                                                        <div className="alert-ah__message">
+                                                            {firstNameError}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="row">
@@ -368,16 +467,34 @@ function Home() {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    className="form-control rounded"
+                                                    className={`form-control rounded ${
+                                                        lastNameError
+                                                            ? "border-danger"
+                                                            : ""
+                                                    }`}
                                                     value={lastName}
-                                                    onChange={(e) =>
-                                                        setLastName(
-                                                            e.target.value
-                                                        )
-                                                    }
+                                                    onChange={(e) => {
+                                                        const value =
+                                                            e.target.value.replace(
+                                                                /[^A-Za-z\s]/g,
+                                                                ""
+                                                            ); // Only allow letters and spaces
+                                                        setLastName(value);
+                                                        validateLastName(value);
+                                                    }}
                                                     placeholder="Dela Cruz"
                                                     required
                                                 />
+                                                {lastNameError && (
+                                                    <div className="alert-ah">
+                                                        <div className="alert-ah__title">
+                                                            Invalid Input
+                                                        </div>
+                                                        <div className="alert-ah__message">
+                                                            {lastNameError}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="col-6 mb-3">
                                                 <label className="form-label fw-bold d-block text-truncate">
@@ -419,15 +536,32 @@ function Home() {
                                                 </label>
                                                 <input
                                                     type="password"
-                                                    className="form-control rounded"
+                                                    className={`form-control rounded ${
+                                                        passwordError
+                                                            ? "border-danger"
+                                                            : ""
+                                                    }`}
                                                     value={accountPassword}
-                                                    onChange={(e) =>
+                                                    onChange={(e) => {
+                                                        const value =
+                                                            e.target.value;
                                                         setAccountPassword(
-                                                            e.target.value
-                                                        )
-                                                    }
+                                                            value
+                                                        );
+                                                        validatePassword(value);
+                                                    }}
                                                     required
                                                 />
+                                                {passwordError && (
+                                                    <div className="alert-ah">
+                                                        <div className="alert-ah__title">
+                                                            Invalid Input
+                                                        </div>
+                                                        <div className="alert-ah__message">
+                                                            {passwordError}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="col-6 mb-3">
                                                 <label className="form-label fw-bold d-block text-truncate">
@@ -435,15 +569,36 @@ function Home() {
                                                 </label>
                                                 <input
                                                     type="password"
-                                                    className="form-control rounded"
+                                                    className={`form-control rounded ${
+                                                        confirmPasswordError
+                                                            ? "border-danger"
+                                                            : ""
+                                                    }`}
                                                     value={passwordConfirmation}
-                                                    onChange={(e) =>
+                                                    onChange={(e) => {
+                                                        const value =
+                                                            e.target.value;
                                                         setPasswordConfirmation(
-                                                            e.target.value
-                                                        )
-                                                    }
+                                                            value
+                                                        );
+                                                        validateConfirmPassword(
+                                                            value
+                                                        );
+                                                    }}
                                                     required
                                                 />
+                                                {confirmPasswordError && (
+                                                    <div className="alert-ah">
+                                                        <div className="alert-ah__title">
+                                                            Invalid Input
+                                                        </div>
+                                                        <div className="alert-ah__message">
+                                                            {
+                                                                confirmPasswordError
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="row">
