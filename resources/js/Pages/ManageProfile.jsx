@@ -25,6 +25,10 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
         removePhoto: false,
     });
 
+    console.log('Auth user:', auth.user);
+    console.log('Form data:', data);
+    console.log('Phone number value:', auth.user.phoneNumber);
+
     useEffect(() => {
         if (flash && flash.message) {
             setShowSuccess(true);

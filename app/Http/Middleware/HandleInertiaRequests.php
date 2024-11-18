@@ -36,9 +36,13 @@ class HandleInertiaRequests extends Middleware
                     'firstName' => $request->user()->firstName,
                     'lastName' => $request->user()->lastName,
                     'email' => $request->user()->email,
+                    'phoneNumber' => $request->user()->phoneNumber,
                     'role' => $request->user()->role,
                     'college' => $request->user()->college,
-                    // Add any other user attributes you want to share
+                    'photo' => $request->user()->photo,
+                    'employeeID' => $request->user()->employeeID,
+                    'labLoc' => $request->user()->labLoc,
+                    'position' => $request->user()->position,
                 ] : null,
             ],
             // ... other shared data

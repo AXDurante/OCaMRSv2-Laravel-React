@@ -36,6 +36,7 @@ class DashboardController extends Controller
             'email' => $user->email,
             'user' => $user,
             'theID' => session('theID'),
+            'position' => $user->position,
             'storageBaseUrl' => $isProduction 
                 ? $appUrl . '/public/storage/photos'
                 : url('storage/photos'),
@@ -58,6 +59,7 @@ class DashboardController extends Controller
                 'lastName' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users,email,' . $theID,
                 'phoneNumber' => 'nullable|string|size:11|regex:/^[0-9]+$/',
+                'position' => 'nullable|string|max:255',
                 'photo' => [
                     'nullable',
                     'file',
