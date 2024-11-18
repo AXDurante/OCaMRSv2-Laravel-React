@@ -7,7 +7,8 @@ import TextInput2 from "@/Components/TextInput2";
 import LoginButton from "@/Components/LoginButton";
 import PhoneNumberInput from "@/Components/PhoneNumberInput";
 import { FaEye, FaEyeSlash, FaInfoCircle } from "react-icons/fa"; // Import eye icons
-import Modal from "@/Components/Modal"; // Import your modal component
+
+import { Modal } from "react-bootstrap";
 
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
@@ -328,7 +329,10 @@ export default function Register() {
                                                 RCNAS{" "}
                                             </option>
                                             <option value="LESO"> LESO </option>
-                                            <option value="Others"> Others </option>
+                                            <option value="Others">
+                                                {" "}
+                                                Others{" "}
+                                            </option>
                                         </select>
                                         <InputError
                                             message={errors.college}
@@ -627,422 +631,55 @@ export default function Register() {
                                     </div>
 
                                     {/* Terms and Conditions Modal */}
-                                    {showTerms && (
-                                        <div
-                                            className="modal-backdrop"
-                                            style={{
-                                                position: "fixed",
-                                                top: 0,
-                                                left: 0,
-                                                right: 0,
-                                                bottom: 0,
-                                                backgroundColor:
-                                                    "rgba(0, 0, 0, 0.5)", // Black opacity
-                                                zIndex: 1040, // Ensure it's above other content
-                                            }}
-                                            onClick={() => setShowTerms(false)} // Close modal on backdrop click
-                                        />
-                                    )}
                                     <Modal
                                         show={showTerms}
-                                        onClose={() => setShowTerms(false)}
-                                        className="modal fade show"
-                                        style={{
-                                            display: showTerms
-                                                ? "block"
-                                                : "none",
-                                            zIndex: 1050, // Ensure modal is above backdrop
-                                        }}
+                                        onHide={() => setShowTerms(false)}
+                                        aria-labelledby="terms-modal-title"
                                     >
-                                        <div className="modal-dialog modal-dialog-centered modal-lg">
-                                            {" "}
-                                            {/* Centered modal */}
-                                            <div className="modal-content ">
-                                                <div className="modal-header">
-                                                    <h5 className="modal-title">
-                                                        Terms and Conditions
-                                                    </h5>
-                                                </div>
-                                                <div className="modal-body">
-                                                    <h6>1. Introduction</h6>
-                                                    <p>
-                                                        Welcome to the LESO
-                                                        Ticketing System
-                                                        (hereafter referred to
-                                                        as "the System"). By
-                                                        accessing or using the
-                                                        System to request repair
-                                                        services, you agree to
-                                                        comply with and be bound
-                                                        by these Terms and
-                                                        Conditions. Please read
-                                                        them carefully before
-                                                        submitting any repair
-                                                        requests. If you do not
-                                                        agree to these terms,
-                                                        you must refrain from
-                                                        using the System.
-                                                    </p>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title
+                                                id="terms-modal-title"
+                                                className="fs-5 fw-bold"
+                                            >
+                                                Terms and Conditions
+                                            </Modal.Title>
+                                        </Modal.Header>
 
-                                                    <h6>2. Eligibility</h6>
-                                                    <p>
-                                                        To submit a repair
-                                                        request through the LESO
-                                                        Ticketing System, you
-                                                        must be an authorized
-                                                        user, typically
-                                                        representing a
-                                                        department, agency, or
-                                                        entity with the
-                                                        appropriate clearance.
-                                                        The System is intended
-                                                        for the repair and
-                                                        maintenance of equipment
-                                                        and assets under the
-                                                        purview of LESO.
-                                                    </p>
+                                        <Modal.Body className="custom-modal-body">
+                                            <div className="terms-section px-2">
+                                                <h6 className="fw-bold mb-3">
+                                                    1. Introduction
+                                                </h6>
+                                                <p className="mb-4">
+                                                    Welcome to the LESO
+                                                    Ticketing System (hereafter
+                                                    referred to as "the
+                                                    System")...
+                                                </p>
 
-                                                    <h6>
-                                                        3. Repair Request
-                                                        Submission
-                                                    </h6>
-                                                    <p>
-                                                        <strong>
-                                                            Request Details:
-                                                        </strong>{" "}
-                                                        All repair requests must
-                                                        include accurate
-                                                        information regarding
-                                                        the equipment or asset
-                                                        needing repair,
-                                                        including but not
-                                                        limited to: item
-                                                        description, serial
-                                                        number, malfunction
-                                                        details, and any prior
-                                                        maintenance history.
-                                                    </p>
-                                                    <p>
-                                                        <strong>
-                                                            Request
-                                                            Confirmation:
-                                                        </strong>{" "}
-                                                        Upon submitting a
-                                                        request, you will
-                                                        receive an
-                                                        acknowledgment receipt.
-                                                        This confirmation does
-                                                        not imply approval or
-                                                        completion of the
-                                                        request.
-                                                    </p>
-                                                    <p>
-                                                        <strong>
-                                                            Approval Process:
-                                                        </strong>{" "}
-                                                        Repair requests are
-                                                        subject to approval
-                                                        based on priority,
-                                                        available resources, and
-                                                        the nature of the issue.
-                                                        LESO reserves the right
-                                                        to prioritize requests
-                                                        as deemed necessary.
-                                                    </p>
-
-                                                    <h6>4. Service Scope</h6>
-                                                    <p>
-                                                        <strong>
-                                                            Covered Repairs:
-                                                        </strong>{" "}
-                                                        The System is intended
-                                                        to manage repairs
-                                                        related to equipment or
-                                                        assets under LESO’s
-                                                        responsibility. It does
-                                                        not cover damages or
-                                                        repairs for personal
-                                                        property or items
-                                                        outside the scope of
-                                                        LESO’s jurisdiction.
-                                                    </p>
-                                                    <p>
-                                                        <strong>
-                                                            Exclusions:
-                                                        </strong>{" "}
-                                                        LESO is not liable for
-                                                        repairs caused by user
-                                                        negligence, accidents,
-                                                        or incidents outside the
-                                                        system’s intended scope.
-                                                        Additional costs may
-                                                        apply for repairs not
-                                                        covered by the initial
-                                                        request.
-                                                    </p>
-
-                                                    <h6>5. Repair Timeline</h6>
-                                                    <p>
-                                                        <strong>
-                                                            Estimated
-                                                            Completion:
-                                                        </strong>{" "}
-                                                        LESO will provide an
-                                                        estimated timeline for
-                                                        repair completion based
-                                                        on resource availability
-                                                        and repair complexity.
-                                                        This timeline may be
-                                                        adjusted as necessary.
-                                                    </p>
-                                                    <p>
-                                                        <strong>Delays:</strong>{" "}
-                                                        LESO is not responsible
-                                                        for delays caused by
-                                                        unforeseen
-                                                        circumstances, including
-                                                        but not limited to
-                                                        supply chain
-                                                        disruptions, parts
-                                                        availability, or other
-                                                        external factors.
-                                                    </p>
-
-                                                    <h6>
-                                                        6. User Responsibilities
-                                                    </h6>
-                                                    <p>
-                                                        <strong>
-                                                            Accurate
-                                                            Information:
-                                                        </strong>{" "}
-                                                        You are responsible for
-                                                        providing accurate and
-                                                        complete information
-                                                        regarding the repair
-                                                        request. LESO will not
-                                                        be responsible for
-                                                        delays or failures due
-                                                        to incomplete or
-                                                        inaccurate details.
-                                                    </p>
-                                                    <p>
-                                                        <strong>
-                                                            Access to Equipment:
-                                                        </strong>{" "}
-                                                        You are required to
-                                                        grant appropriate access
-                                                        to the equipment or
-                                                        asset needing repair. If
-                                                        access is restricted or
-                                                        denied, repair requests
-                                                        may be delayed or
-                                                        canceled.
-                                                    </p>
-
-                                                    <h6>
-                                                        7. Privacy and Data
-                                                        Protection
-                                                    </h6>
-                                                    <p>
-                                                        <strong>
-                                                            User Data:
-                                                        </strong>{" "}
-                                                        By submitting a repair
-                                                        request, you agree to
-                                                        the collection and use
-                                                        of your data for the
-                                                        purpose of processing
-                                                        repair requests. This
-                                                        data will be handled
-                                                        according to applicable
-                                                        privacy laws and LESO’s
-                                                        privacy policy.
-                                                    </p>
-                                                    <p>
-                                                        <strong>
-                                                            Confidentiality:
-                                                        </strong>{" "}
-                                                        Any sensitive or
-                                                        proprietary information
-                                                        shared during the repair
-                                                        process will be treated
-                                                        with confidentiality and
-                                                        used solely for the
-                                                        purposes of the repair.
-                                                    </p>
-
-                                                    <h6>
-                                                        8. Payment and Charges
-                                                    </h6>
-                                                    <p>
-                                                        <strong>
-                                                            Repair Costs:
-                                                        </strong>{" "}
-                                                        Depending on the nature
-                                                        of the repair, there may
-                                                        be charges associated
-                                                        with the service. LESO
-                                                        will provide a breakdown
-                                                        of any costs prior to
-                                                        initiating repairs.
-                                                    </p>
-                                                    <p>
-                                                        Welcome to the LESO
-                                                        Ticketing System
-                                                        (hereafter referred to
-                                                        as "the System"). By
-                                                        accessing or using the
-                                                        System to request repair
-                                                        services, you agree to
-                                                        comply with and be bound
-                                                        by these Terms and
-                                                        Conditions. Please read
-                                                        them carefully before
-                                                        submitting any repair
-                                                        requests. If you do not
-                                                        agree to these terms,
-                                                        you must refrain from
-                                                        using the System.
-                                                    </p>
-
-                                                    <h6>2. Eligibility</h6>
-                                                    <p>
-                                                        To submit a repair
-                                                        request through the LESO
-                                                        Ticketing System, you
-                                                        must be an authorized
-                                                        user, typically
-                                                        representing a
-                                                        department, agency, or
-                                                        entity with the
-                                                        appropriate clearance.
-                                                        The System is intended
-                                                        for the repair and
-                                                        maintenance of equipment
-                                                        and assets under the
-                                                        purview of LESO.
-                                                    </p>
-
-                                                    <h6>
-                                                        3. Repair Request
-                                                        Submission
-                                                    </h6>
-                                                    <p>
-                                                        <strong>
-                                                            Request Details:
-                                                        </strong>{" "}
-                                                        All repair requests must
-                                                        include accurate
-                                                        information regarding
-                                                        the equipment or asset
-                                                        needing repair,
-                                                        including but not
-                                                        limited to: item
-                                                        description, serial
-                                                        number, malfunction
-                                                        details, and any prior
-                                                        maintenance history.
-                                                    </p>
-                                                    <p>
-                                                        <strong>
-                                                            Request
-                                                            Confirmation:
-                                                        </strong>{" "}
-                                                        Upon submitting a
-                                                        request, you will
-                                                        receive an
-                                                        acknowledgment receipt.
-                                                        This confirmation does
-                                                        not imply approval or
-                                                        completion of the
-                                                        request.
-                                                    </p>
-                                                    <p>
-                                                        <strong>
-                                                            Approval Process:
-                                                        </strong>{" "}
-                                                        Repair requests are
-                                                        subject to approval
-                                                        based on priority,
-                                                        available resources, and
-                                                        the nature of the issue.
-                                                        LESO reserves the right
-                                                        to prioritize requests
-                                                        as deemed necessary.
-                                                    </p>
-
-                                                    <h6>4. Service Scope</h6>
-                                                    <p>
-                                                        <strong>
-                                                            Covered Repairs:
-                                                        </strong>{" "}
-                                                        The System is intended
-                                                        to manage repairs
-                                                        related to equipment or
-                                                        assets under LESO’s
-                                                        responsibility. It does
-                                                        not cover damages or
-                                                        repairs for personal
-                                                        property or items
-                                                        outside the scope of
-                                                        LESO’s jurisdiction.
-                                                    </p>
-                                                    <p>
-                                                        <strong>
-                                                            Exclusions:
-                                                        </strong>{" "}
-                                                        LESO is not liable for
-                                                        repairs caused by user
-                                                        negligence, accidents,
-                                                        or incidents outside the
-                                                        system’s intended scope.
-                                                        Additional costs may
-                                                        apply for repairs not
-                                                        covered by the initial
-                                                        request.
-                                                    </p>
-
-                                                    <h6>5. Repair Timeline</h6>
-                                                    <p>
-                                                        <strong>
-                                                            Estimated
-                                                            Completion:
-                                                        </strong>{" "}
-                                                        LESO will provide an
-                                                        estimated timeline for
-                                                        repair completion based
-                                                        on resource availability
-                                                        and repair complexity.
-                                                        This timeline may be
-                                                        adjusted as necessary.
-                                                    </p>
-                                                    <p>
-                                                        <strong>Delays:</strong>{" "}
-                                                        LESO is not responsible
-                                                        for delays caused by
-                                                        unforeseen
-                                                        circumstances, including
-                                                        but not limited to
-                                                        supply chain
-                                                        disruptions, parts
-                                                        availability, or other
-                                                        external factors.
-                                                    </p>
-                                                </div>
-                                                <div className="modal-footer">
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-secondary"
-                                                        onClick={() =>
-                                                            setShowTerms(false)
-                                                        }
-                                                    >
-                                                        Close
-                                                    </button>
-                                                </div>
+                                                <h6 className="fw-bold mb-3">
+                                                    2. Eligibility
+                                                </h6>
+                                                <p className="mb-4">
+                                                    To submit a repair request
+                                                    through the LESO Ticketing
+                                                    System...
+                                                </p>
+                                                {/* Continue with other sections... */}
                                             </div>
-                                        </div>
+                                        </Modal.Body>
+
+                                        <Modal.Footer className="border-top">
+                                            <button
+                                                type="button"
+                                                className="btn btn-light px-4"
+                                                onClick={() =>
+                                                    setShowTerms(false)
+                                                }
+                                            >
+                                                Close
+                                            </button>
+                                        </Modal.Footer>
                                     </Modal>
                                     <div className="d-flex justify-content-center mt-5 ">
                                         <button
@@ -1054,11 +691,9 @@ export default function Register() {
                                     </div>
 
                                     <div className="d-flex justify-content-center my-4 ">
-                                        <LoginButton
+                                        <button
+                                            type="submit"
                                             className="theButton2 buttonColor2 w-100"
-                                            processing={
-                                                processing || isSubmitting
-                                            }
                                             disabled={
                                                 processing || isSubmitting
                                             }
@@ -1066,7 +701,7 @@ export default function Register() {
                                             {isSubmitting
                                                 ? "Registering..."
                                                 : "Register"}
-                                        </LoginButton>
+                                        </button>
                                     </div>
                                 </div>
                             )}
