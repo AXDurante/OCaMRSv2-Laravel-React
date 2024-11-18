@@ -56,8 +56,6 @@ function TrackOrder({
     // Filter job orders based on status
     const filteredJobOrders = jobOrder.data;
 
-    console.log("Job Order props:", { jobOrder, firstName, lastName, email });
-
     return (
         <div className="">
             <div id="content" className="flex-fill p-3">
@@ -122,12 +120,6 @@ function TrackOrder({
                 )}
 
                 {filteredJobOrders.map((jobOrder) => {
-                    console.log("Job Order feedback status:", {
-                        id: jobOrder.job_id,
-                        has_feedback: jobOrder.has_feedback,
-                        feedback_id: jobOrder.feedback_id,
-                    });
-
                     return (
                         <div
                             className="card mt-4 order-card fade-in hover-lift"

@@ -7,7 +7,6 @@ import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { useEffect } from "react";
-import TawkTo from "./Components/TawkTo";
 
 const appName = import.meta.env.VITE_APP_NAME || "LESO-ISC";
 
@@ -21,20 +20,9 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        // Check if the current path is admin, tech, or login
-        const currentPath = window.location.pathname;
-        const isAdminOrTech =
-            currentPath.startsWith("/admin") || currentPath.startsWith("/tech");
-        const isLoginPage = currentPath === "/login"; // Adjust this based on your actual login route
-
-        console.log("Current path:", currentPath);
-        console.log("Is Admin or Tech:", isAdminOrTech);
-        console.log("Is Login Page:", isLoginPage);
-
         root.render(
             <>
                 <GoogleFont />
-                {!isAdminOrTech && !isLoginPage && <TawkTo />}
                 <App {...props} />
             </>
         );
