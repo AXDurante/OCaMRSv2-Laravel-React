@@ -17,6 +17,7 @@ import {
 
 function EditTSR({ jobOrder, auth, tsr }) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
+    const [includeSignature, setIncludeSignature] = useState(false);
 
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
@@ -24,6 +25,11 @@ function EditTSR({ jobOrder, auth, tsr }) {
 
     const closeModal = () => {
         setShowPreview(false); // Close the modal
+    };
+
+    const handleSignatureChange = (e) => {
+        const isChecked = e.target.checked;
+        setIncludeSignature(isChecked);
     };
 
     // Initialize useForm with existing TSR data
@@ -331,22 +337,39 @@ function EditTSR({ jobOrder, auth, tsr }) {
 
                                     {/* Action Buttons */}
                                     <div className="col-12 mt-4">
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-primary me-2"
-                                            onClick={handlePreviewClick}
-                                        >
-                                            <i className="bi bi-eye me-1"></i>
-                                            Preview PDF
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="btn btn-primary"
-                                            onClick={onSubmit}
-                                        >
-                                            <i className="bi bi-save me-1"></i>
-                                            Save Changes
-                                        </button>
+                                        <div className="d-flex align-items-center gap-3">
+                                            <button
+                                                type="button"
+                                                className="btn btn-outline-primary"
+                                                onClick={handlePreviewClick}
+                                            >
+                                                <i className="bi bi-eye me-1"></i>
+                                                Preview PDF
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="btn btn-primary"
+                                                onClick={onSubmit}
+                                            >
+                                                <i className="bi bi-save me-1"></i>
+                                                Save Changes
+                                            </button>
+                                            <div className="custom-checkbox-wrapper">
+                                                <input
+                                                    type="checkbox"
+                                                    className="custom-checkbox"
+                                                    id="includeSignature"
+                                                    checked={includeSignature}
+                                                    onChange={handleSignatureChange}
+                                                />
+                                                <label 
+                                                    className="custom-checkbox-label" 
+                                                    htmlFor="includeSignature"
+                                                >
+                                                    Include my signature in this TSR
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -409,6 +432,8 @@ function EditTSR({ jobOrder, auth, tsr }) {
                             reportDetails={{
                                 ...data,
                                 tech_id: data.tech_id,
+                                admin_signature: includeSignature ? `/storage/photos/adminSignature/${auth.user.photo}` : null,
+                                admin_name: includeSignature ? `${auth.user.firstName} ${auth.user.lastName}` : null
                             }}
                         />
                     </PDFViewer>
