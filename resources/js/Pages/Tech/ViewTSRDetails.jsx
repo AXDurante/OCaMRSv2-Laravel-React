@@ -332,7 +332,7 @@ function ViewTSRDetails({ tsr }) {
                                 ...tsr,
                                 tech_photo: tsr.tech_photo,
                                 ...(tsr.admin_signature && {
-                                    admin_signature: tsr.admin_signature,
+                                    admin_signature: tsr.admin_photo,
                                     admin_name: tsr.admin_name,
                                 }),
                             }}

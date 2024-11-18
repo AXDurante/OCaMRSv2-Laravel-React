@@ -365,7 +365,8 @@ function ViewCOCDetails({ coc, auth }) {
                                 labLocation: coc.lab_loc,
                                 dateRequested: coc.date_request,
                                 dueDate: coc.date_due,
-                                tech_id: coc.tech_name
+                                tech_id: coc.tech_name,
+                                admin_signature: coc.admin_photo,
                                 }}
                         />
                     </PDFViewer>
