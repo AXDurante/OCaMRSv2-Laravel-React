@@ -30,15 +30,12 @@ class DashboardController extends Controller
         $appUrl = config('app.url');
        
         return Inertia::render('ManageProfile', [
-            'auth' => [
-                'user' => $user
-            ],
             'absolute' => false,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'email' => $user->email,
             'user' => $user,
-            'theID' => $user->id,
+            'theID' => session('theID'),
             'storageBaseUrl' => $isProduction 
                 ? $appUrl . '/public/storage/photos'
                 : url('storage/photos'),
@@ -50,12 +47,10 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function update(Request $request) 
-    {
+    public function update(Request $request) {
         try {
             $theID = $request->input('userID');
             $user = User::findOrFail($theID);
-            $hasChanges = false;
 
             // Define validation rules
             $validationRules = [
@@ -82,48 +77,15 @@ class DashboardController extends Controller
 
             // Add password validation if provided
             if ($request->filled('password')) {
-                $validationRules['password'] = [
-                    'required',
-                    'min:8',
-                    'confirmed',
-                    'regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])/',
-                    function ($attribute, $value, $fail) {
-                        if (!preg_match('/[A-Z]/', $value)) {
-                            $fail('The password must contain at least one uppercase letter.');
-                        }
-                        if (!preg_match('/[0-9]/', $value)) {
-                            $fail('The password must contain at least one number.');
-                        }
-                        if (!preg_match('/[^A-Za-z0-9]/', $value)) {
-                            $fail('The password must contain at least one special character.');
-                        }
-                    }
-                ];
+                $validationRules['password'] = 'required|min:8|confirmed';
             }
 
             // Validate the request
             $validated = $request->validate($validationRules);
 
-            // Check for actual changes
-            if ($user->firstName !== $validated['firstName'] || 
-                $user->lastName !== $validated['lastName'] || 
-                $user->email !== $validated['email'] || 
-                $user->phoneNumber !== ($validated['phoneNumber'] ?? null) ||
-                $request->hasFile('photo') || 
-                $request->boolean('removePhoto')) {
-                $hasChanges = true;
-            }
-
-            // Handle password if provided and valid
+            // Handle password if provided
             if (!empty($validated['password'])) {
-                if (preg_match('/^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])/', $validated['password'])) {
-                    $validated['password'] = bcrypt($validated['password']);
-                    $hasChanges = true;
-                } else {
-                    return redirect()->back()->withErrors([
-                        'password' => 'Password requirements not met. No changes were made to the password.'
-                    ])->with('message', $hasChanges ? 'Profile updated but password was not changed.' : 'No changes were made.');
-                }
+                $validated['password'] = bcrypt($validated['password']);
             } else {
                 unset($validated['password']);
             }
@@ -131,89 +93,39 @@ class DashboardController extends Controller
             // Handle photo upload
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
-                
+
+                // Additional mime type verification
                 if ($photo->getMimeType() !== 'image/png') {
                     return redirect()->back()->withErrors([
-                        'photo' => 'The signature must be a PNG image file.'
+                        'photo' => 'The signature must be a PNG image file for optimal quality and transparency.'
                     ]);
                 }
 
-                // Generate filename
+                // Delete old photo if exists
+                if ($user->photo) {
+                    Storage::delete('public/photos/clientSignature/' . $user->photo);
+                }
+
+                // Generate unique filename
                 $filename = time() . '_' . Str::random(10) . '.png';
                 
-                // Use the correct path based on environment
-                $isProduction = app()->environment('production');
-                $appUrl = config('app.url');
-                
-                try {
-                    // Delete old photo if exists
-                    if ($user->photo) {
-                        $oldPhotoPath = $isProduction
-                            ? public_path('storage/photos/clientSignature/' . $user->photo)
-                            : storage_path('app/public/photos/clientSignature/' . $user->photo);
-                        
-                        if (file_exists($oldPhotoPath)) {
-                            unlink($oldPhotoPath);
-                        }
-                    }
-
-                    // Set the storage path based on environment
-                    $storagePath = $isProduction
-                        ? public_path('storage/photos/clientSignature')
-                        : storage_path('app/public/photos/clientSignature');
-
-                    // Ensure directory exists
-                    if (!file_exists($storagePath)) {
-                        mkdir($storagePath, 0755, true);
-                    }
-
-                    // Move the file
-                    $photo->move($storagePath, $filename);
-                    $validated['photo'] = $filename;
-
-                    \Log::info('Photo Upload Success:', [
-                        'environment' => $isProduction ? 'production' : 'local',
-                        'storage_path' => $storagePath,
-                        'filename' => $filename,
-                        'full_path' => $storagePath . '/' . $filename,
-                        'app_url' => $appUrl
-                    ]);
-
-                } catch (\Exception $e) {
-                    \Log::error('Photo Upload Error:', [
-                        'message' => $e->getMessage(),
-                        'environment' => $isProduction ? 'production' : 'local',
-                        'attempted_path' => $storagePath . '/' . $filename,
-                        'app_url' => $appUrl
-                    ]);
-                    
-                    return redirect()->back()->withErrors([
-                        'photo' => 'Failed to upload the signature photo. Please try again.'
-                    ]);
-                }
+                // Store new photo
+                $photo->storeAs('public/photos/clientSignature', $filename);
+                $validated['photo'] = $filename;
             } elseif ($request->boolean('removePhoto')) {
+                // Remove existing photo
                 if ($user->photo) {
-                    $isProduction = app()->environment('production');
-                    $photoPath = $isProduction
-                        ? public_path('storage/photos/clientSignature/' . $user->photo)
-                        : storage_path('app/public/photos/clientSignature/' . $user->photo);
-                        
-                    if (file_exists($photoPath)) {
-                        unlink($photoPath);
-                    }
+                    Storage::delete('public/photos/clientSignature/' . $user->photo);
                 }
                 $validated['photo'] = null;
             } else {
+                // Keep existing photo
                 unset($validated['photo']);
             }
 
-            if ($hasChanges) {
-                $user->update($validated);
-                return redirect()->back()->with('message', 'Profile updated successfully');
-            }
+            $user->update($validated);
 
-            return redirect()->back()->with('message', 'No changes were made to your profile.');
-            
+            return redirect()->back()->with('message', 'Profile updated successfully');
         } catch (\Exception $e) {
             \Log::error('Update Profile Error:', [
                 'message' => $e->getMessage(),
@@ -225,4 +137,3 @@ class DashboardController extends Controller
         }
     }
 }
-
