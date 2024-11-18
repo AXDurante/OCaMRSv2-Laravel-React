@@ -131,23 +131,64 @@ class DashboardController extends Controller
             // Handle photo upload
             if ($request->hasFile('photo')) {
                 $photo = $request->file('photo');
-
+                
                 if ($photo->getMimeType() !== 'image/png') {
                     return redirect()->back()->withErrors([
-                        'photo' => 'The signature must be a PNG image file for optimal quality and transparency.'
+                        'photo' => 'The signature must be a PNG image file.'
                     ]);
                 }
 
-                if ($user->photo) {
-                    Storage::delete('public/photos/clientSignature/' . $user->photo);
-                }
-
+                // Generate filename
                 $filename = time() . '_' . Str::random(10) . '.png';
-                $photo->storeAs('public/photos/clientSignature', $filename);
-                $validated['photo'] = $filename;
+                
+                // Use the correct path based on environment
+                $isProduction = app()->environment('production');
+                $basePath = $isProduction 
+                    ? public_path('public/storage/photos/clientSignature')
+                    : storage_path('app/public/photos/clientSignature');
+
+                try {
+                    // Ensure directory exists
+                    if (!file_exists($basePath)) {
+                        mkdir($basePath, 0755, true);
+                    }
+
+                    // Delete old photo if exists
+                    if ($user->photo) {
+                        $oldPath = $basePath . '/' . $user->photo;
+                        if (file_exists($oldPath)) {
+                            unlink($oldPath);
+                        }
+                    }
+
+                    // Move the new file
+                    $photo->move($basePath, $filename);
+                    $validated['photo'] = $filename;
+
+                    // Log successful upload
+                    \Log::info('Photo Upload Success:', [
+                        'environment' => $isProduction ? 'production' : 'local',
+                        'path' => $basePath . '/' . $filename,
+                        'filename' => $filename
+                    ]);
+
+                } catch (\Exception $e) {
+                    \Log::error('Photo Upload Error:', [
+                        'message' => $e->getMessage(),
+                        'environment' => $isProduction ? 'production' : 'local',
+                        'path' => $basePath . '/' . $filename
+                    ]);
+                    
+                    return redirect()->back()->withErrors([
+                        'photo' => 'Failed to upload the signature photo. Please try again.'
+                    ]);
+                }
             } elseif ($request->boolean('removePhoto')) {
                 if ($user->photo) {
-                    Storage::delete('public/photos/clientSignature/' . $user->photo);
+                    $path = 'public/photos/clientSignature/' . $user->photo;
+                    if (Storage::exists($path)) {
+                        Storage::delete($path);
+                    }
                 }
                 $validated['photo'] = null;
             } else {
