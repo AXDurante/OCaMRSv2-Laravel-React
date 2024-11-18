@@ -37,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
                 return $resetUrl . '/reset-password/' . $token . '?email=' . urlencode($user->email);
             }
 
+            // Default to a generic URL if the user type is unknown
             return $resetUrl . '/reset-password/' . $token;
         });
 
@@ -44,8 +45,8 @@ class AppServiceProvider extends ServiceProvider
             'appUrl' => $appUrl,
             'isProduction' => $isProduction,
             'storageBaseUrl' => $isProduction 
-                ? $appUrl . '/storage'  // Remove /public and /photos
-                : url('storage'), // Remove /photos
+                ? $appUrl . '/public/storage/photos'  // Updated path
+                : url('storage/photos'), // Updated path
             'userType' => fn () => auth()->check() ? class_basename(auth()->user()) : null,
         ]);
     }
