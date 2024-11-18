@@ -16,6 +16,10 @@ function Home() {
     const [technicians, setTechnicians] = useState([]);
     const [users, setUsers] = useState([]);
     const [editingAccountId, setEditingAccountId] = useState(null);
+    const [error, setError] = useState(null);
+    const [idNumberError, setIdNumberError] = useState(null);
+    const [phoneNumberError, setPhoneNumberError] = useState(null);
+    const [emailError, setEmailError] = useState(null);
 
     useEffect(() => {
         fetchAccounts();
@@ -35,6 +39,7 @@ function Home() {
     const closeModal = () => {
         setIsModalOpen(false);
         setEditingAccountId(null);
+        setError(null);
         resetForm();
     };
 
@@ -51,7 +56,17 @@ function Home() {
 
     const handleSubmit = async (e, accountId = null) => {
         e.preventDefault();
-        console.log("Form submitted"); // Add this line
+
+        // Validate all fields
+        const isIdValid = validateIdNumber(idNumber);
+        const isPhoneValid = validatePhoneNumber(phoneNumber);
+        const isEmailValid = validateEmail(accountEmail);
+
+        // If any validation fails, stop form submission
+        if (!isIdValid || !isPhoneValid || !isEmailValid) {
+            return;
+        }
+
         try {
             let response;
             if (accountId) {
@@ -153,6 +168,35 @@ function Home() {
                 "An error occurred while submitting the form. Please check the console for more details."
             );
         }
+    };
+
+    const validateIdNumber = (value) => {
+        if (value.length !== 10) {
+            setIdNumberError("ID Number must be exactly 10 digits");
+            return false;
+        }
+        setIdNumberError(null);
+        return true;
+    };
+
+    const validatePhoneNumber = (value) => {
+        if (!value.startsWith("09") || value.length !== 11) {
+            setPhoneNumberError(
+                "Phone Number must start with '09' and be exactly 11 digits"
+            );
+            return false;
+        }
+        setPhoneNumberError(null);
+        return true;
+    };
+
+    const validateEmail = (value) => {
+        if (!value.endsWith("@ust.edu.ph")) {
+            setEmailError("Email must be a UST email address (@ust.edu.ph)");
+            return false;
+        }
+        setEmailError(null);
+        return true;
     };
 
     return (
@@ -268,15 +312,36 @@ function Home() {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    className="form-control rounded"
+                                                    className={`form-control rounded ${
+                                                        idNumberError
+                                                            ? "border-danger"
+                                                            : ""
+                                                    }`}
                                                     value={idNumber}
-                                                    onChange={(e) =>
-                                                        setIdNumber(
+                                                    onChange={(e) => {
+                                                        const value =
                                                             e.target.value
-                                                        )
-                                                    }
+                                                                .replace(
+                                                                    /\D/g,
+                                                                    ""
+                                                                )
+                                                                .slice(0, 10);
+                                                        setIdNumber(value);
+                                                        validateIdNumber(value);
+                                                    }}
+                                                    placeholder="2020123456"
                                                     required
                                                 />
+                                                {idNumberError && (
+                                                    <div className="alert-ah">
+                                                        <div className="alert-ah__title">
+                                                            Invalid Input
+                                                        </div>
+                                                        <div className="alert-ah__message">
+                                                            {idNumberError}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="col-6 mb-3">
                                                 <label className="form-label fw-bold d-block text-truncate">
@@ -291,6 +356,7 @@ function Home() {
                                                             e.target.value
                                                         )
                                                     }
+                                                    placeholder="Juan"
                                                     required
                                                 />
                                             </div>
@@ -309,6 +375,7 @@ function Home() {
                                                             e.target.value
                                                         )
                                                     }
+                                                    placeholder="Dela Cruz"
                                                     required
                                                 />
                                             </div>
@@ -318,15 +385,31 @@ function Home() {
                                                 </label>
                                                 <input
                                                     type="email"
-                                                    className="form-control rounded"
+                                                    className={`form-control rounded ${
+                                                        emailError
+                                                            ? "border-danger"
+                                                            : ""
+                                                    }`}
                                                     value={accountEmail}
-                                                    onChange={(e) =>
-                                                        setAccountEmail(
-                                                            e.target.value
-                                                        )
-                                                    }
+                                                    onChange={(e) => {
+                                                        const value =
+                                                            e.target.value;
+                                                        setAccountEmail(value);
+                                                        validateEmail(value);
+                                                    }}
+                                                    placeholder="juan.delacruz@ust.edu.ph"
                                                     required
                                                 />
+                                                {emailError && (
+                                                    <div className="alert-ah">
+                                                        <div className="alert-ah__title">
+                                                            Invalid Input
+                                                        </div>
+                                                        <div className="alert-ah__message">
+                                                            {emailError}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="row">
@@ -370,15 +453,38 @@ function Home() {
                                                 </label>
                                                 <input
                                                     type="tel"
-                                                    className="form-control rounded"
+                                                    className={`form-control rounded ${
+                                                        phoneNumberError
+                                                            ? "border-danger"
+                                                            : ""
+                                                    }`}
                                                     value={phoneNumber}
-                                                    onChange={(e) =>
-                                                        setPhoneNumber(
+                                                    onChange={(e) => {
+                                                        const value =
                                                             e.target.value
-                                                        )
-                                                    }
+                                                                .replace(
+                                                                    /\D/g,
+                                                                    ""
+                                                                )
+                                                                .slice(0, 11);
+                                                        setPhoneNumber(value);
+                                                        validatePhoneNumber(
+                                                            value
+                                                        );
+                                                    }}
+                                                    placeholder="09123456789"
                                                     required
                                                 />
+                                                {phoneNumberError && (
+                                                    <div className="alert-ah">
+                                                        <div className="alert-ah__title">
+                                                            Invalid Input
+                                                        </div>
+                                                        <div className="alert-ah__message">
+                                                            {phoneNumberError}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="row mt-3">
@@ -403,6 +509,16 @@ function Home() {
                             </div>
                         </form>
                     </div>
+                </div>
+            )}
+
+            {error && (
+                <div
+                    className="alert-ah d-flex flex-column align-items-start p-3 mb-3"
+                    role="alert"
+                >
+                    <div className="alert-ah__title">{error.title}</div>
+                    <div className="alert-ah__message">{error.message}</div>
                 </div>
             )}
         </div>

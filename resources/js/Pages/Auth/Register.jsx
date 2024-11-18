@@ -384,6 +384,7 @@ export default function Register() {
                                                     e.target.value
                                                 )
                                             }
+                                            placeholder="Lab Technician"
                                             required
                                         />
                                         <InputError
