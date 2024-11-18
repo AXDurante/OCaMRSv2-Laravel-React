@@ -4258,3 +4258,87 @@ td[title] {
         color: #000;
     }
 }
+
+/* ... existing styles ... */
+
+/* Update modal styles for image centering */
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh; /* Limit height to 80% of viewport height */
+    width: auto; /* Let width be determined by content */
+    max-width: 90vw; /* Limit width to 90% of viewport width */
+    margin: auto; /* Center horizontally */
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: auto;
+}
+
+.modal-body img {
+    max-width: 100%;
+    max-height: 60vh; /* Limit image height */
+    object-fit: contain; /* Maintain aspect ratio */
+}
+
+/* Update modal styles for proper centering */
+.modal {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.modal-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 500px; /* Adjust this value based on your needs */
+    width: 90%;
+}
+
+.modal-content {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+.modal-body img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Add these styles to ensure the modal header and footer are properly aligned */
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 1rem;
+}
