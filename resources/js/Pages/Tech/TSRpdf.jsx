@@ -125,6 +125,7 @@ function breakLongWords(text) {
 }
 
 function TSRpdf({ jobOrder, reportDetails }) {
+    console.log(reportDetails.tech_photo);
     return (
         <Document>
             <Page size={[8.5 * 72, 13 * 72]}>

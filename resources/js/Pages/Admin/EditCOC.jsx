@@ -57,13 +57,21 @@ function EditCOC({ tsr, auth, coc }) {
     const handleSignatureChange = (e) => {
         const isChecked = e.target.checked;
         setIncludeSignature(isChecked);
-        setData({
-            ...data,
-            admin_photo: isChecked ? auth.user.photo : null,
-            admin_name: isChecked
-                ? `${auth.user.firstName} ${auth.user.lastName}`
-                : null,
-        });
+        
+        // Only update admin signature and name if checked
+        if (isChecked) {
+            setData({
+                ...data,
+                admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
+                admin_name: `${auth.user.firstName} ${auth.user.lastName}`
+            });
+        } else {
+            setData({
+                ...data,
+                admin_signature: null,
+                admin_name: null
+            });
+        }
     };
 
     const handlePreviewClick = () => {
@@ -76,9 +84,73 @@ function EditCOC({ tsr, auth, coc }) {
 
     return (
         <div className="container py-4">
+            <Modal
+                isOpen={showPreview}
+                onRequestClose={closeModal}
+                className="modal-lg"
+                overlayClassName="modal-overlay"
+                style={{
+                    content: {
+                        width: "90%",
+                        height: "90%",
+                        margin: "auto",
+                        backgroundColor: "white",
+                        borderRadius: "12px",
+                        padding: "0",
+                        border: "none",
+                        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                        overflow: "hidden",
+                    },
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        zIndex: 1000,
+                    },
+                }}
+            >
+                <div className="modal-header d-flex justify-content-between align-items-center px-4 py-3">
+                    <div className="d-flex align-items-center gap-2">
+                        <i className="bi bi-file-pdf text-primary"></i>
+                        <span className="modal-title">Preview Document</span>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={closeModal}
+                        className="close-button"
+                        aria-label="Close"
+                    >
+                        <i className="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div
+                    className="modal-body"
+                    style={{ height: "calc(100% - 60px)" }}
+                >
+                    <PDFViewer
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            border: "none",
+                        }}
+                    >
+                        <COCpdf 
+                            tsr={tsr}
+                            cocDetails={{
+                                ...data,
+                                tech_photo: data.tech_photo,
+                                tech_signature: `/storage/photos/technicianSignature/${data.tech_photo}`,
+                                tech_id: data.tech_name,
+                                ...(includeSignature && {
+                                    admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
+                                    admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
+                                }),
+                            }}
+                        />
+                    </PDFViewer>
+                </div>
+            </Modal>
             <h2 className="mb-4">
                 Certificate of Calibration{" "}
-                <span className="text-muted fw-light">| Edit</span>
+                <span className="text-muted fw-light">| Edit #{coc.coc_id}</span>
             </h2>
 
             <div className="card-container">
@@ -425,6 +497,19 @@ function EditCOC({ tsr, auth, coc }) {
                                                 <i className="bi bi-save me-1"></i>
                                                 Save Changes
                                             </button>
+                                            <input
+                                                type="checkbox"
+                                                className="custom-checkbox"
+                                                id="includeSignature"
+                                                checked={includeSignature}
+                                                onChange={handleSignatureChange}
+                                            />
+                                            <label
+                                                className="custom-checkbox-label text-muted ms-2"
+                                                htmlFor="includeSignature"
+                                            >
+                                                Include my signature in this TSR
+                                            </label>
                                         </div>
                                     </div>
                                 </form>

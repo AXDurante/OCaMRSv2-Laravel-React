@@ -7,7 +7,7 @@ function ViewTSR({ tsrs, jobOrderId }) {
     return (
         <div className="content">
             <div>
-                <h1 className="d-inline"> Track Technical Service Request </h1>
+                <h1 className="d-inline"> Track Technical Service Request #{jobOrderId}</h1>
                 <hr />
             </div>
 
@@ -18,6 +18,9 @@ function ViewTSR({ tsrs, jobOrderId }) {
                         <tr>
                             <th className="thead-custom" scope="col">
                                 Date Received
+                            </th>
+                            <th className="thead-custom" scope="col">
+                                TSR ID
                             </th>
                             <th className="thead-custom" scope="col">
                                 TSR Number
@@ -45,6 +48,7 @@ function ViewTSR({ tsrs, jobOrderId }) {
                                             tsr.date_request
                                         ).toLocaleDateString()}
                                     </td>
+                                    <td>{tsr.tsr_id}</td>
                                     <td>{tsr.tsr_num}</td>
                                     <td>{tsr.instrument}</td>
                                     <td>{tsr.model || "N/A"}</td>

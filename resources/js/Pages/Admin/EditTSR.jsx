@@ -75,7 +75,7 @@ function EditTSR({ jobOrder, auth, tsr }) {
         <div className="container py-4">
             <h2 className="mb-4">
                 Technical Service Report{" "}
-                <span className="text-muted fw-light">| Edit</span>
+                <span className="text-muted fw-light">| Edit #{tsr.tsr_id}</span>
             </h2>
 
             <div className="card-container">

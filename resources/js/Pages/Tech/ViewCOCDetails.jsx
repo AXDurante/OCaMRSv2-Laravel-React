@@ -33,7 +33,7 @@ function ViewCOCDetails({ coc, auth }) {
         <div className="container py-4">
             <h2 className="mb-4">
                 Certificate of Calibration{" "}
-                <span className="text-muted fw-light">| View</span>
+                <span className="text-muted fw-light">| View #{coc.coc_id}</span>
             </h2>
 
             <div className="card-container">

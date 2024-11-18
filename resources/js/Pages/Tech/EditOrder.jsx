@@ -108,7 +108,7 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                 <h1 className="text-2xl mb-4">
                     Job Request{" "}
                     <span className="text-black font-light subtitle-span">
-                        | Update Request
+                        | Update Request #{jobOrder.job_id}
                     </span>
                 </h1>
                 <hr className="mb-4 border-gray-200" />

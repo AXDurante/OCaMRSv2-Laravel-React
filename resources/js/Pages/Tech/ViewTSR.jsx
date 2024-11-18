@@ -7,7 +7,7 @@ function ViewTSR({ tsrs, jobOrderId }) {
     return (
         <div className="content">
             <div>
-                <h1 className="d-inline"> Track Technical Service Request </h1>
+                <h1 className="d-inline"> Track Technical Service Request #{jobOrderId} </h1>
                 <hr />
             </div>
 

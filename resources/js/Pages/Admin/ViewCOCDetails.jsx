@@ -26,11 +26,12 @@ function ViewCOCDetails({ coc, auth }) {
         setShowPreview(false); // Close the modal
     };
 
+    console.log(coc.coc_id);
     return (
         <div className="container py-4">
             <h2 className="mb-4">
                 Certificate of Calibration{" "}
-                <span className="text-muted fw-light">| View</span>
+                <span className="text-muted fw-light">| View #{coc.coc_id}</span>
             </h2>
 
             <div className="card-container">
@@ -357,14 +358,15 @@ function ViewCOCDetails({ coc, auth }) {
                             border: "none",
                         }}
                     >
-                        <COCpdf
-                            tsr={coc.tsr}
+                        <COCpdf 
                             cocDetails={{
                                 ...coc,
-                                tech_id: `${auth.user.firstName} ${auth.user.lastName}`,
-                                tech_photo: auth.photo,
-                                tech_signature: auth.photo,
-                            }}
+                                department: coc.dept_name,
+                                labLocation: coc.lab_loc,
+                                dateRequested: coc.date_request,
+                                dueDate: coc.date_due,
+                                tech_id: coc.tech_name
+                                }}
                         />
                     </PDFViewer>
                 </div>

@@ -1,13 +1,13 @@
 import Navbar2 from "../../Layouts/Navbar2";
 import { Link } from "@inertiajs/react";
 
-function ViewCOC({ cocs }) {
+function ViewCOC({ cocs, tsr_id }) {
     // console.log(jobOrderId);
     console.log(cocs);
     return (
         <>
             <div>
-                <h1 className="d-inline"> Track Certificates of Calibration </h1>
+                <h1 className="d-inline"> Track Certificates of Calibration #{tsr_id} </h1>
                 <hr />
             </div>
             <div className="mt-3">

@@ -1,13 +1,13 @@
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import { Link } from "@inertiajs/react";
 
-function ViewCOC({ cocs }) {
+function ViewCOC({ cocs, tsr_id }) {
     // console.log(jobOrderId);
     console.log(cocs);
     return (
         <>
             <div>
-                <h1 className="d-inline"> Track Certificates of Calibration </h1>
+                <h1 className="d-inline"> Track Certificates of Calibration #{tsr_id} </h1>
                 <hr />
             </div>
             <div className="mt-3">
@@ -16,6 +16,9 @@ function ViewCOC({ cocs }) {
                         <tr>
                             <th className="thead-custom" scope="col">
                                 Date Received
+                            </th>
+                            <th className="thead-custom" scope="col">
+                                COC ID
                             </th>
                             <th className="thead-custom" scope="col">
                                 COC Number
@@ -39,6 +42,7 @@ function ViewCOC({ cocs }) {
                             cocs.map((coc) => (
                                 <tr key={coc.coc_id}>
                                     <td>{new Date(coc.date_req).toLocaleDateString()}</td>
+                                    <td>{coc.coc_id}</td>
                                     <td>{coc.coc_num}</td>
                                     <td>{coc.tech_name}</td>
                                     <td>{coc.college}</td>

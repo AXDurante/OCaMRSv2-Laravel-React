@@ -20,7 +20,7 @@ function ViewTSRDetails({ tsr }) {
         <div className="container py-4">
             <h2 className="mb-4">
                 Technical Service Report{" "}
-                <span className="text-muted fw-light">| View Details</span>
+                <span className="text-muted fw-light">| View Details #{tsr.tsr_id}</span>
             </h2>
 
             <div className="card-container">
