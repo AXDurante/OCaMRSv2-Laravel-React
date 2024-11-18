@@ -143,40 +143,48 @@ class DashboardController extends Controller
                 
                 // Use the correct path based on environment
                 $isProduction = app()->environment('production');
-                $basePath = $isProduction 
-                    ? public_path('public/storage/photos/clientSignature')
-                    : storage_path('app/public/photos/clientSignature');
-
+                $appUrl = config('app.url');
+                
                 try {
-                    // Ensure directory exists
-                    if (!file_exists($basePath)) {
-                        mkdir($basePath, 0755, true);
-                    }
-
                     // Delete old photo if exists
                     if ($user->photo) {
-                        $oldPath = $basePath . '/' . $user->photo;
-                        if (file_exists($oldPath)) {
-                            unlink($oldPath);
+                        $oldPhotoPath = $isProduction
+                            ? public_path('storage/photos/clientSignature/' . $user->photo)
+                            : storage_path('app/public/photos/clientSignature/' . $user->photo);
+                        
+                        if (file_exists($oldPhotoPath)) {
+                            unlink($oldPhotoPath);
                         }
                     }
 
-                    // Move the new file
-                    $photo->move($basePath, $filename);
+                    // Set the storage path based on environment
+                    $storagePath = $isProduction
+                        ? public_path('storage/photos/clientSignature')
+                        : storage_path('app/public/photos/clientSignature');
+
+                    // Ensure directory exists
+                    if (!file_exists($storagePath)) {
+                        mkdir($storagePath, 0755, true);
+                    }
+
+                    // Move the file
+                    $photo->move($storagePath, $filename);
                     $validated['photo'] = $filename;
 
-                    // Log successful upload
                     \Log::info('Photo Upload Success:', [
                         'environment' => $isProduction ? 'production' : 'local',
-                        'path' => $basePath . '/' . $filename,
-                        'filename' => $filename
+                        'storage_path' => $storagePath,
+                        'filename' => $filename,
+                        'full_path' => $storagePath . '/' . $filename,
+                        'app_url' => $appUrl
                     ]);
 
                 } catch (\Exception $e) {
                     \Log::error('Photo Upload Error:', [
                         'message' => $e->getMessage(),
                         'environment' => $isProduction ? 'production' : 'local',
-                        'path' => $basePath . '/' . $filename
+                        'attempted_path' => $storagePath . '/' . $filename,
+                        'app_url' => $appUrl
                     ]);
                     
                     return redirect()->back()->withErrors([
@@ -185,9 +193,13 @@ class DashboardController extends Controller
                 }
             } elseif ($request->boolean('removePhoto')) {
                 if ($user->photo) {
-                    $path = 'public/photos/clientSignature/' . $user->photo;
-                    if (Storage::exists($path)) {
-                        Storage::delete($path);
+                    $isProduction = app()->environment('production');
+                    $photoPath = $isProduction
+                        ? public_path('storage/photos/clientSignature/' . $user->photo)
+                        : storage_path('app/public/photos/clientSignature/' . $user->photo);
+                        
+                    if (file_exists($photoPath)) {
+                        unlink($photoPath);
                     }
                 }
                 $validated['photo'] = null;
@@ -213,3 +225,4 @@ class DashboardController extends Controller
         }
     }
 }
+
