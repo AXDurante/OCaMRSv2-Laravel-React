@@ -1,5 +1,4 @@
 import Navbar from "../../Layouts/Navbar";
-import TawkTo from "../../Components/TawkTo";
 
 function ViewOrder({ jobOrder = {} }) {
     const instruments = jobOrder.int_units || jobOrder.instruments || [];
@@ -18,7 +17,6 @@ function ViewOrder({ jobOrder = {} }) {
 
     return (
         <div className="view-order-form">
-            <TawkTo />
             <div className="view-section fade-in">
                 <h1 className="text-2xl mb-4">
                     Job Request <span className="text-black font-light subtitle-span">| Request Details #{jobOrder.job_id}</span>

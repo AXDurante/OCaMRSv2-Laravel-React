@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
-import TawkTo from "../../Components/TawkTo";
 
 function TrackOrder({
     jobOrder,
@@ -59,7 +58,6 @@ function TrackOrder({
 
     return (
         <div className="">
-            <TawkTo />
             <div id="content" className="flex-fill p-3">
                 <div>
                     <h1 className="d-inline">Track Request | </h1>

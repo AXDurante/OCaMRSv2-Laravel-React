@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { usePage } from '@inertiajs/react';
 
 function cleanupTawkTo() {
     const elements = document.querySelectorAll('[class*="tawk-"], iframe[title*="chat"], #tawk-script');
@@ -9,62 +10,66 @@ function cleanupTawkTo() {
 }
 
 export default function TawkTo() {
-    useEffect(() => {
-        // Check if Tawk is already initialized
-        if (!window.Tawk_API) {
-            console.log('TawkTo component mounted');
-            
-            // Initialize Tawk variables
-            window.Tawk_API = window.Tawk_API || {};
-            window.Tawk_LoadStart = new Date();
+    const { auth } = usePage().props;
 
-            // Create and append the script immediately
-            const script = document.createElement("script");
-            script.id = 'tawk-script';
-            script.async = true;
-            script.src = 'https://embed.tawk.to/673211fe4304e3196ae02e0d/1icdpciq7';
-            script.charset = 'UTF-8';
-            script.setAttribute('crossorigin', '*');
+    useEffect(() => {
+        // Initialize and set visitor data first
+        window.Tawk_API = window.Tawk_API || {};
+        
+        // Set visitor information before loading the script
+        if (auth && auth.user) {
+            window.Tawk_API.visitor = {
+                name: `${auth.user.firstName} ${auth.user.lastName}`,
+                email: auth.user.email,
+                phone: auth.user.phone,
+                // You can add more visitor properties here
+                hash: 'optional-hash-value' // If you're using secure mode
+            };
+        }
+
+        // Set the load start time
+        window.Tawk_LoadStart = new Date();
+
+        // Create and append the script
+        const script = document.createElement("script");
+        script.id = 'tawk-script';
+        script.async = true;
+        script.src = 'https://embed.tawk.to/673211fe4304e3196ae02e0d/1icdpciq7';
+        script.charset = 'UTF-8';
+        script.setAttribute('crossorigin', '*');
+        
+        script.onload = () => {
+            console.log('Tawk.to script loaded successfully');
             
-            // Add event listeners to monitor script loading
-            script.onload = () => {
-                console.log('Tawk.to script loaded successfully');
-                
-                // Ensure the widget is shown after script loads
-                if (window.Tawk_API) {
+            const showWidget = () => {
+                if (window.Tawk_API && window.Tawk_API.showWidget) {
+                    // Additional configurations can be set here
                     window.Tawk_API.onLoad = function() {
                         console.log('Chat widget loaded');
                         window.Tawk_API.showWidget();
                     };
-
-                    // Fallback to show widget if it's not visible after a short delay
-                    setTimeout(() => {
-                        if (window.Tawk_API && window.Tawk_API.showWidget) {
-                            window.Tawk_API.showWidget();
-                        }
-                    }, 1000);
+                } else {
+                    setTimeout(showWidget, 100);
                 }
             };
-            
-            script.onerror = (error) => {
-                console.error('Error loading Tawk.to script:', error);
-            };
 
-            // Insert the script at the beginning of the head for faster loading
-            const firstScript = document.getElementsByTagName('script')[0];
-            firstScript.parentNode.insertBefore(script, firstScript);
-        } else {
-            // If Tawk_API exists, ensure the widget is shown
-            if (window.Tawk_API && window.Tawk_API.showWidget) {
-                window.Tawk_API.showWidget();
-            }
+            showWidget();
+        };
+
+        // Check if script already exists and remove it
+        const existingScript = document.getElementById('tawk-script');
+        if (existingScript) {
+            existingScript.remove();
         }
 
-        // Cleanup function
+        // Add the script to the document
+        document.head.appendChild(script);
+
+        // Cleanup on unmount
         return () => {
             cleanupTawkTo();
         };
-    }, []);
+    }, [auth]); // Add auth as a dependency
 
     return null;
 }

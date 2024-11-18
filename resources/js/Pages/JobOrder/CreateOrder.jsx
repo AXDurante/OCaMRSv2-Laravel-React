@@ -1,7 +1,6 @@
 import { useForm } from "@inertiajs/react";
 import Navbar from "../../Layouts/Navbar";
 import { useState } from "react";
-import TawkTo from "../../Components/TawkTo";
 
 function CreateOrder({
     jobOrder,
@@ -155,7 +154,6 @@ function CreateOrder({
 
     return (
         <div className="job-request-form">
-            <TawkTo />
             <div className="form-section fade-in">
                 <h1 className="text-2xl mb-4">
                     Job Request <span className="text-black font-light subtitle-span">| Open Request #{lastID}</span>
