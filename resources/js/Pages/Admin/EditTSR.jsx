@@ -357,12 +357,25 @@ function EditTSR({ jobOrder, auth, tsr }) {
                                         </button>
                                         <button
                                             type="button"
-                                            className="btn btn-primary"
+                                            className="btn btn-primary me-2"
                                             onClick={onSubmit}
                                         >
                                             <i className="bi bi-save me-1"></i>
                                             Save Changes
                                         </button>
+                                        <input
+                                             type="checkbox"
+                                            className="custom-checkbox"
+                                            id="includeSignature"
+                                            checked={includeSignature}
+                                            onChange={handleSignatureChange}
+                                        />
+                                        <label
+                                            className="custom-checkbox-label text-muted ms-2"
+                                            htmlFor="includeSignature"
+                                        >
+                                            Include my signature in this TSR
+                                        </label>     
                                     </div>
                                 </div>
                             </div>
@@ -425,6 +438,10 @@ function EditTSR({ jobOrder, auth, tsr }) {
                             reportDetails={{
                                 ...data,
                                 tech_id: data.tech_id,
+                                ...(includeSignature && {
+                                    admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
+                                    admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
+                                }),
                             }}
                         />
                     </PDFViewer>
