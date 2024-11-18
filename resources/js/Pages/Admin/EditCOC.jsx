@@ -58,7 +58,7 @@ function EditCOC({ tsr, auth, coc }) {
         const isChecked = e.target.checked;
         setIncludeSignature(isChecked);
         
-        // Only update admin signature and name if checked
+        // Update the data state when checkbox changes
         if (isChecked) {
             setData({
                 ...data,
@@ -137,12 +137,9 @@ function EditCOC({ tsr, auth, coc }) {
                             cocDetails={{
                                 ...data,
                                 tech_photo: data.tech_photo,
-                                tech_signature: `/storage/photos/technicianSignature/${data.tech_photo}`,
-                                tech_id: data.tech_name,
-                                ...(includeSignature && {
-                                    admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
-                                    admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
-                                }),
+                                tech_name: data.tech_name,
+                                admin_signature: includeSignature ? data.admin_signature : null,
+                                admin_name: includeSignature ? data.admin_name : null
                             }}
                         />
                     </PDFViewer>
@@ -259,17 +256,6 @@ function EditCOC({ tsr, auth, coc }) {
                                             {new Date().toLocaleDateString()}
                                         </span>
                                     </div>
-                                    <Link
-                                        href={route(
-                                            "technician.viewTSRDetails",
-                                            coc.tsr_id
-                                        )}
-                                    >
-                                        <button className="btn btn-light w-100 mb-2">
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            Technical Service Report
-                                        </button>
-                                    </Link>
                                 </div>
                             </div>
                         </div>
