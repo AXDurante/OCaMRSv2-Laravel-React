@@ -37,12 +37,236 @@ export default function Register() {
     const [showTerms, setShowTerms] = useState(false); // State to control the modal visibility
     const [acceptTerms, setAcceptTerms] = useState(false);
 
+    const [validationErrors, setValidationErrors] = useState({
+        employeeID: "",
+        email: "",
+        phoneNumber: "",
+        firstName: "",
+        lastName: "",
+        college: "",
+        labLoc: "",
+        position: "",
+        password: "",
+        password_confirmation: "",
+    });
+
+    const validateEmployeeID = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                employeeID: "Please enter an ID number.",
+            }));
+            return false;
+        }
+        if (value.length !== 10) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                employeeID: "ID Number must be 10 digits.",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, employeeID: "" }));
+        return true;
+    };
+
+    const validateEmail = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                email: "Please enter an email address.",
+            }));
+            return false;
+        }
+        if (!value.endsWith("@ust.edu.ph")) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                email: "Email must be a valid UST email (@ust.edu.ph).",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, email: "" }));
+        return true;
+    };
+
+    const validatePhoneNumber = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                phoneNumber: "Please enter a phone number.",
+            }));
+            return false;
+        }
+        if (value.length !== 11 || !value.startsWith("09")) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                phoneNumber: "Phone number must be 11 digits starting with 09.",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, phoneNumber: "" }));
+        return true;
+    };
+
+    const validateFirstName = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                firstName: "Please enter your first name.",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, firstName: "" }));
+        return true;
+    };
+
+    const validateLastName = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                lastName: "Please enter your last name.",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, lastName: "" }));
+        return true;
+    };
+
+    const validateCollege = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                college: "Please select your college.",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, college: "" }));
+        return true;
+    };
+
+    const validateLabLoc = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                labLoc: "Please enter your lab location.",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, labLoc: "" }));
+        return true;
+    };
+
+    const validatePosition = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                position: "Please enter your position.",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, position: "" }));
+        return true;
+    };
+
+    const validatePassword = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                password: "Please enter a password.",
+            }));
+            return false;
+        }
+        if (value.length < 8) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                password: "Password must be at least 8 characters.",
+            }));
+            return false;
+        }
+        if (!/[A-Z]/.test(value)) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                password:
+                    "Password must contain at least one uppercase letter.",
+            }));
+            return false;
+        }
+        if (!/[0-9]/.test(value)) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                password: "Password must contain at least one number.",
+            }));
+            return false;
+        }
+        if (!/[!@#$%^&*]/.test(value)) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                password:
+                    "Password must contain at least one special character.",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, password: "" }));
+        return true;
+    };
+
+    const validateConfirmPassword = (value) => {
+        if (!value) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                password_confirmation: "Please confirm your password.",
+            }));
+            return false;
+        }
+        if (value !== data.password) {
+            setValidationErrors((prev) => ({
+                ...prev,
+                password_confirmation: "Passwords do not match.",
+            }));
+            return false;
+        }
+        setValidationErrors((prev) => ({ ...prev, password_confirmation: "" }));
+        return true;
+    };
+
     const nextForm = () => {
-        if (switchForm === 3) {
-            // Show errors if any fields are invalid
-            setSubmitted(true);
-        } else {
-            setSwitchForm(switchForm + 1);
+        if (switchForm === 1) {
+            // Validate all fields in first form
+            const isFirstNameValid = validateFirstName(data.firstName);
+            const isLastNameValid = validateLastName(data.lastName);
+            const isEmailValid = validateEmail(data.email);
+            const isPhoneValid = validatePhoneNumber(data.phoneNumber);
+
+            // Only proceed if all validations pass
+            if (
+                isFirstNameValid &&
+                isLastNameValid &&
+                isEmailValid &&
+                isPhoneValid
+            ) {
+                setSwitchForm(2);
+            }
+        } else if (switchForm === 2) {
+            // Validate all fields in second form
+            const isCollegeValid = validateCollege(data.college);
+            const isLabLocValid = validateLabLoc(data.labLoc);
+            const isPositionValid = validatePosition(data.position);
+
+            // Only proceed if all validations pass
+            if (isCollegeValid && isLabLocValid && isPositionValid) {
+                setSwitchForm(3);
+            }
+        } else if (switchForm === 3) {
+            // Validate all fields in third form
+            const isIdValid = validateEmployeeID(data.employeeID);
+            const isPasswordValid = validatePassword(data.password);
+            const isConfirmPasswordValid = validateConfirmPassword(
+                data.password_confirmation
+            );
+
+            // Only proceed if all validations pass
+            if (isIdValid && isPasswordValid && isConfirmPasswordValid) {
+                setSubmitted(true);
+            }
         }
     };
 
@@ -72,8 +296,8 @@ export default function Register() {
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
-            e.preventDefault(); // Prevent default form submission
-            nextForm(); // Switch to the next form
+            e.preventDefault();
+            nextForm(); // This will now check all validations before proceeding
         }
     };
 
@@ -111,21 +335,34 @@ export default function Register() {
                                             id="firstName"
                                             name="firstName"
                                             value={data.firstName}
-                                            className="mt-1 block w-full"
+                                            className={`mt-1 block w-full ${
+                                                validationErrors.firstName
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
                                             autoComplete="firstName"
                                             isFocused={true}
-                                            onChange={(e) =>
+                                            onChange={(e) => {
                                                 setData(
                                                     "firstName",
                                                     e.target.value
-                                                )
-                                            }
+                                                );
+                                                validateFirstName(
+                                                    e.target.value
+                                                );
+                                            }}
                                             required
                                         />
                                         <InputError
                                             message={errors.firstName}
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.firstName && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {validationErrors.firstName}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="mt-4">
@@ -137,21 +374,32 @@ export default function Register() {
                                             id="lastName"
                                             name="lastName"
                                             value={data.lastName}
-                                            className="mt-1 block w-full"
-                                            autoComplete="lastName"
-                                            isFocused={true}
-                                            onChange={(e) =>
+                                            className={`mt-1 block w-full ${
+                                                validationErrors.lastName
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
+                                            onChange={(e) => {
                                                 setData(
                                                     "lastName",
                                                     e.target.value
-                                                )
-                                            }
+                                                );
+                                                validateLastName(
+                                                    e.target.value
+                                                );
+                                            }}
                                             required
                                         />
                                         <InputError
                                             message={errors.lastName}
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.lastName && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {validationErrors.lastName}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="mt-4">
@@ -164,17 +412,31 @@ export default function Register() {
                                             type="email"
                                             name="email"
                                             value={data.email}
-                                            className="mt-1 block w-full"
+                                            className={`mt-1 block w-full ${
+                                                validationErrors.email
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
                                             autoComplete="username"
-                                            onChange={(e) =>
-                                                setData("email", e.target.value)
-                                            }
+                                            onChange={(e) => {
+                                                setData(
+                                                    "email",
+                                                    e.target.value
+                                                );
+                                                validateEmail(e.target.value);
+                                            }}
                                             required
                                         />
                                         <InputError
                                             message={errors.email}
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.email && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {validationErrors.email}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="mt-4">
                                         <div className="d-flex align-items-center">
@@ -202,8 +464,11 @@ export default function Register() {
                                             name="phoneNumber"
                                             type="tel"
                                             value={data.phoneNumber}
-                                            autoComplete="tel"
-                                            isFocused={true}
+                                            className={`mt-1 block w-full ${
+                                                validationErrors.phoneNumber
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
                                             onChange={(e) => {
                                                 const filteredValue =
                                                     e.target.value.replace(
@@ -214,9 +479,11 @@ export default function Register() {
                                                     "phoneNumber",
                                                     filteredValue
                                                 );
+                                                validatePhoneNumber(
+                                                    filteredValue
+                                                );
                                             }}
                                             required
-                                            pattern="[0-9]{11}"
                                             maxLength="11"
                                             placeholder="09XXXXXXXXX"
                                         />
@@ -224,6 +491,12 @@ export default function Register() {
                                             message={errors.phoneNumber}
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.phoneNumber && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {validationErrors.phoneNumber}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="d-flex justify-content-end my-5 ">
@@ -255,13 +528,18 @@ export default function Register() {
                                             id="college"
                                             name="college"
                                             value={data.college}
-                                            className="optionBox w-100"
-                                            onChange={(e) =>
+                                            className={`optionBox w-100 ${
+                                                validationErrors.college
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
+                                            onChange={(e) => {
                                                 setData(
                                                     "college",
                                                     e.target.value
-                                                )
-                                            }
+                                                );
+                                                validateCollege(e.target.value);
+                                            }}
                                             required
                                         >
                                             <option value="" disabled>
@@ -338,6 +616,12 @@ export default function Register() {
                                             message={errors.college}
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.college && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {validationErrors.college}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="mt-4">
@@ -349,21 +633,32 @@ export default function Register() {
                                             id="labLoc"
                                             name="labLoc"
                                             value={data.labLoc}
-                                            className="mt-1 block w-full"
+                                            className={`mt-1 block w-full ${
+                                                validationErrors.labLoc
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
                                             autoComplete="labLoc"
                                             isFocused={true}
-                                            onChange={(e) =>
+                                            onChange={(e) => {
                                                 setData(
                                                     "labLoc",
                                                     e.target.value
-                                                )
-                                            }
+                                                );
+                                                validateLabLoc(e.target.value);
+                                            }}
                                             required
                                         />
                                         <InputError
                                             message={errors.labLoc}
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.labLoc && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {validationErrors.labLoc}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="mt-4">
@@ -375,15 +670,22 @@ export default function Register() {
                                             id="position"
                                             name="position"
                                             value={data.position}
-                                            className="mt-1 block w-full"
+                                            className={`mt-1 block w-full ${
+                                                validationErrors.position
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
                                             autoComplete="labLoc"
                                             isFocused={true}
-                                            onChange={(e) =>
+                                            onChange={(e) => {
                                                 setData(
                                                     "position",
                                                     e.target.value
-                                                )
-                                            }
+                                                );
+                                                validatePosition(
+                                                    e.target.value
+                                                );
+                                            }}
                                             placeholder="Lab Technician"
                                             required
                                         />
@@ -391,6 +693,12 @@ export default function Register() {
                                             message={errors.position}
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.position && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {validationErrors.position}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="d-flex justify-content-end my-5 ">
@@ -415,29 +723,59 @@ export default function Register() {
                             {switchForm === 3 && (
                                 <div>
                                     <div className="mt-4">
-                                        <InputLabel
-                                            htmlFor="employeeID"
-                                            value="ID Number"
-                                        />
+                                        <div className="d-flex align-items-center">
+                                            <InputLabel
+                                                htmlFor="employeeID"
+                                                value="ID Number"
+                                            />
+                                            <div
+                                                className="ms-2 tooltip-container"
+                                                style={{ position: "relative" }}
+                                            >
+                                                <FaInfoCircle
+                                                    className="text-primary"
+                                                    style={{ cursor: "help" }}
+                                                />
+                                                <span className="custom-tooltip">
+                                                    Please enter 10 digits
+                                                </span>
+                                            </div>
+                                        </div>
                                         <TextInput2
                                             id="employeeID"
                                             name="employeeID"
                                             value={data.employeeID}
-                                            className="mt-1 block w-full"
-                                            autoComplete="employeeID"
-                                            isFocused={true}
-                                            onChange={(e) =>
+                                            className={`mt-1 block w-full ${
+                                                validationErrors.employeeID
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
+                                            onChange={(e) => {
+                                                const filteredValue =
+                                                    e.target.value.replace(
+                                                        /[^0-9]/g,
+                                                        ""
+                                                    );
                                                 setData(
                                                     "employeeID",
-                                                    e.target.value
-                                                )
-                                            }
+                                                    filteredValue
+                                                );
+                                                validateEmployeeID(
+                                                    filteredValue
+                                                );
+                                            }}
                                             required
                                         />
                                         <InputError
                                             message={errors.employeeID}
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.employeeID && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {validationErrors.employeeID}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="mt-4">
@@ -474,14 +812,21 @@ export default function Register() {
                                                 }
                                                 name="password"
                                                 value={data.password}
-                                                className="mt-1 block w-full"
+                                                className={`mt-1 block w-full ${
+                                                    validationErrors.password
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
                                                 autoComplete="new-password"
-                                                onChange={(e) =>
+                                                onChange={(e) => {
                                                     setData(
                                                         "password",
                                                         e.target.value
-                                                    )
-                                                }
+                                                    );
+                                                    validatePassword(
+                                                        e.target.value
+                                                    );
+                                                }}
                                                 required
                                             />
                                             <span
@@ -511,6 +856,12 @@ export default function Register() {
                                             message={errors.password}
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.password && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {validationErrors.password}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="mt-4">
@@ -533,14 +884,21 @@ export default function Register() {
                                                 value={
                                                     data.password_confirmation
                                                 }
-                                                className="mt-1 block w-full"
+                                                className={`mt-1 block w-full ${
+                                                    validationErrors.password_confirmation
+                                                        ? "is-invalid"
+                                                        : ""
+                                                }`}
                                                 autoComplete="new-password"
-                                                onChange={(e) =>
+                                                onChange={(e) => {
                                                     setData(
                                                         "password_confirmation",
                                                         e.target.value
-                                                    )
-                                                }
+                                                    );
+                                                    validateConfirmPassword(
+                                                        e.target.value
+                                                    );
+                                                }}
                                                 required
                                             />
                                             <span
@@ -572,6 +930,14 @@ export default function Register() {
                                             }
                                             className="mt-2 text-danger"
                                         />
+                                        {validationErrors.password_confirmation && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="fas fa-exclamation-circle me-1"></i>
+                                                {
+                                                    validationErrors.password_confirmation
+                                                }
+                                            </div>
+                                        )}
                                     </div>
 
                                     {submitted &&
