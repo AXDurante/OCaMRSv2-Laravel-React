@@ -27,7 +27,7 @@ export default function Login({ status, canResetPassword }) {
     const submit = (e) => {
         e.preventDefault();
 
-        if (isSubmitting) return; // Prevent double submission
+        if (isSubmitting) return;
 
         setIsSubmitting(true);
 
@@ -39,14 +39,8 @@ export default function Login({ status, canResetPassword }) {
             },
             onError: (errors) => {
                 setIsSubmitting(false);
-                if (error.response && error.response.data) {
-                    // Show the custom error message from the backend
-                    setCustomErrorMessage(error.response.data.message);
-                } else {
-                    setCustomErrorMessage(
-                        "An unexpected error occurred. Please try again."
-                    );
-                }
+                // The error message will now come from the backend
+                // and will be available through the errorMessage prop
             },
             onFinish: () => {
                 setIsSubmitting(false);
@@ -73,8 +67,11 @@ export default function Login({ status, canResetPassword }) {
                                 Login
                             </h1>
                             {errorMessage && (
-                                <div className="error-message">
-                                    {errorMessage}
+                                <div className="alert-ah">
+                                    <div className="alert-ah__title">Error</div>
+                                    <div className="alert-ah__message">
+                                        {errorMessage}
+                                    </div>
                                 </div>
                             )}
 
@@ -93,13 +90,18 @@ export default function Login({ status, canResetPassword }) {
                                 onChange={(e) =>
                                     setData("employeeID", e.target.value)
                                 }
-                                className="form-control w-100"
+                                className={`form-control w-100 ${
+                                    errors.employeeID || errorMessage
+                                        ? "is-invalid"
+                                        : ""
+                                }`}
                             />
                             {errors.employeeID && (
-                                <InputError
-                                    message={errors.employeeID}
-                                    className="mt-2 text-danger"
-                                />
+                                <div className="alert-ah">
+                                    <div className="alert-ah__message">
+                                        {errors.employeeID}
+                                    </div>
+                                </div>
                             )}
                         </div>
 
@@ -108,20 +110,29 @@ export default function Login({ status, canResetPassword }) {
 
                             <div
                                 className="password-input-wrapper"
-                                style={{ position: "relative" }}
+                                style={{
+                                    position: "relative",
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
                             >
                                 <TextInput2
                                     id="password"
-                                    type={showPassword ? "text" : "password"} // Toggle type
+                                    type={showPassword ? "text" : "password"}
                                     name="password"
                                     value={data.password}
                                     autoComplete="current-password"
                                     onChange={(e) =>
                                         setData("password", e.target.value)
                                     }
+                                    className={`form-control ${
+                                        errors.password || errorMessage
+                                            ? "is-invalid"
+                                            : ""
+                                    }`}
+                                    style={{ paddingRight: "40px" }}
                                 />
 
-                                {/* Eye Icon to toggle password visibility */}
                                 <span
                                     onClick={() =>
                                         setShowPassword(!showPassword)
@@ -129,20 +140,20 @@ export default function Login({ status, canResetPassword }) {
                                     style={{
                                         position: "absolute",
                                         right: "10px",
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
                                         cursor: "pointer",
-                                        fontSize: "1.5em", // Increased font size for larger icon
+                                        fontSize: "1.5em",
+                                        zIndex: "1",
                                     }}
                                 >
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </span>
                             </div>
                             {errors.password && (
-                                <InputError
-                                    message={errors.password}
-                                    className="mt-2 text-danger"
-                                />
+                                <div className="alert-ah">
+                                    <div className="alert-ah__message">
+                                        {errors.password}
+                                    </div>
+                                </div>
                             )}
                         </div>
 
