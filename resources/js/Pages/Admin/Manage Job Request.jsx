@@ -155,10 +155,6 @@ function Home({ jobOrder, totalCounts, filters }) {
                 return <FaClock className="me-1 status-icon text-white" />;
             case "Approved":
                 return <FaCheck className="me-1 status-icon text-white" />;
-            case "Processing":
-                return (
-                    <FaSpinner className="me-1 status-icon spinning text-white" />
-                );
             case "Completed":
                 return (
                     <FaCheckCircle className="me-1 status-icon  text-white" />
@@ -579,9 +575,6 @@ function Home({ jobOrder, totalCounts, filters }) {
                                                                     : order.status ===
                                                                       "For Approval"
                                                                     ? "bg-warning"
-                                                                    : order.status ===
-                                                                      "Processing"
-                                                                    ? "bg-primary"
                                                                     : "bg-secondary"
                                                             } px-3 py-2 rounded-pill`}
                                                             value={order.status}
@@ -611,7 +604,6 @@ function Home({ jobOrder, totalCounts, filters }) {
                                                             {[
                                                                 "For Approval",
                                                                 "Approved",
-                                                                "Processing",
                                                                 "Completed",
                                                                 "Cancelled",
                                                             ]
@@ -779,9 +771,6 @@ function Home({ jobOrder, totalCounts, filters }) {
                                                                 : order.status ===
                                                                   "For Approval"
                                                                 ? "bg-warning"
-                                                                : order.status ===
-                                                                  "Processing"
-                                                                ? "bg-primary"
                                                                 : "bg-secondary"
                                                         } px-3 py-2 rounded-pill text-center`}
                                                         value={order.status}
@@ -805,7 +794,6 @@ function Home({ jobOrder, totalCounts, filters }) {
                                                         {[
                                                             "For Approval",
                                                             "Approved",
-                                                            "Processing",
                                                             "Completed",
                                                             "Cancelled",
                                                         ]
