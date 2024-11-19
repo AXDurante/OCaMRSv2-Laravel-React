@@ -4412,9 +4412,12 @@ td[title] {
     color: #dc3545;
 }
 .is-invalid {
-    border: 2px solid #dc3545 !important; /* Thicker border */
-    outline: none !important; /* Remove default outline */
-    box-shadow: none !important; /* Remove box shadow */
+    border: 2px solid #dc3545 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    /* Add these lines to remove the validation icon */
+    background-image: none !important;
+    padding-right: 0.75rem !important; /* Reset the padding */
 }
 
 .invalid-feedback {
@@ -4423,10 +4426,10 @@ td[title] {
     margin-top: 0.25rem;
     display: block;
 }
-
-/* When the input is focused and invalid */
 .is-invalid:focus {
     border: 2px solid #dc3545 !important;
     outline: none !important;
     box-shadow: none !important;
+    /* Add this line to remove the validation icon on focus */
+    background-image: none !important;
 }
