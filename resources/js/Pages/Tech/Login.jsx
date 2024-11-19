@@ -62,6 +62,7 @@ export default function Login({ status, canResetPassword }) {
                                 onChange={(e) =>
                                     setData("employeeID", e.target.value)
                                 }
+                                required
                             />
 
                             <InputError
@@ -87,6 +88,7 @@ export default function Login({ status, canResetPassword }) {
                                         setData("password", e.target.value)
                                     }
                                     style={{ paddingRight: "40px" }} // Add padding to the right for the icon
+                                    required
                                 />
 
                                 {/* Eye Icon to toggle password visibility */}
