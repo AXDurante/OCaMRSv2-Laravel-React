@@ -1,6 +1,6 @@
 import AdminNavBar from "@/Layouts/AdminNavBar";
 import Navbar from "../../Layouts/Navbar";
-import { Link } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import {
     FaCheck,
     FaHourglassHalf,
@@ -11,14 +11,54 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-
-function Home({ jobOrder }) {
-    const [sortBy, setSortBy] = useState("newest");
-    const [filterStatus, setFilterStatus] = useState("all");
-    const [searchQuery, setSearchQuery] = useState("");
-    const [filterPriority, setFilterPriority] = useState("all");
+function Home({ jobOrder, totalCounts, filters }) {
+    const { get } = useForm();
+    const [sortBy, setSortBy] = useState(filters?.sort || "newest");
+    const [filterStatus, setFilterStatus] = useState(filters?.status || "all");
+    const [searchQuery, setSearchQuery] = useState(filters?.search || "");
+    const [filterPriority, setFilterPriority] = useState(
+        filters?.priority || "all"
+    );
     const [openDropdown, setOpenDropdown] = useState(null);
+
+    // Add debounced search effect
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            get(
+                route("admin.home", {
+                    search: searchQuery,
+                    status: filterStatus,
+                    priority: filterPriority,
+                    sort: sortBy,
+                }),
+                {
+                    preserveState: true,
+                    preserveScroll: false,
+                    replace: true,
+                }
+            );
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [searchQuery, filterStatus, filterPriority, sortBy]);
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const handleFilterStatusChange = (status) => {
+        setFilterStatus(status);
+    };
+
+    const handlePriorityChange = (priority) => {
+        setFilterPriority(priority);
+    };
+
+    const handleSortChange = (sort) => {
+        setSortBy(sort);
+    };
 
     // Filter and sort the job orders
     const filteredAndSortedOrders = jobOrder.data
@@ -63,12 +103,6 @@ function Home({ jobOrder }) {
             return sortBy === "newest" ? dateB - dateA : dateA - dateB;
         });
 
-    // Handle search input change
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
-    console.log(jobOrder);
     const totalRequests = jobOrder.data.length;
     const cancelledRequests = jobOrder.data.filter(
         (order) => order.status === "Cancelled"
@@ -85,24 +119,32 @@ function Home({ jobOrder }) {
 
     const handleStatusChange = async (orderId, newStatus) => {
         // Show confirmation dialog using native browser confirm
-        const isConfirmed = confirm(`Are you sure you want to change the status to ${newStatus}?`);
+        const isConfirmed = confirm(
+            `Are you sure you want to change the status to ${newStatus}?`
+        );
 
         if (isConfirmed) {
             try {
-                const response = await axios.patch(`/admin/updateJobStatus/${orderId}`, {
-                    status: newStatus
-                });
+                const response = await axios.patch(
+                    `/admin/updateJobStatus/${orderId}`,
+                    {
+                        status: newStatus,
+                    }
+                );
 
                 // Show success message using native browser alert
-                alert('Status updated successfully');
+                alert("Status updated successfully");
 
                 // Refresh the page to show updated data
                 window.location.reload();
             } catch (error) {
                 console.error("Error updating status:", error);
-                
+
                 // Show error message using native browser alert
-                alert(error.response?.data?.error || 'An error occurred while updating the status.');
+                alert(
+                    error.response?.data?.error ||
+                        "An error occurred while updating the status."
+                );
             }
         }
     };
@@ -162,23 +204,23 @@ function Home({ jobOrder }) {
                     <div className="bg-black row rounded text-center d-flex justify-content-between">
                         <div className="col bg-light m-4 p-3">
                             <h5>Total Request</h5>
-                            <h1>{totalRequests}</h1>
+                            <h1>{totalCounts.total}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>For Approval</h5>
-                            <h1>{forApprovalRequests}</h1>
+                            <h1>{totalCounts.forApproval}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Approved</h5>
-                            <h1>{approvedRequests}</h1>
+                            <h1>{totalCounts.approved}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Completed</h5>
-                            <h1>{completedRequests}</h1>
+                            <h1>{totalCounts.completed}</h1>
                         </div>
                         <div className="col bg-light m-4 p-3">
                             <h5>Cancelled</h5>
-                            <h1>{cancelledRequests}</h1>
+                            <h1>{totalCounts.cancelled}</h1>
                         </div>
                     </div>
                     <div className="mt-3">
@@ -278,7 +320,9 @@ function Home({ jobOrder }) {
                                                             : ""
                                                     }`}
                                                     onClick={() =>
-                                                        setFilterStatus("all")
+                                                        handleFilterStatusChange(
+                                                            "all"
+                                                        )
                                                     }
                                                 >
                                                     All Orders
@@ -291,7 +335,7 @@ function Home({ jobOrder }) {
                                                             : ""
                                                     }`}
                                                     onClick={() =>
-                                                        setFilterStatus(
+                                                        handleFilterStatusChange(
                                                             "For Approval"
                                                         )
                                                     }
@@ -306,7 +350,7 @@ function Home({ jobOrder }) {
                                                             : ""
                                                     }`}
                                                     onClick={() =>
-                                                        setFilterStatus(
+                                                        handleFilterStatusChange(
                                                             "Approved"
                                                         )
                                                     }
@@ -321,7 +365,7 @@ function Home({ jobOrder }) {
                                                             : ""
                                                     }`}
                                                     onClick={() =>
-                                                        setFilterStatus(
+                                                        handleFilterStatusChange(
                                                             "Completed"
                                                         )
                                                     }
@@ -336,7 +380,7 @@ function Home({ jobOrder }) {
                                                             : ""
                                                     }`}
                                                     onClick={() =>
-                                                        setFilterStatus(
+                                                        handleFilterStatusChange(
                                                             "Cancelled"
                                                         )
                                                     }
@@ -370,7 +414,9 @@ function Home({ jobOrder }) {
                                                             : ""
                                                     }`}
                                                     onClick={() =>
-                                                        setFilterPriority("all")
+                                                        handlePriorityChange(
+                                                            "all"
+                                                        )
                                                     }
                                                 >
                                                     All Priorities
@@ -383,7 +429,7 @@ function Home({ jobOrder }) {
                                                             : ""
                                                     }`}
                                                     onClick={() =>
-                                                        setFilterPriority(
+                                                        handlePriorityChange(
                                                             "Regular"
                                                         )
                                                     }
@@ -398,7 +444,7 @@ function Home({ jobOrder }) {
                                                             : ""
                                                     }`}
                                                     onClick={() =>
-                                                        setFilterPriority(
+                                                        handlePriorityChange(
                                                             "Urgent"
                                                         )
                                                     }
@@ -850,20 +896,40 @@ function Home({ jobOrder }) {
 
                         {/* Pagination links */}
                         <div className="text-center">
-                            {jobOrder.links.map((link) => (
-                                <Link
-                                    className={`px-3 ${
-                                        link.active
-                                            ? "text-secondary"
-                                            : " text-dark "
-                                    }`}
-                                    key={link.label}
-                                    href={link.url}
-                                    dangerouslySetInnerHTML={{
-                                        __html: link.label,
-                                    }}
-                                />
-                            ))}
+                            <nav>
+                                <ul className="pagination">
+                                    {jobOrder.links.map((link, index) => (
+                                        <li
+                                            key={index}
+                                            className={`page-item ${
+                                                link.active ? "active" : ""
+                                            }`}
+                                        >
+                                            {link.url ? (
+                                                <Link
+                                                    href={`${link.url}&search=${searchQuery}&status=${filterStatus}&priority=${filterPriority}&sort=${sortBy}`}
+                                                    className="page-link"
+                                                    preserveState
+                                                >
+                                                    <span
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: link.label,
+                                                        }}
+                                                    />
+                                                </Link>
+                                            ) : (
+                                                <span className="page-link">
+                                                    <span
+                                                        dangerouslySetInnerHTML={{
+                                                            __html: link.label,
+                                                        }}
+                                                    />
+                                                </span>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -873,5 +939,25 @@ function Home({ jobOrder }) {
 }
 
 Home.layout = (page) => <AdminNavBar>{page}</AdminNavBar>;
+
+Home.propTypes = {
+    jobOrder: PropTypes.shape({
+        data: PropTypes.array.isRequired,
+        links: PropTypes.array.isRequired,
+    }).isRequired,
+    totalCounts: PropTypes.shape({
+        total: PropTypes.number.isRequired,
+        forApproval: PropTypes.number.isRequired,
+        approved: PropTypes.number.isRequired,
+        completed: PropTypes.number.isRequired,
+        cancelled: PropTypes.number.isRequired,
+    }).isRequired,
+    filters: PropTypes.shape({
+        sort: PropTypes.string,
+        status: PropTypes.string,
+        priority: PropTypes.string,
+        search: PropTypes.string,
+    }),
+};
 
 export default Home;
