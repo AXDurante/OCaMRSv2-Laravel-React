@@ -49,15 +49,6 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        // Get total counts
-        $totalCounts = [
-            'total' => JobOrder::count(),
-            'forApproval' => JobOrder::where('status', 'For Approval')->count(),
-            'approved' => JobOrder::where('status', 'Approved')->count(),
-            'completed' => JobOrder::where('status', 'Completed')->count(),
-            'cancelled' => JobOrder::where('status', 'Cancelled')->count(),
-        ];
-
         // Start a new query for job orders
         $query = JobOrder::with('user');
 
@@ -65,13 +56,12 @@ class AdminController extends Controller
         if ($request->search) {
             $query->where(function($q) use ($request) {
                 $q->whereHas('user', function($userQuery) use ($request) {
-                    $searchTerm = '%' . $request->search . '%';
-                    $userQuery->where('firstName', 'LIKE', $searchTerm)
-                        ->orWhere('lastName', 'LIKE', $searchTerm)
-                        ->orWhere('email', 'LIKE', $searchTerm);
+                    $userQuery->where('firstName', 'LIKE', "%{$request->search}%")
+                        ->orWhere('lastName', 'LIKE', "%{$request->search}%")
+                        ->orWhere('email', 'LIKE', "%{$request->search}%");
                 })
-                ->orWhere('job_id', 'LIKE', '%' . $request->search . '%')
-                ->orWhere('service_type', 'LIKE', '%' . $request->search . '%');
+                ->orWhere('job_id', 'LIKE', "%{$request->search}%")
+                ->orWhere('service_type', 'LIKE', "%{$request->search}%");
             });
         }
 
@@ -88,20 +78,17 @@ class AdminController extends Controller
         // Apply sorting
         $query->orderBy('date_request', $request->sort === 'oldest' ? 'asc' : 'desc');
 
-        // Get total count of filtered results
-        $totalFilteredCount = $query->count();
+        // Get total counts
+        $totalCounts = [
+            'total' => JobOrder::count(),
+            'forApproval' => JobOrder::where('status', 'For Approval')->count(),
+            'approved' => JobOrder::where('status', 'Approved')->count(),
+            'completed' => JobOrder::where('status', 'Completed')->count(),
+            'cancelled' => JobOrder::where('status', 'Cancelled')->count(),
+        ];
 
-        // Calculate pagination
-        $perPage = 10;
-        $currentPage = $request->page ?? 1;
-
-        // If searching and results are less than perPage, adjust pagination
-        if ($request->search && $totalFilteredCount <= $perPage) {
-            $currentPage = 1;
-        }
-
-        // Paginate the results
-        $jobOrder = $query->paginate($perPage, ['*'], 'page', $currentPage)->withQueryString();
+        // Paginate results
+        $jobOrder = $query->paginate(10)->appends($request->query());
 
         return Inertia::render('Admin/Manage Job Request', [
             'jobOrder' => $jobOrder,
