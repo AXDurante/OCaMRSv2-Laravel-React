@@ -49,15 +49,6 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        // Get total counts
-        $totalCounts = [
-            'total' => JobOrder::count(),
-            'forApproval' => JobOrder::where('status', 'For Approval')->count(),
-            'approved' => JobOrder::where('status', 'Approved')->count(),
-            'completed' => JobOrder::where('status', 'Completed')->count(),
-            'cancelled' => JobOrder::where('status', 'Cancelled')->count(),
-        ];
-
         // Start a new query for job orders
         $query = JobOrder::with('user');
 
@@ -69,8 +60,8 @@ class AdminController extends Controller
                         ->orWhere('lastName', 'LIKE', "%{$request->search}%")
                         ->orWhere('email', 'LIKE', "%{$request->search}%");
                 })
-                ->orWhere('job_id', 'LIKE', '%' . $request->search . '%')
-                ->orWhere('service_type', 'LIKE', '%' . $request->search . '%');
+                ->orWhere('job_id', 'LIKE', "%{$request->search}%")
+                ->orWhere('service_type', 'LIKE', "%{$request->search}%");
             });
         }
 
@@ -87,24 +78,17 @@ class AdminController extends Controller
         // Apply sorting
         $query->orderBy('date_request', $request->sort === 'oldest' ? 'asc' : 'desc');
 
-        // Get the total count of filtered/searched results
-        $filteredCount = $query->count();
+        // Get total counts
+        $totalCounts = [
+            'total' => JobOrder::count(),
+            'forApproval' => JobOrder::where('status', 'For Approval')->count(),
+            'approved' => JobOrder::where('status', 'Approved')->count(),
+            'completed' => JobOrder::where('status', 'Completed')->count(),
+            'cancelled' => JobOrder::where('status', 'Cancelled')->count(),
+        ];
 
-        // Determine the number of items per page
-        $perPage = 10;
-
-        // If searching and results are less than perPage, adjust pagination
-        if ($request->search) {
-            $perPage = $filteredCount > 0 ? $filteredCount : 1;
-        }
-
-        // Get paginated results
-        $jobOrder = $query->paginate($perPage)->withQueryString();
-
-        // If we're searching, force to single page
-        if ($request->search) {
-            $jobOrder->setPath('')->setPageName('page')->onFirstPage();
-        }
+        // Paginate results
+        $jobOrder = $query->paginate(10)->appends($request->query());
 
         return Inertia::render('Admin/Manage Job Request', [
             'jobOrder' => $jobOrder,

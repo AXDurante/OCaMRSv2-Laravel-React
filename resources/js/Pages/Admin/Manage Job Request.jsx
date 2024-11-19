@@ -26,42 +26,26 @@ function Home({ jobOrder, totalCounts, filters }) {
     // Add debounced search effect
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (!searchQuery) {
-                // Only trigger for filter/sort changes if no search
-                get(
-                    route("admin.home", {
-                        search: searchQuery,
-                        status: filterStatus,
-                        priority: filterPriority,
-                        sort: sortBy,
-                    }),
-                    {
-                        preserveState: true,
-                        preserveScroll: true,
-                        replace: true,
-                    }
-                );
-            }
+            get(
+                route("admin.home", {
+                    search: searchQuery,
+                    status: filterStatus,
+                    priority: filterPriority,
+                    sort: sortBy,
+                }),
+                {
+                    preserveState: true,
+                    preserveScroll: false,
+                    replace: true,
+                }
+            );
         }, 300);
 
         return () => clearTimeout(timer);
-    }, [filterStatus, filterPriority, sortBy]); // Remove searchQuery from dependencies
+    }, [searchQuery, filterStatus, filterPriority, sortBy]);
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
-        get(
-            route("admin.home", {
-                search: e.target.value,
-                status: filterStatus,
-                priority: filterPriority,
-                sort: sortBy,
-            }),
-            {
-                preserveState: true,
-                preserveScroll: false,
-                replace: true,
-            }
-        );
     };
 
     const handleFilterStatusChange = (status) => {
@@ -923,9 +907,8 @@ function Home({ jobOrder, totalCounts, filters }) {
                                         >
                                             {link.url ? (
                                                 <Link
-                                                    href={link.url}
+                                                    href={`${link.url}&search=${searchQuery}&status=${filterStatus}&priority=${filterPriority}&sort=${sortBy}`}
                                                     className="page-link"
-                                                    preserveScroll
                                                     preserveState
                                                 >
                                                     <span
