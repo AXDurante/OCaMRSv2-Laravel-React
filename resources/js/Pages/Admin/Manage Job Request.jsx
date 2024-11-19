@@ -26,26 +26,42 @@ function Home({ jobOrder, totalCounts, filters }) {
     // Add debounced search effect
     useEffect(() => {
         const timer = setTimeout(() => {
-            get(
-                route("admin.home", {
-                    search: searchQuery,
-                    status: filterStatus,
-                    priority: filterPriority,
-                    sort: sortBy,
-                }),
-                {
-                    preserveState: true,
-                    preserveScroll: false,
-                    replace: true,
-                }
-            );
+            if (!searchQuery) {
+                // Only trigger for filter/sort changes if no search
+                get(
+                    route("admin.home", {
+                        search: searchQuery,
+                        status: filterStatus,
+                        priority: filterPriority,
+                        sort: sortBy,
+                    }),
+                    {
+                        preserveState: true,
+                        preserveScroll: true,
+                        replace: true,
+                    }
+                );
+            }
         }, 300);
 
         return () => clearTimeout(timer);
-    }, [searchQuery, filterStatus, filterPriority, sortBy]);
+    }, [filterStatus, filterPriority, sortBy]); // Remove searchQuery from dependencies
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
+        get(
+            route("admin.home", {
+                search: e.target.value,
+                status: filterStatus,
+                priority: filterPriority,
+                sort: sortBy,
+            }),
+            {
+                preserveState: true,
+                preserveScroll: false,
+                replace: true,
+            }
+        );
     };
 
     const handleFilterStatusChange = (status) => {
@@ -103,6 +119,7 @@ function Home({ jobOrder, totalCounts, filters }) {
             return sortBy === "newest" ? dateB - dateA : dateA - dateB;
         });
 
+    console.log(jobOrder);
     const totalRequests = jobOrder.data.length;
     const cancelledRequests = jobOrder.data.filter(
         (order) => order.status === "Cancelled"
@@ -898,36 +915,39 @@ function Home({ jobOrder, totalCounts, filters }) {
                         <div className="text-center">
                             <nav>
                                 <ul className="pagination">
-                                    {jobOrder.links.map((link, index) => (
-                                        <li
-                                            key={index}
-                                            className={`page-item ${
-                                                link.active ? "active" : ""
-                                            }`}
-                                        >
-                                            {link.url ? (
-                                                <Link
-                                                    href={`${link.url}&search=${searchQuery}&status=${filterStatus}&priority=${filterPriority}&sort=${sortBy}`}
-                                                    className="page-link"
-                                                    preserveState
-                                                >
-                                                    <span
-                                                        dangerouslySetInnerHTML={{
-                                                            __html: link.label,
-                                                        }}
-                                                    />
-                                                </Link>
-                                            ) : (
-                                                <span className="page-link">
-                                                    <span
-                                                        dangerouslySetInnerHTML={{
-                                                            __html: link.label,
-                                                        }}
-                                                    />
-                                                </span>
-                                            )}
-                                        </li>
-                                    ))}
+                                    {jobOrder.links &&
+                                        jobOrder.links.length > 3 && // Only show pagination if more than one page
+                                        jobOrder.links.map((link, index) => (
+                                            <li
+                                                key={index}
+                                                className={`page-item ${
+                                                    link.active ? "active" : ""
+                                                }`}
+                                            >
+                                                {link.url ? (
+                                                    <Link
+                                                        href={link.url}
+                                                        className="page-link"
+                                                        preserveScroll
+                                                        preserveState
+                                                    >
+                                                        <span
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: link.label,
+                                                            }}
+                                                        />
+                                                    </Link>
+                                                ) : (
+                                                    <span className="page-link">
+                                                        <span
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: link.label,
+                                                            }}
+                                                        />
+                                                    </span>
+                                                )}
+                                            </li>
+                                        ))}
                                 </ul>
                             </nav>
                         </div>
