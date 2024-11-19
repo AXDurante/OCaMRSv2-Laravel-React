@@ -97,35 +97,54 @@ class InstrumentationAccountController extends Controller
     }
 
     public function editTechPOST(Request $request) {
-        $theID = $request->input('userID');
-        
-        $user = Technician::findOrFail($theID);
+        try {
+            $theID = $request->input('userID');
+            $user = Technician::findOrFail($theID);
 
-        // Update validation rules
-        $validatedData = $request->validate([
-            'firstName' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],  // Only letters and spaces
-            'lastName' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],   // Only letters and spaces
-            'email' => 'required|string|email|max:255|unique:technicians,email,' . $theID,
-            'phoneNumber' => ['nullable', 'string', 'regex:/^[0-9]+$/', 'size:10'],     // Only numbers, exactly 10 digits
-            'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/',
-        ], [
-            'firstName.regex' => 'The first name field must only contain letters.',
-            'lastName.regex' => 'The last name field must only contain letters.',
-            'phoneNumber.regex' => 'The phone number must only contain numbers.',
-            'phoneNumber.size' => 'The phone number must be exactly 10 digits.',
-        ]);
-        
-        // Remove password field if it's empty
-        if (empty($validatedData['password'])) {
-            unset($validatedData['password']);
-        } else {
-            // Hash the new password
-            $validatedData['password'] = bcrypt($validatedData['password']);
+            \Log::info('Found Technician:', [
+                'user' => $user->toArray()
+            ]);
+
+            $validatedData = $request->validate([
+                'firstName' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+                'lastName' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
+                'email' => 'required|string|email|max:255|unique:technicians,email,' . $theID,
+                'phoneNumber' => ['required', 'string', 'regex:/^[0-9]+$/', 'size:11'],
+                'password' => 'nullable|string|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/',
+            ], [
+                'firstName.regex' => 'The first name field must only contain letters.',
+                'lastName.regex' => 'The last name field must only contain letters.',
+                'phoneNumber.regex' => 'The phone number must only contain numbers.',
+                'phoneNumber.size' => 'The phone number must be exactly 11 digits.',
+            ]);
+
+            if (empty($validatedData['password'])) {
+                unset($validatedData['password']);
+            } else {
+                $validatedData['password'] = Hash::make($validatedData['password']);
+            }
+
+            \Log::info('Validated Data:', [
+                'data' => $validatedData
+            ]);
+
+            $user->update($validatedData);
+
+            \Log::info('Updated Technician:', [
+                'user' => $user->fresh()->toArray()
+            ]);
+
+            return redirect()->route('admin.edit.tech', ['id' => $theID])
+                ->with('success', 'Profile updated successfully')
+                ->with('theUser', $user->fresh());
+        } catch (\Exception $e) {
+            \Log::error('Update Profile Error:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->withErrors([
+                'error' => 'An error occurred while updating the profile.'
+            ]);
         }
-
-        // Update the user with validated data
-        $user->update($validatedData);
-
-        return redirect()->route('admin.edit.tech', ['id' => $theID])->with('success', 'Profile updated successfully');
     }
 }

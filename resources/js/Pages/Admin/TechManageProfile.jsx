@@ -2,10 +2,31 @@ import AdminNavBar from "@/Layouts/AdminNavBar";
 import { useForm, Link } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 
+const styles = {
+    alertAh: {
+        backgroundColor: '#fff',
+        border: '1px solid #dc3545',
+        borderRadius: '4px',
+        padding: '10px',
+        marginTop: '5px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    },
+    alertTitle: {
+        color: '#dc3545',
+        fontWeight: 'bold',
+        marginBottom: '5px'
+    },
+    alertMessage: {
+        color: '#dc3545'
+    }
+};
+
 function Home({ theUser }) {
+    console.log('Initial Props - theUser:', theUser);
+
     const [showSuccess, setShowSuccess] = useState(false);
     const [showNoChanges, setShowNoChanges] = useState(false);
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, setError } = useForm({
         firstName: theUser.firstName,
         lastName: theUser.lastName,
         email: theUser.email,
@@ -15,24 +36,113 @@ function Home({ theUser }) {
         password_confirmation: '',
     });
 
+    useEffect(() => {
+        console.log('Form Data Updated:', data);
+        console.log('Current Errors:', errors);
+    }, [data, errors]);
+
     const hasChanges = () => {
-        return data.firstName !== theUser.firstName ||
+        const changes = data.firstName !== theUser.firstName ||
                data.lastName !== theUser.lastName ||
                data.email !== theUser.email ||
                data.phoneNumber !== theUser.phoneNumber ||
                (data.password !== '' && data.password_confirmation !== '');
+        
+        console.log('Changes Detected:', {
+            firstNameChanged: data.firstName !== theUser.firstName,
+            lastNameChanged: data.lastName !== theUser.lastName,
+            emailChanged: data.email !== theUser.email,
+            phoneChanged: data.phoneNumber !== theUser.phoneNumber,
+            passwordChanged: (data.password !== '' && data.password_confirmation !== ''),
+            hasChanges: changes
+        });
+        
+        return changes;
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        // Validate first name
+        if (!data.firstName) {
+            newErrors.firstName = 'First name is required';
+        } else if (!/^[a-zA-Z\s]+$/.test(data.firstName)) {
+            newErrors.firstName = 'First name must only contain letters';
+        }
+
+        // Validate last name
+        if (!data.lastName) {
+            newErrors.lastName = 'Last name is required';
+        } else if (!/^[a-zA-Z\s]+$/.test(data.lastName)) {
+            newErrors.lastName = 'Last name must only contain letters';
+        }
+
+        // Validate email
+        if (!data.email) {
+            newErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+
+        // Validate phone number
+        if (!data.phoneNumber) {
+            newErrors.phoneNumber = 'Phone number is required';
+        } else if (data.phoneNumber.length !== 11) {
+            newErrors.phoneNumber = 'Phone number must be exactly 11 digits';
+        } else if (!/^[0-9]+$/.test(data.phoneNumber)) {
+            newErrors.phoneNumber = 'Phone number must only contain numbers';
+        }
+
+        // Validate password and confirmation if either is provided
+        if (data.password || data.password_confirmation) {
+            if (data.password.length < 8) {
+                newErrors.password = 'Password must be at least 8 characters';
+            } else if (!/(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*#?&])/.test(data.password)) {
+                newErrors.password = 'Password must contain at least one uppercase letter, one number, and one special character';
+            }
+
+            if (data.password !== data.password_confirmation) {
+                newErrors.password_confirmation = 'Passwords do not match';
+            }
+        }
+
+        return newErrors;
     };
 
     const submit = (e) => {
         e.preventDefault();
+        console.log('Submit Triggered');
+        
+        // Perform client-side validation
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            console.error('Validation Errors:', validationErrors);
+            // Update each field's error individually
+            Object.keys(validationErrors).forEach(field => {
+                setError(field, validationErrors[field]);
+            });
+            return;
+        }
+        
         if (hasChanges()) {
             post(route('admin.update.tech', { id: data.userID }), {
                 preserveState: true,
                 preserveScroll: true,
-                onSuccess: () => {
+                onSuccess: (response) => {
+                    console.log('Success Response:', response);
                     setShowSuccess(true);
                     setTimeout(() => setShowSuccess(false), 5000);
                 },
+                onError: (errors) => {
+                    console.error('Submission Errors:', errors);
+                    // Handle server-side validation errors
+                    Object.keys(errors).forEach(field => {
+                        setError(field, errors[field]);
+                    });
+                },
+                onFinish: () => {
+                    console.log('Request Finished');
+                }
             });
         } else {
             setShowNoChanges(true);
@@ -41,22 +151,24 @@ function Home({ theUser }) {
     };
 
     useEffect(() => {
-        setShowSuccess(false);
-        setShowNoChanges(false);
-    }, [data]);
+        console.log('Message States:', { showSuccess, showNoChanges });
+    }, [showSuccess, showNoChanges]);
 
     const handleFirstNameChange = (e) => {
-        const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow letters and spaces
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+        console.log('First Name Change:', { original: e.target.value, filtered: value });
         setData('firstName', value);
     };
 
     const handleLastNameChange = (e) => {
-        const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow letters and spaces
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+        console.log('Last Name Change:', { original: e.target.value, filtered: value });
         setData('lastName', value);
     };
 
     const handlePhoneNumberChange = (e) => {
-        const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 11); // Only allow numbers, max 11 digits
+        const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 11);
+        console.log('Phone Number Change:', { original: e.target.value, filtered: value });
         setData('phoneNumber', value);
     };
 
@@ -103,7 +215,7 @@ function Home({ theUser }) {
                                                         onChange={handleFirstNameChange}
                                                     />
                                                     {errors.firstName && (
-                                                        <div className="invalid-feedback">
+                                                        <div className="invalid-feedback d-block">
                                                             {errors.firstName}
                                                         </div>
                                                     )}
@@ -118,7 +230,7 @@ function Home({ theUser }) {
                                                         onChange={handleLastNameChange}
                                                     />
                                                     {errors.lastName && (
-                                                        <div className="invalid-feedback">
+                                                        <div className="invalid-feedback d-block">
                                                             {errors.lastName}
                                                         </div>
                                                     )}
@@ -130,13 +242,18 @@ function Home({ theUser }) {
                                                     <input
                                                         name="email"
                                                         type="email"
-                                                        className="form-control shadow-sm animate-field"
+                                                        className={`form-control shadow-sm animate-field ${errors.email ? 'is-invalid' : ''}`}
                                                         value={data.email}
                                                         onChange={e => setData('email', e.target.value)}
                                                     />
+                                                    {errors.email && (
+                                                        <div className="invalid-feedback d-block">
+                                                            {errors.email}
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <div className="col-md-6 mb-4">
-                                                    <label className="form-label fw-bold">Contact Number</label>
+                                                    <label className="form-label fw-bold">Phone Number</label>
                                                     <input
                                                         name="phoneNumber"
                                                         type="text"
@@ -146,12 +263,13 @@ function Home({ theUser }) {
                                                         maxLength={11}
                                                     />
                                                     {errors.phoneNumber && (
-                                                        <div className="invalid-feedback">
-                                                            {errors.phoneNumber}
+                                                        <div style={styles.alertAh}>
+                                                            <div style={styles.alertTitle}>Invalid Input</div>
+                                                            <div style={styles.alertMessage}>{errors.phoneNumber}</div>
                                                         </div>
                                                     )}
                                                     <small className="text-muted">
-                                                        Phone number must be exactly 11 digits
+                                                        Phone number must be exactly 11 digits (e.g., 09123456789)
                                                     </small>
                                                 </div>
                                             </div>
@@ -164,21 +282,31 @@ function Home({ theUser }) {
                                                     <input
                                                         name="password"
                                                         type="password"
-                                                        className="form-control shadow-sm animate-field"
+                                                        className={`form-control shadow-sm animate-field ${errors.password ? 'is-invalid' : ''}`}
                                                         value={data.password}
                                                         onChange={e => setData('password', e.target.value)}
                                                     />
-                                                    {errors.password && <small className="text-danger mt-1">{errors.password}</small>}
+                                                    {errors.password && (
+                                                        <div style={styles.alertAh}>
+                                                            <div style={styles.alertTitle}>Invalid Input</div>
+                                                            <div style={styles.alertMessage}>{errors.password}</div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <div className="col-md-6 mb-4">
                                                     <label className="form-label fw-bold">Confirm Password</label>
                                                     <input
                                                         name="password_confirmation"
                                                         type="password"
-                                                        className="form-control shadow-sm animate-field"
+                                                        className={`form-control shadow-sm animate-field ${errors.password_confirmation ? 'is-invalid' : ''}`}
                                                         value={data.password_confirmation}
                                                         onChange={e => setData('password_confirmation', e.target.value)}
                                                     />
+                                                    {errors.password_confirmation && (
+                                                        <div className="invalid-feedback d-block">
+                                                            {errors.password_confirmation}
+                                                        </div>
+                                                    )}
                                                     <small className="text-muted">Leave password fields empty to keep the current password.</small>
                                                 </div>
                                             </div>
