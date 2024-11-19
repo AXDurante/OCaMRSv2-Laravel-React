@@ -9,6 +9,7 @@ import TextInput2 from "@/Components/TextInput2";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
+import { usePage } from "@inertiajs/react";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -16,10 +17,12 @@ export default function Login({ status, canResetPassword }) {
         password: "",
         remember: false,
     });
-
+    const { errorMessage } = usePage().props;
     const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [customErrorMessage, setCustomErrorMessage] = useState("");
 
     const submit = (e) => {
         e.preventDefault();
@@ -34,8 +37,16 @@ export default function Login({ status, canResetPassword }) {
                 reset("password");
                 setIsSubmitting(false);
             },
-            onError: () => {
+            onError: (errors) => {
                 setIsSubmitting(false);
+                if (error.response && error.response.data) {
+                    // Show the custom error message from the backend
+                    setCustomErrorMessage(error.response.data.message);
+                } else {
+                    setCustomErrorMessage(
+                        "An unexpected error occurred. Please try again."
+                    );
+                }
             },
             onFinish: () => {
                 setIsSubmitting(false);
@@ -61,6 +72,12 @@ export default function Login({ status, canResetPassword }) {
                             <h1 className="text-center titleLogin mb-5">
                                 Login
                             </h1>
+                            {errorMessage && (
+                                <div className="error-message">
+                                    {errorMessage}
+                                </div>
+                            )}
+
                             <InputLabel
                                 htmlFor="employeeID"
                                 value="Employee ID"
@@ -78,11 +95,12 @@ export default function Login({ status, canResetPassword }) {
                                 }
                                 className="form-control w-100"
                             />
-
-                            <InputError
-                                message={errors.employeeID}
-                                className="mt-2 text-danger"
-                            />
+                            {errors.employeeID && (
+                                <InputError
+                                    message={errors.employeeID}
+                                    className="mt-2 text-danger"
+                                />
+                            )}
                         </div>
 
                         <div className="mt-4">
@@ -120,11 +138,12 @@ export default function Login({ status, canResetPassword }) {
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </span>
                             </div>
-
-                            <InputError
-                                message={errors.password}
-                                className="mt-2 text-danger"
-                            />
+                            {errors.password && (
+                                <InputError
+                                    message={errors.password}
+                                    className="mt-2 text-danger"
+                                />
+                            )}
                         </div>
 
                         <div className="checkbox-container mt-3 mb-4">
