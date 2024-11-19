@@ -13,6 +13,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\Feedback;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -46,14 +47,71 @@ class AdminController extends Controller
         return redirect('/admin/login');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $jobOrder = JobOrder::with('user')
-            ->orderBy('job_id', 'desc')
-            ->paginate(10);
+        // Get total counts
+        $totalCounts = [
+            'total' => JobOrder::count(),
+            'forApproval' => JobOrder::where('status', 'For Approval')->count(),
+            'approved' => JobOrder::where('status', 'Approved')->count(),
+            'completed' => JobOrder::where('status', 'Completed')->count(),
+            'cancelled' => JobOrder::where('status', 'Cancelled')->count(),
+        ];
+
+        // Start a new query for job orders
+        $query = JobOrder::with('user');
+
+        // Apply search filter if search parameter exists
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->whereHas('user', function($userQuery) use ($request) {
+                    $searchTerm = '%' . $request->search . '%';
+                    $userQuery->where('firstName', 'LIKE', $searchTerm)
+                        ->orWhere('lastName', 'LIKE', $searchTerm)
+                        ->orWhere('email', 'LIKE', $searchTerm);
+                })
+                ->orWhere('job_id', 'LIKE', '%' . $request->search . '%')
+                ->orWhere('service_type', 'LIKE', '%' . $request->search . '%');
+            });
+        }
+
+        // Apply status filter
+        if ($request->status && $request->status !== 'all') {
+            $query->where('status', $request->status);
+        }
+
+        // Apply priority filter
+        if ($request->priority && $request->priority !== 'all') {
+            $query->where('priority', $request->priority);
+        }
+
+        // Apply sorting
+        $query->orderBy('date_request', $request->sort === 'oldest' ? 'asc' : 'desc');
+
+        // Get total count of filtered results
+        $totalFilteredCount = $query->count();
+
+        // Calculate pagination
+        $perPage = 10;
+        $currentPage = $request->page ?? 1;
+
+        // If searching and results are less than perPage, adjust pagination
+        if ($request->search && $totalFilteredCount <= $perPage) {
+            $currentPage = 1;
+        }
+
+        // Paginate the results
+        $jobOrder = $query->paginate($perPage, ['*'], 'page', $currentPage)->withQueryString();
 
         return Inertia::render('Admin/Manage Job Request', [
             'jobOrder' => $jobOrder,
+            'totalCounts' => $totalCounts,
+            'filters' => [
+                'search' => $request->search ?? '',
+                'status' => $request->status ?? 'all',
+                'priority' => $request->priority ?? 'all',
+                'sort' => $request->sort ?? 'newest',
+            ]
         ]);
     }
 
