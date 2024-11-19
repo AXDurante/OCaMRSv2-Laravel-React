@@ -23,7 +23,7 @@ class JobOrderController extends Controller
     public function index(Request $request)
     {
         $query = JobOrder::query();
-        
+
         // Apply status filter
         if ($request->filter && $request->filter !== 'all') {
             $query->where('status', $request->filter);
@@ -31,10 +31,10 @@ class JobOrderController extends Controller
 
         // Apply search
         if ($request->search) {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('job_id', 'like', "%{$request->search}%")
-                  ->orWhere('service_type', 'like', "%{$request->search}%")
-                  ->orWhere('dept_name', 'like', "%{$request->search}%");
+                    ->orWhere('service_type', 'like', "%{$request->search}%")
+                    ->orWhere('dept_name', 'like', "%{$request->search}%");
             });
         }
 
@@ -54,7 +54,7 @@ class JobOrderController extends Controller
         $jobOrders = $query->paginate(10)->withQueryString()->through(function ($order) {
             // Get feedback information
             $feedback = $order->feedback()->first();
-            
+
             return [
                 'job_id' => $order->job_id,
                 'status' => $order->status,
@@ -76,6 +76,7 @@ class JobOrderController extends Controller
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'email' => $user->email,
+            'position' => $user->position,
             'flash' => [
                 'success' => session('success')
             ],
@@ -105,6 +106,7 @@ class JobOrderController extends Controller
             'labLoc' => $user->labLoc,
             'lastID' => $lastID,
             'equipment' => $equipment,
+            'position' => $user->position,
         ]);
     }
 

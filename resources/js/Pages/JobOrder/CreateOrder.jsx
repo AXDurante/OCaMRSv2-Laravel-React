@@ -9,6 +9,7 @@ function CreateOrder({
     college,
     labLoc,
     equipment,
+    position
 }) {
     const equipmentName = equipment?.map((item) => item.equip_name) || [];
     const [remarksError, setRemarksError] = useState("");
@@ -23,7 +24,7 @@ function CreateOrder({
         dept_name: college,
         lab: labLoc,
         lab_loc: labLoc,
-        pos: "Laboratory Technician",
+        pos: position,
         employeeID: employeeID,
         remarks: "",
         status: "For Approval",

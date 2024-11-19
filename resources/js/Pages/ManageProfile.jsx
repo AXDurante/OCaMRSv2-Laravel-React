@@ -23,11 +23,8 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
         password_confirmation: "",
         photo: null,
         removePhoto: false,
+        position: auth.user.position,
     });
-
-    console.log('Auth user:', auth.user);
-    console.log('Form data:', data);
-    console.log('Phone number value:', auth.user.phoneNumber);
 
     useEffect(() => {
         if (flash && flash.message) {
@@ -43,7 +40,8 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
             data.email !== auth.user.email ||
             data.phoneNumber !== auth.user.phoneNumber ||
             (data.password !== "" && data.password_confirmation !== "") ||
-            data.photo !== null
+            data.photo !== null ||
+            data.position !== auth.user.position
         );
     };
 
@@ -243,6 +241,27 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
                                                 <small className="text-muted">
                                                     Phone number must be exactly 11 digits
                                                 </small>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-12 mb-4">
+                                                <label className="form-label fw-bold">
+                                                    Position
+                                                </label>
+                                                <div className="d-flex align-items-center">
+                                                    <input
+                                                        name="position"
+                                                        type="text"
+                                                        className="form-control shadow-sm animate-field"
+                                                        value={data.position}
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                "position",
+                                                                e.target.value
+                                                            )
+                                                        }
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="row">
