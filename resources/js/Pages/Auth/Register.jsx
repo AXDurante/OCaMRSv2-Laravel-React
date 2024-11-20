@@ -802,12 +802,7 @@ export default function Register() {
                                             message={errors.employeeID}
                                             className="mt-2 text-danger"
                                         />
-                                        {validationErrors.employeeID && (
-                                            <div className="invalid-feedback d-block">
-                                                <i className="fas fa-exclamation-circle me-1"></i>
-                                                {validationErrors.employeeID}
-                                            </div>
-                                        )}
+                                      
                                     </div>
 
                                     <div className="mt-4">
