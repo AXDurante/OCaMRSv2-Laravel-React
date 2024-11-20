@@ -62,6 +62,20 @@ function ViewCOC({ cocs, tsr_id }) {
                         )}
                     </tbody>
                 </table>
+                <div className="mt-3">
+                    <Link
+                        href={`/technician/TSR/details/${tsr_id}`}
+                        className="btn btn-secondary w-100 mt-2"
+                    >
+                        Back to Technical Service Report
+                    </Link>
+                    <Link
+                        href={`/technician/COC/${tsr_id}/create`}
+                        className="btn btn-warning w-100 mt-2"
+                    >
+                        Create Certificate of Calibration
+                    </Link>
+                </div>
             </div>
         </>
     );

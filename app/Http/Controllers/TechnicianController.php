@@ -209,12 +209,12 @@ class TechnicianController extends Controller
     {
         $tsrFields = $request->validate([
             'tsr_num' => ['required'],
-            'instrument' => ['required'],
+            'instrument' => ['nullable', 'string'],
             'model' => ['nullable', 'string'],
             'serial_num' => ['nullable', 'string'],
-            'problemReported' => ['nullable', 'string'],
-            'diagnosis' => ['nullable', 'string'],
-            'actionTaken' => ['nullable', 'string'],
+            'problemReported' => ['required'],
+            'diagnosis' => ['required'],
+            'actionTaken' => ['required'],
             'recommendation' => ['required'],
             'tsr_remarks' => ['nullable', 'string'],
             'date_request' => ['required'],
@@ -304,18 +304,18 @@ class TechnicianController extends Controller
 
         $tsrFields = $request->validate([
             'tsr_num' => ['required'],
-            'instrument' => ['required'],
+            'instrument' => ['nullable', 'string'],
             'model' => ['nullable', 'string'],
             'serial_num' => ['nullable', 'string'],
-            'problemReported' => ['nullable', 'string'],
-            'diagnosis' => ['nullable', 'string'],
-            'actionTaken' => ['nullable', 'string'],
+            'problemReported' => ['required'],
+            'diagnosis' => ['required'],
+            'actionTaken' => ['required'],
             'recommendation' => ['required'],
             'tsr_remarks' => ['nullable', 'string'],
             'date_request' => ['required'],
             'phone' => ['required'],
             'job_id' => ['required'],
-            'tech_photo' => ['nullable', 'string'], // Changed from 'image' to 'string'
+            'tech_photo' => ['nullable', 'string'],
         ]);
 
         // Get the authenticated user's full name and photo
@@ -384,7 +384,7 @@ class TechnicianController extends Controller
         // Create the CoC record
         $coc = CoC::create($cocFields);
 
-        return redirect()->route('technician.viewCoCDetails', $coc->coc_id)
+        return redirect()->route('technician.indexCOC', ['tsr_id' => $cocFields['tsr_id']])
             ->with('message', 'Certificate of Calibration created successfully');
     }
 

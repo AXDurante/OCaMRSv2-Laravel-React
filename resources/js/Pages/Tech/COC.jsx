@@ -5,9 +5,14 @@ import Modal from "react-modal"; // Import Modal
 import { useForm } from "@inertiajs/react";
 import COCpdf from "./COCpdf";
 import { FaCheckCircle, FaFlag } from "react-icons/fa"; // Import icons
+import { Link } from "@inertiajs/react";
+
 
 function COC({ tsr, auth }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const { data, setData, post, processing } = useForm({
         coc_num: "",
         college: tsr.job_order.dept_name,
         lab_loc: tsr.job_order.lab_loc,
@@ -31,9 +36,73 @@ function COC({ tsr, auth }) {
         setData(name, value);
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        post(route("technician.storeCoC"));
+
+        if (isSubmitting || processing) return;
+        
+        // Clear all previous errors first
+        setErrors({});
+        setIsSubmitting(true);
+
+        let validationErrors = {};
+        let hasErrors = false;
+
+        if (!data.coc_num) {
+            validationErrors.coc_num = "Please enter a Calibration Number.";
+            hasErrors = true;
+        }
+
+        if (!data.equipment) {
+            validationErrors.equipment = "Please enter the Equipment name.";
+            hasErrors = true;
+        }
+        if (!data.model) {
+            validationErrors.model = "Please enter the Model number.";
+            hasErrors = true;
+        }
+        if (!data.serial_num) {
+            validationErrors.serial_num = "Please enter the Serial number.";
+            hasErrors = true;
+        }
+        if (!data.calibration) {
+            validationErrors.calibration = "Please enter the Calibration procedure.";
+            hasErrors = true;
+        }
+        if (!data.calibration_res) {
+            validationErrors.calibration_res = "Please enter the Calibration result.";
+            hasErrors = true;
+        }
+        if (!data.manufacturer) {
+            validationErrors.manufacturer = "Please enter the Manufacturer.";
+            hasErrors = true;
+        }
+        if (!data.standard) {
+            validationErrors.standard = "Please enter the Standard used.";
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            setErrors(validationErrors);
+            setIsSubmitting(false); // Reset submitting state if validation fails
+            return;
+        }
+
+        try {
+            await post(route("technician.storeCoC"), {
+                onSuccess: () => {
+                    setIsSubmitting(false);
+                    // You might want to add success notification or redirect here
+                },
+                onError: (errors) => {
+                    setErrors(errors);
+                    setIsSubmitting(false);
+                },
+            });
+        } catch (error) {
+            console.error('Submission error:', error);
+            setIsSubmitting(false);
+        }
     };
 
     const [showPreview, setShowPreview] = useState(false); // Define showPreview state
@@ -118,6 +187,14 @@ function COC({ tsr, auth }) {
                                         </span>
                                     </div>
                                 </div>
+                                <div className="mt-4">
+                                    <Link href={route('technician.indexCOC', { tsr_id: tsr.tsr_id })}>
+                                        <button className="btn btn-light w-100 mb-2">
+                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                            View Certificates of Calibration
+                                        </button>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -131,106 +208,148 @@ function COC({ tsr, auth }) {
                                         {/* Form fields */}
                                         <div className="col-md-6">
                                             <label className="form-label fw-bold">
-                                                Calibration No.
+                                                Calibration No.*
                                             </label>
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className={`form-control ${errors.coc_num ? 'input-error' : ''}`}
                                                 name="coc_num"
                                                 value={data.coc_num} // Retain value
                                                 onChange={handleInputChange}
+                                                placeholder="Enter Calibration Number"
                                             />
+                                            {errors.coc_num && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.coc_num}
+                                            </div>
+                                        )}
                                         </div>
 
                                         <div className="col-md-6">
-                                            <label className="form-label fw-bold">
-                                                Equipment
-                                            </label>
+                                            <label className="form-label fw-bold">Equipment*</label>
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className={`form-control ${errors.equipment ? 'input-error' : ''}`}
                                                 name="equipment"
-                                                value={data.equipment} // Retain value
+                                                value={data.equipment}
                                                 onChange={handleInputChange}
+                                                placeholder="Enter Equipment Name"
                                             />
+                                            {errors.equipment && (
+                                                <div className="error-message">
+                                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                                    {errors.equipment}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="col-md-6">
-                                            <label className="form-label fw-bold">
-                                                Manufacturer
-                                            </label>
+                                            <label className="form-label fw-bold">Manufacturer*</label>
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className={`form-control ${errors.manufacturer ? 'input-error' : ''}`}
                                                 name="manufacturer"
-                                                value={data.manufacturer} // Retain value
+                                                value={data.manufacturer}
                                                 onChange={handleInputChange}
+                                                placeholder="Enter Manufacturer"
                                             />
+                                            {errors.manufacturer && (
+                                                <div className="error-message">
+                                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                                    {errors.manufacturer}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="col-md-6">
-                                            <label className="form-label fw-bold">
-                                                Model No.
-                                            </label>
+                                            <label className="form-label fw-bold">Model No.*</label>
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className={`form-control ${errors.model ? 'input-error' : ''}`}
                                                 name="model"
-                                                value={data.model} // Retain value
+                                                value={data.model}
                                                 onChange={handleInputChange}
+                                                placeholder="Enter Model Number"
                                             />
+                                            {errors.model && (
+                                                <div className="error-message">
+                                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                                    {errors.model}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="col-md-6">
-                                            <label className="form-label fw-bold">
-                                                Serial No.
-                                            </label>
+                                            <label className="form-label fw-bold">Serial No.*</label>
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className={`form-control ${errors.serial_num ? 'input-error' : ''}`}
                                                 name="serial_num"
-                                                value={data.serial_num} // Retain value
+                                                value={data.serial_num}
                                                 onChange={handleInputChange}
+                                                placeholder="Enter Serial Number"
                                             />
+                                            {errors.serial_num && (
+                                                <div className="error-message">
+                                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                                    {errors.serial_num}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="col-md-6">
-                                            <label className="form-label fw-bold">
-                                                Procedure and Traceability
-                                            </label>
+                                            <label className="form-label fw-bold">Procedure and Traceability*</label>
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className={`form-control ${errors.calibration ? 'input-error' : ''}`}
                                                 name="calibration"
-                                                value={data.calibration} // Retain value
+                                                value={data.calibration}
                                                 onChange={handleInputChange}
+                                                placeholder="Enter Procedure and Traceability"
                                             />
+                                            {errors.calibration && (
+                                                <div className="error-message">
+                                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                                    {errors.calibration}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="col-md-6">
-                                            <label className="form-label fw-bold">
-                                                Standard Used
-                                            </label>
+                                            <label className="form-label fw-bold">Standard Used*</label>
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className={`form-control ${errors.standard ? 'input-error' : ''}`}
                                                 name="standard"
-                                                value={data.standard} // Retain value
+                                                value={data.standard}
                                                 onChange={handleInputChange}
+                                                placeholder="Enter Standard Used"
                                             />
+                                            {errors.standard && (
+                                                <div className="error-message">
+                                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                                    {errors.standard}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="col-md-6">
-                                            <label className="form-label fw-bold">
-                                                Calibration Result
-                                            </label>
+                                            <label className="form-label fw-bold">Calibration Result*</label>
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className={`form-control ${errors.calibration_res ? 'input-error' : ''}`}
                                                 name="calibration_res"
-                                                value={data.calibration_res} // Retain value
+                                                value={data.calibration_res}
                                                 onChange={handleInputChange}
+                                                placeholder="Enter Calibration Result"
                                             />
+                                            {errors.calibration_res && (
+                                                <div className="error-message">
+                                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                                    {errors.calibration_res}
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="col-12">
