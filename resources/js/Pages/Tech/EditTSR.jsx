@@ -5,10 +5,21 @@ import TSRpdf from "./TSRpdf";
 import { PDFViewer } from "@react-pdf/renderer"; // Removed PDFDownloadLink
 import Modal from "react-modal"; // Import Modal
 import { Link, useForm } from "@inertiajs/react";
+import {
+    FaTimesCircle,
+    FaCheck,
+    FaCheckCircle,
+    FaHourglassHalf,
+    FaSpinner,
+    FaClock,
+    FaFlag,
+} from "react-icons/fa";
 
 function EditTSR({jobOrder, auth, tsr}) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
-    
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
     };
@@ -18,7 +29,7 @@ function EditTSR({jobOrder, auth, tsr}) {
     };
 
     // Initialize useForm with existing TSR data
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, put, processing } = useForm({
         tsr_num: tsr.tsr_num || '',
         instrument: tsr.instrument || '',
         model: tsr.model || '',
@@ -41,295 +52,412 @@ function EditTSR({jobOrder, auth, tsr}) {
         setData(name, value);
     };
 
-    function onSubmit(e) {
+    async function onSubmit(e) {
         e.preventDefault();
-        put(route('technician.updateTSR', tsr.tsr_id));
+
+        if (isSubmitting || processing) return;
+        
+        // Clear all previous errors first
+        setErrors({});
+        setIsSubmitting(true);
+
+        let validationErrors = {};
+        let hasErrors = false;
+
+        if (!data.tsr_num) {
+            validationErrors.tsr_num = "Please enter a TSR number.";
+            hasErrors = true;
+        }
+
+        if (!data.problemReported) {
+            validationErrors.problemReported = "Please enter input, or type `N/A`.";
+            hasErrors = true;
+        }
+
+        if (!data.diagnosis) {
+            validationErrors.diagnosis = "Please enter input, or type `N/A`.";
+            hasErrors = true;
+        }
+
+        if (!data.actionTaken) {
+            validationErrors.actionTaken = "Please enter input, or type `N/A`.";
+            hasErrors = true;
+        }
+
+        if (!data.recommendation) {
+            validationErrors.recommendation = "Please select from the dropdown.";
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            setErrors(validationErrors);
+            setIsSubmitting(false); // Reset submitting state if validation fails
+            return;
+        }
+
+        try {
+            setIsSubmitting(true);
+            await put(route('technician.updateTSR', tsr.tsr_id), {               
+                    onSuccess: () => {
+                    setIsSubmitting(false);
+                },
+                onError: (errors) => {
+                    setErrors(errors);
+                    setIsSubmitting(false);
+                },
+            });
+        } catch (error) {
+            console.error('Submission error:', error);
+            setIsSubmitting(false);
+        }
     }
 
     return (
-        <div className="d-flex">
-            {/* Modal for PDF Preview */}
-            <Modal isOpen={showPreview} onRequestClose={closeModal}>
-                <h5>Print Preview:</h5>
-                <PDFViewer
-                    style={{
-                        width: "100%",
-                        height: "80%",
-                        border: "none", // Optional: remove border for a cleaner look
-                    }}
-                >
-                    <TSRpdf 
-                        jobOrder={tsr.job_order}
-                        reportDetails={{
-                            ...tsr,
-                            tech_photo: auth.photo, // Pass the filename
-                            tech_signature: `/storage/photos/technicianSignature/${auth.photo}`, // Construct full URL path
-                            tech_id: data.tech_id,
-                            // Only include admin signature and name if they exist in the database
-                            ...(tsr.admin_photo && {
-                                admin_signature: `/storage/photos/adminSignature/${tsr.admin_photo}`,
-                                admin_name: tsr.admin_name
-                            })
-                        }} 
-                    />
-                </PDFViewer>
-                <button onClick={closeModal}>Close</button> {/* Close button */}
-            </Modal>
+        <div className="container py-4">
+            <h2 className="mb-4">
+                Technical Service Report{" "}
+                <span className="text-muted fw-light">| Create</span>
+            </h2>
 
-            <div id="content" className=" flex-fill p-3">
-                <div>
-                    <div>
-                        <h1 className="d-inline">
-                            Technical Service Report |{" "}
-                        </h1>
-                        <h1 className="d-inline fw-light"> Edit </h1>
-                        <hr />
-                    </div>
-                    <div className="mt-3">
-                        <div className="row forms-bg">
-                            <div className="col-12 col-md-4 profile-bg d-flex flex-column align-items-center p-3 text-white">
-                                <div className="mt-10">
-                                    <i className="bi bi-person-fill fs-2 text-primary"></i>
+            <div className="card-container">
+                <div className="row g-0">
+                    {/* Left Sidebar */}
+                    <div className="col-12 col-md-3">
+                        <div className="card bg-dark text-white h-100 rounded-0 rounded-start rounded-bottom-md-start rounded-end-md-0">
+                            <div className="card-body d-flex flex-column justify-content-center align-items-center">
+                                <div className="mb-4">
+                                    <i className="bi bi-file-text-fill fs-1"></i>
                                 </div>
-                                <h5 className="mb-4 mt-9 ">
-                                    Analytical Balance
-                                </h5>
+                                <h3 className="mb-3">
+                                    TSR-{data.tsr_num || "000"}
+                                </h3>
 
-                                <div className="mt-20">
-                                    <h5 className="d-inline">Priority: </h5>
-                                    <h5 className="d-inline fw-light text-warning">
-                                        Regular
-                                    </h5>
+                                {/* Added Status Section */}
+                                <div className="mb-4 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Status
+                                    </small>
+                                    <span
+                                        className={`badge ${
+                                            jobOrder.status === "Cancelled"
+                                                ? "bg-danger"
+                                                : jobOrder.status === "Approved"
+                                                ? "bg-success"
+                                                : jobOrder.status ===
+                                                  "Completed"
+                                                ? "bg-info"
+                                                : jobOrder.status ===
+                                                  "For Approval"
+                                                ? "bg-warning"
+                                                : jobOrder.status ===
+                                                  "Processing"
+                                                ? "bg-primary"
+                                                : jobOrder.status === "Pending"
+                                                ? "bg-secondary"
+                                                : "bg-secondary"
+                                        } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
+                                    >
+                                        {jobOrder.status === "Cancelled" && (
+                                            <FaTimesCircle />
+                                        )}
+                                        {jobOrder.status === "Approved" && (
+                                            <FaCheck />
+                                        )}
+                                        {jobOrder.status === "Completed" && (
+                                            <FaCheckCircle />
+                                        )}
+                                        {jobOrder.status === "For Approval" && (
+                                            <FaHourglassHalf />
+                                        )}
+                                        {jobOrder.status === "Processing" && (
+                                            <FaSpinner className="spinner-icon" />
+                                        )}
+                                        {jobOrder.status === "Pending" && (
+                                            <FaClock />
+                                        )}
+                                        {jobOrder.status}
+                                    </span>
                                 </div>
 
-                                {/* <h6 className="mt-4">Related Documents:</h6>
-                                <div className="mt-1 w-100">
-                                    <button className="btn btn-light w-100 mb-2">
-                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                        Technical Service Report
-                                    </button>
-                                    <button className="btn btn-light w-100 mb-2">
-                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                        Job Request
-                                    </button>
+                                {/* Added Priority Section */}
+                                <div className="mb-4 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Priority
+                                    </small>
+                                    <span
+                                        className={`badge ${
+                                            jobOrder.priority === "High"
+                                                ? "bg-danger"
+                                                : jobOrder.priority === "Medium"
+                                                ? "bg-warning"
+                                                : "bg-success"
+                                        } px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1`}
+                                    >
+                                        <FaFlag />
+                                        {jobOrder.priority}
+                                    </span>
+                                </div>
+
+                                {/* Added Technician Info */}
+                                <div className="mt-2 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Technician
+                                    </small>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <i className="bi bi-person-circle"></i>
+                                        <span>
+                                            {auth.user.firstName}{" "}
+                                            {auth.user.lastName}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Added Date Info */}
+                                <div className="mt-4 text-center">
+                                    <small className="text-muted d-block mb-1">
+                                        Created On
+                                    </small>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <i className="bi bi-calendar3"></i>
+                                        <span>
+                                            {new Date().toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="mt-4">
                                     <Link
-                                        href="">
+                                        href={route("technician.viewTSRDetails", tsr.tsr_id)}
+                                    >
                                         <button className="btn btn-light w-100 mb-2">
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            Create Certificate of Calibration
+                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                            Return to Details
                                         </button>
                                     </Link>
-                                </div> */}
+                                </div>
                             </div>
+                        </div>
+                    </div>
 
-                            <div className="col-12 col-md-8">
-                                <div className="pt-5 pb-5 p-3">
-                                <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                TSR Number*
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="tsr_num"
-                                                value={data.tsr_num}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Instrument*
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="instrument"
-                                                value={data.instrument}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Date Requested
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={jobOrder.date_request}
-                                                disabled
-                                            />
-                                        </div>
+                    {/* Main Form */}
+                    <div className="col-12 col-md-9">
+                        <div className="card shadow-sm h-100 rounded-0 rounded-end rounded-top-md-end rounded-bottom-md-end mt-3 mt-md-0">
+                            <div className="card-body">
+                                <div className="row g-3">
+                                    {/* Form fields */}
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            TSR Number*
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className={`form-control ${errors.tsr_num ? 'input-error' : ''}`}
+                                            name="tsr_num"
+                                            value={data.tsr_num}
+                                            onChange={handleInputChange}
+                                            placeholder="Enter TSR Number"
+                                        />
+                                        {errors.tsr_num && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.tsr_num}
+                                            </div>
+                                        )}
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Tel No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                value={jobOrder.user.phoneNumber}
-                                                disabled
-                                            />
-                                        </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Date Requested
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={jobOrder.date_request}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Model
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="model"
-                                                value={data.model}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Instrument
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="instrument"
+                                            value={data.instrument}
+                                            onChange={handleInputChange}
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Serial No.
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="serial_num"
-                                                value={data.serial_num}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Tel No.
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={jobOrder.user.phoneNumber}
+                                            disabled
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Problem Reported
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="problemReported"
-                                                value={data.problemReported}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Model
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="model"
+                                            value={data.model}
+                                            onChange={handleInputChange}
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Diagnosis/Observation
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="diagnosis"
-                                                value={data.diagnosis}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Serial No.
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="serial_num"
+                                            value={data.serial_num}
+                                            onChange={handleInputChange}
+                                        />
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Action Taken
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="actionTaken"
-                                                value={data.actionTaken}
-                                                onChange={handleInputChange}
-                                            />
-                                        </div>
+                                    <div className="col-12">
+                                        <label className="form-label fw-bold">
+                                            Problem Reported*
+                                        </label>
+                                        <textarea
+                                            className={`form-control ${errors.problemReported ? 'input-error' : ''}`}
+                                            name="problemReported"
+                                            value={data.problemReported}
+                                            onChange={handleInputChange}
+                                            rows="2"
+                                            placeholder="Enter Problem Reported or type N/A"
+                                        />
+                                        {errors.problemReported && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.problemReported}
+                                            </div>
+                                        )}
                                     </div>
 
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Recommendation
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <select 
-                                                className="w-100 rounded p-2"
+                                    <div className="col-12">
+                                        <label className="form-label fw-bold">
+                                            Diagnosis/Observation*
+                                        </label>
+                                        <textarea
+                                            className={`form-control ${errors.diagnosis ? 'input-error' : ''}`}
+                                            name="diagnosis"
+                                            value={data.diagnosis}
+                                            onChange={handleInputChange}
+                                            rows="2"
+                                            placeholder="Enter Diagnosis/Observation or type N/A"
+                                        />
+                                        {errors.diagnosis && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.diagnosis}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="col-12">
+                                        <label className="form-label fw-bold">
+                                            Action Taken*
+                                        </label>
+                                        <textarea
+                                            className={`form-control ${errors.actionTaken ? 'input-error' : ''}`}
+                                            name="actionTaken"
+                                            value={data.actionTaken}
+                                            onChange={handleInputChange}
+                                            rows="2"
+                                            placeholder="Enter Action Taken or type N/A"
+                                        />
+                                        {errors.actionTaken && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.actionTaken}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Recommendation*
+                                        </label>
+                                        <div>
+                                            <select
+                                                className={`form-input ${errors.recommendation ? 'input-error' : ''}`}
                                                 name="recommendation"
                                                 value={data.recommendation}
                                                 onChange={handleInputChange}
                                             >
-                                                <option value="" disable selected> Please Select an Option </option>
-                                                <option value="For Pull-Out">For Pull-Out</option>
-                                                <option value="Forward to Supplier">Forward to Supplier</option>
-                                                <option value="For Repair">For Repair</option>
-                                                <option value="Beyond Repair">Beyond Repair</option>
+                                                <option value="" disabled>
+                                                    Please Select an Option
+                                                </option>
+                                                <option value="None">
+                                                    None
+                                                </option>
+                                                <option value="For Pull-Out">
+                                                    For Pull-Out
+                                                </option>
+                                                <option value="Forward to Supplier">
+                                                    Forward to Supplier
+                                                </option>
+                                                <option value="For Repair">
+                                                    For Repair
+                                                </option>
+                                                <option value="Beyond Repair">
+                                                    Beyond Repair
+                                                </option>
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12 col-sm-3 mb-3">
-                                            <label className="form-label fw-bold d-block text-truncate">
-                                                Remarks
-                                            </label>
-                                        </div>
-                                        <div className="col-12 col-sm-9 mb-3">
-                                            <input
-                                                type="text"
-                                                className="form-control rounded"
-                                                name="tsr_remarks"
-                                                value={data.tsr_remarks}
-                                                onChange={handleInputChange}
-                                            />
+                                            {errors.recommendation && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.recommendation}
+                                            </div>
+                                        )}
                                         </div>
                                     </div>
 
-                                    <div className="row"></div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary mb-3"
-                                                onClick={handlePreviewClick} // Add click handler
-                                            >
-                                                Preview PDF
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary ms-3 mb-3"
-                                                onClick={onSubmit}
-                                            >
-                                                Save Document
-                                            </button>
-                                            
-                                        </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label fw-bold">
+                                            Remarks
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="tsr_remarks"
+                                            value={data.tsr_remarks}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="col-12 mt-4">
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-primary me-2"
+                                            onClick={handlePreviewClick}
+                                        >
+                                            <i className="bi bi-eye me-1"></i>
+                                            Preview PDF
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary"
+                                            onClick={onSubmit}
+                                        >
+                                            <i className="bi bi-save me-1"></i>
+                                            Edit Document
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -337,6 +465,66 @@ function EditTSR({jobOrder, auth, tsr}) {
                     </div>
                 </div>
             </div>
+
+            {/* PDF Preview Modal */}
+            <Modal
+                isOpen={showPreview}
+                onRequestClose={closeModal}
+                className="modal-lg"
+                overlayClassName="modal-overlay"
+                style={{
+                    content: {
+                        width: "90%",
+                        height: "90%",
+                        margin: "auto",
+                        backgroundColor: "white",
+                        borderRadius: "12px",
+                        padding: "0",
+                        border: "none",
+                        boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+                        overflow: "hidden", // Prevents content from breaking the border radius
+                    },
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        zIndex: 1000,
+                    },
+                }}
+            >
+                <div className="modal-header d-flex justify-content-between align-items-center px-4 py-3">
+                    <div className="d-flex align-items-center gap-2">
+                        <i className="bi bi-file-pdf text-primary"></i>
+                        <span className="modal-title">Preview Document</span>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={closeModal}
+                        className="close-button"
+                        aria-label="Close"
+                    >
+                        <i className="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div
+                    className="modal-body"
+                    style={{ height: "calc(100% - 60px)" }}
+                >
+                    <PDFViewer
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            border: "none",
+                        }}
+                    >
+                        <TSRpdf
+                            jobOrder={jobOrder}
+                            reportDetails={{
+                                ...data,
+                                tech_id: `${auth.user.firstName} ${auth.user.lastName}`,
+                            }}
+                        />
+                    </PDFViewer>
+                </div>
+            </Modal>
         </div>
     );
 }
