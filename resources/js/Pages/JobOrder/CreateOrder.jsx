@@ -57,17 +57,19 @@ function CreateOrder({
     };
 
     const removeInstrument = (index) => {
-        // Prevent removing the last instrument
+        // Prevent removing if only one instrument remains
         if (data.instruments.length <= 1) {
             alert("You must have at least one instrument.");
             return;
         }
-        
-        const updatedInstruments = data.instruments.filter(
-            (_, i) => i !== index
-        );
-        setData("instruments", updatedInstruments);
-        setInstrumentCount(prev => prev - 1);
+
+        // Confirm deletion with user
+        if (window.confirm(`Are you sure you want to delete Instrument ${index + 1}?`)) {
+            const updatedInstruments = data.instruments.filter(
+                (_, i) => i !== index
+            );
+            setData("instruments", updatedInstruments);
+        }
     };
 
     const handleInputChange = (index, event) => {
@@ -102,6 +104,11 @@ function CreateOrder({
         // Service type validation
         if (!data.service_type) {
             validationErrors.service_type = "Please select a service type.";
+            hasErrors = true;
+        }
+
+        if (!data.trans_type) {
+            validationErrors.trans_type = "Please input a transportation method, or None.";
             hasErrors = true;
         }
 
@@ -239,11 +246,17 @@ function CreateOrder({
                             <label className="form-label">Transportation</label>
                             <input
                                 type="text"
-                                className="form-input"
+                                className={`form-input ${errors.trans_type ? 'input-error' : ''}`}
                                 value={data.trans_type}
                                 onChange={(e) => setData("trans_type", e.target.value)}
                                 placeholder="Please indicate if there is any, or type None if otherwise"
                             />
+                            {errors.trans_type && (
+                                <div className="error-message">
+                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                    {errors.trans_type}
+                                </div>  
+                            )}
                         </div>
 
                         {/* Remarks */}
@@ -292,6 +305,12 @@ function CreateOrder({
                                         <option key={i} value={name}>{name}</option>
                                     ))}
                                 </select>
+                                {errors[`instrument_${index}`] && (
+                                <div className="error-message">
+                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                    {errors[`instrument_${index}`]}
+                                    </div>
+                                )}
                             </div>
 
                             {/* Serial Number */}
@@ -305,6 +324,12 @@ function CreateOrder({
                                     onChange={(e) => handleInputChange(index, e)}
                                     placeholder="Enter serial number or property number"
                                 />
+                                {errors[`serialNumber_${index}`] && (
+                                <div className="error-message">
+                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                    {errors[`serialNumber_${index}`]}
+                                    </div>
+                                )}
                             </div>
 
                             {/* Model */}
@@ -338,12 +363,18 @@ function CreateOrder({
                                 <label className="form-label required-field">Quantity</label>
                                 <input
                                     type="number"
-                                    className="form-input"
+                                    className={`form-input ${errors[`quantity_${index}`] ? 'input-error' : ''}`}
                                     name="qty"
                                     value={instrument.qty}
                                     onChange={(e) => handleInputChange(index, e)}
                                     min="1"
                                 />
+                                {errors[`quantity_${index}`] && (
+                                <div className="error-message">
+                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                    {errors[`quantity_${index}`]}
+                                    </div>
+                                )}
                             </div>
 
                             {/* Delete Button */}

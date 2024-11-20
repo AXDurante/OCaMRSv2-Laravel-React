@@ -3,7 +3,7 @@ import Navbar2 from "@/Layouts/Navbar2";
 import { PDFViewer } from "@react-pdf/renderer";
 import Modal from "react-modal";
 import COCpdf from "./COCpdf";
-import { usePage, useForm } from "@inertiajs/react";
+import { Link, usePage, useForm } from "@inertiajs/react";
 import {
     FaEdit,
     FaFlag,
@@ -15,7 +15,9 @@ import {
 } from "react-icons/fa";
 
 function EditCOC({ tsr, auth, coc }) {
-    const { data, setData, put, processing, errors } = useForm({
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { data, setData, put, processing } = useForm({
         coc_num: coc.coc_num || "",
         college: coc.college || tsr.job_order.dept_name,
         lab_loc: coc.lab_loc || tsr.job_order.lab_loc,
@@ -41,9 +43,73 @@ function EditCOC({ tsr, auth, coc }) {
         setData(name, value);
     };
 
-    function onSubmit(e) {
+    async function onSubmit(e) {
         e.preventDefault();
-        put(route("technician.update-coc", coc.coc_id));
+
+        if (isSubmitting || processing) return;
+        
+        // Clear all previous errors first
+        setErrors({});
+        setIsSubmitting(true);
+
+        let validationErrors = {};
+        let hasErrors = false;
+
+        if (!data.coc_num) {
+            validationErrors.coc_num = "Please enter a Calibration Number.";
+            hasErrors = true;
+        }
+
+        if (!data.equipment) {
+            validationErrors.equipment = "Please enter the Equipment name.";
+            hasErrors = true;
+        }
+        if (!data.model) {
+            validationErrors.model = "Please enter the Model number.";
+            hasErrors = true;
+        }
+        if (!data.serial_num) {
+            validationErrors.serial_num = "Please enter the Serial number.";
+            hasErrors = true;
+        }
+        if (!data.calibration) {
+            validationErrors.calibration = "Please enter the Calibration procedure.";
+            hasErrors = true;
+        }
+        if (!data.calibration_res) {
+            validationErrors.calibration_res = "Please enter the Calibration result.";
+            hasErrors = true;
+        }
+        if (!data.manufacturer) {
+            validationErrors.manufacturer = "Please enter the Manufacturer.";
+            hasErrors = true;
+        }
+        if (!data.standard) {
+            validationErrors.standard = "Please enter the Standard used.";
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            setErrors(validationErrors);
+            setIsSubmitting(false); // Reset submitting state if validation fails
+            return;
+        }
+
+        try {
+            await put(route("technician.update-coc", coc.coc_id), {
+                onSuccess: () => {
+                    setIsSubmitting(false);
+                    // You might want to add success notification or redirect here
+                },
+                onError: (errors) => {
+                    setErrors(errors);
+                    setIsSubmitting(false);
+                },
+            });
+        } catch (error) {
+            console.error('Submission error:', error);
+            setIsSubmitting(false);
+        }
     }
 
     const [showPreview, setShowPreview] = useState(false);
@@ -56,7 +122,6 @@ function EditCOC({ tsr, auth, coc }) {
         setShowPreview(false);
     };
 
-    console.log(coc);
     return (
         <div className="container py-4">
             <h2 className="mb-4">
@@ -170,6 +235,17 @@ function EditCOC({ tsr, auth, coc }) {
                                             {new Date().toLocaleDateString()}
                                         </span>
                                     </div>
+                                </div>
+
+                                <div className="mt-4">
+                                    <Link
+                                        href={route("technician.viewCoCDetails", coc.coc_id)}
+                                    >
+                                        <button className="btn btn-light w-100 mb-2">
+                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                            Return to Details
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

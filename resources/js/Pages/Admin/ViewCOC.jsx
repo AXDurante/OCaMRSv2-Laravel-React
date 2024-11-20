@@ -66,6 +66,14 @@ function ViewCOC({ cocs, tsr_id }) {
                         )}
                     </tbody>
                 </table>
+                <div className="mt-3">
+                    <Link
+                        href={`/admin/TSR/details/${tsr_id}`}
+                        className="btn btn-secondary w-100 mt-2"
+                    >
+                        Back to Technical Service Report
+                    </Link>
+                </div>
             </div>
         </>
     );

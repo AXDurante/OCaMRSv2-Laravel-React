@@ -76,29 +76,19 @@ function ViewTSRDetails({ tsr }) {
                                     </div>
                                 </div>
 
-                                <h6 className="mt-4">Related Documents:</h6>
-                                <div className="mt-1 w-100">
-                                    {tsr.coc ? (
-                                        <Link
-                                            href={route("admin.indexCOC", {
-                                                tsr_id: tsr.tsr_id,
-                                            })}
-                                        >
-                                            <button className="btn btn-light w-100 mb-2">
-                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                                View Certificates of Calibration
-                                            </button>
+                                <div className="mt-4">
+                                    <Link href={route('admin.indexCOC', { tsr_id: tsr.tsr_id })}>
+                                                    <button className="btn btn-light w-100 mb-2">
+                                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                        View Certificates of Calibration
+                                                    </button>
                                         </Link>
-                                    ) : (
-                                        <button
-                                            className="btn btn-light w-100 mb-2"
-                                            disabled
-                                        >
-                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
-                                            No Certificate of Calibration
-                                            Available
-                                        </button>
-                                    )}
+                                        <Link href={`/admin/showJobOrder/${tsr.job_id}`}>
+                                                    <button className="btn btn-light w-100 mb-2">
+                                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                        Return to Job Order
+                                                    </button>
+                                        </Link>
                                 </div>
                             </div>
                         </div>

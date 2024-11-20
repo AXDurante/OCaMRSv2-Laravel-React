@@ -1,10 +1,13 @@
 import { useForm } from "@inertiajs/react";
 import AdminNavBar from "@/Layouts/AdminNavBar";
-
+import { useState } from "react";
 function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
+    const [errors, setErrors] = useState({}); // State for all errors
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const equipmentName = equipment?.map((item) => item.equip_name) || [];
 
-    const { data, setData, put, errors, processing } = useForm({
+    const { data, setData, put, processing } = useForm({
         service_type: jobOrder.service_type || "",
         trans_type: jobOrder.trans_type || "None",
         dept_name: college,
@@ -46,10 +49,17 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
     };
 
     const removeInstrument = (index) => {
-        const updatedInstruments = data.instruments.filter(
-            (_, i) => i !== index
-        );
-        setData("instruments", updatedInstruments);
+        if (data.instruments.length <= 1) {
+            alert("You must have at least one instrument.");
+            return;
+        }
+
+        if (window.confirm(`Are you sure you want to delete Instrument ${index + 1}?`)) {
+            const updatedInstruments = data.instruments.filter(
+                (_, i) => i !== index
+            );
+            setData("instruments", updatedInstruments);
+        }
     };
 
     const handleInputChange = (index, event) => {
@@ -90,23 +100,69 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
         return true;
     };
 
-    function onSubmit(e) {
+    async function onSubmit(e) {
         e.preventDefault();
-        if (validateForm()) {
-            put(route("admin.updateJobOrder", jobOrder.job_id), {
+        
+        // Prevent double submission
+        if (isSubmitting || processing) return;
+        
+        // Clear all previous errors first
+        setErrors({});
+        
+        // Validate all fields first
+        let validationErrors = {};
+        let hasErrors = false;
+
+        // Check for instruments
+        if (data.instruments.length === 0) {
+            validationErrors.instruments = "At least one instrument is required.";
+            alert("Please add at least one instrument before submitting.");
+            hasErrors = true;
+        }
+
+        // Service type validation
+        if (!data.trans_type.trim()) {
+            validationErrors.trans_type = "Please input transportation method, or type None.";
+            hasErrors = true;
+        }
+
+        // Instrument validation
+        data.instruments.forEach((instrument, index) => {
+            if (!instrument.instrument) {
+                validationErrors[`instrument_${index}`] = "Please select an equipment.";
+                hasErrors = true;
+            }
+            if (!instrument.instrument_num) {
+                validationErrors[`serialNumber_${index}`] = "Serial Number is required.";
+                hasErrors = true;
+            }
+            if (!instrument.qty || instrument.qty < 1) {
+                validationErrors[`quantity_${index}`] = "Quantity must be at least 1.";
+                hasErrors = true;
+            }
+        });
+
+        // If there are validation errors, set them and return
+        if (hasErrors) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        // If we get here, all validation passed
+        try {
+            setIsSubmitting(true);
+            await put(route("admin.updateJobOrder", jobOrder.job_id), {
                 onSuccess: () => {
-                    // Success handling is managed by the redirect with flash message
+                    setIsSubmitting(false);
                 },
                 onError: (errors) => {
-                    if (errors.error) {
-                        alert(errors.error);
-                    } else {
-                        alert(
-                            "An error occurred while updating the job order."
-                        );
-                    }
+                    setErrors(errors);
+                    setIsSubmitting(false);
                 },
             });
+        } catch (error) {
+            console.error('Submission error:', error);
+            setIsSubmitting(false);
         }
     }
 
@@ -172,42 +228,51 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                         Request Information
                     </h4>
                     <div className="row g-3">
+                        {/* Service Type */}
                         <div className="col-md-6">
                             <label className="form-label text-muted">
                                 Service Requested*
                             </label>
-                            <div className="dropdown">
-                                <select
-                                    className="btn btn-light dropdown-toggle w-100"
-                                    value={data.service_type}
-                                    onChange={(e) =>
-                                        setData("service_type", e.target.value)
-                                    }
-                                >
-                                    <option value="" disabled>
-                                        Select an Option
-                                    </option>
-                                    <option value="Repair">Repair</option>
-                                    <option value="Calibration/Maintenance">
-                                        Calibration/Maintenance
-                                    </option>
-                                </select>
-                            </div>
+                            <select
+                                className="form-select"
+                                value={data.service_type}
+                                onChange={(e) =>
+                                    setData("service_type", e.target.value)
+                                }
+                            >
+                                <option value="" disabled>
+                                    Select an Option
+                                </option>
+                                <option value="Repair">Repair</option>
+                                <option value="Calibration/Maintenance">
+                                    Calibration/Maintenance
+                                </option>
+                            </select>
                         </div>
+
+                        {/* Transportation */}
                         <div className="col-md-6">
                             <label className="form-label text-muted">
                                 Instrumentation Transportation
                             </label>
                             <input
                                 type="text"
-                                className="form-control"
+                                className={`form-control ${errors.trans_type ? 'input-error' : ''}`}
                                 value={data.trans_type}
                                 onChange={(e) =>
                                     setData("trans_type", e.target.value)
                                 }
                                 placeholder="Please indicate if there is any, or type None if otherwise"
                             />
+                            {errors.trans_type && (
+                                <div className="error-message">
+                                    <i className="bi bi-exclamation-circle me-2"></i>
+                                    {errors.trans_type}
+                                </div>
+                            )}
                         </div>
+
+                        {/* Laboratory */}
                         <div className="col-md-6">
                             <label className="form-label text-muted">
                                 Laboratory
@@ -220,6 +285,8 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                 readOnly
                             />
                         </div>
+
+                        {/* Laboratory Location */}
                         <div className="col-md-6">
                             <label className="form-label text-muted">
                                 Laboratory Location
@@ -234,6 +301,8 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                 readOnly
                             />
                         </div>
+
+                        {/* College/Faculty/Office */}
                         <div className="col-md-6">
                             <label className="form-label text-muted">
                                 College/Faculty/Office
@@ -248,6 +317,8 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                 readOnly
                             />
                         </div>
+
+                        {/* Position */}
                         <div className="col-md-6">
                             <label className="form-label text-muted">
                                 Position
@@ -260,6 +331,8 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                 readOnly
                             />
                         </div>
+
+                        {/* Remarks */}
                         <div className="col-12">
                             <label className="form-label text-muted">
                                 Remarks
@@ -304,6 +377,7 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                 </button>
                             </div>
                             <div className="row g-3">
+                                {/* Equipment */}
                                 <div className="col-12 col-md-6">
                                     <label className="form-label text-muted">
                                         Equipment*
@@ -317,7 +391,8 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                                 handleInputChange(index, e)
                                             }
                                         >
-                                            <option value="">
+                                            <option value=""
+                                            disabled>
                                                 Select an equipment
                                             </option>
                                             {equipmentName.map((name, i) => (
@@ -329,20 +404,30 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                     </div>
                                 </div>
 
+                                {/* Serial Number */}
                                 <div className="col-12 col-md-6">
                                     <label className="form-label text-muted">
                                         Serial Number/Property Number*
                                     </label>
                                     <input
                                         type="number"
-                                        className="form-control"
+                                        className={`form-control ${errors[`serialNumber_${index}`] ? 'input-error' : ''}`}
                                         name="instrument_num"
                                         value={instrument.instrument_num}
                                         onChange={(e) =>
                                             handleInputChange(index, e)
                                         }
+                                        placeholder="Enter serial number or property number"
                                     />
+                                    {errors[`serialNumber_${index}`] && (
+                                        <div className="error-message">
+                                            <i className="bi bi-exclamation-circle me-2"></i>
+                                            {errors[`serialNumber_${index}`]}
+                                        </div>
+                                    )}
                                 </div>
+
+                                {/* Model */}
                                 <div className="col-12 col-md-4">
                                     <label className="form-label text-muted">
                                         Model
@@ -358,6 +443,8 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                         placeholder="Please indicate if there is any, or type N/A if otherwise"
                                     />
                                 </div>
+
+                                {/* Manufacturer */}
                                 <div className="col-12 col-md-4">
                                     <label className="form-label text-muted">
                                         Manufacturer
@@ -373,19 +460,28 @@ function EditOrder({ jobOrder, equipment, college, labLoc, employeeID }) {
                                         placeholder="Please indicate if there is any, or type N/A if otherwise"
                                     />
                                 </div>
+
+                                {/* Quantity */}
                                 <div className="col-12 col-md-4">
                                     <label className="form-label text-muted">
                                         Quantity*
                                     </label>
                                     <input
                                         type="number"
-                                        className="form-control"
+                                        className={`form-control ${errors[`quantity_${index}`] ? 'input-error' : ''}`}
                                         name="qty"
                                         value={instrument.qty}
                                         onChange={(e) =>
                                             handleInputChange(index, e)
                                         }
+                                        min="1"
                                     />
+                                    {errors[`quantity_${index}`] && (
+                                        <div className="error-message">
+                                            <i className="bi bi-exclamation-circle me-2"></i>
+                                            {errors[`quantity_${index}`]}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
