@@ -8,14 +8,12 @@ function LandingPage() {
 
     return (
         <div id="app">
-            <TawkTo />
-            {" "}
-            {/* Main app container */}
+            <TawkTo /> {/* Main app container */}
             <div className="flex-grow">
                 {" "}
                 {/* This will allow the content to grow */}
                 <div className="d-flex">
-                    <div id="content" className="flex-fill p-3">
+                    <div id="content" className="flex-fill ">
                         <div className="landing-section">
                             {/* Title and Description */}
                             <div className="text-overlay">
@@ -60,11 +58,15 @@ function LandingPage() {
                                                         The Laboratory Equipment
                                                         and Supplies Office
                                                         envisions itself as a
-                                                        department of competent,
-                                                        compassionate
-                                                        professionals committed
-                                                        to quality services for
-                                                        the Thomasian community.
+                                                        department of competent
+                                                        and compassionate
+                                                        persons, adequately
+                                                        equipped with
+                                                        state-of-the-art safety
+                                                        and security provisions,
+                                                        committed to quality
+                                                        services for the
+                                                        Thomasian community.
                                                     </p>
                                                 </div>
                                                 <div className="col-12 mission-section mt-4">
@@ -154,6 +156,9 @@ function LandingPage() {
                 </div>
                 <div className="footer-text">
                     <p>© 2024 LESO - ISC. All rights reserved.</p>
+                    <p className="footersmalltext">
+                        8th floor of the UST Central Laboratory Building
+                    </p>
                 </div>
             </div>
         </div>

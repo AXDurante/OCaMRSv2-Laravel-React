@@ -4655,3 +4655,6 @@ td[title] {
     background-color: white;
     color: #333;
 }
+.footersmalltext {
+    font-size: 11px;
+}
