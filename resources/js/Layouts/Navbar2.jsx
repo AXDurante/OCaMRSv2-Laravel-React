@@ -168,13 +168,14 @@ export default function NavBar({
                     <div className="bg-dark p-3">
                         <div className="text-center mb-2">
                             <div
-                                className="rounded-circle bg-white d-inline-flex justify-content-center align-items-center mb-2"
+                                className="rounded-circle bg-dark d-flex justify-content-center align-items-center mx-auto mb-3"
                                 style={{ width: "45px", height: "45px" }}
                             >
-                                <i
-                                    className="bi bi-person-fill text-dark"
-                                    style={{ fontSize: "24px" }}
-                                ></i>
+                                <img
+                                    src="/images/lesologonav.png"
+                                    alt="Leso Logo"
+                                    style={{ height: "60px", width: "auto" }}
+                                />
                             </div>
                             <p className="text-white mb-2 small">
                                 Welcome, {auth.user.firstName}{" "}
@@ -232,7 +233,7 @@ export default function NavBar({
                                             className="position-absolute badge rounded-pill bg-danger"
                                             style={{
                                                 top: "30%",
-                                                right: "200px",
+                                                right: "15px",
                                             }}
                                         >
                                             {unreadCount}

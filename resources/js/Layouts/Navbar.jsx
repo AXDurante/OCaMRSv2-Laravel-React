@@ -147,13 +147,14 @@ export default function NavBar({
                     <div className="bg-dark p-3">
                         <div className="text-center mb-2">
                             <div
-                                className="rounded-circle bg-white d-inline-flex justify-content-center align-items-center mb-2"
+                                className="rounded-circle bg-dark d-inline-flex justify-content-center align-items-center mb-2"
                                 style={{ width: "45px", height: "45px" }}
                             >
-                                <i
-                                    className="bi bi-person-fill text-dark"
-                                    style={{ fontSize: "24px" }}
-                                ></i>
+                                <img
+                                    src="/images/lesologonav.png"
+                                    alt="Leso Logo"
+                                    style={{ height: "60px", width: "auto" }}
+                                />
                             </div>
                             <p className="text-white mb-2 small">
                                 Welcome, {auth.user.firstName}{" "}
@@ -297,10 +298,11 @@ export default function NavBar({
                                 transition: "opacity 0.3s ease-in-out",
                             }}
                         >
-                            <i
-                                className="bi bi-person-fill"
-                                style={{ fontSize: "50px" }}
-                            ></i>
+                            <img
+                                src="/images/lesologonav.png"
+                                alt="Leso Logo"
+                                style={{ height: "100px", width: "auto" }}
+                            />
                         </div>
                     </div>
 

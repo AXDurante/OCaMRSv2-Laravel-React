@@ -170,12 +170,13 @@ export default function AdminNavBar({ children }) {
                     <div className="text-center mb-4">
                         <div
                             className="rounded-circle bg-dark d-flex justify-content-center align-items-center mx-auto mb-3"
-                            style={{ width: "80px", height: "80px" }}
+                            style={{ width: "45px", height: "45px" }}
                         >
-                            <i
-                                className="bi bi-person-fill text-primary"
-                                style={{ fontSize: "40px" }}
-                            ></i>
+                            <img
+                                src="/images/lesologonav.png"
+                                alt="Leso Logo"
+                                style={{ height: "60px", width: "auto" }}
+                            />
                         </div>
                         <p className="mb-0">Welcome Back</p>
                         <p className="fw-bold mb-0">
@@ -278,10 +279,11 @@ export default function AdminNavBar({ children }) {
                                     transition: "opacity 0.3s ease-in-out",
                                 }}
                             >
-                                <i
-                                    className="bi bi-person-fill text-primary"
-                                    style={{ fontSize: "50px" }}
-                                ></i>
+                                <img
+                                    src="/images/lesologonav.png"
+                                    alt="Leso Logo"
+                                    style={{ height: "100px", width: "auto" }}
+                                />
                             </div>
                         </div>
 
