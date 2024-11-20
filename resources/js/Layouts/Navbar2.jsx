@@ -300,10 +300,11 @@ export default function NavBar({
                                 transition: "opacity 0.3s ease-in-out",
                             }}
                         >
-                            <i
-                                className="bi bi-person-fill text-primary"
-                                style={{ fontSize: "50px" }}
-                            ></i>
+                            <img
+                                src="/images/lesologonav.png"
+                                alt="Leso Logo"
+                                style={{ height: "100px", width: "auto" }}
+                            />
                         </div>
                     </div>
                     {isFullyExpanded && (
