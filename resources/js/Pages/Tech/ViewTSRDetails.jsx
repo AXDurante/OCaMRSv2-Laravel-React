@@ -95,6 +95,12 @@ function ViewTSRDetails({ tsr }) {
                                                         View Certificates of Calibration
                                                     </button>
                                         </Link>
+                                        <Link href={`/technician/showJobOrder/${tsr.job_id}`}>
+                                                    <button className="btn btn-light w-100 mb-2">
+                                                        <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                                        Return to Job Order
+                                                    </button>
+                                        </Link>
                                 </div>
                             </div>
                         </div>

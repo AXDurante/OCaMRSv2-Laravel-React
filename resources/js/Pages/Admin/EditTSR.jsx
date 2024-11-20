@@ -18,6 +18,8 @@ import {
 function EditTSR({ jobOrder, auth, tsr }) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
     const [includeSignature, setIncludeSignature] = useState(false); // Add this state
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
@@ -28,7 +30,7 @@ function EditTSR({ jobOrder, auth, tsr }) {
     };
 
     // Initialize useForm with existing TSR data
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, put, processing } = useForm({
         tsr_num: tsr.tsr_num || "",
         instrument: tsr.instrument || "",
         model: tsr.model || "",
@@ -66,9 +68,64 @@ function EditTSR({ jobOrder, auth, tsr }) {
         });
     };
 
-    function onSubmit(e) {
+    async function onSubmit(e) {
         e.preventDefault();
-        put(route("admin.updateTSR", tsr.tsr_id));
+
+        if (isSubmitting || processing) return;
+        
+        // Clear all previous errors first
+        setErrors({});
+        setIsSubmitting(true);
+
+        let validationErrors = {};
+        let hasErrors = false;
+
+        if (!data.tsr_num) {
+            validationErrors.tsr_num = "Please enter a TSR number.";
+            hasErrors = true;
+        }
+
+        if (!data.problemReported) {
+            validationErrors.problemReported = "Please enter input, or type `N/A`.";
+            hasErrors = true;
+        }
+
+        if (!data.diagnosis) {
+            validationErrors.diagnosis = "Please enter input, or type `N/A`.";
+            hasErrors = true;
+        }
+
+        if (!data.actionTaken) {
+            validationErrors.actionTaken = "Please enter input, or type `N/A`.";
+            hasErrors = true;
+        }
+
+        if (!data.recommendation) {
+            validationErrors.recommendation = "Please select from the dropdown.";
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            setErrors(validationErrors);
+            setIsSubmitting(false); // Reset submitting state if validation fails
+            return;
+        }
+
+        try {
+            setIsSubmitting(true);
+            await put(route('admin.updateTSR', tsr.tsr_id), {               
+                    onSuccess: () => {
+                    setIsSubmitting(false);
+                },
+                onError: (errors) => {
+                    setErrors(errors);
+                    setIsSubmitting(false);
+                },
+            });
+        } catch (error) {
+            console.error('Submission error:', error);
+            setIsSubmitting(false);
+        }
     }
 
     return (
@@ -178,6 +235,17 @@ function EditTSR({ jobOrder, auth, tsr }) {
                                         <span>{data.date_request}</span>
                                     </div>
                                 </div>
+
+                                <div className="mt-4">
+                                    <Link
+                                        href={route("admin.viewTSRDetails", tsr.tsr_id)}
+                                    >
+                                        <button className="btn btn-light w-100 mb-2">
+                                                <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                            Return to Details
+                                        </button>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -187,17 +255,24 @@ function EditTSR({ jobOrder, auth, tsr }) {
                         <div className="card shadow-sm h-100 rounded-0 rounded-end rounded-top-md-end rounded-bottom-md-end mt-3 mt-md-0">
                             <div className="card-body">
                                 <div className="row g-3">
-                                    <div className="col-md-6">
+                                <div className="col-md-6">
                                         <label className="form-label fw-bold">
                                             TSR Number*
                                         </label>
                                         <input
                                             type="text"
-                                            className="form-control"
+                                            className={`form-control ${errors.tsr_num ? 'input-error' : ''}`}
                                             name="tsr_num"
                                             value={data.tsr_num}
                                             onChange={handleInputChange}
+                                            placeholder="Enter TSR Number"
                                         />
+                                        {errors.tsr_num && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.tsr_num}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="col-md-6">
@@ -207,14 +282,14 @@ function EditTSR({ jobOrder, auth, tsr }) {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            value={data.date_request}
+                                            value={jobOrder.date_request}
                                             disabled
                                         />
                                     </div>
 
                                     <div className="col-md-6">
                                         <label className="form-label fw-bold">
-                                            Instrument*
+                                            Instrument
                                         </label>
                                         <input
                                             type="text"
@@ -232,7 +307,7 @@ function EditTSR({ jobOrder, auth, tsr }) {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            value={data.phone}
+                                            value={jobOrder.user.phoneNumber}
                                             disabled
                                         />
                                     </div>
@@ -265,56 +340,80 @@ function EditTSR({ jobOrder, auth, tsr }) {
 
                                     <div className="col-12">
                                         <label className="form-label fw-bold">
-                                            Problem Reported
+                                            Problem Reported*
                                         </label>
                                         <textarea
-                                            className="form-control"
+                                            className={`form-control ${errors.problemReported ? 'input-error' : ''}`}
                                             name="problemReported"
                                             value={data.problemReported}
                                             onChange={handleInputChange}
                                             rows="2"
+                                            placeholder="Enter Problem Reported or type N/A"
                                         />
+                                        {errors.problemReported && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.problemReported}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="col-12">
                                         <label className="form-label fw-bold">
-                                            Diagnosis/Observation
+                                            Diagnosis/Observation*
                                         </label>
                                         <textarea
-                                            className="form-control"
+                                            className={`form-control ${errors.diagnosis ? 'input-error' : ''}`}
                                             name="diagnosis"
                                             value={data.diagnosis}
                                             onChange={handleInputChange}
                                             rows="2"
+                                            placeholder="Enter Diagnosis/Observation or type N/A"
                                         />
+                                        {errors.diagnosis && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.diagnosis}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="col-12">
                                         <label className="form-label fw-bold">
-                                            Action Taken
+                                            Action Taken*
                                         </label>
                                         <textarea
-                                            className="form-control"
+                                            className={`form-control ${errors.actionTaken ? 'input-error' : ''}`}
                                             name="actionTaken"
                                             value={data.actionTaken}
                                             onChange={handleInputChange}
                                             rows="2"
+                                            placeholder="Enter Action Taken or type N/A"
                                         />
+                                        {errors.actionTaken && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.actionTaken}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="col-md-6">
                                         <label className="form-label fw-bold">
-                                            Recommendation
+                                            Recommendation*
                                         </label>
                                         <div>
                                             <select
-                                                className="btn btn-light border border-secondary dropdown-toggle w-100"
+                                                className={`form-input ${errors.recommendation ? 'input-error' : ''}`}
                                                 name="recommendation"
                                                 value={data.recommendation}
                                                 onChange={handleInputChange}
                                             >
                                                 <option value="" disabled>
                                                     Please Select an Option
+                                                </option>
+                                                <option value="None">
+                                                    None
                                                 </option>
                                                 <option value="For Pull-Out">
                                                     For Pull-Out
@@ -329,6 +428,12 @@ function EditTSR({ jobOrder, auth, tsr }) {
                                                     Beyond Repair
                                                 </option>
                                             </select>
+                                            {errors.recommendation && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.recommendation}
+                                            </div>
+                                        )}
                                         </div>
                                     </div>
 
