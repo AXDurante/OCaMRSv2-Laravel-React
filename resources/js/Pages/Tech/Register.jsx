@@ -8,7 +8,7 @@ import LoginButton from "@/Components/LoginButton";
 import PhoneNumberInput from '@/Components/PhoneNumberInput';
 
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -25,10 +25,35 @@ export default function Register() {
 
     const [switchForm, setSwitchForm] = useState(1);
     const [submitted, setSubmitted] = useState(false);
+    const [validationErrors, setValidationErrors] = useState({});
+
+    // Debug errors when they change
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            console.log('Current errors:', errors);
+        }
+    }, [errors]);
 
     const nextForm = () => {
+        let hasErrors = false;
+        const currentErrors = {};
+
+        // Validate first form
+        if (switchForm === 1) {
+            if (!data.firstName.trim()) currentErrors.firstName = 'First name is required';
+            if (!data.lastName.trim()) currentErrors.lastName = 'Last name is required';
+            if (!data.email.trim()) currentErrors.email = 'Email is required';
+            if (!data.phoneNumber.trim()) currentErrors.phoneNumber = 'Phone number is required';
+            
+            hasErrors = Object.keys(currentErrors).length > 0;
+        }
+
+        if (hasErrors) {
+            setValidationErrors(currentErrors);
+            return;
+        }
+
         if (switchForm === 3) {
-            // Show errors if any fields are invalid
             setSubmitted(true);
         }
         setSwitchForm(switchForm + 1);
@@ -36,6 +61,7 @@ export default function Register() {
 
     const previousForm = () => {
         setSwitchForm(switchForm - 1);
+        setValidationErrors({});
     };
 
     const submit = (e) => {
@@ -43,7 +69,17 @@ export default function Register() {
         setSubmitted(true);
 
         post(route('technician.register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+            onSuccess: () => {
+                reset('password', 'password_confirmation');
+                // Optionally redirect or show success message
+            },
+            onError: (errors) => {
+                console.log('Submission errors:', errors);
+                setValidationErrors(errors);
+            },
+            onFinish: () => {
+                console.log('Form submission completed');
+            }
         });
     };
 
@@ -68,13 +104,16 @@ export default function Register() {
                                         id="firstName"
                                         name="firstName"
                                         value={data.firstName}
-                                        className="mt-1 block w-full"
+                                        className={`mt-1 block w-full ${errors.firstName || validationErrors.firstName ? 'is-invalid' : ''}`}
                                         autoComplete="firstName"
                                         isFocused={true}
                                         onChange={(e) => setData('firstName', e.target.value)}
                                         required
                                     />
-                                    <InputError message={errors.firstName} className="mt-2 text-danger" />
+                                    <InputError 
+                                        message={errors.firstName || validationErrors.firstName} 
+                                        className="mt-2 text-danger" 
+                                    />
                                 </div>
 
                                 <div className="mt-4">
@@ -83,13 +122,15 @@ export default function Register() {
                                         id="lastName"
                                         name="lastName"
                                         value={data.lastName}
-                                        className="mt-1 block w-full"
+                                        className={`mt-1 block w-full ${errors.lastName || validationErrors.lastName ? 'is-invalid' : ''}`}
                                         autoComplete="lastName"
-                                        isFocused={true}
                                         onChange={(e) => setData('lastName', e.target.value)}
                                         required
                                     />
-                                    <InputError message={errors.lastName} className="mt-2 text-danger" />
+                                    <InputError 
+                                        message={errors.lastName || validationErrors.lastName} 
+                                        className="mt-2 text-danger" 
+                                    />
                                 </div>
 
                                 <div className="mt-4">
@@ -99,12 +140,15 @@ export default function Register() {
                                         type="email"
                                         name="email"
                                         value={data.email}
-                                        className="mt-1 block w-full"
+                                        className={`mt-1 block w-full ${errors.email || validationErrors.email ? 'is-invalid' : ''}`}
                                         autoComplete="username"
                                         onChange={(e) => setData('email', e.target.value)}
                                         required
                                     />
-                                    <InputError message={errors.email} className="mt-2 text-danger" />
+                                    <InputError 
+                                        message={errors.email || validationErrors.email} 
+                                        className="mt-2 text-danger" 
+                                    />
                                 </div>
 
                                 <div className="mt-4">
@@ -123,20 +167,37 @@ export default function Register() {
                                         required
                                         pattern="[0-9]{10}"
                                     />
-                                    <InputError message={errors.phoneNumber} className="mt-2 text-danger" />
+                                    <InputError 
+                                        message={errors.phoneNumber || validationErrors.phoneNumber} 
+                                        className="mt-2 text-danger" 
+                                    />
                                 </div>
 
-                                <div className='d-flex justify-content-end my-5 '>
-                                    <Link className="theButton2 buttonColor1 theButtonMG" href={route('technician.home')}>
+                                {submitted && Object.keys(errors).length > 0 && (
+                                    <div className="mt-4">
+                                        <div className="alert alert-danger">
+                                            Please correct the errors before proceeding.
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className='d-flex justify-content-end my-5'>
+                                    <Link 
+                                        className="theButton2 buttonColor1 theButtonMG" 
+                                        href={route('technician.home')}
+                                    >
                                         Back
                                     </Link>
-                                    <button onClick={() => nextForm()} className="theButton2 buttonColor2 theButtonMG">
+                                    <button 
+                                        type="button"
+                                        onClick={nextForm} 
+                                        className="theButton2 buttonColor2 theButtonMG"
+                                    >
                                         Next
                                     </button>
                                 </div>
                             </div>
                         )}
-
 
                         {switchForm === 2 && (
                             <div>

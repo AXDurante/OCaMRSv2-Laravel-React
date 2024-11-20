@@ -29,7 +29,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return [
+        return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user() ? [
                     'id' => $request->user()->id,
@@ -45,7 +45,17 @@ class HandleInertiaRequests extends Middleware
                     'position' => $request->user()->position,
                 ] : null,
             ],
-            // ... other shared data
-        ];
+            // Add this to explicitly share errors with the frontend
+            'errors' => function () use ($request) {
+                return $request->session()->get('errors')
+                    ? $request->session()->get('errors')->getBag('default')->getMessages()
+                    : (object) [];
+            },
+            // Add flash messages if you need them
+            'flash' => [
+                'message' => fn () => $request->session()->get('message'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
+        ]);
     }
 }
