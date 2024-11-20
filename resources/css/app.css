@@ -664,7 +664,23 @@ input[type="checkbox"] {
     color: #7a7a7a !important;
     height: 3.5vw;
 }
+@media (max-width: 768px) {
+    .optionBox {
+        height: 45px !important;
+        padding: 10px !important;
+        font-size: 16px !important;
+        border-radius: 6px !important;
+    }
+}
 
+/* Even smaller screens */
+@media (max-width: 480px) {
+    .optionBox {
+        height: 40px !important;
+        padding: 8px !important;
+        font-size: 14px !important;
+    }
+}
 /* trach req */
 #search-button {
     background-color: #fbc600 !important;
@@ -4432,4 +4448,210 @@ td[title] {
     box-shadow: none !important;
     /* Add this line to remove the validation icon on focus */
     background-image: none !important;
+}
+/* Base button styles with unique names */
+.ust-button-primary {
+    text-decoration: none;
+    height: 3vw;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0.3vw;
+    width: 10vw;
+    text-align: center;
+    font-size: 1.7vw;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    padding: 0.65vw;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .ust-button-primary {
+        height: 40px;
+        width: auto;
+        min-width: 120px; /* Minimum width for better touch targets */
+        font-size: 16px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        margin: 5px;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 480px) {
+    .ust-button-primary {
+        height: 36px;
+        min-width: 100px;
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+}
+
+/* Button margin helper */
+.ust-button-margin {
+    margin-left: 0.5vw;
+}
+
+@media (max-width: 768px) {
+    .ust-button-margin {
+        margin-left: 8px;
+    }
+}
+
+/* Button hover effect */
+.ust-button-primary::before {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 0, 0.7),
+        rgba(255, 165, 0, 0.7)
+    );
+    transform: rotate(30deg);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    z-index: 1;
+}
+
+.ust-button-primary:hover::before {
+    animation: ust-button-shine 1s cubic-bezier(0.68, -0.55, 0.27, 1.55)
+        forwards;
+}
+
+@keyframes ust-button-shine {
+    0% {
+        top: -100%;
+        left: -100%;
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        left: 100%;
+        opacity: 0;
+    }
+}
+/* Base button styles with unique names */
+.ust-register-button {
+    text-decoration: none;
+    height: 3vw;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0.3vw;
+    width: 8vw;
+    text-align: center;
+    font-size: 1.7vw;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    padding: 0.65vw;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .ust-register-button-container {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .ust-register-button {
+        height: 45px !important;
+        width: 120px !important; /* Fixed width for both buttons */
+        min-width: 120px !important;
+        font-size: 16px !important;
+        padding: 10px 20px !important;
+        border-radius: 6px !important;
+        margin: 8px 0 !important;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 480px) {
+    .ust-register-button {
+        height: 40px !important;
+        font-size: 14px !important;
+        padding: 8px 16px !important;
+    }
+}
+.ust-register-button-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: flex-end;
+}
+/* Add these new styles with unique naming */
+.ust-register-select-container {
+    width: 100%;
+    position: relative;
+}
+
+.ust-register-select {
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: all 0.3s ease;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .ust-register-select {
+        height: 50px !important;
+        font-size: 16px !important;
+        padding: 10px 15px !important;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 480px) {
+    .ust-register-select {
+        height: 45px !important;
+        font-size: 14px !important;
+        padding: 8px 12px !important;
+    }
+}
+
+/* Hover and focus states */
+.ust-register-select:hover {
+    border-color: #fbc600;
+}
+
+.ust-register-select:focus {
+    outline: none;
+    border-color: #fbc600;
+    box-shadow: 0 0 0 3px rgba(251, 198, 0, 0.2);
+}
+
+/* Style for the options */
+.ust-register-select option {
+    padding: 12px;
+    font-size: 15px;
+    background-color: white;
+    color: #333;
 }

@@ -501,7 +501,7 @@ export default function Register() {
 
                                     <div className="d-flex justify-content-end my-5 ">
                                         <Link
-                                            className="theButton2 buttonColor1 theButtonMG"
+                                            className="ust-button-primary buttonColor1 ust-button-margin"
                                             href={route("loginHome")}
                                         >
                                             Back
@@ -509,7 +509,7 @@ export default function Register() {
                                         <button
                                             type="button"
                                             onClick={nextForm}
-                                            className="theButton2 buttonColor2 theButtonMG"
+                                            className="ust-button-primary buttonColor2 ust-button-margin"
                                         >
                                             Next
                                         </button>
@@ -705,14 +705,14 @@ export default function Register() {
                                         <button
                                             type="button"
                                             onClick={previousForm}
-                                            className="theButton2 buttonColor1 "
+                                            className="ust-button-primary buttonColor1 ust-button-margin"
                                         >
                                             Back
                                         </button>
                                         <button
                                             type="button"
                                             onClick={nextForm}
-                                            className="theButton2 buttonColor2 theButtonMG"
+                                            className="ust-button-primary buttonColor2 ust-button-margin"
                                         >
                                             Next
                                         </button>
@@ -1050,7 +1050,7 @@ export default function Register() {
                                     </Modal>
                                     <div className="d-flex justify-content-center mt-5 ">
                                         <button
-                                            className="theButton2 buttonColor1 w-100"
+                                            className="ust-register-button buttonColor1 w-100"
                                             onClick={() => previousForm()}
                                         >
                                             Back
@@ -1060,7 +1060,7 @@ export default function Register() {
                                     <div className="d-flex justify-content-center my-4 ">
                                         <button
                                             type="submit"
-                                            className="theButton2 buttonColor2 w-100"
+                                            className="ust-register-button buttonColor2 w-100"
                                             disabled={
                                                 processing || isSubmitting
                                             }
