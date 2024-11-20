@@ -509,7 +509,7 @@ function COCpdf ({tsr, cocDetails}) {
                     </Text>
                     <View style={styles.remarksContainer}>
                         <Text style={styles.remarksText}>
-                            {breakLongWords(cocDetails.remark)}
+                        {cocDetails.remark ? breakLongWords(cocDetails.remark) : ''}
                         </Text>
                     </View>
 

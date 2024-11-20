@@ -239,26 +239,28 @@ function ViewOrder({ jobOrder, flash }) {
                             gap: "12px",
                         }}
                     >
-                        <Link
-                            href={`/technician/showJobOrder/${jobOrder.job_id}/edit`}
-                            className="action-button primary"
-                            style={{
-                                padding: "12px 24px",
-                                borderRadius: "6px",
-                                backgroundColor: "#0095FF",
-                                color: "white",
-                                textDecoration: "none",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                border: "none",
-                                fontWeight: "500",
-                                transition: "background-color 0.2s ease",
-                            }}
-                        >
-                            <i className="bi bi-pencil-fill me-2"></i>
-                            Edit Job Order
-                        </Link>
+                        {jobOrder.status !== "Completed" && (
+                            <Link
+                                href={`/technician/showJobOrder/${jobOrder.job_id}/edit`}
+                                className="action-button primary"
+                                style={{
+                                    padding: "12px 24px",
+                                    borderRadius: "6px",
+                                    backgroundColor: "#0095FF",
+                                    color: "white",
+                                    textDecoration: "none",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    border: "none",
+                                    fontWeight: "500",
+                                    transition: "background-color 0.2s ease",
+                                }}
+                            >
+                                <i className="bi bi-pencil-fill me-2"></i>
+                                Edit Job Order
+                            </Link>
+                        )}
 
                         <Link
                             href={`/technician/TSR/${jobOrder.job_id}`}
