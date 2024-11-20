@@ -95,6 +95,7 @@ export default function Login({ status, canResetPassword }) {
                                         ? "is-invalid"
                                         : ""
                                 }`}
+                                required
                             />
                             {errors.employeeID && (
                                 <div className="alert-ah">
@@ -131,6 +132,7 @@ export default function Login({ status, canResetPassword }) {
                                             : ""
                                     }`}
                                     style={{ paddingRight: "40px" }}
+                                    required
                                 />
 
                                 <span
