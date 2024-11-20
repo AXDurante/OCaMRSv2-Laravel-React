@@ -104,6 +104,8 @@ export default function AdminNavBar({ children }) {
 
     const handleLogout = (e) => {
         e.preventDefault();
+        // Dispatch a custom event before logging out
+        localStorage.setItem('admin-logout-event', Date.now().toString());
         router.post(
             route("admin.logout"),
             {},
@@ -115,6 +117,21 @@ export default function AdminNavBar({ children }) {
             }
         );
     };
+
+    // Add useEffect for logout listener
+    useEffect(() => {
+        const handleStorageChange = (e) => {
+            if (e.key === 'admin-logout-event') {
+                window.location.href = route("admin.login");
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
 
     const navLinks = [
         { href: "/admin", icon: "bi-file-earmark-text", text: "Job Request" },

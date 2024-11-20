@@ -90,6 +90,8 @@ export default function NavBar({
 
     const handleLogout = (e) => {
         e.preventDefault();
+        // Dispatch a custom event before logging out
+        localStorage.setItem('logout-event', Date.now().toString());
         router.post(
             route("technician.logout"),
             {},
@@ -138,6 +140,24 @@ export default function NavBar({
             document.removeEventListener("scroll", handleScroll);
         };
     }, [isMobileMenuOpen]);
+
+    useEffect(() => {
+        // Function to handle storage changes
+        const handleStorageChange = (e) => {
+            if (e.key === 'logout-event') {
+                // Redirect to login page
+                window.location.href = route("technician.login");
+            }
+        };
+
+        // Add event listener
+        window.addEventListener('storage', handleStorageChange);
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
 
     return (
         <div className="">

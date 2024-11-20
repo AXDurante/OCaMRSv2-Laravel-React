@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, usePage } from "@inertiajs/react";
+import { Link, usePage, router } from "@inertiajs/react";
 import axios from "axios";
 import TawkTo from "@/Components/TawkTo";
 
@@ -117,6 +117,62 @@ export default function NavBar({
             );
         };
     }, []);
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        // Dispatch a custom event before logging out
+        localStorage.setItem('user-logout-event', Date.now().toString());
+        router.post(
+            route("logout"),
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    window.location.href = route("login");
+                },
+            }
+        );
+    };
+
+    useEffect(() => {
+        const handleStorageChange = (e) => {
+            if (e.key === 'user-logout-event') {
+                window.location.href = route("login");
+            }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
+
+    const mobileLogoutButton = (
+        <Link
+            href={route("logout")}
+            method="post"
+            as="button"
+            className="logout-btn w-100"
+            onClick={handleLogout}
+        >
+            <i className="bi bi-box-arrow-right me-2"></i>
+            <span className="small">Log Out</span>
+        </Link>
+    );
+
+    const sidebarLogoutButton = (
+        <Link
+            href={route("logout")}
+            method="post"
+            as="button"
+            className={`logout-btn ${isCollapsed ? "collapsed" : ""}`}
+            onClick={handleLogout}
+        >
+            <i className="bi bi-box-arrow-right me-2"></i>
+            {!isCollapsed && "Log Out"}
+        </Link>
+    );
 
     return (
         <div className="">
@@ -244,15 +300,7 @@ export default function NavBar({
                                 </Link>
                             </li>
                             <li className="nav-item mt-3">
-                                <Link
-                                    href={route("logout")}
-                                    method="post"
-                                    as="button"
-                                    className="logout-btn w-100"
-                                >
-                                    <i className="bi bi-box-arrow-right me-2"></i>
-                                    <span className="small">Log Out</span>
-                                </Link>
+                                {mobileLogoutButton}
                             </li>
                         </ul>
                     </div>
@@ -442,18 +490,7 @@ export default function NavBar({
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link
-                                    href={route("logout")}
-                                    method="post"
-                                    as="button"
-                                    className={`logout-btn ${
-                                        isCollapsed ? "collapsed" : ""
-                                    }`}
-                                >
-                                    <i className="bi bi-box-arrow-right me-2"></i>
-                                    {!isCollapsed && "Log Out"}{" "}
-                                    {/* Show 'Log Out' only when fully expanded */}
-                                </Link>
+                                {sidebarLogoutButton}
                             </li>
                         </ul>
                     </div>
