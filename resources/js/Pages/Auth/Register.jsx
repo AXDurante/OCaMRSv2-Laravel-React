@@ -115,13 +115,6 @@ export default function Register() {
             }));
             return false;
         }
-        if (/\d/.test(value)) {
-            setValidationErrors((prev) => ({
-                ...prev,
-                firstName: "First name cannot contain numbers.",
-            }));
-            return false;
-        }
         setValidationErrors((prev) => ({ ...prev, firstName: "" }));
         return true;
     };
@@ -131,13 +124,6 @@ export default function Register() {
             setValidationErrors((prev) => ({
                 ...prev,
                 lastName: "Please enter your last name.",
-            }));
-            return false;
-        }
-        if (/\d/.test(value)) {
-            setValidationErrors((prev) => ({
-                ...prev,
-                lastName: "Last name cannot contain numbers.",
             }));
             return false;
         }
@@ -357,13 +343,13 @@ export default function Register() {
                                             autoComplete="firstName"
                                             isFocused={true}
                                             onChange={(e) => {
-                                                const value =
-                                                    e.target.value.replace(
-                                                        /[0-9]/g,
-                                                        ""
-                                                    ); // Remove numbers
-                                                setData("firstName", value);
-                                                validateFirstName(value);
+                                                setData(
+                                                    "firstName",
+                                                    e.target.value
+                                                );
+                                                validateFirstName(
+                                                    e.target.value
+                                                );
                                             }}
                                             required
                                         />
@@ -394,13 +380,13 @@ export default function Register() {
                                                     : ""
                                             }`}
                                             onChange={(e) => {
-                                                const value =
-                                                    e.target.value.replace(
-                                                        /[0-9]/g,
-                                                        ""
-                                                    ); // Remove numbers
-                                                setData("lastName", value);
-                                                validateLastName(value);
+                                                setData(
+                                                    "lastName",
+                                                    e.target.value
+                                                );
+                                                validateLastName(
+                                                    e.target.value
+                                                );
                                             }}
                                             required
                                         />

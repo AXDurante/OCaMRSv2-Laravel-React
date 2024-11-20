@@ -45,9 +45,6 @@ class RegisteredUserController extends Controller
             'employeeID' => 'required|string|max:255|unique:users',
             'phoneNumber' => 'required|string|max:255|unique:users',
         ], [
-            'email.unique' => 'The email has already been taken.',
-            'employeeID.unique' => 'The ID number has already been taken.',
-            'phoneNumber.unique' => 'The phone number has already been taken.',
             'password.min' => 'The password must be at least 8 characters.',
             'password.regex' => 'The password must include at least one uppercase letter, one number, and one special character.',
         ]);
