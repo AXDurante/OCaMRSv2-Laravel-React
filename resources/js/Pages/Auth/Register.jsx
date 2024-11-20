@@ -468,12 +468,7 @@ export default function Register() {
                                             message={errors.email}
                                             className="mt-2 text-danger"
                                         />
-                                        {validationErrors.email && (
-                                            <div className="invalid-feedback d-block">
-                                                <i className="fas fa-exclamation-circle me-1"></i>
-                                                {validationErrors.email}
-                                            </div>
-                                        )}
+                                      
                                     </div>
                                     <div className="mt-4">
                                         <div className="d-flex align-items-center">
