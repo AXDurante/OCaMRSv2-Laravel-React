@@ -13,6 +13,8 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
     const [passwordMatch, setPasswordMatch] = useState(true);
     const [passwordLength, setPasswordLength] = useState(true);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [phoneNumberError, setPhoneNumberError] = useState("");
+    const [isValid, setIsValid] = useState(true);
     const { data, setData, post, processing, errors } = useForm({
         firstName: auth.user.firstName,
         lastName: auth.user.lastName,
@@ -67,8 +69,41 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
         validatePasswords(data.password, confirmation);
     };
 
+    const validatePhoneNumber = (value) => {
+        if (!value) {
+            setPhoneNumberError("Please enter a phone number.");
+            setIsValid(false);
+            return false;
+        }
+        if (value.length !== 11) {
+            setPhoneNumberError("Phone number must be exactly 11 digits.");
+            setIsValid(false);
+            return false;
+        }
+        if (!value.startsWith("09")) {
+            setPhoneNumberError("Phone number must start with 09.");
+            setIsValid(false);
+            return false;
+        }
+        setPhoneNumberError("");
+        setIsValid(true);
+        return true;
+    };
+
+    const handlePhoneNumberChange = (e) => {
+        const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 11);
+        setData('phoneNumber', value);
+        validatePhoneNumber(value);
+    };
+
     const handleSubmitClick = (e) => {
         e.preventDefault();
+
+        const isPhoneValid = validatePhoneNumber(data.phoneNumber);
+        
+        if (!isPhoneValid) {
+            return;
+        }
 
         if (!hasChanges()) {
             setShowNoChanges(true);
@@ -80,6 +115,11 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
     };
 
     const confirmSubmit = () => {
+        if (!isValid) {
+            setShowConfirmModal(false);
+            return;
+        }
+
         post(route("updateProfile"), {
             preserveState: true,
             preserveScroll: true,
@@ -91,8 +131,8 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
             onError: (errors) => {
                 setShowConfirmModal(false);
                 if (errors.phoneNumber) {
-                    setShowNoChanges(false);
-                    setData('phoneNumberError', errors.phoneNumber);
+                    setPhoneNumberError(errors.phoneNumber);
+                    setIsValid(false);
                 }
             },
         });
@@ -120,11 +160,6 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
     const handleLastNameChange = (e) => {
         const value = e.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow letters and spaces
         setData('lastName', value);
-    };
-
-    const handlePhoneNumberChange = (e) => {
-        const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 11); // Only allow numbers, max 11 digits
-        setData('phoneNumber', value);
     };
 
     return (
@@ -223,24 +258,28 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
                                                 <label className="form-label fw-bold">
                                                     Contact Number
                                                 </label>
-                                                <input
-                                                    name="phoneNumber"
-                                                    type="text"
-                                                    className={`form-control shadow-sm animate-field ${
-                                                        errors.phoneNumber ? "is-invalid" : ""
-                                                    }`}
-                                                    value={data.phoneNumber}
-                                                    onChange={handlePhoneNumberChange}
-                                                    maxLength={11}
-                                                />
-                                                {errors.phoneNumber && (
-                                                    <div className="invalid-feedback">
-                                                        {errors.phoneNumber}
-                                                    </div>
-                                                )}
-                                                <small className="text-muted">
-                                                    Phone number must be exactly 11 digits
-                                                </small>
+                                                <div className="position-relative">
+                                                    <input
+                                                        name="phoneNumber"
+                                                        type="text"
+                                                        className={`form-control shadow-sm animate-field ${
+                                                            phoneNumberError || !isValid ? "is-invalid" : ""
+                                                        }`}
+                                                        value={data.phoneNumber}
+                                                        onChange={handlePhoneNumberChange}
+                                                        maxLength={11}
+                                                        placeholder="09XXXXXXXXX"
+                                                    />
+                                                    {phoneNumberError && (
+                                                        <div className="invalid-feedback d-block">
+                                                            <i className="fas fa-exclamation-circle me-1"></i>
+                                                            {phoneNumberError}
+                                                        </div>
+                                                    )}
+                                                    <small className="text-muted d-block mt-1">
+                                                        Phone number must be exactly 11 digits starting with 09
+                                                    </small>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="row">
@@ -396,6 +435,11 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
                                                 )}
                                         </div>
                                     </div>
+                                    {!isValid && (
+                                        <div className="alert alert-danger" role="alert">
+                                            Please correct the phone number before submitting.
+                                        </div>
+                                    )}
                                     <button
                                         type="submit"
                                         className="btn btn-dark shadow-lg w-100 animate-button custom-button"
@@ -435,8 +479,13 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
                     <Modal.Title>Confirm Update</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Are you sure you want to update your profile? This action
-                    cannot be undone.
+                    {!isValid ? (
+                        <div className="text-danger">
+                            Please correct the validation errors before proceeding.
+                        </div>
+                    ) : (
+                        "Are you sure you want to update your profile? This action cannot be undone."
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -448,7 +497,7 @@ function Home({ absolute, firstName, lastName, email, theID, imageRequirements }
                     <Button
                         variant="primary"
                         onClick={confirmSubmit}
-                        disabled={processing}
+                        disabled={!isValid || processing}
                     >
                         {processing ? "Updating..." : "Confirm Update"}
                     </Button>
