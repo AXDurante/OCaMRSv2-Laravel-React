@@ -144,6 +144,14 @@ function ViewCOCDetails({ coc, auth }) {
                                         </span>
                                     </div>
                                 </div>
+                                <div className="mt-4">
+                                    <Link href={route('technician.indexCOC', { tsr_id: tsr.tsr_id })}>
+                                        <button className="btn btn-light w-100 mb-2">
+                                            <i className="bi bi-file-earmark-text-fill me-2"></i>
+                                            View Certificates of Calibration
+                                        </button>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>

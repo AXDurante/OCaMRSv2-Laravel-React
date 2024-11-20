@@ -17,6 +17,8 @@ import {
 
 function TSR({ jobOrder, auth }) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handlePreviewClick = () => {
         setShowPreview(true); // Show the preview when the button is clicked
@@ -27,7 +29,7 @@ function TSR({ jobOrder, auth }) {
     };
 
     // Update the useForm hook to match your TSR model fields
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing } = useForm({
         tsr_num: "",
         instrument: "",
         model: "",
@@ -50,12 +52,65 @@ function TSR({ jobOrder, auth }) {
         setData(name, value);
     };
 
-    function onSubmit(e) {
+    async function onSubmit(e) {
         e.preventDefault();
-        post(route("technician.storeTSR"));
-    }
 
-    console.log(jobOrder);
+        if (isSubmitting || processing) return;
+        
+        // Clear all previous errors first
+        setErrors({});
+        setIsSubmitting(true);
+
+        let validationErrors = {};
+        let hasErrors = false;
+
+        if (!data.tsr_num) {
+            validationErrors.tsr_num = "Please enter a TSR number.";
+            hasErrors = true;
+        }
+
+        if (!data.problemReported) {
+            validationErrors.problemReported = "Please enter input, or type `N/A`.";
+            hasErrors = true;
+        }
+
+        if (!data.diagnosis) {
+            validationErrors.diagnosis = "Please enter input, or type `N/A`.";
+            hasErrors = true;
+        }
+
+        if (!data.actionTaken) {
+            validationErrors.actionTaken = "Please enter input, or type `N/A`.";
+            hasErrors = true;
+        }
+
+        if (!data.recommendation) {
+            validationErrors.recommendation = "Please select from the dropdown.";
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            setErrors(validationErrors);
+            setIsSubmitting(false); // Reset submitting state if validation fails
+            return;
+        }
+
+        try {
+            await post(route('technician.storeTSR'), {
+                onSuccess: () => {
+                    setIsSubmitting(false);
+                    // You might want to add success notification or redirect here
+                },
+                onError: (errors) => {
+                    setErrors(errors);
+                    setIsSubmitting(false);
+                },
+            });
+        } catch (error) {
+            console.error('Submission error:', error);
+            setIsSubmitting(false);
+        }
+    }
     return (
         <div className="container py-4">
             <h2 className="mb-4">
@@ -184,11 +239,18 @@ function TSR({ jobOrder, auth }) {
                                         </label>
                                         <input
                                             type="text"
-                                            className="form-control"
+                                            className={`form-control ${errors.tsr_num ? 'input-error' : ''}`}
                                             name="tsr_num"
                                             value={data.tsr_num}
                                             onChange={handleInputChange}
+                                            placeholder="Enter TSR Number"
                                         />
+                                        {errors.tsr_num && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.tsr_num}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="col-md-6">
@@ -205,7 +267,7 @@ function TSR({ jobOrder, auth }) {
 
                                     <div className="col-md-6">
                                         <label className="form-label fw-bold">
-                                            Instrument*
+                                            Instrument
                                         </label>
                                         <input
                                             type="text"
@@ -256,50 +318,71 @@ function TSR({ jobOrder, auth }) {
 
                                     <div className="col-12">
                                         <label className="form-label fw-bold">
-                                            Problem Reported
+                                            Problem Reported*
                                         </label>
                                         <textarea
-                                            className="form-control"
+                                            className={`form-control ${errors.problemReported ? 'input-error' : ''}`}
                                             name="problemReported"
                                             value={data.problemReported}
                                             onChange={handleInputChange}
                                             rows="2"
+                                            placeholder="Enter Problem Reported or type N/A"
                                         />
+                                        {errors.problemReported && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.problemReported}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="col-12">
                                         <label className="form-label fw-bold">
-                                            Diagnosis/Observation
+                                            Diagnosis/Observation*
                                         </label>
                                         <textarea
-                                            className="form-control"
+                                            className={`form-control ${errors.diagnosis ? 'input-error' : ''}`}
                                             name="diagnosis"
                                             value={data.diagnosis}
                                             onChange={handleInputChange}
                                             rows="2"
+                                            placeholder="Enter Diagnosis/Observation or type N/A"
                                         />
+                                        {errors.diagnosis && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.diagnosis}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="col-12">
                                         <label className="form-label fw-bold">
-                                            Action Taken
+                                            Action Taken*
                                         </label>
                                         <textarea
-                                            className="form-control"
+                                            className={`form-control ${errors.actionTaken ? 'input-error' : ''}`}
                                             name="actionTaken"
                                             value={data.actionTaken}
                                             onChange={handleInputChange}
                                             rows="2"
+                                            placeholder="Enter Action Taken or type N/A"
                                         />
+                                        {errors.actionTaken && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.actionTaken}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="col-md-6">
                                         <label className="form-label fw-bold">
-                                            Recommendation
+                                            Recommendation*
                                         </label>
                                         <div>
                                             <select
-                                                className="btn btn-light border border-secondary dropdown-toggle w-100"
+                                                className={`form-input ${errors.recommendation ? 'input-error' : ''}`}
                                                 name="recommendation"
                                                 value={data.recommendation}
                                                 onChange={handleInputChange}
@@ -323,6 +406,12 @@ function TSR({ jobOrder, auth }) {
                                                     Beyond Repair
                                                 </option>
                                             </select>
+                                            {errors.recommendation && (
+                                            <div className="error-message">
+                                                <i className="bi bi-exclamation-circle me-2"></i>
+                                                {errors.recommendation}
+                                            </div>
+                                        )}
                                         </div>
                                     </div>
 

@@ -20,6 +20,9 @@ function ViewTSR({ tsrs, jobOrderId }) {
                                 Date Received
                             </th>
                             <th className="thead-custom" scope="col">
+                                TSR ID
+                            </th>
+                            <th className="thead-custom" scope="col">
                                 TSR Number
                             </th>
                             <th className="thead-custom" scope="col">
@@ -45,10 +48,17 @@ function ViewTSR({ tsrs, jobOrderId }) {
                                             tsr.date_request
                                         ).toLocaleDateString()}
                                     </td>
+                                    <td>{tsr.tsr_id}</td>
                                     <td>{tsr.tsr_num}</td>
-                                    <td>{tsr.instrument}</td>
-                                    <td>{tsr.model || "N/A"}</td>
-                                    <td>{tsr.serial_num || "N/A"}</td>
+                                    <td className={tsr.instrument ? "" : "text-secondary"}>
+                                        {tsr.instrument || "N/A"}
+                                    </td>
+                                    <td className={tsr.model ? "" : "text-secondary"}>
+                                        {tsr.model || "N/A"}
+                                    </td>
+                                    <td className={tsr.serial_num ? "" : "text-secondary"}>
+                                        {tsr.serial_num || "N/A"}
+                                    </td>
                                     <td>
                                         <Link
                                             href={route(
@@ -89,6 +99,13 @@ function ViewTSR({ tsrs, jobOrderId }) {
                                             tsr.date_request
                                         ).toLocaleDateString()}
                                     </div>
+                                </div>
+
+                                <div className="mb-2">
+                                    <small className="text-muted">
+                                        TSR ID:
+                                    </small>
+                                    <div>{tsr.tsr_id}</div>
                                 </div>
 
                                 <div className="mb-2">
