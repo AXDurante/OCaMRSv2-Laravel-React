@@ -506,7 +506,7 @@ export default function NavBar({
                                 ? "80px"
                                 : "250px"
                             : "0",
-                    marginTop: window.innerWidth < 768 ? "60px" : "0",
+                    marginTop: window.innerWidth < 768 ? "10px" : "0",
                     transition: "margin-left 0.3s ease-in-out",
                 }}
             >
