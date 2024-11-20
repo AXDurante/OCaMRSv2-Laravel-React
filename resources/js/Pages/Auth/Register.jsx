@@ -854,6 +854,14 @@ export default function Register() {
                                                         e.target.value
                                                     );
                                                 }}
+                                                onPaste={(e) => {
+                                                    e.preventDefault();
+                                                    return false;
+                                                }}
+                                                onCopy={(e) => {
+                                                    e.preventDefault();
+                                                    return false;
+                                                }}
                                                 required
                                             />
                                             <span
@@ -925,6 +933,14 @@ export default function Register() {
                                                     validateConfirmPassword(
                                                         e.target.value
                                                     );
+                                                }}
+                                                onPaste={(e) => {
+                                                    e.preventDefault();
+                                                    return false;
+                                                }}
+                                                onCopy={(e) => {
+                                                    e.preventDefault();
+                                                    return false;
                                                 }}
                                                 required
                                             />
