@@ -136,14 +136,22 @@ class JobOrderController extends Controller
         $intUnitFields = $request->validate([
             'instruments' => ['required', 'array'],
             'instruments.*.instrument' => ['required'],
-            'instruments.*.qty' => ['required', 'integer', 'min:1'],
-            'instruments.*.model' => ['required', 'string'],
+            'instruments.*.qty' => ['required', 'integer', 'min:1', function($attribute, $value, $fail) {
+                if ($value <= 0) {
+                    $fail('The quantity must be greater than 0.');
+                }
+            }],
+            'instruments.*.model' => ['nullable', 'string'],
             'instruments.*.instrument_num' => ['required', 'string'],
-            'instruments.*.manufacturer' => ['required', 'string'],
+            'instruments.*.manufacturer' => ['nullable', 'string'],
         ]);
 
         // Add default values before creating
         foreach ($intUnitFields['instruments'] as &$instrument) {
+            if ($instrument['qty'] <= 0) {
+                return redirect()->back()->withErrors(['qty' => 'Quantity must be greater than 0'])->withInput();
+            }
+            
             $instrument['model'] = $instrument['model'] ?: 'N/A';
             $instrument['manufacturer'] = $instrument['manufacturer'] ?: 'N/A';
             $instrument['jobOrderID'] = $jobOrder->job_id;

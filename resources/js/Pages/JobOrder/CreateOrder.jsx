@@ -34,7 +34,7 @@ function CreateOrder({
         instruments: [
             {
                 instrument: "",
-                qty: 1,
+                qty: 0,
                 model: "N/A",
                 instrument_num: "",
                 manufacturer: "N/A",
@@ -47,7 +47,7 @@ function CreateOrder({
             ...data.instruments,
             {
                 instrument: "",
-                qty: 1,
+                qty: 0,
                 model: "N/A",
                 instrument_num: "",
                 manufacturer: "N/A",
@@ -135,8 +135,9 @@ function CreateOrder({
                 validationErrors[`serialNumber_${index}`] = "Serial Number is required.";
                 hasErrors = true;
             }
-            if (!instrument.qty || instrument.qty < 1) {
-                validationErrors[`quantity_${index}`] = "Quantity must be at least 1.";
+            if (!instrument.qty || instrument.qty <= 0) {
+                validationErrors[`quantity_${index}`] = "Quantity must be greater than 0";
+                alert(`Instrument ${index + 1}: Quantity cannot be 0 or empty`);
                 hasErrors = true;
             }
         });
@@ -393,7 +394,7 @@ function CreateOrder({
                                     name="qty"
                                     value={instrument.qty}
                                     onChange={(e) => handleInputChange(index, e)}
-                                    min="1"
+                                    min="0"
                                 />
                                 {errors[`quantity_${index}`] && (
                                 <div className="error-message">
