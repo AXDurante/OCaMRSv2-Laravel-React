@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\Feedback;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
+use App\Models\Technician;
 
 class AdminController extends Controller
 {
@@ -103,9 +105,32 @@ class AdminController extends Controller
     }
 
 
-    public function accountHandler()
+    public function accountHandler(Request $request)
     {
-        return Inertia::render('Admin/AccountHandler');
+        $query = User::select('id', 'firstName', 'lastName', 'email', 'created_at', 'employeeID');
+        
+        // Handle search
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('firstName', 'LIKE', "%{$request->search}%")
+                  ->orWhere('lastName', 'LIKE', "%{$request->search}%")
+                  ->orWhere('email', 'LIKE', "%{$request->search}%")
+                  ->orWhere('employeeID', 'LIKE', "%{$request->search}%");
+            });
+        }
+        
+        // Handle sorting
+        $sort = $request->sort ?? 'newest';
+        $users = $query->orderBy('created_at', $sort === 'oldest' ? 'asc' : 'desc')->get();
+        
+        return Inertia::render('Admin/AccountHandler', [
+            'users' => $users,
+            'technicians' => Technician::all(),
+            'filters' => [
+                'search' => $request->search ?? '',
+                'sort' => $sort,
+            ]
+        ]);
     }
     public function manageProfile()
     {

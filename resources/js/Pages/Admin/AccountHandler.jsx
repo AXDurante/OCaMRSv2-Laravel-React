@@ -24,10 +24,68 @@ function Home() {
     const [lastNameError, setLastNameError] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
     const [confirmPasswordError, setConfirmPasswordError] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortOrder, setSortOrder] = useState('newest');
+    const [filteredUsers, setFilteredUsers] = useState(users);
+    const [techSearchTerm, setTechSearchTerm] = useState('');
+    const [techSortOrder, setTechSortOrder] = useState('newest');
+    const [filteredTechnicians, setFilteredTechnicians] = useState(technicians);
 
     useEffect(() => {
         fetchAccounts();
     }, []);
+
+    useEffect(() => {
+        let filtered = [...users];
+        
+        // Apply search filter
+        if (searchTerm) {
+            filtered = filtered.filter(user => 
+                user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.employeeID?.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+        
+        // Apply sorting
+        filtered.sort((a, b) => {
+            if (sortOrder === 'newest') {
+                return new Date(b.created_at) - new Date(a.created_at);
+            } else {
+                return new Date(a.created_at) - new Date(b.created_at);
+            }
+        });
+        
+        setFilteredUsers(filtered);
+    }, [users, searchTerm, sortOrder]);
+
+    useEffect(() => {
+        let filtered = [...technicians];
+        
+        // Apply search filter
+        if (techSearchTerm) {
+            filtered = filtered.filter(tech => 
+                tech.firstName?.toLowerCase().includes(techSearchTerm.toLowerCase()) ||
+                tech.lastName?.toLowerCase().includes(techSearchTerm.toLowerCase()) ||
+                tech.email?.toLowerCase().includes(techSearchTerm.toLowerCase()) ||
+                tech.employeeID?.toLowerCase().includes(techSearchTerm.toLowerCase())
+            );
+        }
+        
+        // Apply sorting
+        filtered.sort((a, b) => {
+            if (techSortOrder === 'newest') {
+                return new Date(b.created_at) - new Date(a.created_at);
+            } else {
+                return new Date(a.created_at) - new Date(b.created_at);
+            }
+        });
+        
+        setFilteredTechnicians(filtered);
+    }, [technicians, techSearchTerm, techSortOrder]);
 
     const fetchAccounts = async () => {
         try {
@@ -278,8 +336,18 @@ function Home() {
         return true;
     };
 
+    const openUserModal = (user) => {
+        setSelectedUser(user);
+        setIsUserModalOpen(true);
+    };
+
+    const closeUserModal = () => {
+        setSelectedUser(null);
+        setIsUserModalOpen(false);
+    };
+
     return (
-        <div className="">
+        <div className="mx-5 my-5">
             <div id="content" className="">
                 <div>
                     <div>
@@ -288,70 +356,143 @@ function Home() {
                         <hr />
                     </div>
                     <div className="mt-3">
-                        <h3 className="mt-10 mb-3 fw-bold">
+                        <h3 className="mt-5 mb-3 fw-bold">
                             Instrumentation Accounts
                         </h3>
-                        <div className="row forms-bg p-5 instrumentation-accounts">
-                            <div className="col-12">
-                                <div className="row justify-content-start flex-wrap">
-                                    {technicians.map((account) => (
-                                        <div
-                                            key={account.id}
-                                            className="col-6 col-sm-4 col-md-3 col-lg-2 account-wrapper mb-4"
-                                        >
-                                            <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
+                        
+                        <div className="client-controls-container">
+                            <div className="client-search-wrapper">
+                                <input
+                                    type="text"
+                                    placeholder="Search instrumentation accounts..."
+                                    value={techSearchTerm}
+                                    onChange={(e) => setTechSearchTerm(e.target.value)}
+                                    className="client-search-input"
+                                />
+                                <i className="bi bi-search client-search-icon"></i>
+                            </div>
+                            
+                            <div className="client-sort-wrapper">
+                                <select
+                                    value={techSortOrder}
+                                    onChange={(e) => setTechSortOrder(e.target.value)}
+                                    className="client-sort-select"
+                                >
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div 
+                            className="row forms-bg p-5 instrumentation-accounts" 
+                            style={{ 
+                                display: 'flex',
+                                overflowX: 'auto',
+                                whiteSpace: 'nowrap',
+                                padding: '20px'
+                            }}
+                        >
+                            <div style={{ 
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '6vw',
+                                flexWrap: 'nowrap'
+                            }}>
+                                <div onClick={openModal} style={{ 
+                                    textAlign: 'center',
+                                    width: '200px'  // Increased width to accommodate all content
+                                }}>
+                                    <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon">
+                                            <i className="bi bi-plus text-primary"></i>
+                                        </div>
+                                        <h5 className="account-name">Add Account</h5>
+                                    </div>
+                                </div>
+
+                                {filteredTechnicians.map((account) => (
+                                    <div key={account.id} style={{ 
+                                        textAlign: 'center',
+                                        width: '200px'  // Increased width to accommodate all content
+                                    }}>
+                                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                            <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon">
                                                 <i className="bi bi-person-fill text-primary"></i>
                                             </div>
                                             <h5 className="account-name">
-                                                {account.firstName}{" "}
-                                                {account.lastName}
+                                                {account.firstName} {account.lastName}
                                             </h5>
-                                            <p className="account-email">
-                                                {account.email}
-                                            </p>
+                                            <p className="account-email">{account.email}</p>
                                             <Link
-                                                href={route("admin.edit.tech", {
-                                                    id: account.id,
-                                                })}
+                                                href={route("admin.edit.tech", { id: account.id })}
                                                 className="btn btn-sm btn-primary mt-2"
                                             >
                                                 Edit
                                             </Link>
                                         </div>
-                                    ))}
-                                    <div
-                                        className="col-6 col-sm-4 col-md-3 col-lg-2 account-wrapper mb-4"
-                                        onClick={openModal}
-                                    >
-                                        <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
-                                            <i className="bi bi-plus text-primary"></i>
-                                        </div>
-                                        <h5 className="account-name">
-                                            Add Account
-                                        </h5>
                                     </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
 
                         <h3 className="mt-10 mb-3 fw-bold">Clients Accounts</h3>
-                        <div className="row forms-bg p-5">
-                            <div className="col-12">
-                                <div className="row">
-                                    {users.map((user) => (
+
+                        <div className="client-controls-container">
+                            <div className="client-search-wrapper">
+                                <input
+                                    type="text"
+                                    placeholder="Search clients..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="client-search-input"
+                                />
+                                <i className="bi bi-search client-search-icon"></i>
+                            </div>
+                            
+                            <div className="client-sort-wrapper">
+                                <select
+                                    value={sortOrder}
+                                    onChange={(e) => setSortOrder(e.target.value)}
+                                    className="client-sort-select"
+                                >
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div 
+                            className="row forms-bg p-5" 
+                            style={{ 
+                                display: 'flex',
+                                overflowX: 'auto',
+                                flexWrap: 'nowrap',
+                            }}
+                        >
+                            <div className="col-12" style={{ display: 'flex', flexWrap: 'nowrap' }}>
+                                <div className="row" style={{ 
+                                    display: 'flex', 
+                                    flexWrap: 'nowrap',
+                                    width: 'auto',
+                                    margin: 0
+                                }}>
+                                    {filteredUsers.map((user) => (
                                         <div
                                             key={user.id}
-                                            className="col-6 col-md-2 account-wrapper"
+                                            className="col-6 col-md-2 account-wrapper client-account-card"
+                                            onClick={() => openUserModal(user)}
+                                            style={{
+                                                minWidth: '250px',  // Fixed minimum width
+                                                flex: '0 0 250px',  // Don't grow or shrink, stay at 250px
+                                                marginRight: '20px' // Space between cards
+                                            }}
                                         >
                                             <div className="rounded-circle bg-dark d-flex justify-content-center align-items-center account-icon mx-auto">
                                                 <i className="bi bi-person-fill text-primary"></i>
                                             </div>
-                                            <h5 className="account-name">
-                                                {user.name}
-                                            </h5>
-                                            <p className="account-email">
-                                                {user.email}
-                                            </p>
+                                            <h5 className="account-name">{`${user.firstName} ${user.lastName}`}</h5>
+                                            <p className="account-email">{user.email}</p>
                                         </div>
                                     ))}
                                     {/* Add user account button */}
@@ -674,6 +815,55 @@ function Home() {
                 >
                     <div className="alert-ah__title">{error.title}</div>
                     <div className="alert-ah__message">{error.message}</div>
+                </div>
+            )}
+
+            {isUserModalOpen && selectedUser && (
+                <div className="modal-overlay client-modal-backdrop" onClick={closeUserModal}>
+                    <div 
+                        className="modal-content client-details-modal"
+                        onClick={e => e.stopPropagation()}
+                        style={{ maxWidth: "500px", width: "90%" }}
+                    >
+                        <div className="client-modal-header">
+                            <h2>User Details</h2>
+                            <button 
+                                className="client-modal-close" 
+                                onClick={closeUserModal}
+                            >
+                                <i className="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        <div className="client-modal-content">
+                            <div className="client-avatar-container">
+                                <i className="bi bi-person-circle client-avatar-icon"></i>
+                            </div>
+                            <div className="client-info-container">
+                                <div className="client-info-item">
+                                    <label className="client-info-label">ID Number:</label>
+                                    <span className="client-info-value">
+                                        {selectedUser.employeeID}
+                                    </span>
+                                </div>
+                                <div className="client-info-item">
+                                    <label className="client-info-label">Name:</label>
+                                    <span className="client-info-value">
+                                        {`${selectedUser.firstName} ${selectedUser.lastName}`}
+                                    </span>
+                                </div>
+                                <div className="client-info-item">
+                                    <label className="client-info-label">Email:</label>
+                                    <span className="client-info-value">{selectedUser.email}</span>
+                                </div>
+                                <div className="client-info-item">
+                                    <label className="client-info-label">Created:</label>
+                                    <span className="client-info-value">
+                                        {new Date(selectedUser.created_at).toLocaleDateString()}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
