@@ -495,11 +495,8 @@ function Dashboard({ jobOrder, totalCounts, filters }) {
                                                     <span
                                                         className={`badge ${
                                                             order.priority ===
-                                                            "High"
+                                                            "Urgent"
                                                                 ? "bg-danger"
-                                                                : order.priority ===
-                                                                  "Medium"
-                                                                ? "bg-warning"
                                                                 : "bg-success"
                                                         } px-3 py-2 rounded-pill`}
                                                     >
@@ -673,11 +670,8 @@ function Dashboard({ jobOrder, totalCounts, filters }) {
                                                 <span
                                                     className={`badge ${
                                                         order.priority ===
-                                                        "High"
+                                                        "Urgent"
                                                             ? "bg-danger"
-                                                            : order.priority ===
-                                                              "Medium"
-                                                            ? "bg-warning"
                                                             : "bg-success"
                                                     } px-2 py-1 rounded-pill`}
                                                 >
@@ -728,7 +722,7 @@ function Dashboard({ jobOrder, totalCounts, filters }) {
 
                         {/* Pagination */}
                         <div className="text-center">
-                            <nav>
+                            <nav aria-label="Page navigation" class="w-100">
                                 <ul className="pagination">
                                     {jobOrder.links.map((link, index) => (
                                         <li

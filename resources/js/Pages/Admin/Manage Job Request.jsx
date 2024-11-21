@@ -884,7 +884,7 @@ function Home({ jobOrder, totalCounts, filters }) {
 
                         {/* Pagination links */}
                         <div className="text-center">
-                            <nav>
+                            <nav aria-label="Page navigation" class="w-100">
                                 <ul className="pagination">
                                     {jobOrder.links.map((link, index) => (
                                         <li
