@@ -74,9 +74,16 @@ function CreateOrder({
 
     const handleInputChange = (index, event) => {
         const { name, value } = event.target;
-        const updatedInstruments = data.instruments.map((inst, i) =>
-            i === index ? { ...inst, [name]: value } : inst
-        );
+        const updatedInstruments = data.instruments.map((inst, i) => {
+            if (i === index) {
+                // Clear "N/A" when user starts typing
+                if ((name === 'model' || name === 'manufacturer') && inst[name] === "N/A") {
+                    return { ...inst, [name]: "" };
+                }
+                return { ...inst, [name]: value };
+            }
+            return inst;
+        });
         setData("instruments", updatedInstruments);
     };
 
@@ -139,6 +146,15 @@ function CreateOrder({
             setErrors(validationErrors);
             return;
         }
+
+        // Ensure model and manufacturer are "N/A" if empty before submission
+        const processedInstruments = data.instruments.map(instrument => ({
+            ...instrument,
+            model: instrument.model.trim() || "N/A",
+            manufacturer: instrument.manufacturer.trim() || "N/A"
+        }));
+
+        setData("instruments", processedInstruments);
 
         // If we get here, all validation passed
         try {
@@ -339,9 +355,14 @@ function CreateOrder({
                                     type="text"
                                     className="form-input"
                                     name="model"
-                                    value={instrument.model}
+                                    value={instrument.model === "N/A" ? "" : instrument.model}
                                     onChange={(e) => handleInputChange(index, e)}
-                                    placeholder="Enter model (N/A if not applicable)"
+                                    onBlur={(e) => {
+                                        if (!e.target.value.trim()) {
+                                            handleInputChange(index, { target: { name: 'model', value: 'N/A' } });
+                                        }
+                                    }}
+                                    placeholder="N/A"
                                 />
                             </div>
 
@@ -352,9 +373,14 @@ function CreateOrder({
                                     type="text"
                                     className="form-input"
                                     name="manufacturer"
-                                    value={instrument.manufacturer}
+                                    value={instrument.manufacturer === "N/A" ? "" : instrument.manufacturer}
                                     onChange={(e) => handleInputChange(index, e)}
-                                    placeholder="Enter manufacturer (N/A if not applicable)"
+                                    onBlur={(e) => {
+                                        if (!e.target.value.trim()) {
+                                            handleInputChange(index, { target: { name: 'manufacturer', value: 'N/A' } });
+                                        }
+                                    }}
+                                    placeholder="N/A"
                                 />
                             </div>
 
