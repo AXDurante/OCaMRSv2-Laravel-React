@@ -182,7 +182,7 @@ function Home({ theUser }) {
                             <h1 className="display-4 mb-0">
                                 Updating Profile: {theUser.firstName} {theUser.lastName}
                             </h1>
-                            <p className="lead mt-2 mb-0">Technician ID: {theUser.id}</p>
+                            <p className="lead mt-2 mb-0">Technician ID: {theUser.employeeID}</p>
                         </div>
                     </div>
 
