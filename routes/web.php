@@ -150,6 +150,8 @@ Route::get('/about', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('/jobOrder', JobOrderController::class);
+    
     Route::get('/dashboard', function () {
         return redirect('/landingpage');
     })->name('dashboard');
