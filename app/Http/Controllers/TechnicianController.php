@@ -13,6 +13,8 @@ use App\Models\JobOrder;
 use Illuminate\Support\Str;
 use App\Models\CoC;
 use App\Models\Notification;
+use App\Notifications\JobOrderNotification;
+use Illuminate\Support\Facades\Log;
 
 class TechnicianController extends Controller
 {
@@ -135,19 +137,44 @@ class TechnicianController extends Controller
             }
 
             // Create notification
-            Notification::create([
-                'user_id' => $jobOrder->employeeID,
-                'job_order_id' => $jobOrder->job_id,
-                'title' => 'Job Order Status Updated',
-                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$validatedData['status']} by technician",
-                'type' => 'status_update',
-                'status' => $validatedData['status']
-            ]);
+            $user = User::where('employeeID', $jobOrder->employeeID)->first();
+            if ($user) {
+                Log::info('Sending notification to user:', [
+                    'user_id' => $user->employeeID,
+                    'email' => $user->email
+                ]);
+
+                // Create database notification
+                Notification::create([
+                    'user_id' => $jobOrder->employeeID,
+                    'job_order_id' => $jobOrder->job_id,
+                    'title' => 'Job Order Status Updated',
+                    'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$validatedData['status']} by technician",
+                    'type' => 'status_update',
+                    'status' => $validatedData['status']
+                ]);
+
+                // Send email notification
+                try {
+                    $user->notify(new JobOrderNotification(
+                        'Job Order Status Updated',
+                        "Your job order #{$jobOrder->job_id} status has been updated to {$validatedData['status']} by technician",
+                        $jobOrder->job_id,
+                        $validatedData['status']
+                    ));
+                    Log::info('Notification sent successfully');
+                } catch (\Exception $e) {
+                    Log::error('Failed to send notification:', [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                }
+            }
 
             return redirect()->route('technician.showJobOrder', $jobOrder->job_id)
                 ->with('success', 'Job order has been updated successfully!');
         } catch (\Exception $e) {
-            \Log::error('Job Order Update Error:', [
+            Log::error('Job Order Update Error:', [
                 'message' => $e->getMessage(),
                 'job_id' => $id
             ]);

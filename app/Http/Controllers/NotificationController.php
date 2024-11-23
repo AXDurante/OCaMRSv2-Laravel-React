@@ -6,6 +6,8 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Notifications\JobOrderNotification;
 
 class NotificationController extends Controller
 {

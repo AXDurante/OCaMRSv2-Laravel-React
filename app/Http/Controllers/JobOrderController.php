@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Notification;
 use App\Http\Controllers\AdminNotificationController;
 use App\Http\Controllers\TechnicianNotificationController;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use App\Notifications\JobOrderNotification;
 
 class JobOrderController extends Controller
 {
@@ -242,13 +245,32 @@ class JobOrderController extends Controller
 
     protected function createStatusChangeNotification($jobOrder, $oldStatus)
     {
-        Notification::create([
-            'user_id' => $jobOrder->employeeID,
-            'job_order_id' => $jobOrder->job_id,
-            'title' => 'Job Order Status Updated',
-            'message' => "Your job order #{$jobOrder->job_id} status has been changed from {$oldStatus} to {$jobOrder->status}",
-            'type' => 'status_update'
-        ]);
+        $user = User::where('employeeID', $jobOrder->employeeID)->first();
+        if ($user) {
+            // Create database notification
+            Notification::create([
+                'user_id' => $jobOrder->employeeID,
+                'job_order_id' => $jobOrder->job_id,
+                'title' => 'Job Order Status Updated',
+                'message' => "Your job order #{$jobOrder->job_id} status has been changed from {$oldStatus} to {$jobOrder->status}",
+                'type' => 'status_update'
+            ]);
+
+            // Send email notification
+            try {
+                $user->notify(new JobOrderNotification(
+                    'Job Order Status Updated',
+                    "Your job order #{$jobOrder->job_id} status has been changed from {$oldStatus} to {$jobOrder->status}",
+                    $jobOrder->job_id,
+                    $jobOrder->status
+                ));
+            } catch (\Exception $e) {
+                Log::error('Failed to send user notification:', [
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+            }
+        }
     }
 
     public function assignTechnician(Request $request, JobOrder $jobOrder)

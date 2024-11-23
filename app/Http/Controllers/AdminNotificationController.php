@@ -7,6 +7,7 @@ use App\Models\JobOrder;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Notifications\JobOrderNotification;
 
 class AdminNotificationController extends Controller
 {
@@ -86,6 +87,15 @@ class AdminNotificationController extends Controller
                 'message' => $message,
                 'type' => $type
             ]);
+
+            if ($admin->email) {
+                $admin->notify(new JobOrderNotification(
+                    $title,
+                    $message,
+                    $jobOrder->job_id,
+                    $jobOrder->status
+                ));
+            }
         }
     }
 }

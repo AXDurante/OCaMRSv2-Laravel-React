@@ -16,6 +16,7 @@ use App\Http\Controllers\FeedbackControllerAdmin;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AdminNotificationController;
+use Illuminate\Support\Facades\Mail;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
@@ -221,4 +222,16 @@ require __DIR__ . '/auth.php';
 
 
 require __DIR__ . '/techAuth.php';
+
+Route::get('/test-email', function() {
+    try {
+        Mail::raw('Test email from OCAMRS', function($message) {
+            $message->to('your-test-email@example.com')
+                   ->subject('Test Email');
+        });
+        return 'Test email sent successfully!';
+    } catch (\Exception $e) {
+        return 'Error sending email: ' . $e->getMessage();
+    }
+});
 

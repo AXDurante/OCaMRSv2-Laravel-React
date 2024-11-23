@@ -7,6 +7,7 @@ use App\Models\JobOrder;
 use App\Models\Technician;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Notifications\JobOrderNotification;
 
 class TechnicianNotificationController extends Controller
 {
@@ -80,6 +81,7 @@ class TechnicianNotificationController extends Controller
     {
         $technicians = Technician::all();
         foreach ($technicians as $technician) {
+            // Create database notification
             StaffNotification::create([
                 'recipient_type' => 'technician',
                 'recipient_id' => $technician->id,
@@ -89,6 +91,16 @@ class TechnicianNotificationController extends Controller
                 'message' => $message,
                 'type' => $type
             ]);
+
+            // Send email notification if technician has email
+            if ($technician->email) {
+                $technician->notify(new JobOrderNotification(
+                    $title,
+                    $message,
+                    $jobOrder->job_id,
+                    $jobOrder->status
+                ));
+            }
         }
     }
 

@@ -16,6 +16,7 @@ use App\Models\Feedback;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Technician;
+use App\Notifications\JobOrderNotification;
 
 class AdminController extends Controller
 {
@@ -259,14 +260,33 @@ class AdminController extends Controller
             }
 
             // Create notification for status change
-            Notification::create([
-                'user_id' => $jobOrder->employeeID,
-                'job_order_id' => $jobOrder->job_id,
-                'title' => 'Job Order Status Updated',
-                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$validatedData['status']} by admin",
-                'type' => 'status_update',
-                'status' => $validatedData['status']
-            ]);
+            $user = User::where('employeeID', $jobOrder->employeeID)->first();
+            if ($user) {
+                // Create database notification
+                Notification::create([
+                    'user_id' => $jobOrder->employeeID,
+                    'job_order_id' => $jobOrder->job_id,
+                    'title' => 'Job Order Status Updated',
+                    'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$validatedData['status']} by admin",
+                    'type' => 'status_update',
+                    'status' => $validatedData['status']
+                ]);
+
+                // Send email notification
+                try {
+                    $user->notify(new JobOrderNotification(
+                        'Job Order Status Updated',
+                        "Your job order #{$jobOrder->job_id} status has been updated to {$validatedData['status']} by admin",
+                        $jobOrder->job_id,
+                        $validatedData['status']
+                    ));
+                } catch (\Exception $e) {
+                    Log::error('Failed to send user notification:', [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                }
+            }
 
             return redirect()->route('admin.showJobOrder', $jobOrder->job_id)
                 ->with('success', 'Job order has been updated successfully!');
@@ -603,14 +623,33 @@ class AdminController extends Controller
             }
 
             // Create notification for status change
-            Notification::create([
-                'user_id' => $jobOrder->employeeID,
-                'job_order_id' => $jobOrder->job_id,
-                'title' => 'Job Order Status Updated',
-                'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$request->status} by admin",
-                'type' => 'status_update',
-                'status' => $request->status
-            ]);
+            $user = User::where('employeeID', $jobOrder->employeeID)->first();
+            if ($user) {
+                // Create database notification
+                Notification::create([
+                    'user_id' => $jobOrder->employeeID,
+                    'job_order_id' => $jobOrder->job_id,
+                    'title' => 'Job Order Status Updated',
+                    'message' => "Your job order #{$jobOrder->job_id} status has been updated to {$request->status} by admin",
+                    'type' => 'status_update',
+                    'status' => $request->status
+                ]);
+
+                // Send email notification
+                try {
+                    $user->notify(new JobOrderNotification(
+                        'Job Order Status Updated',
+                        "Your job order #{$jobOrder->job_id} status has been updated to {$request->status} by admin",
+                        $jobOrder->job_id,
+                        $request->status
+                    ));
+                } catch (\Exception $e) {
+                    Log::error('Failed to send user notification:', [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                }
+            }
 
             return response()->json([
                 'message' => 'Status updated successfully'
