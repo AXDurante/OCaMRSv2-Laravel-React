@@ -15,6 +15,7 @@ use App\Models\CoC;
 use App\Models\Notification;
 use App\Notifications\JobOrderNotification;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 class TechnicianController extends Controller
 {
