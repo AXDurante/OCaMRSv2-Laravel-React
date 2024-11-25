@@ -38,7 +38,7 @@ function NotificationsTechnician({ notifications }) {
                 </div>
 
                 <div className="px-4">
-                    {notifications?.length > 0 && (
+                    {notifications.data?.length > 0 && (
                         <div className="text-end mb-3 fade-in-delayed">
                             <button
                                 onClick={markAllAsRead}
