@@ -139,11 +139,16 @@ class JobOrderController extends Controller
         $intUnitFields = $request->validate([
             'instruments' => ['required', 'array'],
             'instruments.*.instrument' => ['required'],
-            'instruments.*.qty' => ['required', 'integer', 'min:1', function($attribute, $value, $fail) {
-                if ($value <= 0) {
-                    $fail('The quantity must be greater than 0.');
+            'instruments.*.qty' => [
+                'required', 
+                'integer', 
+                'min:1',
+                function($attribute, $value, $fail) {
+                    if (preg_match('/^0+\d+$/', $value)) {
+                        $fail('The quantity must be greater than 0.');
+                    }
                 }
-            }],
+            ],
             'instruments.*.model' => ['nullable', 'string'],
             'instruments.*.instrument_num' => ['required', 'string'],
             'instruments.*.manufacturer' => ['nullable', 'string'],

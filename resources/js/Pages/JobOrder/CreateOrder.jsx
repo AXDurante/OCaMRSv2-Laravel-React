@@ -135,9 +135,8 @@ function CreateOrder({
                 validationErrors[`serialNumber_${index}`] = "Serial Number is required.";
                 hasErrors = true;
             }
-            if (!instrument.qty || instrument.qty <= 0) {
-                validationErrors[`quantity_${index}`] = "Quantity must be greater than 0";
-                alert(`Instrument ${index + 1}: Quantity cannot be 0 or empty`);
+            if (!instrument.qty || instrument.qty <= 0 || /^0+\d+$/.test(instrument.qty.toString())) {
+                validationErrors[`quantity_${index}`] = "Quantity cannot be 0 or empty";
                 hasErrors = true;
             }
         });
