@@ -36,14 +36,14 @@ class TechnicianController extends Controller
 
         // Apply existing filters
         if ($request->search) {
-            $query->where(function($q) use ($request) {
-                $q->whereHas('user', function($userQuery) use ($request) {
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('user', function ($userQuery) use ($request) {
                     $userQuery->where('firstName', 'LIKE', "%{$request->search}%")
                         ->orWhere('lastName', 'LIKE', "%{$request->search}%")
                         ->orWhere('email', 'LIKE', "%{$request->search}%");
                 })
-                ->orWhere('job_id', 'LIKE', "%{$request->search}%")
-                ->orWhere('service_type', 'LIKE', "%{$request->search}%");
+                    ->orWhere('job_id', 'LIKE', "%{$request->search}%")
+                    ->orWhere('service_type', 'LIKE', "%{$request->search}%");
             });
         }
 

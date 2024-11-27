@@ -497,7 +497,7 @@ function TSRpdf({ jobOrder, reportDetails }) {
                     </Text>
                     <View style={{ marginLeft: 9, marginRight: 9, marginTop: 1, minHeight: 40 }}>
                         <Text style={{ fontSize: 9, lineHeight: 15, paddingTop: 2, position: 'absolute', zIndex: 1 }}>
-                            {breakLongWords(reportDetails.tsr_remarks)}
+                            {reportDetails.tsr_remarks ? breakLongWords(reportDetails.tsr_remarks) : ''}
                         </Text>
                         <View style={{ borderBottomWidth: 1, borderBottomColor: "black", marginTop: 15 }} />
                         <View style={{ borderBottomWidth: 1, borderBottomColor: "black", marginTop: 15 }} />

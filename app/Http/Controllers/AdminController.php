@@ -57,14 +57,14 @@ class AdminController extends Controller
 
         // Apply search filter if search parameter exists
         if ($request->search) {
-            $query->where(function($q) use ($request) {
-                $q->whereHas('user', function($userQuery) use ($request) {
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('user', function ($userQuery) use ($request) {
                     $userQuery->where('firstName', 'LIKE', "%{$request->search}%")
                         ->orWhere('lastName', 'LIKE', "%{$request->search}%")
                         ->orWhere('email', 'LIKE', "%{$request->search}%");
                 })
-                ->orWhere('job_id', 'LIKE', "%{$request->search}%")
-                ->orWhere('service_type', 'LIKE', "%{$request->search}%");
+                    ->orWhere('job_id', 'LIKE', "%{$request->search}%")
+                    ->orWhere('service_type', 'LIKE', "%{$request->search}%");
             });
         }
 
@@ -109,21 +109,21 @@ class AdminController extends Controller
     public function accountHandler(Request $request)
     {
         $query = User::select('id', 'firstName', 'lastName', 'email', 'created_at', 'employeeID');
-        
+
         // Handle search
         if ($request->search) {
-            $query->where(function($q) use ($request) {
+            $query->where(function ($q) use ($request) {
                 $q->where('firstName', 'LIKE', "%{$request->search}%")
-                  ->orWhere('lastName', 'LIKE', "%{$request->search}%")
-                  ->orWhere('email', 'LIKE', "%{$request->search}%")
-                  ->orWhere('employeeID', 'LIKE', "%{$request->search}%");
+                    ->orWhere('lastName', 'LIKE', "%{$request->search}%")
+                    ->orWhere('email', 'LIKE', "%{$request->search}%")
+                    ->orWhere('employeeID', 'LIKE', "%{$request->search}%");
             });
         }
-        
+
         // Handle sorting
         $sort = $request->sort ?? 'newest';
         $users = $query->orderBy('created_at', $sort === 'oldest' ? 'asc' : 'desc')->get();
-        
+
         return Inertia::render('Admin/AccountHandler', [
             'users' => $users,
             'technicians' => Technician::all(),
@@ -490,7 +490,7 @@ class AdminController extends Controller
 
         $tsrFields = $request->validate([
             'tsr_num' => ['required'],
-            'instrument' => ['required'],
+            'instrument' => ['nullable', 'string'],
             'model' => ['nullable', 'string'],
             'serial_num' => ['nullable', 'string'],
             'problemReported' => ['nullable', 'string'],

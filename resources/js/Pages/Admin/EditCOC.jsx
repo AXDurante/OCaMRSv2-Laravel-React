@@ -494,7 +494,7 @@ function EditCOC({ tsr, auth, coc }) {
                                                 className="custom-checkbox-label text-muted ms-2"
                                                 htmlFor="includeSignature"
                                             >
-                                                Include my signature in this TSR
+                                                Include my signature in this document
                                             </label>
                                         </div>
                                     </div>

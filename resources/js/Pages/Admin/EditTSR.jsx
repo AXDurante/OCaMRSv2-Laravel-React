@@ -31,22 +31,22 @@ function EditTSR({ jobOrder, auth, tsr }) {
 
     // Initialize useForm with existing TSR data
     const { data, setData, put, processing } = useForm({
-        tsr_num: tsr.tsr_num || "",
-        instrument: tsr.instrument || "",
-        model: tsr.model || "",
-        serial_num: tsr.serial_num || "",
-        problemReported: tsr.problemReported || "",
-        diagnosis: tsr.diagnosis || "",
-        actionTaken: tsr.actionTaken || "",
-        recommendation: tsr.recommendation || "",
-        tsr_remarks: tsr.tsr_remarks || "",
+        tsr_num: tsr.tsr_num || '',
+        instrument: tsr.instrument || '',
+        model: tsr.model || '',
+        serial_num: tsr.serial_num || '',
+        problemReported: tsr.problemReported || '',
+        diagnosis: tsr.diagnosis || '',
+        actionTaken: tsr.actionTaken || '',
+        recommendation: tsr.recommendation || '',
+        tsr_remarks: tsr.tsr_remarks || '',
         date_request: tsr.date_request || jobOrder.date_request,
         phone: tsr.phone || jobOrder.user.phoneNumber,
         job_id: tsr.job_id || jobOrder.job_id,
         tech_id: tsr.tech_id,
         tech_photo: tsr.tech_photo,
-        admin_photo: tsr.admin_photo || null, // Add this field
-        admin_name: tsr.admin_name || null,
+        admin_photo: tsr.admin_photo || "", // Add this field
+        admin_name: tsr.admin_name || "",
     });
 
     // Update the input fields to use setData instead of separate state variables
