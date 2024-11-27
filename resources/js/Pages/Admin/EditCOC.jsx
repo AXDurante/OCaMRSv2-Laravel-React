@@ -57,21 +57,19 @@ function EditCOC({ tsr, auth, coc }) {
     const handleSignatureChange = (e) => {
         const isChecked = e.target.checked;
         setIncludeSignature(isChecked);
-        
+
         // Update the data state when checkbox changes
-        if (isChecked) {
-            setData({
-                ...data,
+        setData({
+            ...data,
+            ...(isChecked && {
                 admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
-                admin_name: `${auth.user.firstName} ${auth.user.lastName}`
-            });
-        } else {
-            setData({
-                ...data,
+                admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
+            }),
+            ...(!isChecked && {
                 admin_signature: null,
-                admin_name: null
-            });
-        }
+                admin_name: null,
+            }),
+        });
     };
 
     const handlePreviewClick = () => {
@@ -138,8 +136,10 @@ function EditCOC({ tsr, auth, coc }) {
                                 ...data,
                                 tech_photo: data.tech_photo,
                                 tech_name: data.tech_name,
-                                admin_signature: includeSignature ? data.admin_signature : null,
-                                admin_name: includeSignature ? data.admin_name : null
+                                ...(includeSignature && {
+                                    admin_signature: `/storage/photos/adminSignature/${auth.user.photo}`,
+                                    admin_name: `${auth.user.firstName} ${auth.user.lastName}`,
+                                }),
                             }}
                         />
                     </PDFViewer>
