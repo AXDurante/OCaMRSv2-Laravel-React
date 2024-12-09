@@ -6,7 +6,13 @@ import TextInput from "@/Components/TextInput";
 import TextInput2 from "@/Components/TextInput2";
 import LoginButton from "@/Components/LoginButton";
 import PhoneNumberInput from "@/Components/PhoneNumberInput";
-import { FaEye, FaEyeSlash, FaInfoCircle } from "react-icons/fa"; // Import eye icons
+import {
+    FaEye,
+    FaEyeSlash,
+    FaInfoCircle,
+    FaEnvelope,
+    FaPhone,
+} from "react-icons/fa"; // Import eye icons
 
 import { Modal } from "react-bootstrap";
 
@@ -660,17 +666,15 @@ export default function Register() {
                                             htmlFor="labLoc"
                                             value="Lab Location"
                                         />
-                                        <TextInput2
+                                        <select
                                             id="labLoc"
                                             name="labLoc"
                                             value={data.labLoc}
-                                            className={`mt-1 block w-full ${
+                                            className={`optionBox w-100 ${
                                                 validationErrors.labLoc
                                                     ? "is-invalid"
                                                     : ""
                                             }`}
-                                            autoComplete="labLoc"
-                                            isFocused={true}
                                             onChange={(e) => {
                                                 setData(
                                                     "labLoc",
@@ -679,7 +683,39 @@ export default function Register() {
                                                 validateLabLoc(e.target.value);
                                             }}
                                             required
-                                        />
+                                        >
+                                            <option value="" disabled>
+                                                Select your lab location
+                                            </option>
+                                            <option value="Roque Ruaño Building">
+                                                Roque Ruaño Building
+                                            </option>
+                                            <option value="Albertus Magnus Building">
+                                                Albertus Magnus Building
+                                            </option>
+                                            <option value="Main Building">
+                                                Main Building
+                                            </option>
+                                            <option value="Martin de Porres Building">
+                                                Martin de Porres Building
+                                            </option>
+                                            <option value="Benavides Building">
+                                                Benavides Building
+                                            </option>
+                                            <option value="Bl. Pier Giorgio Frassati Building">
+                                                Bl. Pier Giorgio Frassati
+                                                Building
+                                            </option>
+                                            <option value="Thomas Aquinas Research Center">
+                                                Thomas Aquinas Research Center
+                                            </option>
+                                            <option value="Central Laboratory">
+                                                Central Laboratory
+                                            </option>
+                                            <option value="Father Lorenzo Rodriquez">
+                                                Father Lorenzo Rodriquez
+                                            </option>
+                                        </select>
                                         <InputError
                                             message={errors.labLoc}
                                             className="mt-2 text-danger"
@@ -697,17 +733,15 @@ export default function Register() {
                                             htmlFor="position"
                                             value="Position"
                                         />
-                                        <TextInput2
+                                        <select
                                             id="position"
                                             name="position"
                                             value={data.position}
-                                            className={`mt-1 block w-full ${
+                                            className={`optionBox w-100 ${
                                                 validationErrors.position
                                                     ? "is-invalid"
                                                     : ""
                                             }`}
-                                            autoComplete="labLoc"
-                                            isFocused={true}
                                             onChange={(e) => {
                                                 setData(
                                                     "position",
@@ -717,9 +751,24 @@ export default function Register() {
                                                     e.target.value
                                                 );
                                             }}
-                                            placeholder="Lab Technician"
                                             required
-                                        />
+                                        >
+                                            <option value="" disabled>
+                                                Select your position
+                                            </option>
+                                            <option value="Laboratory Supervisor">
+                                                Laboratory Supervisor
+                                            </option>
+                                            <option value="Laboratory Coordinator">
+                                                Laboratory Coordinator
+                                            </option>
+                                            <option value="Laboratory Assistant">
+                                                Laboratory Assistant
+                                            </option>
+                                            <option value="Laboratory Chemist">
+                                                Laboratory Chemist
+                                            </option>
+                                        </select>
                                         <InputError
                                             message={errors.position}
                                             className="mt-2 text-danger"
@@ -1191,10 +1240,13 @@ export default function Register() {
                                                     please contact us at:
                                                 </p>
                                                 <p className="mb-4">
+                                                    <FaInfoCircle className="me-1" />{" "}
                                                     Leso ISC
                                                     <br />
+                                                    <FaEnvelope className="me-1" />{" "}
                                                     leso@ust.edu.ph
                                                     <br />
+                                                    <FaPhone className="me-1" />{" "}
                                                     +63-2-8712-6349
                                                     <br />
                                                     8/F Central Laboratory
