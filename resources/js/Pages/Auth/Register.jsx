@@ -468,7 +468,6 @@ export default function Register() {
                                             message={errors.email}
                                             className="mt-2 text-danger"
                                         />
-                                      
                                     </div>
                                     <div className="mt-4">
                                         <div className="d-flex align-items-center">
@@ -802,7 +801,6 @@ export default function Register() {
                                             message={errors.employeeID}
                                             className="mt-2 text-danger"
                                         />
-                                      
                                     </div>
 
                                     <div className="mt-4">
@@ -1058,24 +1056,159 @@ export default function Register() {
                                         <Modal.Body className="custom-modal-body">
                                             <div className="terms-section px-2">
                                                 <h6 className="fw-bold mb-3">
-                                                    1. Introduction
+                                                    Terms and Conditions
                                                 </h6>
                                                 <p className="mb-4">
-                                                    Welcome to the LESO
-                                                    Ticketing System (hereafter
-                                                    referred to as "the
-                                                    System")...
+                                                    These Terms and Conditions
+                                                    ("Terms") govern your use of
+                                                    the Leso ISC website (the
+                                                    "Site") and the services we
+                                                    provide through the Site,
+                                                    including the repair and
+                                                    recalibration of lab
+                                                    apparatus. By accessing or
+                                                    using the Site, you agree to
+                                                    comply with and be bound by
+                                                    these Terms. If you do not
+                                                    agree to these Terms, do not
+                                                    use the Site.
                                                 </p>
-
                                                 <h6 className="fw-bold mb-3">
-                                                    2. Eligibility
+                                                    1. Service Agreement
                                                 </h6>
                                                 <p className="mb-4">
-                                                    To submit a repair request
-                                                    through the LESO Ticketing
-                                                    System...
+                                                    Leso ISC offers repair and
+                                                    recalibration services for
+                                                    lab apparatus (the
+                                                    "Services"). By submitting a
+                                                    repair order through the
+                                                    Site, you agree to engage
+                                                    Leso ISC for these services
+                                                    and authorize us to proceed
+                                                    with the repair or
+                                                    recalibration as specified
+                                                    in your order.
                                                 </p>
-                                                {/* Continue with other sections... */}
+                                                <h6 className="fw-bold mb-3">
+                                                    2. Repair Orders
+                                                </h6>
+                                                <p className="mb-4">
+                                                    Orders submitted through the
+                                                    Site are considered requests
+                                                    for repair or recalibration
+                                                    services. By submitting an
+                                                    order, you are confirming
+                                                    that the apparatus being
+                                                    sent is intended for service
+                                                    at Leso ISC. Leso ISC
+                                                    reserves the right to refuse
+                                                    service if the item is
+                                                    deemed unsuitable for
+                                                    repair.
+                                                </p>
+                                                <h6 className="fw-bold mb-3">
+                                                    3. Order Confirmation and
+                                                    Cancellation
+                                                </h6>
+                                                <p className="mb-4">
+                                                    Once an order is submitted,
+                                                    you will receive an email
+                                                    confirmation detailing the
+                                                    repair or recalibration
+                                                    request. Orders can be
+                                                    canceled prior to the
+                                                    initiation of services.
+                                                    After services have
+                                                    commenced, cancellations
+                                                    will not be accepted.
+                                                </p>
+                                                <h6 className="fw-bold mb-3">
+                                                    4. Shipping and Delivery
+                                                </h6>
+                                                <p className="mb-4">
+                                                    Customers are responsible
+                                                    for shipping the apparatus
+                                                    to Leso ISC for repairs.
+                                                    Leso ISC will return the
+                                                    apparatus to the customer
+                                                    once the repair or
+                                                    recalibration is completed.
+                                                    The customer is responsible
+                                                    for any shipping costs
+                                                    associated with sending the
+                                                    apparatus to Leso ISC and
+                                                    receiving it back.
+                                                </p>
+                                                <h6 className="fw-bold mb-3">
+                                                    5. Customer Responsibilities
+                                                </h6>
+                                                <p className="mb-4">
+                                                    You are responsible for
+                                                    providing accurate and
+                                                    complete information about
+                                                    the apparatus being sent for
+                                                    repair. Leso ISC is not
+                                                    responsible for any damage
+                                                    or loss resulting from
+                                                    inaccurate or incomplete
+                                                    information provided by the
+                                                    customer.
+                                                </p>
+                                                <h6 className="fw-bold mb-3">
+                                                    6. Privacy Policy
+                                                </h6>
+                                                <p className="mb-4">
+                                                    Your use of the Site is also
+                                                    governed by our Privacy
+                                                    Policy, which outlines how
+                                                    we collect, use, and protect
+                                                    your personal information.
+                                                    Please review the Privacy
+                                                    Policy before using the
+                                                    Site.
+                                                </p>
+                                                <h6 className="fw-bold mb-3">
+                                                    7. Modification of Terms
+                                                </h6>
+                                                <p className="mb-4">
+                                                    Leso ISC reserves the right
+                                                    to modify these Terms at any
+                                                    time. Changes will be posted
+                                                    on this page, and the "Last
+                                                    updated" date will be
+                                                    revised accordingly.
+                                                    Continued use of the Site
+                                                    following any changes to
+                                                    these Terms constitutes your
+                                                    acceptance of those changes.
+                                                </p>
+                                                <h6 className="fw-bold mb-3">
+                                                    8. Contact Us
+                                                </h6>
+                                                <p className="mb-4">
+                                                    For any questions regarding
+                                                    these Terms and Conditions,
+                                                    please contact us at:
+                                                </p>
+                                                <p className="mb-4">
+                                                    Leso ISC
+                                                    <br />
+                                                    leso@ust.edu.ph
+                                                    <br />
+                                                    +63-2-8712-6349
+                                                    <br />
+                                                    8/F Central Laboratory
+                                                    Building,
+                                                    <br />
+                                                    University of Santo Tomas,
+                                                    <br />
+                                                    España Boulevard, Sampaloc,
+                                                    <br />
+                                                    Manila 1015, Philippines
+                                                    <br />
+                                                    Office Hours: 7:00am to
+                                                    5:00pm
+                                                </p>
                                             </div>
                                         </Modal.Body>
 
