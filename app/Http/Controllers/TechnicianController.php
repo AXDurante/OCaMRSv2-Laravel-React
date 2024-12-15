@@ -214,6 +214,12 @@ class TechnicianController extends Controller
 
     public function createTSR($id)
     {
+        // Find the maximum existing tsr_num and cast it to an integer
+        $maxTsrNum = (int) TSR::max('tsr_num');
+
+        // Set the new tsr_num, starting from 500
+        $newTsrNum = $maxTsrNum > 0 ? $maxTsrNum + 1 : 500;
+
         $jobOrder = JobOrder::with(['int_units', 'user'])->findOrFail($id);
         $user = Auth::user();
 
@@ -229,14 +235,15 @@ class TechnicianController extends Controller
             'auth' => [
                 'user' => $user,
                 'photo' => $photoUrl
-            ]
+            ],
+            'tsrNum' => $newTsrNum,
         ]);
     }
 
     public function storeTSR(Request $request)
     {
+
         $tsrFields = $request->validate([
-            'tsr_num' => ['required'],
             'instrument' => ['nullable', 'string'],
             'model' => ['nullable', 'string'],
             'serial_num' => ['nullable', 'string'],
@@ -249,12 +256,11 @@ class TechnicianController extends Controller
             'phone' => ['required'],
             'job_id' => ['required'],
             'tech_photo' => ['nullable', 'string'],
+            'tsr_num' => ['required'],
         ]);
 
         $user = Auth::user();
         $tsrFields['tech_id'] = $user->firstName . ' ' . $user->lastName;
-
-        // Store just the filename in the database
         $tsrFields['tech_photo'] = $user->photo;
 
         TSR::create($tsrFields);
@@ -360,6 +366,13 @@ class TechnicianController extends Controller
     // CoC
     public function createCoC($tsr_id)
     {
+
+        // Find the maximum existing tsr_num and cast it to an integer
+        $maxCocNum = (int) CoC::max('coc_num');
+
+        // Set the new tsr_num, starting from 500
+        $newCOCNum = $maxCocNum > 0 ? $maxCocNum + 1 : 500;
+
         $tsr = TSR::with(['job_order.user'])->findOrFail($tsr_id);
         $user = Auth::user();
 
@@ -377,7 +390,8 @@ class TechnicianController extends Controller
             'auth' => [
                 'user' => $user,
                 'photo' => $photoUrl
-            ]
+            ],
+            'cocNum' => $newCOCNum
         ]);
     }
 

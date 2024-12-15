@@ -8,12 +8,12 @@ import { FaCheckCircle, FaFlag } from "react-icons/fa"; // Import icons
 import { Link } from "@inertiajs/react";
 
 
-function COC({ tsr, auth }) {
+function COC({ tsr, auth, cocNum }) {
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { data, setData, post, processing } = useForm({
-        coc_num: "",
+        coc_num: cocNum,
         college: tsr.job_order.dept_name,
         lab_loc: tsr.job_order.lab_loc,
         equipment: "",
@@ -217,6 +217,7 @@ function COC({ tsr, auth }) {
                                                 value={data.coc_num} // Retain value
                                                 onChange={handleInputChange}
                                                 placeholder="Enter Calibration Number"
+                                                disabled
                                             />
                                             {errors.coc_num && (
                                             <div className="error-message">

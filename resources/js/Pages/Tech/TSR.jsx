@@ -15,7 +15,7 @@ import {
     FaFlag,
 } from "react-icons/fa";
 
-function TSR({ jobOrder, auth }) {
+function TSR({ jobOrder, auth, tsrNum}) {
     const [showPreview, setShowPreview] = useState(false); // State to control preview visibility
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,7 +30,7 @@ function TSR({ jobOrder, auth }) {
 
     // Update the useForm hook to match your TSR model fields
     const { data, setData, post, processing } = useForm({
-        tsr_num: "",
+        tsr_num: tsrNum,
         instrument: "",
         model: "",
         serial_num: "",
@@ -244,6 +244,7 @@ function TSR({ jobOrder, auth }) {
                                             value={data.tsr_num}
                                             onChange={handleInputChange}
                                             placeholder="Enter TSR Number"
+                                            disabled
                                         />
                                         {errors.tsr_num && (
                                             <div className="error-message">
