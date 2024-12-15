@@ -560,7 +560,7 @@ function COCpdf ({tsr, cocDetails}) {
                             <Text style={{ fontSize: 11, fontWeight: "bold" }}>
                                 NOTED BY:
                             </Text>
-                            {cocDetails.admin_signature && cocDetails.admin_name && (
+                            {cocDetails.admin_signature && (
                                 <>
                                     <Image
                                         src={cocDetails.admin_signature}
