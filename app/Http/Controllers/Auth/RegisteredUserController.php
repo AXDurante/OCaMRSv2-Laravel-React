@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
 
 class RegisteredUserController extends Controller
 {
@@ -74,5 +75,18 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
+    }
+
+    public function getPositions()
+    {
+        return DB::table('users')
+            ->select('position', DB::raw('COUNT(*) as count'))
+            ->whereNotNull('position')
+            ->where('position', '!=', '')
+            ->groupBy('position')
+            ->having('count', '>=', 3)
+            ->pluck('position')
+            ->values()
+            ->toArray();
     }
 }

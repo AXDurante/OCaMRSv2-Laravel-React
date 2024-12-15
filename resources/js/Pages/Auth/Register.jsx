@@ -14,6 +14,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as bootstrap from "bootstrap";
+import axios from "axios";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -49,6 +50,20 @@ export default function Register() {
         password: "",
         password_confirmation: "",
     });
+
+    const [existingPositions, setExistingPositions] = useState([]);
+    const [isCustomPosition, setIsCustomPosition] = useState(false);
+
+    useEffect(() => {
+        axios
+            .get(route("get.positions"))
+            .then((response) => {
+                setExistingPositions(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching positions:", error);
+            });
+    }, []);
 
     const validateEmployeeID = (value) => {
         if (!value) {
@@ -468,7 +483,6 @@ export default function Register() {
                                             message={errors.email}
                                             className="mt-2 text-danger"
                                         />
-                                      
                                     </div>
                                     <div className="mt-4">
                                         <div className="d-flex align-items-center">
@@ -698,33 +712,85 @@ export default function Register() {
                                             htmlFor="position"
                                             value="Position"
                                         />
-                                        <TextInput2
-                                            id="position"
-                                            name="position"
-                                            value={data.position}
-                                            className={`mt-1 block w-full ${
-                                                validationErrors.position
-                                                    ? "is-invalid"
-                                                    : ""
-                                            }`}
-                                            autoComplete="labLoc"
-                                            isFocused={true}
-                                            onChange={(e) => {
-                                                setData(
-                                                    "position",
-                                                    e.target.value
-                                                );
-                                                validatePosition(
-                                                    e.target.value
-                                                );
-                                            }}
-                                            placeholder="Lab Technician"
-                                            required
-                                        />
-                                        <InputError
-                                            message={errors.position}
-                                            className="mt-2 text-danger"
-                                        />
+                                        <div className="position-input-container">
+                                            <select
+                                                className={`form-select mb-2 ${
+                                                    !isCustomPosition
+                                                        ? "w-full"
+                                                        : "d-none"
+                                                }`}
+                                                value={data.position}
+                                                onChange={(e) => {
+                                                    if (
+                                                        e.target.value ===
+                                                        "custom"
+                                                    ) {
+                                                        setIsCustomPosition(
+                                                            true
+                                                        );
+                                                        setData("position", "");
+                                                    } else {
+                                                        setData(
+                                                            "position",
+                                                            e.target.value
+                                                        );
+                                                    }
+                                                }}
+                                            >
+                                                <option value="" disabled>
+                                                    Select a position
+                                                </option>
+                                                {existingPositions.map(
+                                                    (pos, index) => (
+                                                        <option
+                                                            key={index}
+                                                            value={pos}
+                                                        >
+                                                            {pos}
+                                                        </option>
+                                                    )
+                                                )}
+                                                <option value="custom">
+                                                    + Add Custom Position
+                                                </option>
+                                            </select>
+
+                                            {isCustomPosition && (
+                                                <div className="custom-position-input">
+                                                    <TextInput2
+                                                        type="text"
+                                                        className={`mt-1 block w-full ${
+                                                            validationErrors.position
+                                                                ? "is-invalid"
+                                                                : ""
+                                                        }`}
+                                                        value={data.position}
+                                                        onChange={(e) => {
+                                                            setData(
+                                                                "position",
+                                                                e.target.value
+                                                            );
+                                                            validatePosition(
+                                                                e.target.value
+                                                            );
+                                                        }}
+                                                        placeholder="Enter your position"
+                                                        required
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-link mt-1"
+                                                        onClick={() =>
+                                                            setIsCustomPosition(
+                                                                false
+                                                            )
+                                                        }
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
                                         {validationErrors.position && (
                                             <div className="invalid-feedback d-block">
                                                 <i className="fas fa-exclamation-circle me-1"></i>
@@ -802,7 +868,6 @@ export default function Register() {
                                             message={errors.employeeID}
                                             className="mt-2 text-danger"
                                         />
-                                      
                                     </div>
 
                                     <div className="mt-4">

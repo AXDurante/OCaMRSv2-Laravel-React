@@ -17,6 +17,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AdminNotificationController;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 // Job Order Route
 Route::resource('/jobOrder', JobOrderController::class);
@@ -234,4 +235,7 @@ Route::get('/test-email', function() {
         return 'Error sending email: ' . $e->getMessage();
     }
 });
+
+Route::get('/get-positions', [RegisteredUserController::class, 'getPositions'])
+    ->name('get.positions');
 
