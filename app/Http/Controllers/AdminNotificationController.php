@@ -87,7 +87,7 @@ class AdminNotificationController extends Controller
                 'message' => $message,
                 'type' => $type
             ]);
-
+            /*
             if ($admin->email) {
                 $admin->notify(new JobOrderNotification(
                     $title,
@@ -96,6 +96,7 @@ class AdminNotificationController extends Controller
                     $jobOrder->status
                 ));
             }
+                */
         }
     }
 }
