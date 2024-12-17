@@ -260,7 +260,7 @@ class JobOrderController extends Controller
                 'message' => "Your job order #{$jobOrder->job_id} status has been changed from {$oldStatus} to {$jobOrder->status}",
                 'type' => 'status_update'
             ]);
-
+            /*
             // Send email notification
             try {
                 $user->notify(new JobOrderNotification(
@@ -275,6 +275,7 @@ class JobOrderController extends Controller
                     'trace' => $e->getTraceAsString()
                 ]);
             }
+                */
         }
     }
 

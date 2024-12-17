@@ -154,7 +154,7 @@ class TechnicianController extends Controller
                     'type' => 'status_update',
                     'status' => $validatedData['status']
                 ]);
-
+                /*
                 // Send email notification
                 try {
                     $user->notify(new JobOrderNotification(
@@ -170,6 +170,7 @@ class TechnicianController extends Controller
                         'trace' => $e->getTraceAsString()
                     ]);
                 }
+                    */
             }
 
             return redirect()->route('technician.showJobOrder', $jobOrder->job_id)

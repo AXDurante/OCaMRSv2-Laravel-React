@@ -91,7 +91,7 @@ class TechnicianNotificationController extends Controller
                 'message' => $message,
                 'type' => $type
             ]);
-
+            /*
             // Send email notification if technician has email
             if ($technician->email) {
                 $technician->notify(new JobOrderNotification(
@@ -101,6 +101,7 @@ class TechnicianNotificationController extends Controller
                     $jobOrder->status
                 ));
             }
+                */
         }
     }
 
